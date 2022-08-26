@@ -1,0 +1,51 @@
+// THEMES
+// Themes color changer
+// Alllowed values: Dark, Light, Default
+$theme: Dark;
+
+// COLORS
+$text-color: #222222;
+$body-background-color: #fff;
+$theme-color: #170a48;
+$secondary-color: #f27731;
+$ternary-color: #ccf962;
+$link-color: $secondary-color;
+$menu-item-color: #fff;
+
+@if $theme == Dark {
+	$text-color: #fff;
+	$body-background-color: #22222a;
+	$theme-color: #42424a;
+	$secondary-color: #c24721;
+	$ternary-color: #698932;
+	$link-color: $secondary-color;
+	$menu-item-color: white;
+} @else if $theme == light {
+	$text-color: #000;
+	$body-background-color: #fff;
+	$theme-color: #372a27;
+	$secondary-color: #d26741;
+	$ternary-color: #b9da63;
+	$link-color: $secondary-color;
+	$menu-item-color: white;
+}
+
+// FONTS
+$text-font: "Alegreya Sans", Verdana, Arial, sans-serif;
+$headline-font: "Titillium Web", "Palatino Linotype", Georgia, serif;
+
+// CONTENT SIZES
+$content-width: 960px;
+$header-height: 60px;
+$footer-height: 90px;
+$col: col-width(
+	$columns: 8,
+);
+
+// MAP STYLE VARIABLES
+
+$colors: (
+	primary: red,
+	secondary: green,
+	tertiary: blue,
+);

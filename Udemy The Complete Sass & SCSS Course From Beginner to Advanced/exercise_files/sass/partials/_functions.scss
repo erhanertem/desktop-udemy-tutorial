@@ -1,0 +1,11 @@
+@function sum($left: 5px, $right: 5px) {
+	@return $left + $right;
+} //given 5px values by default
+
+@function em($pixels, $context: 16px) {
+	@return calc($pixels / $context) * 1em; //either calc or math.div for future sass as in the documentation with @use "sass:math"; support
+}
+
+@function col-width($columns: 12, $page-width: 100%, $gap: 1%) {
+	@return math.div(($page-width - $gap * ($columns - 1)), $columns);
+}

@@ -1,0 +1,9 @@
+// SASS architecture setup
+// The order of the @imports are very important. The order of imports is based on the dependency requirements of the partial for proper execution.
+@use "sass:math";
+@import "../node_modules/breakpoint-sass/stylesheets/breakpoint"; //import breakpoint sass framework
+@import "partials/mixins";
+@import "partials/functions";
+@import "partials/variables";
+@import "base";
+@import "index";

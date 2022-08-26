@@ -1,0 +1,154 @@
+@for $i from 1 through 6 {
+	// through includes 6
+	.col1-#{$i} {
+		width: $i * 2em;
+	}
+}
+@for $i from 1 to 6 {
+	// to excludes 6
+	.col2-#{$i} {
+		width: $i * 2em;
+	}
+}
+
+// $speakers: bob-banker, patty-plume, sandra-smith;
+$speakers: bob-banker patty-plume sandra-smith;
+// The list type SASS variables works either with comma or spacing seperators. Both works perfectly fine.
+@each $speaker in $speakers {
+	.#{$speaker}-profile {
+		background-image: url("/img/#{$speaker}.png");
+	}
+}
+$font-sizes: (
+	tiny: 8px,
+	small: 11px,
+	medium: 13px,
+	large: 18px,
+);
+@each $name, $size in $font-sizes {
+	.#{$name} {
+		font-size: $size;
+	}
+}
+
+$j: 2;
+@while $j <= 8 {
+	.picture-#{$j} {
+		width: $j * 10%;
+	}
+	$j: $j + 2;
+}
+
+@include google-font(
+	"Alegreya+Sans"
+); //we succesfully impoirted the font via google apis url
+@include google-font(
+	"Titillium+Web"
+); //we succesfully impoirted the font via google apis url
+
+@include fancy-links; //general mixin example
+
+@include apply-to-ie-6 {
+	body {
+		font-size: 125%;
+	}
+}
+
+//Case-study: we would like change the font color based on contrast color choice.
+// changing this value triggers the conditional snippet as disclosed in the body selector.
+// $constrast: high;
+body {
+	font-family: $text-font;
+	font-size: em(18px);
+	color: $text-color;
+	background-color: $body-background-color;
+	// @if $constrast ==high {
+	// 	color: #000;
+	// } @else if $contrast==low {
+	// 	color: #999;
+	// } @else {
+	// 	color: $text-color;
+	// }
+
+	// @media only screen and (max-width: 960px) {
+	// 	font-size: 125%;
+	// }
+	// instead of above implementation, we make use of mixins with @content
+	// @include large-screens {
+	// 	font-size: 125%;
+	// }
+	@include breakpoint(960px) {
+		font-size: 225%;
+	} //similar to mixins we may also use breakpoint framework for sass
+}
+
+.error {
+	color: red;
+}
+
+//IMPORTANT: in critical error conditions we would need both the properties of error and critical-error classes. So @extend establishes the link without repeating the stuff inside .error class or using both as class references in the HTML element
+.critical-error {
+	@extend .error;
+	bottom: 1px solid red;
+	font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: $headline-font;
+}
+
+h2 {
+	@include large-text;
+}
+
+p {
+	$text-font: Verdana, Arial, sans-serif !global;
+	font-family: $text-font;
+}
+
+a {
+	color: $link-color;
+
+	&:hover {
+		color: darken($link-color, 15%);
+	}
+} // for inline non-specific text in the paragraphs
+
+%highlight {
+	font-style: italic;
+	//NOTE: PLACEHOLDER snippet that is not included in the css directly. It is shared in the body of multiple selectors
+}
+
+.sub-title {
+	@extend %highlight;
+	@extend .foo !optional;
+	//IMPORTANT:  !optional tells @extend to apply if the class selector exists.
+	font-size: em(20px);
+}
+.sub-head {
+	@extend %highlight;
+	font-size: em(30px);
+}
+
+.warning-button {
+	@include warning(6px);
+	padding: 8px 12px;
+}
+
+.cta-button {
+	@extend .warning-button;
+	@extend .error; //making multiple lines of @exrtend is also allowed
+	@include rounded;
+	font-weight: bold;
+}
+
+// IMPORTANT: Using @extend inside media query does not work unless the extended class is also included within the media query braces.
+
+.super-cta-button {
+	@extend .cta-button;
+	font-size: em(20px);
+	//we can even extend a class that has already extends inside it
+}

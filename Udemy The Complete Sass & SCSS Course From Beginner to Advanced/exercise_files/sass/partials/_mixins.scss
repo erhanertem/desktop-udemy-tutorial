@@ -1,0 +1,88 @@
+// media queries as mixins are more flexible as at-one-place-change strategy
+@mixin tiny-screens() {
+	@media only screen and (max-width: 320px) {
+		@content;
+	}
+}
+@mixin small-screens() {
+	@media only screen and (max-width: 480px) {
+		@content;
+	}
+}
+@mixin medium-screens() {
+	@media only screen and (max-width: 680px) {
+		@content;
+	}
+}
+@mixin large-screens() {
+	@media only screen and (max-width: 960px) {
+		@content;
+	}
+}
+
+@mixin clearfix {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+@mixin google-font($font) {
+	$font: unquote(
+		$font
+	); // makes it a unquoated string to used in the flow of url below
+	@import url(https://fonts.googleapis.com/css?family=#{$font}); // #{argument} is similar to template literal usage in JS
+}
+
+@mixin warning($radius) {
+	background-color: orange;
+	color: #fff;
+	border: none;
+	-webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	@include rounded($radius); //we can use mixin inside another mixin
+
+	&:hover {
+		background-color: lighten(orange, 10%);
+	}
+}
+
+//multi entering shadow arguments with arg...
+@mixin box-shadow($shadows...) {
+	-webkit-box-shadow: $shadows;
+	box-shadow: $shadows;
+}
+
+@mixin large-text {
+	font: {
+		size: 22px;
+		weight: bold;
+	} // SASS allows us to write properties individually or as in parent naming modeas shown
+}
+
+// @mixin rounded {
+// 	border-radius: 6px;
+// }
+// We can push in argument into our mixin to customize it further
+// We can define default values for the arguments right in the mixin
+@mixin rounded($radius: 6px) {
+	border-radius: $radius;
+}
+
+//pass in default values for the both arguments
+@mixin box($radius: 6px, $border: 1px solid #000) {
+	@include rounded($radius);
+	border: $border;
+}
+
+@mixin fancy-links {
+	a {
+		font-style: italic;
+		text-decoration: none;
+	}
+}
+// We can stuff whatever content we want it to be inside @mixin via @content keyword
+@mixin apply-to-ie-6 {
+	* hmtl {
+		@content;
+	}
+}

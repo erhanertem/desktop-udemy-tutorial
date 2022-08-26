@@ -1,0 +1,75 @@
+#header {
+	display: flex;
+	align-items: center;
+
+	@include box($radius: 8px, $border: 1px solid orangered);
+	//multi variable @mixin. It is a good practice to disclose argument names here whenever possible. The readibility of code gets better if there are more variables.
+	// multi argument entering mixin application below
+	@include box-shadow(2px 0px 4px #999, 1px 1px 6px $secondary-color);
+
+	height: $header-height;
+	background-color: $theme-color;
+
+	#main-menu {
+		li {
+			display: inline-block;
+		}
+
+		a {
+			// color: $menu-item-color;
+			color: map-get($colors, primary); //retrieve map based sass variable
+			padding: 6px 8px;
+
+			border-bottom: 1px solid transparentize(#fefefe, 1);
+			transition: border-bottom 0.3s ease-in-out;
+
+			&:hover {
+				border-bottom: 1px solid opacify(#fefefe, 0.5);
+			}
+		} //for a elements enclosed by main-menu
+	}
+}
+
+#main {
+	width: $content-width;
+	// @media only screen and (max-width: 960px) {
+	// 	width: auto;
+	// 	max-width: $content-width;
+	// }
+	// instead of above implementation, we make use of mixins with @content
+	@include large-screens {
+		width: auto;
+		max-width: $content-width;
+	}
+	margin: 0 auto; //centerline the main body
+
+	#content {
+		float: left;
+		width: 6 * $col;
+	}
+
+	#sidebar {
+		float: right;
+		width: 2 * $col;
+
+		li {
+			list-style-type: none;
+			padding: em(16px) em(20px);
+			border-bottom: 1px dashed #999;
+			transition: background-color 0.3s;
+
+			&:hover {
+				background-color: #efefef;
+			}
+		}
+	}
+}
+
+#footer {
+	height: $footer-height;
+	background-color: $ternary-color;
+
+	@include clearfix;
+	@include box($radius: 4px, $border: 1px solid orangered);
+	@include box-shadow(2px 0px 4px #999, 1px 1px 6px $secondary-color);
+}

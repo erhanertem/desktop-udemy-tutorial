@@ -1,0 +1,236 @@
+@import url(https://fonts.googleapis.com/css?family=Alegreya+Sans);
+@import url(https://fonts.googleapis.com/css?family=Titillium+Web);
+.col1-1 {
+  width: 2em;
+}
+
+.col1-2 {
+  width: 4em;
+}
+
+.col1-3 {
+  width: 6em;
+}
+
+.col1-4 {
+  width: 8em;
+}
+
+.col1-5 {
+  width: 10em;
+}
+
+.col1-6 {
+  width: 12em;
+}
+
+.col2-1 {
+  width: 2em;
+}
+
+.col2-2 {
+  width: 4em;
+}
+
+.col2-3 {
+  width: 6em;
+}
+
+.col2-4 {
+  width: 8em;
+}
+
+.col2-5 {
+  width: 10em;
+}
+
+.bob-banker-profile {
+  background-image: url("/img/bob-banker.png");
+}
+
+.patty-plume-profile {
+  background-image: url("/img/patty-plume.png");
+}
+
+.sandra-smith-profile {
+  background-image: url("/img/sandra-smith.png");
+}
+
+.tiny {
+  font-size: 8px;
+}
+
+.small {
+  font-size: 11px;
+}
+
+.medium {
+  font-size: 13px;
+}
+
+.large {
+  font-size: 18px;
+}
+
+.picture-2 {
+  width: 20%;
+}
+
+.picture-4 {
+  width: 40%;
+}
+
+.picture-6 {
+  width: 60%;
+}
+
+.picture-8 {
+  width: 80%;
+}
+
+a {
+  font-style: italic;
+  text-decoration: none;
+}
+
+* hmtl body {
+  font-size: 125%;
+}
+
+body {
+  font-family: "Alegreya Sans", Verdana, Arial, sans-serif;
+  font-size: 1.125em;
+  color: #fff;
+  background-color: #22222a;
+}
+@media (min-width: 960px) {
+  body {
+    font-size: 225%;
+  }
+}
+
+.error, .cta-button, .super-cta-button, .critical-error {
+  color: red;
+}
+
+.critical-error {
+  bottom: 1px solid red;
+  font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Titillium Web", "Palatino Linotype", Georgia, serif;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+p {
+  font-family: Verdana, Arial, sans-serif;
+}
+
+a {
+  color: #c24721;
+}
+a:hover {
+  color: #812f16;
+}
+
+.sub-head, .sub-title {
+  font-style: italic;
+}
+
+.sub-title {
+  font-size: 1.25em;
+}
+
+.sub-head {
+  font-size: 1.875em;
+}
+
+.warning-button, .cta-button, .super-cta-button {
+  background-color: orange;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.warning-button:hover, .cta-button:hover, .super-cta-button:hover {
+  background-color: #ffb733;
+}
+
+.cta-button, .super-cta-button {
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.super-cta-button {
+  font-size: 1.25em;
+}
+
+#header {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid orangered;
+  box-shadow: 2px 0px 4px #999, 1px 1px 6px #c24721;
+  height: 60px;
+  background-color: #42424a;
+}
+#header #main-menu li {
+  display: inline-block;
+}
+#header #main-menu a {
+  color: red;
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(254, 254, 254, 0);
+  transition: border-bottom 0.3s ease-in-out;
+}
+#header #main-menu a:hover {
+  border-bottom: 1px solid #fefefe;
+}
+
+#main {
+  width: 960px;
+  margin: 0 auto;
+}
+@media only screen and (max-width: 960px) {
+  #main {
+    width: auto;
+    max-width: 960px;
+  }
+}
+#main #content {
+  float: left;
+  width: 69.75%;
+}
+#main #sidebar {
+  float: right;
+  width: 23.25%;
+}
+#main #sidebar li {
+  list-style-type: none;
+  padding: 1em 1.25em;
+  border-bottom: 1px dashed #999;
+  transition: background-color 0.3s;
+}
+#main #sidebar li:hover {
+  background-color: #efefef;
+}
+
+#footer {
+  height: 90px;
+  background-color: #698932;
+  content: "";
+  clear: both;
+  display: block;
+  border-radius: 4px;
+  border: 1px solid orangered;
+  box-shadow: 2px 0px 4px #999, 1px 1px 6px #c24721;
+}/*# sourceMappingURL=main.css.map */
