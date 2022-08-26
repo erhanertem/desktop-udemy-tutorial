@@ -1,19 +1,22 @@
-# Welcome to GitHub Desktop!
+# Welcome to my GitHub Desktop!
 
 ### 👋 **I am Erhan ERTEM**
 
 &emsp;
 
-## Udemy The Ultimate MySQL Bootcamp: Go from SQL Beginner to Expert by Steve Colt
+This is my tutorial/bootcamp crunching area. Over time, we'll have seen more stuff crammed into this place.
 
-### **Objectives**
+Each pertinent folder would contain the completion certificate and exercise files that I coded for my future reference, so long as the nature of the course allows.
 
-- Cover the essential knowledge for SQL. `Found under workshop_exercises folder`
-- Prepare a fake DATABASE of 500 participants for JOIN US app. `Found under JoinUs_App_Prep_Data folder`
-- Create a JOIN US app that registers new users to this fake DATABASE. `Found under JoinUS_App folder`
+&emsp;
 
----
-
-![mySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white) ![JS](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E) ![expressJs](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+| Course/Bootcamp                                                  | Languages/Frameworks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Udemy The Git & Github Bootcamp                                  | ![KRAKEN](https://img.shields.io/badge/GitKraken-179287?style=for-the-badge&logo=GitKraken&logoColor=whitepreprocessor) ![github](https://img.shields.io/badge/GitHub%20Pages-222222?style=for-the-badge&logo=GitHub%20Pages&logoColor=white)                                                                                                                                                                                                                                                                                  |
+| Udemy Build Responsive Real-World Websites with HTML and CSS     | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JS](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)                                                                                                                                                                                                                  |
+| Udemy The Complete Sass & SCSS Course From Beginner to Advanced  | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![SASS](https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white)                                                                                                                                                                                                                             |
+| Udemy Advanced CSS and Sass Flexbox, Grid, Animations and More!  | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![SASS](https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white)                                                                                                                                                                                                                             |
+| Udemy The Complete JavaScript Course 2022 From Zero to Expert!   | ![JS](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Udemy The Ultimate MySQL Bootcamp Go from SQL Beginner to Expert | ![mySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white) ![JS](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E) ![expressJs](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) |
 
 &emsp;
