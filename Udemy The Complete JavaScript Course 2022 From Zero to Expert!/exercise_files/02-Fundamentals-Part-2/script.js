@@ -1,5 +1,5 @@
-// LESSON: 32 ACTIVATING STRICT VERSION
-// NOTE: This statement has to be the very first statement. Without this mode, JS dies sliently without throwing error on the browser console
+//LESSON 32 ACTIVATING STRICT VERSION
+//NOTE This statement has to be the very first statement. Without this mode, JS dies sliently without throwing error on the browser console
 'use strict';
 
 // let hasDriversLicense = false;
@@ -8,9 +8,9 @@
 // if (passTest) hasDriverLicense = true; // intentional variable name mistype for causing an error in the console
 // if (hasDriversLicense) console.log("I can drive ");
 // const private = 534;
-// // NOTE: some reserved names could not be used as variable names
+// //NOTE some reserved names could not be used as variable names
 
-// LESSON: 33 FUNCTIONS
+//LESSON 33 FUNCTIONS
 
 // //NONPARAMETER FUNCTION
 // function logger() {
@@ -36,7 +36,7 @@
 // const num = Number("23"); //built-in number() function
 // console.log(num); //built-in console.log() function
 
-// LESSON: 34 FUNCTION DECLARATIONS VS EXPRESSIONS
+//LESSON 34 FUNCTION DECLARATIONS VS EXPRESSIONS
 
 // // function calcAge1(birthYear) {
 // // 	const age = 2037 - birthYear;
@@ -44,7 +44,7 @@
 // // }
 
 // // FUNCTION DECLARATION
-// // NOTE: COMPARED TO FUNCTION EXPRESSIONS, FUNCTION DECLARATIONS COULD BE CALLED BEFORE/AFTER DECLARATION.
+// //NOTE COMPARED TO FUNCTION EXPRESSIONS, FUNCTION DECLARATIONS COULD BE CALLED BEFORE/AFTER DECLARATION.
 // // BEFORE
 // const age1_1 = calcAge1(1991);
 
@@ -56,7 +56,7 @@
 // console.log(age1_1, age1);
 
 // // FUNCTION EXPRESSION
-// //NOTE: FUNCTION EXPRESSIONS REQUIRE DECLARING FIRST THEN CALLING THE FUNCTION.
+// //NOTE FUNCTION EXPRESSIONS REQUIRE DECLARING FIRST THEN CALLING THE FUNCTION.
 // const calcAge2 = function (birthYear) {
 // 	return 2037 - birthYear;
 // };
@@ -64,15 +64,15 @@
 
 // console.log(age1, age2);
 
-// LESSON: 35 ARROW FUNCTIONS
+//LESSON 35 ARROW FUNCTIONS
 
 // //ARROW FUNCTION
-// //NOTE: UNLIKE FUNCTION EXPRESSIONS, ITS A GOOD FOR ONE LINER FUNCTIONS, RETURN STATEMENT IS PROVIDED IMPLICETELY.
+// //NOTE UNLIKE FUNCTION EXPRESSIONS, ITS A GOOD FOR ONE LINER FUNCTIONS, RETURN STATEMENT IS PROVIDED IMPLICETELY.
 // const calcAge3 = (birthYear) => 2037 - birthYear;
 // const age3 = calcAge3(1991);
 // console.log(age3);
 
-// // NOTE: FOR MORE THAN ONE LINER CODE, PAERANTHESIS NEEDS TO BE USED FOR ENCLOSING THE CODE BLOCK ALONG WITH A RETURN STATEMENT
+// //NOTE FOR MORE THAN ONE LINER CODE, PAERANTHESIS NEEDS TO BE USED FOR ENCLOSING THE CODE BLOCK ALONG WITH A RETURN STATEMENT
 // const yearsUntilRetirement = (birthYear) => {
 // 	const age = 2037 - birthYear;
 // 	const retirement = 65 - age;
@@ -80,7 +80,7 @@
 // };
 // console.log(yearsUntilRetirement(1991));
 
-// //NOTE: In case of multiple arguments
+// //NOTE In case of multiple arguments
 // const yearsUntilRetirement2 = (birthYear, firstName) => {
 // 	const age = 2037 - birthYear;
 // 	const retirement = 65 - age;
@@ -88,7 +88,7 @@
 // };
 // console.log(yearsUntilRetirement2(1991, "Erhan"));
 
-// LESSON: 36 FUNCTIONS CALLING OTHER FUNCTIONS
+//LESSON 36 FUNCTIONS CALLING OTHER FUNCTIONS
 
 // function cutFruitPieces(fruit) {
 // 	return fruit * 4;
@@ -101,13 +101,13 @@
 // }
 // console.log(fruitProcessor(2, 3));
 
-// LESSON: 37 FUNCTIONS CALLING OTHER FUNCTIONS
+//LESSON 37 FUNCTIONS CALLING OTHER FUNCTIONS
 
 // const calcAge = function (birthYear) {
 // 	return 2037 - birthYear;
 // };
 
-// // NOTE: birthYear argument used in this function is totally irrelevant to birthyear argument in calcAge function. Each argument is local to their pertinent function.
+// //NOTE birthYear argument used in this function is totally irrelevant to birthyear argument in calcAge function. Each argument is local to their pertinent function.
 // const yearsUntilRetirement = function (birthYear, firstName) {
 // 	const age = calcAge(birthYear);
 // 	const retirement = 65 - age;
@@ -117,14 +117,14 @@
 // 		return retirement;
 // 	} else {
 // 		console.log(`${firstName} has already retired 🎉`);
-// //NOTE: console.log IS NOT A RETURN LINE. EVERY FUNCTION NEEDS TO RETURN AN OUTPUT
+// //NOTE console.log IS NOT A RETURN LINE. EVERY FUNCTION NEEDS TO RETURN AN OUTPUT
 // 		return -1;
 // 	}
 // };
 // console.log(yearsUntilRetirement(1991, "Erhan"));
 // console.log(yearsUntilRetirement(1950, "Mary"));
 
-// Coding Challenge: #1
+//CODING CHALLENGE #1
 // /*
 // Back to the two gymnastics teams, the Dolphins and the Koalas! There is a new
 // gymnastics discipline, which works differently.
@@ -180,7 +180,7 @@
 // checkWinner(avgDolphins1, avgKoalas1);
 // checkWinner(avgDolphins2, avgKoalas2);
 
-// LESSON: 39 INTRODUCTION TO ARRAY
+//LESSON 39 INTRODUCTION TO ARRAY
 
 // const friend1 = "Micheal";
 // const firend2 = "Steven";
@@ -219,7 +219,7 @@
 // console.log(calcAge(years[2]));
 // console.log(calcAge(years[years.length - 1]));
 
-// //NOTE: we can include function expressions inside arrays
+// //NOTE we can include function expressions inside arrays
 // const ages = [
 // 	calcAge(years[0]),
 // 	calcAge(years[2]),
@@ -227,31 +227,31 @@
 // ];
 // console.log(ages);
 
-// LESSON: 40 BASIC ARRAY METHODS
+//LESSON 40 BASIC ARRAY METHODS
 
 // const friends = ["Micheal", "Steven", "Peter"];
 
-// // NOTE: Adds element to the end of the array
+// //NOTE Adds element to the end of the array
 // const newLength = friends.push("Jay");
 // console.log(newLength);
-// // NOTE: Adds element to the beginning of the array
+// //NOTE Adds element to the beginning of the array
 // friends.unshift("John");
-// // NOTE: Removes the last element of the array
+// //NOTE Removes the last element of the array
 // friends.pop();
-// // NOTE: Removes the first element of the array
+// //NOTE Removes the first element of the array
 // friends.shift();
 
 // console.log(friends);
 
-// //NOTE: Find whether inquired element exists in the array
+// //NOTE Find whether inquired element exists in the array
 // console.log(friends.indexOf("Steven")); //1 (true)
 // console.log(friends.indexOf("Bob")); //-1 (false)
-// //NOTE: Find whether inquired element exists in the array - boolean return
+// //NOTE Find whether inquired element exists in the array - boolean return
 // console.log(friends.includes("Steven")); //true
 // console.log(friends.includes("Bob")); //false
 // if (friends.includes("Peter")) console.log("You have a friend called Peter");
 
-// Coding Challenge: #2
+//CODING CHALLENGE #2
 // /*
 // Steven is still building his tip calculator, using the same rules as before: Tip 15% of
 // the bill if the bill value is between 50 and 300, and if the value is different, the tip is
@@ -312,9 +312,9 @@
 // 	)}, and the total value ${testData[2] + calcTip(testData[2])}`,
 // );
 
-// LESSON: 42 INTRODUCTION TO OBJECTS
+//LESSON 42 INTRODUCTION TO OBJECTS
 
-// // NOTE: Arrays are indexed data 0 onward...Index/order matters
+// //NOTE Arrays are indexed data 0 onward...Index/order matters
 // const jonasArray = [
 // 	"Jonas",
 // 	"Hintmann",
@@ -323,7 +323,7 @@
 // 	["Steven", "Haribo", 2013 - 12],
 // ];
 
-// // NOTE: Objects bear key/value pairs. Each value is tagged via name(key) so index/order do not matter in object literals
+// //NOTE Objects bear key/value pairs. Each value is tagged via name(key) so index/order do not matter in object literals
 // const jonasObject = {
 // 	firstName: "Erhan",
 // 	lastName: "Ertem",
@@ -334,7 +334,7 @@
 
 // console.log(jonasObject);
 
-// LESSON: 43 DOT VS BRACKET NOTATION
+//LESSON 43 DOT VS BRACKET NOTATION
 
 // const jonasObject = {
 // 	firstName: "Erhan",
@@ -344,12 +344,12 @@
 // 	friends: ["Xelda", "Homeros", "Hitites"],
 // };
 
-// //NOTE: TYPE OF CALLING OOUT SPECIFIC OBJECT KEY
+// //NOTE TYPE OF CALLING OOUT SPECIFIC OBJECT KEY
 // // DOT NOTATION TYPE
 // console.log(jonasObject.lastName);
 // // BRACKET NOTATION TYPE
 // console.log(jonasObject["lastName"]);
-// //NOTE: could be usefull in situations where we get a computational value
+// //NOTE could be usefull in situations where we get a computational value
 // const nameKey = "Name";
 // console.log(jonasObject["first" + nameKey]);
 // console.log(jonasObject["last" + nameKey]);
@@ -364,7 +364,7 @@
 // 	console.log("Input a correct key value!");
 // }
 
-// //NOTE: Adding key/value pair later
+// //NOTE Adding key/value pair later
 // jonasObject.location = "Portugal";
 // jonasObject["twitter"] = "@jonassschellmate";
 // console.log(jonasObject);
@@ -373,7 +373,7 @@
 // 	`${jonasObject.firstName} has ${jonasObject.friends.length} friends, and his best friend is called ${jonasObject.friends[0]}`,
 // );
 
-// LESSON: 44 OBJECT METHODS
+//LESSON 44 OBJECT METHODS
 
 // //V1 OBJECT
 // const jonas = {
@@ -383,7 +383,7 @@
 // 	job: "teacher",
 // 	friends: ["Xelda", "Homeros", "Hitites"],
 // 	hasDriversLicense: true,
-// 	// NOTE: function expression implementation inside JS objects
+// 	//NOTE function expression implementation inside JS objects
 // 	calcAge: function (birthYear) {
 // 		return 2037 - birthYear;
 // 	},
@@ -403,7 +403,7 @@
 // 	job: "teacher",
 // 	friends: ["Xelda", "Homeros", "Hitites"],
 // 	hasDriversLicense: true,
-// 	// NOTE: function expression implementation inside JS objects
+// 	//NOTE function expression implementation inside JS objects
 // 	calcAge: function () {
 // 		console.log(this); //this points to jonas
 // 		return 2037 - this.birthYear;
@@ -412,7 +412,7 @@
 // console.log(jonas2.calcAge());
 // console.log(jonas2.calcAge());
 // console.log(jonas2.calcAge());
-// console.log(jonas2.calcAge()); //IMPORTANT: why compute everytime to solicit the age info??
+// console.log(jonas2.calcAge()); //IMPORTANT why compute everytime to solicit the age info??
 
 // //V3 OBJECT
 // const jonas3 = {
@@ -422,7 +422,7 @@
 // 	job: "teacher",
 // 	friends: ["Xelda", "Homeros", "Hitites"],
 // 	hasDriversLicense: true,
-// 	// NOTE: IN ORDER TO CALC EVERYTIME, THE FUNCTION OUTPUT IS STORED IN A VARIABLE WHICH COULD BE SOLICITED ANYTIME.
+// 	//NOTE IN ORDER TO CALC EVERYTIME, THE FUNCTION OUTPUT IS STORED IN A VARIABLE WHICH COULD BE SOLICITED ANYTIME.
 // 	calcAge: function () {
 // 		this.age = 2037 - this.birthYear;
 // 		return this.age;
@@ -440,7 +440,7 @@
 // console.log(jonas3.age); //  THEN ONLY SOLICIT THE AGE RATHER THAN RUNNING COMPUTATIONAL FUNC OVER AND OVER AGAIN.
 // console.log(jonas3.getSummary());
 
-// Coding Challenge: #3
+//CODING CHALLENGE #3
 // /*
 // Let's go back to Mark and John comparing their BMIs! This time, let's use objects to
 // implement the calculations! Remember: BMI = mass / height ** 2 = mass
@@ -487,13 +487,13 @@
 // 	})`,
 // );
 
-// LESSON: 46 ITERATION: THE FOR LOOP
+//LESSON 46 ITERATION: THE FOR LOOP
 
 // for (let i = 0; i <= 10; i++) {
 // 	console.log(`Lifting weights repetition ${i} 🏋️‍♀️`);
 // }
 
-// LESSON: 47 LOOPING ARRAYS, BREAKING AND CONTINUING
+//LESSON 47 LOOPING ARRAYS, BREAKING AND CONTINUING
 
 // const jonasArray = [
 //   'Jonas',
@@ -535,7 +535,7 @@
 //   console.log(jonasArray[i], typeof jonasArray[i]);
 // } //breaks @ sight of a number
 
-// LESSON: 48 LOOPING BACKWARDS AND LOOPS IN LOOPS
+//LESSON 48 LOOPING BACKWARDS AND LOOPS IN LOOPS
 
 // const jonas = [
 //   'Jonas',
@@ -559,7 +559,7 @@
 //   }
 // }
 
-// LESSON: 49 THE WHILE LOOP
+//LESSON 49 THE WHILE LOOP
 
 // //FOR LOOP CODE
 // for (let rep = 1; rep <= 10; rep++) {
@@ -573,7 +573,7 @@
 //   reps++; //introduce the counter increment
 // }
 
-// //NOTE: FORLOOPS ARE GOOD CHOICE IF WE KNOW THE ITERATION COUNT BEFORE HAND SUCH AS ARRAYS ETC. WHILE LOOPS ARE GOOD FIT FOR CONDITIONS WHERE WE HAVE NO WAY OF KNOWING HOW MANY ITERATIONS WOULD REQUIRE TO END THE CYCLING
+// //NOTE FORLOOPS ARE GOOD CHOICE IF WE KNOW THE ITERATION COUNT BEFORE HAND SUCH AS ARRAYS ETC. WHILE LOOPS ARE GOOD FIT FOR CONDITIONS WHERE WE HAVE NO WAY OF KNOWING HOW MANY ITERATIONS WOULD REQUIRE TO END THE CYCLING
 // let dice = Math.trunc(Math.random() * 6) + 1; //intialize dice
 // while (dice !== 6) {
 //   //check condition met?
@@ -582,7 +582,7 @@
 //   if (dice === 6) console.log('Loop is about to end....'); //exit log
 // }
 
-// Coding Challenge: #4
+//CODING CHALLENGE #4
 /*
 Let's improve Steven's tip calculator even more, this time using loops!
 Your tasks:

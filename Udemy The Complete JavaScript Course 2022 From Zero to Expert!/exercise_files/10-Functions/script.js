@@ -1,6 +1,6 @@
 'use strict';
 
-// LESSON: 128 DEFAULT PARAMETERS
+//LESSON 128 DEFAULT PARAMETERS
 
 // const bookings = [];
 // const createBooking = function (
@@ -23,9 +23,9 @@
 // console.log(createBooking('LH123', 2, 800));
 // console.log(createBooking('LH123', 2));
 // console.log(createBooking('LH123', 5));
-// console.log(createBooking('LH123', undefined, 500)); //IMPORTANT: can skip by declaring undefined for the argument so it defaults to 1 for numPassengers
+// console.log(createBooking('LH123', undefined, 500)); //IMPORTANT can skip by declaring undefined for the argument so it defaults to 1 for numPassengers
 
-// LESSON: 129 HOW PASSING ARGUMENTS WORKS: VALUE VS REFERENCE
+//LESSON 129 HOW PASSING ARGUMENTS WORKS: VALUE VS REFERENCE
 
 // const flight = 'LH234';
 // const erhan = {
@@ -34,8 +34,8 @@
 // };
 
 // const checkIn = function (flightNum, passenger) {
-//   flightNum = 'LH999'; // IMPORTANT: this does not effect the flight variabkle outside the function
-//   passenger.name = 'Mr.' + passenger.name; // IMPORTANT: BE CAREFULL! this mutates the object which enters as argument of the function AS object is refwerenced in the heap.
+//   flightNum = 'LH999'; //IMPORTANT this does not effect the flight variabkle outside the function
+//   passenger.name = 'Mr.' + passenger.name; //IMPORTANT BE CAREFULL! this mutates the object which enters as argument of the function AS object is refwerenced in the heap.
 //   if (passenger.passport === 2342424261) {
 //     alert('Check in');
 //   } else {
@@ -58,7 +58,7 @@
 
 // checkIn(flight, erhan);
 
-// LESSON: 131 FUNCTIONS ACCEPTING CALLBACK FUNCTIONS
+//LESSON 131 FUNCTIONS ACCEPTING CALLBACK FUNCTIONS
 
 // const oneWord = function (str) {
 //   return str.replaceAll(' ', '').toLowerCase();
@@ -74,7 +74,7 @@
 //   console.log(`Original string: ${str}`);
 //   console.log(`Transformed string: ${fn(str)}`);
 
-//   console.log(`Transformed by: ${fn.name}`); //IMPORTANT: NAME OF THE FUNCTION BEING CALLED AS AN ARGUMENT OF TRANSFORMER
+//   console.log(`Transformed by: ${fn.name}`); //IMPORTANT NAME OF THE FUNCTION BEING CALLED AS AN ARGUMENT OF TRANSFORMER
 // };
 // //Calling the function
 // transformer('Javascript is the best!', upperFirstWord); //upperFirstWord is called a call-back function
@@ -87,7 +87,7 @@
 
 // ['Jonas', 'Martha', 'Adam'].forEach(high5); // call-back function inside a n array method/function
 
-// LESSON: 132 FUNCTIONS RETURNING FUNCTIONS
+//LESSON 132 FUNCTIONS RETURNING FUNCTIONS
 
 // const greet = function (greeting) {
 //   return function (name) {
@@ -105,7 +105,7 @@
 // const greetArrow = greeting => name =>
 //   console.log(console.log(`${greeting} ${name}`));
 
-// LESSON: 133 THE CALL AND APPLY METHODS
+//LESSON 133 THE CALL AND APPLY METHODS
 
 // const lufthansa = {
 //   airline: 'Lufthansa',
@@ -135,25 +135,25 @@
 //   bookings: [],
 // };
 
-// //IMPORTANT: MANUALLY POINTING THIS KEYWORD OFF THE OBJECT BLOCK
+// //IMPORTANT MANUALLY POINTING THIS KEYWORD OFF THE OBJECT BLOCK
 // const book = lufthansa.book;
-// // book(23, 'Sarah Williams'); //IMPORTANT: DOES NOT WORK!!!! Returns undefined as this keyword is no longer referring to lufthansa. It is simply off the block. In order to point JS the this keyword we use apply/call methods.
+// // book(23, 'Sarah Williams'); //IMPORTANT DOES NOT WORK!!!! Returns undefined as this keyword is no longer referring to lufthansa. It is simply off the block. In order to point JS the this keyword we use apply/call methods.
 
-// //NOTE: #1. CALL METHOD
-// book.call(eurowings, 23, 'Sarah Williams'); // IMPORTANT: CALL POINTS THE OBJECT OF THIS KEYWORD THEN THE PERTINENT FUNCTIONS USUAL ARGUMENTS
+// //NOTE #1. CALL METHOD
+// book.call(eurowings, 23, 'Sarah Williams'); //IMPORTANT CALL POINTS THE OBJECT OF THIS KEYWORD THEN THE PERTINENT FUNCTIONS USUAL ARGUMENTS
 // console.log(eurowings);
 // book.call(lufthansa, 24, 'Demi Moore');
 // console.log(lufthansa);
 // book.call(swiss, 583, 'Mary Banioa');
 // console.log(swiss);
 
-// //NOTE: #2. APPLY METHOD (NOT MODERN)
+// //NOTE #2. APPLY METHOD (NOT MODERN)
 // //APPLY DO NOT TAKE A LIST OF ARGUMENTS AFTER THE THIS KEYWORD OBJECT BUT AN ARRAY OF ARGUMENTS
 // const flightData = [583, 'George Cooper'];
-// book.apply(swiss, flightData); //IMPORTANT:  APPLY POINTS THE OBJECT OF THIS KEYWORD AND THEN INSERTS THE FUNCTION ARGUMENTS AS AN ARRAY
-// book.call(swiss, ...flightData); //IMPORTANT: REWRITE IN A MORE MODERN WAY WITH THE SPREAD OPERATOR
+// book.apply(swiss, flightData); //IMPORTANT  APPLY POINTS THE OBJECT OF THIS KEYWORD AND THEN INSERTS THE FUNCTION ARGUMENTS AS AN ARRAY
+// book.call(swiss, ...flightData); //IMPORTANT REWRITE IN A MORE MODERN WAY WITH THE SPREAD OPERATOR
 
-// LESSON: 134 THE BIND METHOD
+//LESSON 134 THE BIND METHOD
 
 // const lufthansa = {
 //   airline: 'Lufthansa',
@@ -179,14 +179,14 @@
 //   bookings: [],
 // };
 
-// //#1. NOTE: FULL FUNCTION BINDING
+// //#1. //NOTE: FULL FUNCTION BINDING
 // const bookEW = lufthansa.book.bind(eurowings);
 // const bookLH = lufthansa.book.bind(lufthansa);
 // const bookSX = lufthansa.book.bind(swiss);
 // bookEW(23, 'Steven SPIELBERG');
 
-// //#2. NOTE: PARTIAL-PRESET FUNCTION BINDING
-// const bookEW23 = lufthansa.book.bind(eurowings, 23); // IMPORTANT: partial preset function binding
+// //#2. //NOTE: PARTIAL-PRESET FUNCTION BINDING
+// const bookEW23 = lufthansa.book.bind(eurowings, 23); //IMPORTANT partial preset function binding
 // bookEW23('Jonas Schmedtmann');
 // bookEW23('Erhan ERTEM');
 
@@ -206,7 +206,7 @@
 // const addVAT2 = addTaxRate(0.23);
 // console.log(addVAT2(100));
 
-// //#3. NOTE: WITH EVENT LISTENERS
+// //#3. //NOTE: WITH EVENT LISTENERS
 // lufthansa.planes = 300;
 // lufthansa.buyPlane = function () {
 //   console.log(this);
@@ -217,7 +217,7 @@
 //   .querySelector('.buy')
 //   .addEventListener('click', lufthansa.buyPlane.bind(lufthansa)); // VERY IMPORTANT:  IN EVENT HANDLER FUNCTIONS THE THIS KEYWORD POINTS TO BUY QUERYSELECTOR. SO WE NEED A BIND METHOD THAST POINTS TO THE FUNCTION OF LUFTHANSA OBJECT
 
-// Coding Challenge: #1
+//CODING CHALLENGE #1
 /*
 Let's build a simple poll app!
 A poll has a question, an array of options from which people can choose, and an
@@ -304,7 +304,7 @@ GOOD LUCK 😀
 // poll.displayResults.call({ answers: data1 }); //set this to answers: to our external dataset, then the function argument of "string"
 // // poll.displayResults.call({ answers: data2 }, 'string') //set this to answers: to our external dataset, then the function argument of "string"
 
-// LESSON: 136 IMMEDIATELY INVOKED FUNCTION EXPRESSIONS (IIFE)
+//LESSON 136 IMMEDIATELY INVOKED FUNCTION EXPRESSIONS (IIFE)
 
 // //THIS TYPE OF FUNCTION IS ESPECIALLY USEFULL IN ASYNC/AWAIT FUNCTIONS
 
@@ -322,7 +322,7 @@ GOOD LUCK 😀
 // //ARROW FUNCTION IIFE
 // (() => console.log('This will never run again.'))();
 
-// LESSON: 137 CLOSURES
+//LESSON 137 CLOSURES
 
 // const secureBooking = function () {
 //   let passengerCount = 0;
@@ -340,7 +340,7 @@ GOOD LUCK 😀
 
 // console.dir(booker);
 
-// LESSON: 138 MORE CLOSURE EXAMPLES
+//LESSON 138 MORE CLOSURE EXAMPLES
 
 // //EXAMPLE
 
@@ -380,7 +380,7 @@ GOOD LUCK 😀
 
 // boardPassengers(180, 3);
 
-// Coding Challenge: #2
+//CODING CHALLENGE #2
 // /*
 // This is more of a thinking challenge than a coding challenge 🤓
 // Your tasks:

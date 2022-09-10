@@ -1,6 +1,6 @@
 'use strict';
 
-// LESSON: 93 SCOPING IN PRACTICE
+//LESSON 93 SCOPING IN PRACTICE
 
 // function calcAge(birthYear) {
 //   const age = 2037 - birthYear;
@@ -40,7 +40,7 @@
 // calcAge(1991);
 // // console.log(age); // cant acess variable inside a function scope
 
-// LESSON: 95 HOISTING AND TDZ IN PRACTICE
+//LESSON 95 HOISTING AND TDZ IN PRACTICE
 
 // //HOISTING WITH VARS
 // console.log(me); // hoisted as undefined
@@ -76,17 +76,17 @@
 // function deleteShoppingCart() {
 //   console.log('All products deleted!');
 // }
-// // NOTE: declare vars @ the top and do not use var
+// //NOTE declare vars @ the top and do not use var
 
 // //EXAMPLE
-// var x = 1; // NOTE: creates property on window object
+// var x = 1; //NOTE creates property on window object
 // let y = 2;
 // const z = 3;
 // console.log(x === window.x); //truthy
 // console.log(y === window.y); //falsy
 // console.log(z === window.z); //falsy
 
-// LESSON: 97 THE THIS KEYWORD
+//LESSON 97 THE THIS KEYWORD
 
 // console.log(this); //refers to window object @ global enviroment
 // //this in declaration function
@@ -128,7 +128,7 @@
 // const f = jonas.calcAge;
 // // f(); //throws error - as there is no owner for the this keyword.
 
-// LESSON: 98 THIS KEYWORD PITFALLS - REGULAR FUNCTIONS VS ARROW FUNCTIONS
+//LESSON 98 THIS KEYWORD PITFALLS - REGULAR FUNCTIONS VS ARROW FUNCTIONS
 
 // // var firstName = 'Matilda';
 
@@ -166,11 +166,11 @@
 // };
 
 // // jonas.greet();
-// // NOTE: arrow function do not have its own this and refers to global this which is window object that has this undefined. As long as firstName variable is defined at global level, it would return log. Therefore do not ever use an arrow function inside an object calling for <this> keyword
+// //NOTE arrow function do not have its own this and refers to global this which is window object that has this undefined. As long as firstName variable is defined at global level, it would return log. Therefore do not ever use an arrow function inside an object calling for <this> keyword
 // jonas.calcAge();
 
 // /*
-// IMPORTANT:
+//VERY IMPORTANT
 
 // OBJECT > ARROW FUNCTION RETURNS A THIS VALUE OF WINDOWS OBJECT - UNDEFINED.
 // object = {
@@ -204,7 +204,7 @@
 // mi = addExpr(2, 5, 8, 12);
 // console.log(mi);
 
-// LESSON: 99 PRIMITIVES VS OBJECTS
+//LESSON 99 PRIMITIVES VS OBJECTS
 
 // let age = 30;
 // let oldAge = age;
@@ -222,7 +222,7 @@
 // console.log('Friend:', friend);
 // console.log('Me:', me);
 
-// LESSON: 100 PRIMITIVES VS OBJECTS IN PRACTICE
+//LESSON 100 PRIMITIVES VS OBJECTS IN PRACTICE
 
 // //#1. Primitive types
 // let lastName = 'Williams';
@@ -240,7 +240,7 @@
 // marriedJessica.lastName = 'Davis';
 // console.log('Before marriage:', jessica);
 // console.log('After marriage:', marriedJessica);
-// //NOTE:  They reference the same memory adress in the heap.
+// //NOTE  They reference the same memory adress in the heap.
 // // marriedJessica = {} //creates a new memory adress in the heap but requires let not const in this case
 // //#3. SHALLOW COPY A REFERENCE TYPE
 // const marriedJessicaCopy = Object.assign({}, jessica);
@@ -249,4 +249,4 @@
 // marriedJessicaCopy.family.push('John');
 // console.log('Before marriage:', jessica);
 // console.log('After marriage:', marriedJessicaCopy);
-// //IMPORTANT: Deep clone needs to be practiced to distinct between jessica and marriedJessicaCopy.
+// //IMPORTANT Deep clone needs to be practiced to distinct between jessica and marriedJessicaCopy.

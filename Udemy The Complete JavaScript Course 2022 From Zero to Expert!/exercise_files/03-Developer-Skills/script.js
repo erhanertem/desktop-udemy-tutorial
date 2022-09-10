@@ -1,7 +1,7 @@
 // Remember, we're gonna use strict mode in all scripts now!
-'use strict';
+"use strict";
 
-// LESSON: 59 USING GOOGLE, STACKOVERFLOW AND MDN
+//LESSON 59 USING GOOGLE, STACKOVERFLOW AND MDN
 
 // const temperatures = [3, -2, -6, -1, 'error', 9, 13, 17, 15, 14, 9, 5];
 
@@ -24,7 +24,7 @@
 
 // console.log(calcTempAmplitude(temperatures));
 
-// LESSON: 61 DEBUGGING WITH CONSOLE AND BREAKPOINTS
+//LESSON 61 DEBUGGING WITH CONSOLE AND BREAKPOINTS
 
 // const measureKelvin = function () {
 //   const measurement = {
@@ -44,7 +44,7 @@
 
 // console.log(measureKelvin());
 
-// Coding Challenge: #1
+//CODING CHALLENGE #1
 // /*
 // Given an array of forecasted maximum temperatures, the thermometer displays a
 // string with the given temperatures. Example: [17, 21, 23] will print "... 17ºC in 1

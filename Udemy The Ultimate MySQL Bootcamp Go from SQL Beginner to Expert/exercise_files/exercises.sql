@@ -1,4 +1,4 @@
--- LESSON: SECTION 9 MAGIC OF AGGREGATE FUNCTIONS
+-- //LESSON SECTION 9 MAGIC OF AGGREGATE FUNCTIONS
 -- min max usage
 -- SELECT min(released_year)
 -- FROM books;
@@ -100,7 +100,7 @@
 -- GROUP BY  released_year
 -- ORDER BY  released_year;
 
--- LESSON: SECTION 10 REVISITING DATA TYPES
+-- //LESSON SECTION 10 REVISITING DATA TYPES
 
 -- CREATE TABLE dogs (name char(5), breed varchar(10));
 
@@ -108,7 +108,7 @@
 -- INSERT INTO dogs (name,breed) VALUES('robby','corgi');
 -- INSERT INTO dogs (name,breed) VALUES('Princess Jane','retriever');
 
--- NOTE: unless shell opened in non-strict mode char(xxx) dictates how long would be the string and would throw error if not fixed.
+-- //NOTE unless shell opened in non-strict mode char(xxx) dictates how long would be the string and would throw error if not fixed.
 
 -- CREATE TABLE items (price DECIMAL(5,2));
 -- INSERT INTO items(price) VALUES(7);
@@ -184,7 +184,7 @@
 -- INSERT INTO tweets (tweet_content,tweet_username) VALUES("this is my first tweet","coltscat");
 -- INSERT INTO tweets (tweet_content,tweet_username) VALUES("this is my second tweet","coltscat");
 
--- LESSON: SECTION 11 THE POWER OF LOGICAL OPERATORS
+-- //LESSON SECTION 11 THE POWER OF LOGICAL OPERATORS
 
 -- NOT EQUAL
 -- SELECT title, released_year FROM books WHERE released_year != 2017;
@@ -214,7 +214,7 @@
 -- SELECT title, released_year FROM books WHERE released_year>=2004 && released_year<=2015;
 -- SELECT title, released_year FROM books WHERE released_year BETWEEN 2004 AND 2015;
 -- SELECT name, birthdt FROM people WHERE birthdt BETWEEN CAST('1980-01-01' AS DATETIME) AND CAST('2000-01-01' AS DATETIME);
--- NOTE: When working with informal date strings, they need tobe casted as datetime to fullfill proper date conversion before proceeding with before operation
+-- //NOTE When working with informal date strings, they need tobe casted as datetime to fullfill proper date conversion before proceeding with before operation
 
 -- IN 
 -- SELECT title, author_lname FROM books WHERE author_lname="Carver" || author_lname="Lahiri" || author_lname="Smith";
@@ -296,7 +296,7 @@
 --          ,author_fname
 -- ORDER BY author_lname;
 
--- LESSON: SECTION 12 ONE TO MANY
+-- //LESSON SECTION 12 ONE TO MANY
 
 -- CREATE TABLE customers(
 --     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -488,7 +488,7 @@
 -- GROUP BY  students.id
 -- ORDER BY average DESC;
 
--- LESSON: SECTION 13 MANY TO MANY 
+-- //LESSON SECTION 13 MANY TO MANY 
 
 -- CREATE database tv_review_app;
 -- USE tv_review_app;
@@ -582,7 +582,7 @@
 --        ,IFNULL (ROUND(MAX(rating),2),0)                                                                                                              AS MAX
 --        ,IFNULL (ROUND(AVG(rating),2),0) AS AVG
 -- -- , IF (COUNT(rating) >= 1, "ACTIVE", "INACTIVE") AS STATUS
--- -- NOTE: IF CLAUSE AS AN ALTERNATE TO CASE WHEN
+-- -- //NOTE IF CLAUSE AS AN ALTERNATE TO CASE WHEN
 --        ,CASE WHEN (COUNT(rating) < 10) THEN "ACTIVE"
 --              WHEN (COUNT(rating) >= 10) THEN "POWERUSER"  ELSE "INACTIVE" END                                                                        AS STATUS
 -- FROM reviewers
@@ -611,23 +611,23 @@
 --     ON series.id = reviews.series_id
 -- ORDER BY title;
 
--- LESSON: SECTION 14 INSTAGRAM DATABASE CLONE
+-- //LESSON SECTION 14 INSTAGRAM DATABASE CLONE
 
 -- SEE INSTAGRAM FOLDER
 
--- LESSON: SECTION 15 WORKING WITH LOTS OF INSTAGRAM DATA
+-- //LESSON SECTION 15 WORKING WITH LOTS OF INSTAGRAM DATA
 
 -- SEE INSTAGRAM FOLDER
 
--- LESSON: SECTION 16 INTRODUCING NODE
+-- //LESSON SECTION 16 INTRODUCING NODE
 
 -- SEE app_temp FOLDER
 
--- LESSON: SECTION 17 BUILDING OUR WEB APP
+-- //LESSON SECTION 17 BUILDING OUR WEB APP
 
 -- SEE JOINUS FOLDER
 
--- LESSON: SECTION 18 DATABASE TRIGGERS
+-- //LESSON SECTION 18 DATABASE TRIGGERS
 
 -- SEE triggers FOLDER
 

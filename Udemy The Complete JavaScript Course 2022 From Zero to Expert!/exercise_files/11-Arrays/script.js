@@ -1,19 +1,19 @@
 'use strict';
 
-// LESSON: 142 SIMPLE ARRRAY METHODS
+//LESSON 142 SIMPLE ARRRAY METHODS
 
 // let arr = ['a', 'b', 'c', 'd', 'e'];
 
-// //SLICE METHOD - IMPORTANT: DOES NOT MUTATE THE ARRAY
+// //SLICE METHOD - //IMPORTANT DOES NOT MUTATE THE ARRAY
 // console.log(arr.slice(2));
 // console.log(arr.slice(2, 4));
 // console.log(arr.slice(2, -1));
 // console.log(arr.slice(-2));
 // console.log(arr.slice(-1));
-// console.log(arr.slice()); //IMPORTANT: CREATES A SHALLOW COPY OF AN ARRAY
-// console.log([...arr]); //IMPORTANT: CREATES A SHALLOW COPY OF AN ARRAY
+// console.log(arr.slice()); //IMPORTANT CREATES A SHALLOW COPY OF AN ARRAY
+// console.log([...arr]); //IMPORTANT CREATES A SHALLOW COPY OF AN ARRAY
 
-// //SPLICE METHOD - IMPORTANT: MUTATES THE ARRAY
+// //SPLICE METHOD - //IMPORTANT MUTATES THE ARRAY
 // // console.log(arr.splice(2)); //literally chops off the array
 // // console.log(arr.splice(-1)); //literally chops off the array
 // // console.log(arr.splice(1, 2)); //literally chops off the array
@@ -23,42 +23,42 @@
 // // a.splice(2, 0, 'a', 'b'); // [1,2,'a','b',3,4,5] inserts @ index 2 in between the elements
 // a.splice(2, 2, [1, 2], 3); // [1,2,[1,2],3,5] takes out @ index2 for 2 elements and replace them with the ones provided
 
-// //REVERSE METHOD - IMPORTANT: MUTATES THE ARRAY
+// //REVERSE METHOD - //IMPORTANT MUTATES THE ARRAY
 // arr = ['a', 'b', 'c', 'd', 'e'];
 // const arr2 = ['j', 'i', 'h', 'g', 'j'];
 // console.log(arr2.reverse());
 // console.log(arr2); //mutated array
 
-// //CONCAT METHOD - IMPORTANT: DOES NOT MUTATE THE ARRAY
+// //CONCAT METHOD - //IMPORTANT DOES NOT MUTATE THE ARRAY
 // arr = ['a', 'b', 'c', 'd', 'e'];
 // const arr2 = ['j', 'i', 'h', 'g', 'j'];
 // const letters = arr.concat(arr2);
 // console.log([...arr, ...arr2]); //alternate way
 // console.log(letters);
 
-// //JOIN METHOD - IMPORTANT: CREATES A STRING
+// //JOIN METHOD - //IMPORTANT CREATES A STRING
 // arr = ['a', 'b', 'c', 'd', 'e'];
 // const arr2 = ['j', 'i', 'h', 'g', 'j'];
 // const letters = arr.concat(arr2);
 // console.log(letters.join('-'));
 
-// LESSON: 143 THE NEW AT METHOD
+//LESSON 143 THE NEW AT METHOD
 
 // //AT METHOD
 // const arr = [23, 11, 64];
 // console.log(arr[0]);
-// console.log(arr.at(0)); //IMPORTANT: AT METHOD for taking the firstt element of the array
+// console.log(arr.at(0)); //IMPORTANT AT METHOD for taking the firstt element of the array
 
 // console.log(arr[arr.length - 1]); //take the last element of the array
 // console.log(arr.slice(-1)[0]); //take the last element of the array
-// console.log(arr.at(-1)); //IMPORTANT: AT METHOD for taking the last element of the array
-// console.log('jonas'.at(-1)); //IMPORTANT: AT METHOD for taking the last element of the STRINGS
+// console.log(arr.at(-1)); //IMPORTANT AT METHOD for taking the last element of the array
+// console.log('jonas'.at(-1)); //IMPORTANT AT METHOD for taking the last element of the STRINGS
 
-// LESSON: 144 LOOPING ARRAYS: FOR EACH
+//LESSON 144 LOOPING ARRAYS: FOR EACH
 
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
-// //IMPORTANT: FOROF LOOPS CAN TAKE BREAK/CONTINUE STATEMENTS
+// //IMPORTANT FOROF LOOPS CAN TAKE BREAK/CONTINUE STATEMENTS
 // //REGULAR FOROF LOOP
 // for (const movement of movements) {
 //   if (movement > 0) {
@@ -76,7 +76,7 @@
 //   }
 // }
 
-// //IMPORTANT: FOREACH LOOPS CANT TAKE BREAK/CONTINUE STATEMENTS
+// //IMPORTANT FOREACH LOOPS CANT TAKE BREAK/CONTINUE STATEMENTS
 // //REGULAR FOREACH
 // movements.forEach(function (movement) {
 //   movement > 0
@@ -90,7 +90,7 @@
 //     : console.log(`${index + 1} You withdrew ${Math.abs(movement)}`);
 // });
 
-// LESSON: 145 FOREACH WITH MAPS AND SETS
+//LESSON 145 FOREACH WITH MAPS AND SETS
 
 // // FOREACH WITH MAPS
 
@@ -114,7 +114,7 @@
 //   console.log(`${value}: ${value}`);
 // });
 
-// Coding Challenge: #1
+//CODING CHALLENGE #1
 // /*
 // Julia and Kate are doing a study on dogs. So each of them asked 5 dog owners
 // about their dog's age, and stored the data into an array (one array for each). For
@@ -167,7 +167,7 @@
 // console.log('*******TEST DATA 2********');
 // checkDogs(dogsJulia2, dogsKate2);
 
-// LESSON: 150 DATA TRANSFORMATIONS: MAP, FILTER, REDUCE
+//LESSON 150 DATA TRANSFORMATIONS: MAP, FILTER, REDUCE
 
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
@@ -180,7 +180,7 @@
 // console.log(movements);
 // console.log(movementsUSD);
 
-// LESSON: 152 THE FILTER METHOD
+//LESSON 152 THE FILTER METHOD
 
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
@@ -201,7 +201,7 @@
 // const withdrawals = movements.filter(mov => mov < 0);
 // console.log(withdrawals);
 
-// LESSON: 153 THE REDUCE METHOD
+//LESSON 153 THE REDUCE METHOD
 
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
@@ -230,7 +230,7 @@
 // }, movements[0]);
 // console.log(max);
 
-// Coding Challenge: #2
+//CODING CHALLENGE #2
 // /*
 // Let's go back to Julia and Kate's study about dogs.This time, they want to convert
 // dog ages to human ages and calculate the average age of the dogs in their study.
@@ -278,7 +278,7 @@
 // console.log(calcAverageHumanAge(data1));
 // console.log(calcAverageHumanAge(data2));
 
-// LESSON: 155 THE MAGIC OF CHAINING METHODS
+//LESSON 155 THE MAGIC OF CHAINING METHODS
 
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // const eurToUSD = 1.1;
@@ -296,7 +296,7 @@
 //   });
 // console.log(totalDepositsUSD);
 
-// Coding Challenge: #3
+// CODING CHALLENGE #3
 // /*
 // Rewrite the 'calcAverageHumanAge' function from Challenge #2, but this time
 // as an arrow function, and using chaining!
@@ -319,14 +319,14 @@
 // console.log(calcAverageHumanAge(data1));
 // console.log(calcAverageHumanAge(data2));
 
-// LESSON: 157 THE FIND METHOD
+//LESSON 157 THE FIND METHOD
 
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 // const negative = movements.find(mov => mov < 0);
 // console.log(negative); //returns the first matching element not an array
 
-// // NOTE: FIND METHOD IS BEST SUITED TO FIND AN OBJECT THAT MATCHES CERTAIN VALUE
+// //NOTE FIND METHOD IS BEST SUITED TO FIND AN OBJECT THAT MATCHES CERTAIN VALUE
 
 // // Data
 // const account1 = {
@@ -361,7 +361,7 @@
 // const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 // console.log(account);
 
-// LESSON: 161 SOME AND EVERY METHODS
+//LESSON 161 SOME AND EVERY METHODS
 
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
@@ -384,7 +384,7 @@
 // console.log(movements.every(deposit));
 // console.log(movements.filter(deposit));
 
-// LESSON: 162 FLAT AND FLATMAP METHODS
+//LESSON 162 FLAT AND FLATMAP METHODS
 
 // const arr = [[1, 2, 3], [4, 5, 6], 7, 8]; //1 LEVEL NESTING
 // //FLAT METHOD
@@ -394,7 +394,7 @@
 // console.log(arrDeep.flat(2)); //2NDLEVEL NESTING
 
 // //FLATMAP METHOD
-// // IMPORTANT: FLATMAP ONLY WORKS FOR 1 LEVEL NESTING
+// //IMPORTANT FLATMAP ONLY WORKS FOR 1 LEVEL NESTING
 // const account1 = {
 //   owner: 'Jonas Schmedtmann',
 //   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
@@ -437,40 +437,40 @@
 //   .reduce((acc, mov) => acc + mov, 0);
 // console.log(overalBalance);
 
-// LESSON: 163 SORTING ARRAYS
+//LESSON 163 SORTING ARRAYS
 
-// //SORT METHOD  - IMPORTANT: MUTATES THE ARRAY AND SORTS BASED STRINGS
+// //SORT METHOD  - //IMPORTANT MUTATES THE ARRAY AND SORTS BASED STRINGS
 // // FIRST EVERYTHING IS CONVERTED TO STRINGS AND THEN SORTED
 // //STRINGS
-// //NOTE: WORKS ONLY FOR STRINGS. WITH NUMBERS WE HAVE TO TAKE EXTRA STEPS
+// //NOTE WORKS ONLY FOR STRINGS. WITH NUMBERS WE HAVE TO TAKE EXTRA STEPS
 // const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
 // console.log(owners.sort());
-// //NUMBERS - IMPORTANT: Sorting based on string value
+// //NUMBERS - //IMPORTANT Sorting based on string value
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // console.log(movements);
-// // console.log(movements.sort()); // IMPORTANT: DO NOT MAKES ANY SENSE..ALPHBETICAL SORTING
+// // console.log(movements.sort()); //IMPORTANT DO NOT MAKES ANY SENSE..ALPHBETICAL SORTING
 
 // // return<0 A,B (keep order) (-1)
 // // return>0 B,A (switch order) (1)
-// //NOTE: ASCENDING ORDER SORTING - WORKS BOTH FOR NUMBERS AND STRINGS
+// //NOTE ASCENDING ORDER SORTING - WORKS BOTH FOR NUMBERS AND STRINGS
 // // movements.sort((a, b) => {
 // //   if (a > b) return 1;
 // //   if (a < b) return -1;
 // // });
 // movements.sort((a, b) => a - b);
-// //NOTE: DESCENDING ORDER SORTING  - WORKS BOTH FOR NUMBERS AND STRINGS
+// //NOTE DESCENDING ORDER SORTING  - WORKS BOTH FOR NUMBERS AND STRINGS
 // // movements.sort((a, b) => {
 // //   if (a > b) return -1;
 // //   if (a < b) return 1;
 // // });
 // movements.sort((a, b) => b - a);
 
-// LESSON: 164 MORE WAYS OF CREATING AND FILLING ARRAYS
+//LESSON 164 MORE WAYS OF CREATING AND FILLING ARRAYS
 
 // console.log([1, 2, 3, 4, 5, 6, 7]);
 // console.log(new Array(1, 2, 3, 4, 5, 6, 7));
 
-// //EMPTY ARRAYS + FILL METHOD IMPORTANT: MUTATES THE ARRAY
+// //EMPTY ARRAYS + FILL METHOD //IMPORTANT MUTATES THE ARRAY
 // const x = new Array(7); //create an array of 7 empty inputs VIA ARRAY PROTOTYPE OBJECT
 // // x.fill(0); //fills all with 0
 // console.log(x);
@@ -500,7 +500,7 @@
 //   el => el.textContent.replace('euro', '$')
 // );
 
-// LESSON: 166 ARRAY METHODS PRACTICE
+//LESSON 166 ARRAY METHODS PRACTICE
 
 // // Data
 // const account1 = {
@@ -543,13 +543,13 @@
 // const bankDepositSum2 = accounts
 //   .flatMap(acc => acc.movements)
 //   .filter(val => val >= 1000).length;
-// //similar code with reduce() -IMPORTANT: different use case scenario for reduce() method
+// //similar code with reduce() -//IMPORTANT different use case scenario for reduce() method
 // const bankDepositSum3 = accounts
 //   .flatMap(acc => acc.movements)
 //   .reduce((count, val) => (val >= 1000 ? count++ : count), 0);
 // console.log(bankDepositSum, bankDepositSum2);
 
-// //3rd exercise - IMPORTANT: accumulator as an object in reduce() method to access multiple conditions at the same time
+// //3rd exercise - //IMPORTANT accumulator as an object in reduce() method to access multiple conditions at the same time
 // //CODE #1 - ALTERNATIVE
 // const sums = accounts
 //   .flatMap(acc => acc.movements)
@@ -584,7 +584,7 @@
 //   );
 // console.log(sums3);
 
-// //IMPORTANT: Exercise
+// //IMPORTANT Exercise
 // const convertTitleCase = function (title) {
 //   const exceptions = ['a', 'an', 'the', 'but', 'or', 'on', 'in', 'with'];
 //   const titleCase = title
@@ -602,7 +602,7 @@
 // let z = convertTitleCase('and here is another title with an EXAMPLE');
 // console.table([x, y, z]);
 
-// Coding Challenge: #4
+//CODING CHALLENGE #4
 // /*
 // Julia and Kate are still studying dogs, and this time they are studying if dogs are
 // eating too much or too little.

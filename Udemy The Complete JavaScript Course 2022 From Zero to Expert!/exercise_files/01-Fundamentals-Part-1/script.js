@@ -1,5 +1,5 @@
 // SECTION: #2 JAVASCRIPT FUNDAMENTALS PART 1
-// LESSON: 10 VALUES & VARIABLES
+//LESSON 10 VALUES & VARIABLES
 
 // let js = "amazing";
 // if (js === "amazing") alert("Javascript is FUN!");
@@ -15,28 +15,28 @@
 
 // let first = "Erhan";
 // let last = "Ertem";
-// // NOTE: camelcase notation for naming variables
+// //NOTE camelcase notation for naming variables
 // let firstNamePerson;
-// //NOTE: variables can not start with a number. causes js syntax error
+// //NOTE variables can not start with a number. causes js syntax error
 // // let 3years = 3;
 
 // // error --> unexpected token
 // // let erhan& melike = "EM"
 
-// // NOTE: underscore and $ is allowed
+// //NOTE underscore and $ is allowed
 // let $erhan_melike = 27;
 
-// // NOTE: a real constant could be marked with uppercase
+// //NOTE a real constant could be marked with uppercase
 // let PI = 3.1415;
 
-// //NOTE: Be descriptive in writting up your variables
+// //NOTE Be descriptive in writting up your variables
 // let myFirstJob = "Programmer";
 // let myCurrentJob = "Teacher";
 // //Bad practice
 // let job1 = "Programmer";
 // let job2 = "Teacher";
 
-// LESSON: 12 DATA TYPES
+//LESSON 12 DATA TYPES
 // /*
 // THIS IS A MULTI LINE COMMENTING
 // */
@@ -63,26 +63,26 @@
 // console.log(typeof year);
 
 // //NULL
-// // NOTE: legacy bug in JS --> it shoudl have returned null just like undefined returning undefined.
+// //NOTE legacy bug in JS --> it shoudl have returned null just like undefined returning undefined.
 // console.log(typeof null);
 
-// LESSON: 13 LET, CONST, VAR
+//LESSON 13 LET, CONST, VAR
 
-// // NOTE: MUTATING/REASSIGNING A VALUE
+// //NOTE MUTATING/REASSIGNING A VALUE
 // let age = 30;
 // age = 31;
 
-// // NOTE: const variables are IMMUTABLE
+// //NOTE const variables are IMMUTABLE
 // const birthYear = 1991;
 // birthYear = 1990;
-// // NOTE: IMMUTABLE variables can not be declared with no value declaration
+// //NOTE IMMUTABLE variables can not be declared with no value declaration
 // const job;
 
 // // LET IS BLOCK SCOPPED AND VAR IS FUNCTION SCOPPED
 // var job1 = "programmer";
 // job1 = "teacher";
 
-// LESSON: 14 BASIC OPERATORS
+//LESSON 14 BASIC OPERATORS
 
 // const currentYear = 2037;
 // const ageJonas = currentYear - 1991; // 46
@@ -115,7 +115,7 @@
 
 // console.log(currentYear - 1991 > currentYear - 2018); // operator precedence defines how this calcualtes
 
-// LESSON: 15 OPERATOR PRECEDENCE
+//LESSON 15 OPERATOR PRECEDENCE
 
 // const currentYear = 2037;
 // const ageJonas = currentYear - 1991; // 46
@@ -134,7 +134,7 @@
 // const averageAge = (ageJonas + ageSarah) / 2;
 // console.log(ageJonas, ageSarah, averageAge);
 
-// Coding Challenge: #1
+//CODING CHALLENGE #1
 // /*
 // Coding Challenge #1
 // Mark and John are trying to compare their BMI (Body Mass Index), which is
@@ -192,7 +192,7 @@
 // 		markHigherBMI,
 // );
 
-// LESSON: 17 STRINGS AND TEMPLATE LITERALS
+//LESSON 17 STRINGS AND TEMPLATE LITERALS
 
 // const firstName = "Jonas";
 // const job = "teacher";
@@ -216,16 +216,16 @@
 // } year old ${job} !`;
 // console.log(jonasNew);
 
-// // NOTE: SOME DEVELOPERS ALWAYS USE BACKTICKS EVEN FOR STRINGS WITH NO TEMPLATE LITERALS
+// //NOTE SOME DEVELOPERS ALWAYS USE BACKTICKS EVEN FOR STRINGS WITH NO TEMPLATE LITERALS
 // console.log(`Just a regular string.....`);
 
-// // NOTE: BACKTICK WITH STRINGS ALLOWS FOR MULTIPLE LINES RATHER THAN UTILIZING ESCAPE CHARACTERS
+// //NOTE BACKTICK WITH STRINGS ALLOWS FOR MULTIPLE LINES RATHER THAN UTILIZING ESCAPE CHARACTERS
 // console.log("String with \n multiple \n lines");
 // console.log(`String
 // multiple
 // lines`);
 
-// LESSON: 18 TAKING DECISIONS IF/ELSE STATEMENTS
+//LESSON 18 TAKING DECISIONS IF/ELSE STATEMENTS
 
 // const age = 19;
 // const isOldEnough = age >= 18;
@@ -257,9 +257,9 @@
 // 	century = 21;
 // }
 // console.log(century);
-// // NOTE: variables declared inside the if block is not accessible from the outside. In order to make it accesible, variable should be declared outside.
+// //NOTE variables declared inside the if block is not accessible from the outside. In order to make it accesible, variable should be declared outside.
 
-// Coding Challenge: #2
+//CODING CHALLENGE #2
 // /*
 // Coding Challenge #2
 // Use the BMI example from Challenge #1, and the code you already wrote, and
@@ -310,15 +310,15 @@
 // 	);
 // }
 
-// LESSON: 20 TYPE CONVERSION AND COERCION
+//LESSON 20 TYPE CONVERSION AND COERCION
 
 // const inputYear = "1991";
 // console.log(inputYear + 18); //199118 string
 // //STRING TO NUMBER CONVERSION
 // console.log(Number(inputYear) + 18, inputYear); //2009
-// // NOTE: number function converts the string to a number. But do not MUTATE the original vasriable value.
+// //NOTE number function converts the string to a number. But do not MUTATE the original vasriable value.
 // console.log(Number("Erhan"));
-// // NOTE: Throws an error. The string is not a number. NaN
+// //NOTE Throws an error. The string is not a number. NaN
 // console.log(typeof NaN);
 // //NUMBER TO STRING CONVERSION
 // console.log(String(23), 23);
@@ -336,9 +336,9 @@
 // n = "10" - "4" - "3" - 2 + "5"; // "15"
 // console.log(n);
 
-// LESSON: 21 TRUTHY AND FALSY VALUES
+//LESSON 21 TRUTHY AND FALSY VALUES
 
-// // NOTE: 5 falsy values --> 0, "", undefined, null, NaN
+// //NOTE 5 falsy values --> 0, "", undefined, null, NaN
 
 // console.log(Boolean(0));
 // console.log(Boolean(undefined));
@@ -361,9 +361,9 @@
 // 	console.log("Height is UNDEFINED!");
 // }
 
-// LESSON: 22 EQUALITY OPERATORS
+//LESSON 22 EQUALITY OPERATORS
 
-// // NOTE: AS A GENERAL THUMB OF RULE, ALWAYS TRY TO AVOIUD == (LOOSE EQUALITY OPERATOR)
+// //NOTE AS A GENERAL THUMB OF RULE, ALWAYS TRY TO AVOIUD == (LOOSE EQUALITY OPERATOR)
 // const age = 18;
 // //STRICT EQUALITY OPERATOR - NO TYPE COERCION
 // if (age === 18) {
@@ -401,14 +401,14 @@
 // 	console.log("Why not 23?");
 // }
 
-// LESSON: 23 BOOLEAN LOGIC
+//LESSON 23 BOOLEAN LOGIC
 
 // ! NOT OPERATOR
-// NOTE: IT HAS THE HIGHEST PRECEDENCE
+//NOTE IT HAS THE HIGHEST PRECEDENCE
 // AND || OPERATOR
 // OR OPERATOR
 
-// LESSON: 24 LOGICAL OPERATORS
+//LESSON 24 LOGICAL OPERATORS
 
 // const hasDriversLicense = true; //Condition A
 // const hasGoodVision = false; //Condition B
@@ -434,7 +434,7 @@
 // 	console.log("Someone else should drive !🤷‍♂️");
 // }
 
-// Coding Challenge: #3
+//CODING CHALLENGE #3
 // /*
 // There are two gymnastics teams, Dolphins and Koalas. They compete against each
 // other 3 times. The winner with the highest average score wins a trophy!
@@ -489,7 +489,7 @@
 // 	console.log(`It's a draw. No winner!`);
 // } else console.log(`Not a single satisfied condition for winning!`);
 
-// LESSON: 26 THE SWITCH STATEMENT
+//LESSON 26 THE SWITCH STATEMENT
 
 // const day = "wednesday";
 // // switch statement
@@ -532,7 +532,7 @@
 // 	console.log("not a valid day");
 // }
 
-// LESSON: 27 STATEMENTS AND EXPRESSIONS
+//LESSON 27 STATEMENTS AND EXPRESSIONS
 
 // //EXPRESSIONS
 // 3 + 4; //its an expression because it creates a value on its own
@@ -546,7 +546,7 @@
 
 // console.log(`I'm ${2037 - 1991} years old`); // expressions can only be incorporated into template literals not statements
 
-// LESSON: 28 TERNARY OPERATOR
+//LESSON 28 TERNARY OPERATOR
 
 // const age = 23;
 
@@ -566,10 +566,10 @@
 // }
 // console.log(drink2);
 
-// // NOTE: A ternary operator can succesfully live in a templatye literal unlike any other if else statements
+// //NOTE A ternary operator can succesfully live in a templatye literal unlike any other if else statements
 // console.log(`I like to drink ${age >= 18 ? "wine 🍷" : "water 💧"} `);
 
-// Coding Challenge: #4
+//CODING CHALLENGE #4
 // /*
 // Steven wants to build a very simple tip calculator for whenever he goes eating in a
 // restaurant. In his country, it's usual to tip 15% if the bill value is between 50 and

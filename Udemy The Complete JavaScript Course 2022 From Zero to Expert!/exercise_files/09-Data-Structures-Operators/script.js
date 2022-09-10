@@ -1,6 +1,6 @@
 'use strict';
 
-// LESSON: 103 DESTRUCTURING ARRAYS
+//LESSON 103 DESTRUCTURING ARRAYS
 
 // const restaurant = {
 //   name: 'Classico Italiano',
@@ -55,7 +55,7 @@
 // const [p = 1, q = 1, r = 1] = [8, 9];
 // console.log(p, q, r);
 
-// LESSON: 104 DESTRUCTURING OBJECTS
+//LESSON 104 DESTRUCTURING OBJECTS
 
 // const restaurant = {
 //   nameR: 'Classico Italiano',
@@ -107,7 +107,7 @@
 // } = restaurant;
 // console.log(restaurantName, hours, tags);
 
-// // IMPORTANT: Setting Default values for object fields and renaming the object field singly
+// //IMPORTANT Setting Default values for object fields and renaming the object field singly
 // const { menu = [], starterMenu: starters = [] } = restaurant;
 // console.log(menu, starters);
 // // #1. we try to get menu field (if it exists) from the restaurant object. If it does not, a default is assigned which is an empty [] array object
@@ -122,7 +122,7 @@
 //   c: 14,
 // };
 // // { a, b } = obj; //js throws an error
-// ({ a, b } = obj); //IMPORTANT: js expects a () or const{...} so that it can assign values to variables
+// ({ a, b } = obj); //IMPORTANT js expects a () or const{...} so that it can assign values to variables
 
 // //NESTED OBJECTS DESTRUCTURING
 // // const { fri } = restaurant.openingHours;
@@ -146,7 +146,7 @@
 //   starterIndex: 2,
 // });
 
-// LESSON: 105 THE SPREAD OPERATOR(...)
+//LESSON 105 THE SPREAD OPERATOR(...)
 
 // const restaurant = {
 //   nameR: 'Classico Italiano',
@@ -233,13 +233,13 @@
 // const newRestaurant = { foundedIn: 1998, ...restaurant, founder: 'Goussipier' };
 // console.log(newRestaurant);
 
-// // IMPORTANT: MAKING A COPY OF THE OBJECT WITH SPREAD OPERATOR
+// //IMPORTANT MAKING A COPY OF THE OBJECT WITH SPREAD OPERATOR
 // const restaurantCopy = { ...restaurant };
 // restaurantCopy.nameR = 'Ristorante Roma Crazy Chicken';
 // console.log(restaurant.nameR);
 // console.log(restaurantCopy.nameR);
 
-// LESSON: 106 REST PATTERN AND PARAMETERS
+//LESSON 106 REST PATTERN AND PARAMETERS
 
 // const restaurant = {
 //   nameR: 'Classico Italiano',
@@ -329,7 +329,7 @@
 // restaurant.orderPizza('mushrooms', 'onion', 'olives', 'spinach'); //the first argument is stored under mainIngredient variable and the rest is stored under otherIngredients var
 // restaurant.orderPizza('mushrooms'); //creates the rest variable as an empty array
 
-// LESSON: 107 SHORT CIRCUITING (&& AND ||)
+//LESSON 107 SHORT CIRCUITING (&& AND ||)
 
 // const restaurant = {
 //   nameR: 'Classico Italiano',
@@ -404,7 +404,7 @@
 // }
 // restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach');
 
-// LESSON: 108 THE NULLISH COALESCING OPERATOR (??)
+//LESSON 108 THE NULLISH COALESCING OPERATOR (??)
 
 // const restaurant = {
 //   nameR: 'Classico Italiano',
@@ -461,7 +461,7 @@
 // const guestsCorrect = restaurant.numGuests ?? 10;
 // console.log(guestsCorrect); //RETURNS "" - FALSY
 
-// LESSON: 109 LOGICAL ASSIGNMENT OPERATORS
+//LESSON 109 LOGICAL ASSIGNMENT OPERATORS
 
 // const rest1 = {
 //   name: 'Capri',
@@ -490,7 +490,7 @@
 // console.log(rest1);
 // console.log(rest2);
 
-// Coding Challenge: #1
+//CODING CHALLENGE #1
 // /*
 // We're building a football betting app (soccer for my American friends 😅)!
 // Suppose we get data from a web service about a certain game ('game' variable on
@@ -592,7 +592,7 @@
 // //#7
 // team1 < team2 && console.log('Team 1 is more likely to win!');
 
-// LESSON: 111 LOOPING ARRAYS: THE FOR-OF LOOP
+//LESSON 111 LOOPING ARRAYS: THE FOR-OF LOOP
 
 // const restaurant = {
 //   nameR: 'Classico Italiano',
@@ -651,14 +651,14 @@
 //   console.log(`${i + 1}:${el}`);
 // }
 
-// LESSON: 112 ENHANCED OBJECT LITERALS
+//LESSON 112 ENHANCED OBJECT LITERALS
 
 // //ES6 PROVIDES NEW WAYS OF CREATING OBJECT LITERALS
 // //SAMPLE OBJECT TO BE ADDED INSIDE RESTAURANT OBJECT UNDER OPENINGHOURS FIELD REFERENCE
 // const weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-// //IMPORTANT: #3. ENHANCED IN ES6: FIELD NAMES DERIVED FROM EXTERNAL REFERENCES
+// //IMPORTANT #3. ENHANCED IN ES6: FIELD NAMES DERIVED FROM EXTERNAL REFERENCES
 // const openingHours = {
-//   //IMPORTANT: FIELDS NAMES WRAPPED BY []
+//   //IMPORTANT FIELDS NAMES WRAPPED BY []
 //   [weekdays[3]]: {
 //     open: 12,
 //     close: 22,
@@ -667,7 +667,7 @@
 //     open: 11,
 //     close: 23,
 //   },
-//   //IMPORTANT: WE CAN EVEN USE TEMPLATE LITERALS INSIDE []
+//   //IMPORTANT WE CAN EVEN USE TEMPLATE LITERALS INSIDE []
 //   [`day-${2 + 4}`]: {
 //     open: 0, // Open 24 hours
 //     close: 24,
@@ -695,10 +695,10 @@
 //   starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
 //   mainMenu: ['Pizza', 'Pasta', 'Risotto'],
 
-//   //IMPORTANT: #1. ENHANCED ES6 WAY OF ADDING OBEJCT INSIDE ANOTHER OBJECT
+//   //IMPORTANT #1. ENHANCED ES6 WAY OF ADDING OBEJCT INSIDE ANOTHER OBJECT
 //   openingHours,
 
-//   //IMPORTANT: #2. ENHANCED ES6 WAY OF WIRITNG FUNCTIONS
+//   //IMPORTANT #2. ENHANCED ES6 WAY OF WIRITNG FUNCTIONS
 //   order(starterIndex, mainIndex) {
 //     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
 //   },
@@ -730,7 +730,7 @@
 
 // console.log(restaurant);
 
-// LESSON: 113 OPTIONAL CHAINING (?.)
+//LESSON 113 OPTIONAL CHAINING (?.)
 
 // const restaurant = {
 //   nameR: 'Classico Italiano',
@@ -759,7 +759,7 @@
 // if (restaurant.openingHours && restaurant.openingHours.mon) {
 //   console.log(restaurant.openingHours.mon.open);
 // } // this way of precehcking step by step yields no err and no output will be logged since openignhours exists checked, but openinghours.mon do not exist...
-// //IMPORTANT: TACKLING WITH OPTIONAL CHAINING - MUCH CLEANER AND SHORTER
+// //IMPORTANT TACKLING WITH OPTIONAL CHAINING - MUCH CLEANER AND SHORTER
 // console.log(restaurant.openingHours.mon?.open);
 // console.log(restaurant.openingHours?.mon?.open); //DEEPER CONTROL
 
@@ -768,7 +768,7 @@
 // for (const day of days) {
 //   console.log(day);
 //   // const open = restaurant.openingHours[day]?.open || 'closed';
-//   // NOTE: open 0 stands for 24hrs but here if we use || operator it regards it falsy thereby we are using ?? operator.
+//   //NOTE open 0 stands for 24hrs but here if we use || operator it regards it falsy thereby we are using ?? operator.
 //   let topen;
 //   let open = restaurant.openingHours[day]?.open ?? 'closed';
 //   // console.log(open + '!!!');
@@ -788,7 +788,7 @@
 // const users = [{ name: 'Jonas', email: 'Hello@jonas.io' }];
 // console.log(users[0]?.name ?? 'User array empty');
 
-// LESSON: 114 LOOPING OBJECTS: OBJECT KEYS, VALUES, ENTRIES
+//LESSON 114 LOOPING OBJECTS: OBJECT KEYS, VALUES, ENTRIES
 
 // const openingHours = {
 //   thu: {
@@ -818,8 +818,8 @@
 // }
 // console.log(openStr);
 
-// //LOOPING THRU KEY,VALUE PAIRS OF THE OBJECT - IMPORTANT: ITS DIFFERENT THAN HOW ITS IMPLEMENTED ON ARRAYS
-// // NOTE: In <menubar> array --> for [a,b] of menubar.entries()
+// //LOOPING THRU KEY,VALUE PAIRS OF THE OBJECT - //IMPORTANT ITS DIFFERENT THAN HOW ITS IMPLEMENTED ON ARRAYS
+// //NOTE In <menubar> array --> for [a,b] of menubar.entries()
 // //ENTIRE OBJECT
 // const entries = Object.entries(openingHours);
 // console.log(entries);
@@ -827,7 +827,7 @@
 //   console.log(`On ${key} we open at ${open} and close at ${close}`);
 // }
 
-// Coding Challenge: #2
+//CODING CHALLENGE #2
 // /*
 // Let's continue with our football betting app! Keep using the 'game' variable from
 // before.
@@ -936,7 +936,7 @@
 // Lewandowski: 2
 // }
 
-// LESSON: 116 SETS
+//LESSON 116 SETS
 
 // const ordersSet = new Set([
 //   'Pasta',
@@ -953,7 +953,7 @@
 
 // //LENGTH OF A SET OBJECT
 // console.log(ordersSet.size);
-// //IMPORTANT: in arrays arr.length VS in sets set.size
+// //IMPORTANT in arrays arr.length VS in sets set.size
 // console.log(ordersSet.has('Pizza'));
 // console.log(ordersSet.has('Bread'));
 
@@ -963,13 +963,13 @@
 // console.log(ordersSet); // only one garlic bread is added
 
 // //SETS BEAR NO INDICES
-// console.log(ordersSet[0]); // IMPORTANT: The sets do not bear index so can not use it as in arrays
+// console.log(ordersSet[0]); //IMPORTANT The sets do not bear index so can not use it as in arrays
 
 // //CLEAR CONTENT OF A SET OBJECT
 // ordersSet.clear(); //CLEARS THE ENTIRE SET
 // console.log(ordersSet);
 
-// //IMPORTANT: SETS ARE ITERABLES SO THAT MEANS WE CAN LOOP
+// //IMPORTANT SETS ARE ITERABLES SO THAT MEANS WE CAN LOOP
 // for (const order of ordersSet) console.log(order);
 
 // //Example
@@ -983,7 +983,7 @@
 // const staffUnique = [...new Set(staff)];
 // console.log(staffUnique);
 
-// LESSON: 117 MAPS: FUNDAMENTALS
+//LESSON 117 MAPS: FUNDAMENTALS
 
 // //CREATE A MAP OBJECT
 // const rest = new Map();
@@ -1024,7 +1024,7 @@
 // console.log(rest.get(arr)); //wont work
 // // console.log(rest.get([1, 2])); //wont work
 
-// LESSON: 118 MAPS: ITERATION
+//LESSON 118 MAPS: ITERATION
 
 // //CREATE A NEW MAP WITH MULTIPLE ENTRY AT THE SAME TIME - INSTEAD OF SET METHOD
 // const question = new Map([
@@ -1075,7 +1075,7 @@
 // console.log(question.keys());
 // console.log(question.values());
 
-// Coding Challenge: #3
+//CODING CHALLENGE #3
 
 // /*
 // Let's continue with our football betting app! This time, we have a map called
@@ -1134,7 +1134,7 @@
 //   );
 // }
 
-// LESSON: 121 WORKING WITH STRINGS PART 1
+//LESSON 121 WORKING WITH STRINGS PART 1
 
 // const airline = 'TAP Air Portugal';
 // const plane = 'A320';
@@ -1176,7 +1176,7 @@
 // checkMiddleSeat('23C');
 // checkMiddleSeat('3E');
 
-// LESSON: 122 WORKING WITH STRINGS PART 2
+//LESSON 122 WORKING WITH STRINGS PART 2
 
 // const airline = 'TAP Air Portugal';
 
@@ -1244,7 +1244,7 @@
 // checkBaggage('I have some socks and a camera');
 // checkBaggage('Got some snacks and a gun for protection');
 
-// LESSON: 123 WORKING WITH STRINGS PART 3
+//LESSON 123 WORKING WITH STRINGS PART 3
 
 // // SPLIT METHOD
 // console.log('a+very+nice+string'.split('+'));
@@ -1298,7 +1298,7 @@
 // planesInLine(5);
 // planesInLine(20);
 
-// Coding Challenge: #4
+//CODING CHALLENGE #4
 /*
 Write a program that receives a list of variable names written in underscore_case
 and convert them to camelCase.
@@ -1366,7 +1366,7 @@ GOOD LUCK 😀
 //   }
 // });
 
-// LESSON: 125 STRING METHODS PRACTICE
+//LESSON 125 STRING METHODS PRACTICE
 
 // const flights =
 //   '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
