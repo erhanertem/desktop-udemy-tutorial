@@ -707,57 +707,57 @@
 // Account.printBalance();
 
 //CODING CHALLENGE #4
-/*
-Your tasks:
-1. Re-create Challenge #3, but this time using ES6 classes: create an 'EVCl'
-child class of the 'CarCl' class
-2. Make the 'charge' property private
-3. Implement the ability to chain the 'accelerate' and 'chargeBattery'
-methods of this class, and also update the 'brake' method in the 'CarCl'
-class. Then experiment with chaining!
-Test data:
-§ Data car 1: 'Rivian' going at 120 km/h, with a charge of 23%
-GOOD LUCK 😀
-*/
+// /*
+// Your tasks:
+// 1. Re-create Challenge #3, but this time using ES6 classes: create an 'EVCl'
+// child class of the 'CarCl' class
+// 2. Make the 'charge' property private
+// 3. Implement the ability to chain the 'accelerate' and 'chargeBattery'
+// methods of this class, and also update the 'brake' method in the 'CarCl'
+// class. Then experiment with chaining!
+// Test data:
+// § Data car 1: 'Rivian' going at 120 km/h, with a charge of 23%
+// GOOD LUCK 😀
+// */
 
-class CarCl {
-  constructor(make, currSpeed) {
-    this.make = make;
-    this.currSpeed = currSpeed;
-  }
+// class CarCl {
+//   constructor(make, currSpeed) {
+//     this.make = make;
+//     this.currSpeed = currSpeed;
+//   }
 
-  chargeBattery(chargeTo) {
-    this.currCharge = chargeTo;
-    return this; //for chain method
-  }
-}
+//   chargeBattery(chargeTo) {
+//     this.currCharge = chargeTo;
+//     return this; //for chain method
+//   }
+// }
 
-class EvCl extends CarCl {
-  constructor(make, currSpeed, currCharge) {
-    super(make, currSpeed);
-    this.currCharge = currCharge;
-  }
+// class EvCl extends CarCl {
+//   constructor(make, currSpeed, currCharge) {
+//     super(make, currSpeed);
+//     this.currCharge = currCharge;
+//   }
 
-  accelerate() {
-    this.currSpeed += 20;
-    this.currCharge *= 0.99;
-    console.log(
-      `'${this.make}' going at ${this.currSpeed} km/h, with a charge of ${this.currCharge}%`
-    );
-    return this; //for chain method
-  }
+//   accelerate() {
+//     this.currSpeed += 20;
+//     this.currCharge *= 0.99;
+//     console.log(
+//       `'${this.make}' going at ${this.currSpeed} km/h, with a charge of ${this.currCharge}%`
+//     );
+//     return this; //for chain method
+//   }
 
-  brake() {
-    this.currSpeed -= 5;
-    console.log(
-      `'${this.make}' going at ${this.currSpeed} km/h, with a charge of ${this.currCharge}%`
-    );
-    return this; //for chain method
-  }
-}
+//   brake() {
+//     this.currSpeed -= 5;
+//     console.log(
+//       `'${this.make}' going at ${this.currSpeed} km/h, with a charge of ${this.currCharge}%`
+//     );
+//     return this; //for chain method
+//   }
+// }
 
-const car1 = new EvCl('Rivian', 120, 23);
-// car1.chargeBattery(50)
-// car1.accelerate();
-// car1.brake();
-car1.chargeBattery(50).accelerate().brake();
+// const car1 = new EvCl('Rivian', 120, 23);
+// // car1.chargeBattery(50)
+// // car1.accelerate();
+// // car1.brake();
+// car1.chargeBattery(50).accelerate().brake();
