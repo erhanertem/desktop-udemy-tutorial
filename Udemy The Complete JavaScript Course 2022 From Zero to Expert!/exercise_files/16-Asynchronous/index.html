@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Asynchronous JavaScript</title>
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: linear-gradient(to top left, #28b487, #7dd56f);
+      }
+      h1 {
+        font-family: sans-serif;
+        font-size: 50px;
+        line-height: 1.3;
+        width: 100%;
+        padding: 30px;
+        text-align: center;
+        color: white;
+      }
+      .images {
+        display: flex;
+      }
+
+      .images img {
+        display: block;
+        width: 80rem;
+        margin: 4rem;
+      }
+
+      .images img.parallel {
+        width: 40rem;
+        margin: 2rem;
+        border: 3rem solid white;
+        box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Asynchronous JavaScript</h1>
+    <div class="images"></div>
+
+    <main class="container">
+      <button class="btn-country">Where am I?</button>
+      <div class="location"></div>
+      <div class="countries">
+        <!--
+        <article class="country">
+          <img class="country__img" src="" />
+          <div class="country__data">
+            <h3 class="country__name">COUNTRY</h3>
+            <h4 class="country__region">REGION</h4>
+            <p class="country__row"><span>👫</span>POP people</p>
+            <p class="country__row"><span>🗣️</span>LANG</p>
+            <p class="country__row"><span>💰</span>CUR</p>
+          </div>
+        </article>
+        -->
+      </div>
+    </main>
+  </body>
+</html>
