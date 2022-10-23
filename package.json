@@ -1,0 +1,22 @@
+{
+	"name": "desktop-udemy-tutorial",
+	"version": "1.0.0",
+	"description": "&emsp;",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/erhanertem/desktop-tutorial.git"
+	},
+	"author": "Erhan ERTEM",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/erhanertem/desktop-tutorial/issues"
+	},
+	"homepage": "https://github.com/erhanertem/desktop-tutorial#readme",
+	"dependencies": {
+		"superagent": "^8.0.0"
+	}
+}
