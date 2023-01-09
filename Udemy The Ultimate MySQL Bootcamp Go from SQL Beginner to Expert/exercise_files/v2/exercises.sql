@@ -1,0 +1,63 @@
+-- SECTION 3: CREATE DATABASES & TABLES
+
+-- SHOW DATABASES;
+-- CREATE DATABASE pet_shop;
+-- USE DATABASE pet_shop;
+-- SELECT DATABASE();
+-- CREATE TABLE cats (name VARCHAR(50), age INT);
+-- CREATE TABLE dogs (name VARCHAR(50), breed VARCHAR(50), age INT);
+-- SHOW TABLES;
+-- DESC dogs;
+-- DESCRIBE dogs;
+-- DROP TABLE dogs;
+-- CREATE TABLE pastries (name VARCHAR(50), quantity INT);
+-- DROP TABLE pastries;
+
+-- SECTION 4: INSERT DATA
+
+-- INSERT INTO cats (name, age) VALUES ("Blue Steele", 5);
+-- INSERT INTO cats (name, age) VALUES ("Jenkins", 7);
+-- SELECT * FROM cats;
+-- INSERT INTO cats (age, name) VALUES (2, "Beth");
+-- INSERT INTO cats (name, age) VALUES ("Meatball", 5) , ("Thera", 1) , ("Jerky", 3); 
+-- CREATE TABLE people (first_name VARCHAR(50), last_name VARCHAR(50), age INT);
+-- INSERT INTO people (first_name, last_name, age) VALUES("Tina", "Blecher", 13);
+-- INSERT INTO people (first_name, last_name, age) VALUES("Linda", "Belcher", 45), ("Philip","Frond",38), ("Calvin", "Fischoeder", 50);
+-- SELECT * FROM people;
+-- CREATE TABLE cats2 (name VARCHAR(50) NOT NULL, age INT NOT NULL);
+-- INSERT INTO cats2 (name) VALUES ('Bilbo');
+-- INSERT INTO cats2 (name, age) VALUES ('Jeksciw' ,5);
+-- DESC cats2;
+-- CREATE TABLE shops (shop_name VARCHAR(50));
+-- INSERT INTO shops (shop_name) VALUES('marios\'s pizza'); -- ESCAPE CHARACTERS INSIDE SINGLE QUATES
+-- CREATE TABLE cats3 (name VARCHAR(50) DEFAULT 'unnamed', age INT DEFAULT 99);
+-- INSERT INTO cats3(age) VALUES (2);
+-- CREATE TABLE cats4 (name VARCHAR(50) NOT NULL DEFAULT 'unnamed', age INT NOT NULL DEFAULT 99);
+-- DESC cats4;
+-- INSERT INTO cats4() VALUES();
+-- SELECT * FROM cats4;
+-- CREATE TABLE unique_cats(cart_id INT NOT NULL PRIMARY KEY, name VARCHAR(50), age INT);
+-- DESC unique_cats;
+-- INSERT INTO unique_cats(cart_id,name,age) VALUES(1,'bongo', 23);
+-- INSERT INTO unique_cats(cart_id,name,age) VALUES(1,'zongo', 23);
+-- SELECT * FROM unique_cats;
+-- DROP TABLE unique_cats;
+-- CREATE TABLE unique_cats (cat_id INT, name VARCHAR(100), age INT, PRIMARY KEY(cat_id));
+-- INSERT INTO unique_cats(cat_id, name, age) VALUES (1, 'Oingo', 2);
+-- INSERT INTO unique_cats(name, age) VALUES ('Oingo', 2);
+-- DROP TABLE unique_cats;
+-- CREATE TABLE unique_cats (cat_id INT AUTO_INCREMENT, name VARCHAR(50), age INT, PRIMARY KEY(cat_id));
+-- INSERT INTO unique_cats(name,age) VALUES('Oingo', 2);
+-- SELECT * FROM unique_cats;
+-- DESC unique_cats;
+-- CREATE TABLE employees (
+-- id INT AUTO_INCREMENT PRIMARY KEY, 
+-- last_name VARCHAR(50) NOT NULL, 
+-- first_name VARCHAR(50) NOT NULL, 
+-- middle_name VARCHAR(50), 
+-- age INT NOT NULL , 
+-- current_status VARCHAR(100) NOT NULL DEFAULT 'employed');
+-- INSERT INTO employees (first_name, last_name, age) VALUES('thomas', 'chickenman', 87);
+-- SELECT * FROM employees;
+
+-- SECTION 5: CRUD OPERATIONS
