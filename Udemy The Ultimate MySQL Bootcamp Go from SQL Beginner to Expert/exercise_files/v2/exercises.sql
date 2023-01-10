@@ -556,11 +556,10 @@
 --      UPPER('hello');
 -- SELECT
 --      LOWER('FGGFGFGGFGHDUxvxcxcvcxgdgdAAAAA');
-SELECT
-     CONCAT('I LOVE ', UPPER(title), ' !!!!') AS 'custom output'
-FROM
-     books;
-
+-- SELECT
+--      CONCAT('I LOVE ', UPPER(title), ' !!!!') AS 'custom output'
+-- FROM
+--      books;
 -- -- -->INSERT()
 -- -- -> Adding to...
 -- SELECT
@@ -632,8 +631,238 @@ FROM
 --      CONCAT(stock_quantity, ' in stock') AS 'quantity'
 -- FROM
 --      books;
--- -- LESSON 8 REFINING SELECTIONS
-SELECT
-     *
-FROM
-     books;
+-- INSERT INTO
+--      books (
+--           title,
+--           author_fname,
+--           author_lname,
+--           released_year,
+--           stock_quantity,
+--           pages
+--      )
+-- VALUES
+--      ('10% Happier', 'Dan', 'Harris', 2014, 29, 256),
+--      ('fake_book', 'Freida', 'Harris', 2001, 287, 428),
+--      (
+--           'Lincoln In The Bardo',
+--           'George',
+--           'Saunders',
+--           2017,
+--           1000,
+--           367
+--      );
+-- INSERT INTO
+--      books (
+--           title,
+--           author_fname,
+--           author_lname,
+--           released_year,
+--           stock_quantity,
+--           pages
+--      )
+-- VALUES
+--      ('100% Happier', 'Dan', 'HARRIS', 2014, 29, 256);
+-- -- -->DISTINCT, DISCTINCT ...combinator
+-- SELECT
+--      author_lname,
+--      author_fname
+-- FROM
+--      books;
+-- SELECT
+--      DISTINCT author_lname,
+--      author_fname
+-- FROM
+--      books;
+-- SELECT
+--      *
+-- FROM
+--      books;
+-- -- -->ORDER BY
+-- NOTE: BY DEFAULT ITS ASC ORDER
+-- SELECT
+--      book_id,
+--      author_fname,
+--      author_lname
+-- FROM
+--      books
+-- ORDER BY
+--      author_lname;
+-- SELECT
+--      book_id,
+--      author_fname,
+--      author_lname
+-- FROM
+--      books
+-- ORDER BY
+--      author_lname DESC;
+-- SELECT
+--      title,
+--      pages,
+--      released_year
+-- FROM
+--      books
+-- ORDER BY
+--      pages;
+-- -- -> ORDER BY 2 TAKES THE SECOND FIELD LISTED IN SELECT
+-- SELECT
+--      title,
+--      pages,
+--      released_year
+-- FROM
+--      books
+-- ORDER BY
+--      2;
+-- SELECT
+--      author_lname,
+--      released_year,
+--      title
+-- FROM
+--      books
+-- ORDER BY
+--      1 ASC,
+--      2 DESC;
+-- -- ->ORDER BY FIELD ALIAS
+-- SELECT
+--      CONCAT(author_fname, ' ', author_lname) AS authors
+-- FROM
+--      books
+-- ORDER BY
+--      authors;
+-- -- -->LIMIT
+-- SELECT
+--      book_id,
+--      title,
+--      released_year
+-- FROM
+--      books
+-- ORDER BY
+--      released_year DESC
+-- LIMIT
+--      10;
+-- -- -> SELECTIVE LIMIT START @ 1 AND CUT OFF @ 10+1
+-- SELECT
+--      book_id,
+--      title,
+--      released_year
+-- FROM
+--      books
+-- ORDER BY
+--      released_year DESC
+-- LIMIT
+--      1, 10;
+-- SELECT
+--      title
+-- FROM
+--      books
+-- ORDER BY
+--      title
+-- LIMIT
+--      18;
+-- -- -->LIKE(%***%) LIKE(%***) LIKE(***%) LIKE(____)
+-- -- where requires exact match!!!
+-- SELECT
+--      title,
+--      author_fname,
+--      author_lname
+-- FROM
+--      books
+-- WHERE
+--      author_fname = 'David';
+-- where with LIKE following a certain wild card !!!
+-- SELECT
+--      title,
+--      author_fname,
+--      author_lname
+-- FROM
+--      books
+-- WHERE
+--      author_fname LIKE '%da%';
+-- SELECT
+--      *
+-- FROM
+--      books
+-- WHERE
+--      title LIKE '%:%';
+-- SELECT
+--      *
+-- FROM
+--      books
+-- WHERE
+--      author_fname LIKE '____';
+-- SELECT
+--      *
+-- FROM
+--      books
+-- WHERE
+--      author_fname LIKE '_a_';
+-- SELECT
+--      *
+-- FROM
+--      books
+-- WHERE
+--      title LIKE '%\%%';
+-- -- CODING CHALLENGE
+-- SELECT
+--      title
+-- FROM
+--      books
+-- WHERE
+--      title LIKE '%stories%';
+-- SELECT
+--      title,
+--      pages
+-- FROM
+--      books
+-- ORDER BY
+--      pages DESC
+-- LIMIT
+--      1;
+-- SELECT
+--      CONCAT(LEFT(title, 15), ' - ', released_year) AS summary
+-- FROM
+--      books
+-- ORDER BY
+--      released_year DESC
+-- LIMIT
+--      3;
+-- SELECT
+--      title,
+--      author_lname
+-- FROM
+--      books
+-- WHERE
+--      author_lname LIKE ('% %');
+-- SELECT
+--      title,
+--      released_year,
+--      stock_quantity
+-- FROM
+--      books
+-- ORDER BY
+--      stock_quantity ASC,
+--      released_year DESC
+-- LIMIT
+--      3;
+-- SELECT
+--      title,
+--      author_lname
+-- FROM
+--      books
+-- ORDER BY
+--      author_lname,
+--      title;
+-- SELECT
+--      UPPER(
+--           CONCAT(
+--                'my favorite author is ',
+--                author_fname,
+--                ' ',
+--                author_lname,
+--                '!'
+--           )
+--      )
+-- FROM
+--      books
+-- ORDER BY
+--      author_lname;
+-- -- LESSON 9 AGGREGATE FUNCTIONS
