@@ -1,9 +1,9 @@
--- SECTION 3: CREATE DATABASES & TABLES
-
+-- -- LESSON 3: CREATE DATABASES & TABLES
 -- SHOW DATABASES;
 -- CREATE DATABASE pet_shop;
 -- USE pet_shop;
--- SELECT DATABASE();
+-- SELECT
+--      DATABASE();
 -- CREATE TABLE cats (name VARCHAR(50), age INT);
 -- CREATE TABLE dogs (name VARCHAR(50), breed VARCHAR(50), age INT);
 -- SHOW TABLES;
@@ -12,151 +12,628 @@
 -- DROP TABLE dogs;
 -- CREATE TABLE pastries (name VARCHAR(50), quantity INT);
 -- DROP TABLE pastries;
-
--- SECTION 4: INSERT DATA
-
--- INSERT INTO cats (name, age) VALUES ("Blue Steele", 5);
--- INSERT INTO cats (name, age) VALUES ("Jenkins", 7);
--- SELECT * FROM cats;
--- INSERT INTO cats (age, name) VALUES (2, "Beth");
--- INSERT INTO cats (name, age) VALUES ("Meatball", 5) , ("Thera", 1) , ("Jerky", 3); 
--- CREATE TABLE people (first_name VARCHAR(50), last_name VARCHAR(50), age INT);
--- INSERT INTO people (first_name, last_name, age) VALUES("Tina", "Blecher", 13);
--- INSERT INTO people (first_name, last_name, age) VALUES("Linda", "Belcher", 45), ("Philip","Frond",38), ("Calvin", "Fischoeder", 50);
--- SELECT * FROM people;
+-- -- LESSON 4: INSERT DATA
+-- INSERT INTO
+--      cats (name, age)
+-- VALUES
+--      ("Blue Steele", 5);
+-- INSERT INTO
+--      cats (name, age)
+-- VALUES
+--      ("Jenkins", 7);
+-- SELECT
+--      *
+-- FROM
+--      cats;
+-- INSERT INTO
+--      cats (age, name)
+-- VALUES
+--      (2, "Beth");
+-- INSERT INTO
+--      cats (name, age)
+-- VALUES
+--      ("Meatball", 5),
+--      ("Thera", 1),
+--      ("Jerky", 3);
+-- CREATE TABLE people (
+--      first_name VARCHAR(50),
+--      last_name VARCHAR(50),
+--      age INT
+-- );
+-- INSERT INTO
+--      people (first_name, last_name, age)
+-- VALUES
+-- ("Tina", "Blecher", 13);
+-- INSERT INTO
+--      people (first_name, last_name, age)
+-- VALUES
+-- ("Linda", "Belcher", 45),
+--      ("Philip", "Frond", 38),
+--      ("Calvin", "Fischoeder", 50);
+-- SELECT
+--      *
+-- FROM
+--      people;
 -- CREATE TABLE cats2 (name VARCHAR(50) NOT NULL, age INT NOT NULL);
--- INSERT INTO cats2 (name) VALUES ('Bilbo');
--- INSERT INTO cats2 (name, age) VALUES ('Jeksciw' ,5);
+-- INSERT INTO
+--      cats2 (name)
+-- VALUES
+--      ('Bilbo');
+-- INSERT INTO
+--      cats2 (name, age)
+-- VALUES
+--      ('Jeksciw', 5);
 -- DESC cats2;
 -- CREATE TABLE shops (shop_name VARCHAR(50));
--- INSERT INTO shops (shop_name) VALUES('marios\'s pizza'); -- ESCAPE CHARACTERS INSIDE SINGLE QUATES
--- CREATE TABLE cats3 (name VARCHAR(50) DEFAULT 'unnamed', age INT DEFAULT 99);
--- INSERT INTO cats3(age) VALUES (2);
--- CREATE TABLE cats4 (name VARCHAR(50) NOT NULL DEFAULT 'unnamed', age INT NOT NULL DEFAULT 99);
+-- INSERT INTO
+--      shops (shop_name)
+-- VALUES
+--      ("marios's pizza");
+-- CREATE TABLE cats3 (
+--      name VARCHAR(50) DEFAULT 'unnamed',
+--      age INT DEFAULT 99
+-- );
+-- INSERT INTO
+--      cats3(age)
+-- VALUES
+--      (2);
+-- CREATE TABLE cats4 (
+--      name VARCHAR(50) NOT NULL DEFAULT 'unnamed',
+--      age INT NOT NULL DEFAULT 99
+-- );
 -- DESC cats4;
--- INSERT INTO cats4() VALUES();
--- SELECT * FROM cats4;
--- CREATE TABLE unique_cats(cart_id INT NOT NULL PRIMARY KEY, name VARCHAR(50), age INT);
+-- INSERT INTO
+--      cats4()
+-- VALUES
+-- ();
+-- SELECT
+--      *
+-- FROM
+--      cats4;
+-- CREATE TABLE unique_cats(
+--      cart_id INT NOT NULL PRIMARY KEY,
+--      name VARCHAR(50),
+--      age INT
+-- );
 -- DESC unique_cats;
--- INSERT INTO unique_cats(cart_id,name,age) VALUES(1,'bongo', 23);
--- INSERT INTO unique_cats(cart_id,name,age) VALUES(1,'zongo', 23);
--- SELECT * FROM unique_cats;
+-- INSERT INTO
+--      unique_cats(cart_id, name, age)
+-- VALUES
+-- (1, 'bongo', 23);
+-- INSERT INTO
+--      unique_cats(cart_id, name, age)
+-- VALUES
+-- (1, 'zongo', 23);
+-- SELECT
+--      *
+-- FROM
+--      unique_cats;
 -- DROP TABLE unique_cats;
--- CREATE TABLE unique_cats (cat_id INT, name VARCHAR(100), age INT, PRIMARY KEY(cat_id));
--- INSERT INTO unique_cats(cat_id, name, age) VALUES (1, 'Oingo', 2);
--- INSERT INTO unique_cats(name, age) VALUES ('Oingo', 2);
+-- CREATE TABLE unique_cats (
+--      cat_id INT,
+--      name VARCHAR(100),
+--      age INT,
+--      PRIMARY KEY(cat_id)
+-- );
+-- INSERT INTO
+--      unique_cats(cat_id, name, age)
+-- VALUES
+--      (1, 'Oingo', 2);
+-- INSERT INTO
+--      unique_cats(name, age)
+-- VALUES
+--      ('Oingo', 2);
 -- DROP TABLE unique_cats;
--- CREATE TABLE unique_cats (cat_id INT AUTO_INCREMENT, name VARCHAR(50), age INT, PRIMARY KEY(cat_id));
--- INSERT INTO unique_cats(name,age) VALUES('Oingo', 2);
--- SELECT * FROM unique_cats;
+-- CREATE TABLE unique_cats (
+--      cat_id INT AUTO_INCREMENT,
+--      name VARCHAR(50),
+--      age INT,
+--      PRIMARY KEY(cat_id)
+-- );
+-- INSERT INTO
+--      unique_cats(name, age)
+-- VALUES
+-- ('Oingo', 2);
+-- SELECT
+--      *
+-- FROM
+--      unique_cats;
 -- DESC unique_cats;
 -- CREATE TABLE employees (
--- id INT AUTO_INCREMENT PRIMARY KEY, 
--- last_name VARCHAR(50) NOT NULL, 
--- first_name VARCHAR(50) NOT NULL, 
--- middle_name VARCHAR(50), 
--- age INT NOT NULL , 
--- current_status VARCHAR(100) NOT NULL DEFAULT 'employed');
--- INSERT INTO employees (first_name, last_name, age) VALUES('thomas', 'chickenman', 87);
--- SELECT * FROM employees;
--- DROP TABLE cats, cats2, cats3, cats4, people, shops, unique_cats, employees;
-
--- SECTION 5: CRUD OPERATIONS
--- CREATE TABLE cats(cat_id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), breed VARCHAR(100), age INT);
+--      id INT AUTO_INCREMENT PRIMARY KEY,
+--      last_name VARCHAR(50) NOT NULL,
+--      first_name VARCHAR(50) NOT NULL,
+--      middle_name VARCHAR(50),
+--      age INT NOT NULL,
+--      current_status VARCHAR(100) NOT NULL DEFAULT 'employed'
+-- );
+-- INSERT INTO
+--      employees (first_name, last_name, age)
+-- VALUES
+-- ('thomas', 'chickenman', 87);
+-- SELECT
+--      *
+-- FROM
+--      employees;
+-- DROP TABLE cats,
+-- cats2,
+-- cats3,
+-- cats4,
+-- people,
+-- shops,
+-- unique_cats,
+-- employees;
+-- -- LESSON 5: CRUD OPERATIONS
+-- CREATE TABLE cats(
+--      cat_id INT AUTO_INCREMENT PRIMARY KEY,
+--      name VARCHAR(100),
+--      breed VARCHAR(100),
+--      age INT
+-- );
 -- DESC cats;
--- INSERT INTO cats(name, breed, age) 
--- VALUES ('Ringo', 'Tabby', 4),
---       ('Cindy', 'Maine Coon', 10),
---       ('Dumbledore', 'Maine Coon', 11),
---       ('Egg', 'Persian', 4),
---       ('Misty', 'Tabby', 13),
---       ('George Michael', 'Ragdoll', 9),
---       ('Jackson', 'Sphynx', 7);
--- SELECT * FROM cats;
--- CRUD - READ DATA
--- SELECT age FROM  cats;  -- FILTER BY COLUMN/FIELD
--- SELECT age, breed FROM  cats;  -- FILTER BY COLUMN/FIELD
--- SELECT * FROM cats WHERE breed="Maine Coon" AND age>=11;
--- SELECT cat_id FROM cats;
--- SELECT name, breed FROM cats;
--- SELECT name, age FROM cats WHERE breed='Tabby';
--- SELECT cat_id, age FROM cats WHERE cat_id=age;
--- SELECT cat_id AS id, age AS kitty_age FROM cats WHERE cat_id=age;
--- CRUD - UPDATE DATA
--- UPDATE cats SET breed='Shorthair' WHERE breed='Tabby';
--- UPDATE cats SET breed='Shorthair',age =5 WHERE breed='Tabby';
--- UPDATE cats SET breed='Shorthair',age =5 WHERE name='Georgy';
--- UPDATE cats SET name='Jack' WHERE name='Jackson';
--- UPDATE cats SET breed='British Shorthair' WHERE name='Ringo';
--- UPDATE cats SET age='12' WHERE breed='Maine Coon';
--- SELECT * FROM cats;
--- CRUD - DELETE DATA
--- DELETE FROM cats WHERE name='Egg';
--- DELETE FROM cats WHERE age=4;
--- DELETE FROM cats WHERE cat_id=age;
--- DELETE FROM cats;
-
--- SECTION 6 CRUD CHALLANGE
+-- INSERT INTO
+--      cats(name, breed, age)
+-- VALUES
+--      ('Ringo', 'Tabby', 4),
+--      ('Cindy', 'Maine Coon', 10),
+--      ('Dumbledore', 'Maine Coon', 11),
+--      ('Egg', 'Persian', 4),
+--      ('Misty', 'Tabby', 13),
+--      ('George Michael', 'Ragdoll', 9),
+--      ('Jackson', 'Sphynx', 7);
+-- SELECT
+--      *
+-- FROM
+--      cats;
+-- -- --> CRUD - READ DATA
+-- SELECT
+--      age
+-- FROM
+--      cats;
+-- -- -> FILTER BY COLUMN/FIELD
+-- SELECT
+--      age,
+--      breed
+-- FROM
+--      cats;
+-- SELECT
+--      *
+-- FROM
+--      cats
+-- WHERE
+--      breed = "Maine Coon"
+--      AND age >= 11;
+-- SELECT
+--      cat_id
+-- FROM
+--      cats;
+-- SELECT
+--      name,
+--      breed
+-- FROM
+--      cats;
+-- SELECT
+--      name,
+--      age
+-- FROM
+--      cats
+-- WHERE
+--      breed = 'Tabby';
+-- SELECT
+--      cat_id,
+--      age
+-- FROM
+--      cats
+-- WHERE
+--      cat_id = age;
+-- SELECT
+--      cat_id AS id,
+--      age AS kitty_age
+-- FROM
+--      cats
+-- WHERE
+--      cat_id = age;
+-- -- --> CRUD - UPDATE DATA
+-- UPDATE
+--      cats
+-- SET
+--      breed = 'Shorthair'
+-- WHERE
+--      breed = 'Tabby';
+-- UPDATE
+--      cats
+-- SET
+--      breed = 'Shorthair',
+--      age = 5
+-- WHERE
+--      breed = 'Tabby';
+-- UPDATE
+--      cats
+-- SET
+--      breed = 'Shorthair',
+--      age = 5
+-- WHERE
+--      name = 'Georgy';
+-- UPDATE
+--      cats
+-- SET
+--      name = 'Jack'
+-- WHERE
+--      name = 'Jackson';
+-- UPDATE
+--      cats
+-- SET
+--      breed = 'British Shorthair'
+-- WHERE
+--      name = 'Ringo';
+-- UPDATE
+--      cats
+-- SET
+--      age = '12'
+-- WHERE
+--      breed = 'Maine Coon';
+-- SELECT
+--      *
+-- FROM
+--      cats;
+-- -- --> CRUD - DELETE DATA
+-- DELETE FROM
+--      cats
+-- WHERE
+--      name = 'Egg';
+-- DELETE FROM
+--      cats
+-- WHERE
+--      age = 4;
+-- DELETE FROM
+--      cats
+-- WHERE
+--      cat_id = age;
+-- DELETE FROM
+--      cats;
+-- -- LESSON 6 CRUD CHALLANGE 
 -- CREATE DATABASE shirts_db;
 -- SHOW DATABASES;
 -- USE shirts_db;
--- SELECT DATABASE();
--- CREATE TABLE shirts (shirt_id INT AUTO_INCREMENT PRIMARY KEY, article VARCHAR(50) NOT NULL, color VARCHAR(50) NOT NULL, shirt_size VARCHAR(4) NOT NULL, last_worn INT NOT NULL DEFAULT 0);
--- INSERT INTO shirts (article, color, shirt_size, last_worn) VALUES ('t-shirt', 'white', 'S', 10),
--- ('t-shirt', 'green', 'S', 200),
--- ('polo shirt', 'black', 'M', 10),
--- ('tank top', 'blue', 'S', 50),
--- ('t-shirt', 'pink', 'S', 0),
--- ('polo shirt', 'red', 'M', 5),
--- ('tank top', 'white', 'S', 200),
--- ('tank top', 'blue', 'M', 15);
--- INSERT INTO shirts (article, color, shirt_size, last_worn) VALUES ('polo shirt', 'purple', 'M', 50);
--- SELECT article, color FROM shirts;
--- SELECT article, color, shirt_size, last_worn FROM shirts WHERE shirt_size='M';
--- UPDATE shirts  SET shirt_size = 'L' WHERE article='polo shirt';
--- UPDATE shirts SET last_worn=0 WHERE last_worn=15;
--- UPDATE shirts SET shirt_size='XS', color='off white' WHERE color='white';
--- DELETE FROM shirts WHERE last_worn=200;
--- DELETE FROM shirts WHERE article='tank top';
--- DELETE FROM shirts;
--- SELECT * FROM shirts;
+-- SELECT
+--      DATABASE();
+-- CREATE TABLE shirts (
+--      shirt_id INT AUTO_INCREMENT PRIMARY KEY,
+--      article VARCHAR(50) NOT NULL,
+--      color VARCHAR(50) NOT NULL,
+--      shirt_size VARCHAR(4) NOT NULL,
+--      last_worn INT NOT NULL DEFAULT 0
+-- );
+-- INSERT INTO
+--      shirts (article, color, shirt_size, last_worn)
+-- VALUES
+--      ('t-shirt', 'white', 'S', 10),
+--      ('t-shirt', 'green', 'S', 200),
+--      ('polo shirt', 'black', 'M', 10),
+--      ('tank top', 'blue', 'S', 50),
+--      ('t-shirt', 'pink', 'S', 0),
+--      ('polo shirt', 'red', 'M', 5),
+--      ('tank top', 'white', 'S', 200),
+--      ('tank top', 'blue', 'M', 15);
+-- INSERT INTO
+--      shirts (article, color, shirt_size, last_worn)
+-- VALUES
+--      ('polo shirt', 'purple', 'M', 50);
+-- SELECT
+--      article,
+--      color
+-- FROM
+--      shirts;
+-- SELECT
+--      article,
+--      color,
+--      shirt_size,
+--      last_worn
+-- FROM
+--      shirts
+-- WHERE
+--      shirt_size = 'M';
+-- UPDATE
+--      shirts
+-- SET
+--      shirt_size = 'L'
+-- WHERE
+--      article = 'polo shirt';
+-- UPDATE
+--      shirts
+-- SET
+--      last_worn = 0
+-- WHERE
+--      last_worn = 15;
+-- UPDATE
+--      shirts
+-- SET
+--      shirt_size = 'XS',
+--      color = 'off white'
+-- WHERE
+--      color = 'white';
+-- DELETE FROM
+--      shirts
+-- WHERE
+--      last_worn = 200;
+-- DELETE FROM
+--      shirts
+-- WHERE
+--      article = 'tank top';
+-- DELETE FROM
+--      shirts;
+-- SELECT
+--      *
+-- FROM
+--      shirts;
 -- DROP TABLE shirts;
 -- DROP DATABASE shirts_db;
-
--- SECTION 7 STRING FUNCTIONS
+-- -- LESSON 7 STRING FUNCTIONS 
 -- CREATE DATABASE book_shop;
 -- USE book_shop;
--- CREATE TABLE books 
--- 	(
--- 		book_id INT NOT NULL AUTO_INCREMENT,
--- 		title VARCHAR(100),
--- 		author_fname VARCHAR(100),
--- 		author_lname VARCHAR(100),
--- 		released_year INT,
--- 		stock_quantity INT,
--- 		pages INT,
--- 		PRIMARY KEY(book_id)
--- 	);
-
--- INSERT INTO books (title, author_fname, author_lname, released_year, stock_quantity, pages)
+-- CREATE TABLE books (
+--      book_id INT NOT NULL AUTO_INCREMENT,
+--      title VARCHAR(100),
+--      author_fname VARCHAR(100),
+--      author_lname VARCHAR(100),
+--      released_year INT,
+--      stock_quantity INT,
+--      pages INT,
+--      PRIMARY KEY(book_id)
+-- );
+-- INSERT INTO
+--      books (
+--           title,
+--           author_fname,
+--           author_lname,
+--           released_year,
+--           stock_quantity,
+--           pages
+--      )
 -- VALUES
--- ('The Namesake', 'Jhumpa', 'Lahiri', 2003, 32, 291),
--- ('Norse Mythology', 'Neil', 'Gaiman',2016, 43, 304),
--- ('American Gods', 'Neil', 'Gaiman', 2001, 12, 465),
--- ('Interpreter of Maladies', 'Jhumpa', 'Lahiri', 1996, 97, 198),
--- ('A Hologram for the King: A Novel', 'Dave', 'Eggers', 2012, 154, 352),
--- ('The Circle', 'Dave', 'Eggers', 2013, 26, 504),
--- ('The Amazing Adventures of Kavalier & Clay', 'Michael', 'Chabon', 2000, 68, 634),
--- ('Just Kids', 'Patti', 'Smith', 2010, 55, 304),
--- ('A Heartbreaking Work of Staggering Genius', 'Dave', 'Eggers', 2001, 104, 437),
--- ('Coraline', 'Neil', 'Gaiman', 2003, 100, 208),
--- ('What We Talk About When We Talk About Love: Stories', 'Raymond', 'Carver', 1981, 23, 176),
--- ("Where I'm Calling From: Selected Stories", 'Raymond', 'Carver', 1989, 12, 526),
--- ('White Noise', 'Don', 'DeLillo', 1985, 49, 320),
--- ('Cannery Row', 'John', 'Steinbeck', 1945, 95, 181),
--- ('Oblivion: Stories', 'David', 'Foster Wallace', 2004, 172, 329),
--- ('Consider the Lobster', 'David', 'Foster Wallace', 2005, 92, 343);
--- SELECT * FROM `book_shop`.`books` LIMIT 1000;
+--      (
+--           'The Namesake',
+--           'Jhumpa',
+--           'Lahiri',
+--           2003,
+--           32,
+--           291
+--      ),
+--      (
+--           'Norse Mythology',
+--           'Neil',
+--           'Gaiman',
+--           2016,
+--           43,
+--           304
+--      ),
+--      ('American Gods', 'Neil', 'Gaiman', 2001, 12, 465),
+--      (
+--           'Interpreter of Maladies',
+--           'Jhumpa',
+--           'Lahiri',
+--           1996,
+--           97,
+--           198
+--      ),
+--      (
+--           'A Hologram for the King: A Novel',
+--           'Dave',
+--           'Eggers',
+--           2012,
+--           154,
+--           352
+--      ),
+--      ('The Circle', 'Dave', 'Eggers', 2013, 26, 504),
+--      (
+--           'The Amazing Adventures of Kavalier & Clay',
+--           'Michael',
+--           'Chabon',
+--           2000,
+--           68,
+--           634
+--      ),
+--      ('Just Kids', 'Patti', 'Smith', 2010, 55, 304),
+--      (
+--           'A Heartbreaking Work of Staggering Genius',
+--           'Dave',
+--           'Eggers',
+--           2001,
+--           104,
+--           437
+--      ),
+--      ('Coraline', 'Neil', 'Gaiman', 2003, 100, 208),
+--      (
+--           'What We Talk About When We Talk About Love: Stories',
+--           'Raymond',
+--           'Carver',
+--           1981,
+--           23,
+--           176
+--      ),
+--      (
+--           "Where I'm Calling From: Selected Stories",
+--           'Raymond',
+--           'Carver',
+--           1989,
+--           12,
+--           526
+--      ),
+--      ('White Noise', 'Don', 'DeLillo', 1985, 49, 320),
+--      (
+--           'Cannery Row',
+--           'John',
+--           'Steinbeck',
+--           1945,
+--           95,
+--           181
+--      ),
+--      (
+--           'Oblivion: Stories',
+--           'David',
+--           'Foster Wallace',
+--           2004,
+--           172,
+--           329
+--      ),
+--      (
+--           'Consider the Lobster',
+--           'David',
+--           'Foster Wallace',
+--           2005,
+--           92,
+--           343
+--      );
+-- SELECT
+--      *
+-- FROM
+--      `book_shop`.`books`
+-- LIMIT
+--      1000;
+-- SELECT
+--      title
+-- FROM
+--      books;
+-- -- -->SUBSTRING()/SUBSTR()
+-- SELECT
+--      SUBSTRING(title, 1, 15)
+-- FROM
+--      books;
+-- SELECT
+--      SUBSTR(author_fname, 1, 1) AS 'Initial',
+--      author_lname
+-- FROM
+--      books;
+-- -- -->CONCAT()
+-- SELECT
+--      CONCAT(SUBSTR(title, 1, 10), '...') AS 'Crippled Title'
+-- FROM
+--      books;
+-- SELECT
+--      CONCAT(
+--           SUBSTR(author_fname, 1, 1),
+--           '.',
+--           SUBSTR(author_lname, 1, 1),
+--           '.'
+--      ) AS 'Initials'
+-- FROM
+--      books;
+-- --> REPLACE()
+-- SELECT
+--      REPLACE('cheese bread coffee milk', ' ', ' and ');
+-- SELECT
+--      REPLACE('I am ERTEM!', 'Ertem', 'Mr.ERTEM');
+-- Case sensitive
+-- SELECT
+--      REPLACE('I am ERTEM!', 'ERTEM', 'Mr.ERTEM');
+-- SELECT
+--      REPLACE(title, ' ', '-')
+-- FROM
+--      books;
+-- -- ->Persisting the replace changes to table
+-- UPDATE
+--      books
+-- SET
+--      title = REPLACE(title, ' ', '-');
+-- -- -->REVERSE()
+-- SELECT
+--      REVERSE(author_fname)
+-- FROM
+--      books;
+-- SELECT
+--      CONCAT(author_fname, REVERSE(author_fname))
+-- FROM
+--      books;
+-- -- -->LENGTH(),CHAR_LENGTH()
+-- -> Not good with chinese or other non latin alphabets with symbols
+-- SELECT
+--      LENGTH('Hey!');
+-- -> Properly displays the character length no matter what!
+-- SELECT
+--      CHAR_LENGTH('Hey!');
+-- -- -->UPPER(),LOWER()
+-- SELECT
+--      UPPER('hello');
+-- SELECT
+--      LOWER('FGGFGFGGFGHDUxvxcxcvcxgdgdAAAAA');
+SELECT
+     CONCAT('I LOVE ', UPPER(title), ' !!!!') AS 'custom output'
+FROM
+     books;
 
-SELECT  title
-FROM books;
+-- -- -->INSERT()
+-- -- -> Adding to...
+-- SELECT
+-- INSERT
+--      (title, 1, 0, "What's ")
+-- FROM
+--      books;
+-- -- -> Replace certain number of characters before adding...
+-- SELECT
+-- INSERT
+--      (title, 1, 1, "What's ")
+-- FROM
+--      books;
+-- -- -->LEFT(),RIGHT(),REPEAT(),TRIM()
+-- SELECT
+--      LEFT(title, 5)
+-- FROM
+--      books;
+-- SELECT
+--      RIGHT(title, 5)
+-- FROM
+--      books;
+-- SELECT
+--      REPEAT('HA', 4);
+-- SELECT
+--      TRIM('   ERHAN GONE FOREVER!      ');
+-- SELECT
+--      TRIM('   ...........ERHAN GONE FOREVER!  ...    ');
+-- SELECT
+--      TRIM(
+--           LEADING '.'
+--           FROM
+--                '...........ERHAN GONE FOREVER!  ...    '
+--      );
+-- SELECT
+--      TRIM(
+--           TRAILING '.'
+--           FROM
+--                '...........ERHAN GONE FOREVER!  ...'
+--      );
+-- SELECT
+--      TRIM(
+--           BOTH '.'
+--           FROM
+--                '...........ERHAN GONE FOREVER!  |...'
+--      );
+-- -- CODING CHALLENGE
+-- SELECT
+--      author_lname AS 'forwards',
+--      REVERSE(author_lname) AS 'backwards'
+-- FROM
+--      books;
+-- SELECT
+--      UPPER(CONCAT(author_fname, ' ', author_lname)) AS 'full name in caps'
+-- FROM
+--      books;
+-- SELECT
+--      CONCAT(title, ' was released in ', released_year) AS 'blurb'
+-- FROM
+--      books;
+-- SELECT
+--      title AS 'title',
+--      CHAR_LENGTH(title) AS 'character count'
+-- FROM
+--      books;
+-- SELECT
+--      CONCAT(LEFT(title, 10), '...') AS 'short title',
+--      CONCAT(author_lname, ',', author_fname) AS 'author',
+--      CONCAT(stock_quantity, ' in stock') AS 'quantity'
+-- FROM
+--      books;
+-- -- LESSON 8 REFINING SELECTIONS
+SELECT
+     *
+FROM
+     books;
