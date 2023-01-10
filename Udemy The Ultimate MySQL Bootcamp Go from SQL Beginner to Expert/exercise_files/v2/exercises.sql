@@ -866,3 +866,233 @@
 -- ORDER BY
 --      author_lname;
 -- -- LESSON 9 AGGREGATE FUNCTIONS
+-- -- -->COUNT()
+-- SELECT
+--      COUNT(*)
+-- FROM
+--      books;
+-- SELECT
+--      COUNT(author_lname)
+-- FROM
+--      books;
+-- SELECT
+--      COUNT(DISTINCT author_fname)
+-- FROM
+--      books;
+-- SELECT
+--      title
+-- FROM
+--      books
+-- WHERE
+--      title LIKE '%the%';
+-- SELECT
+--      COUNT(*)
+-- FROM
+--      books
+-- WHERE
+--      title LIKE '%the%';
+-- -- -->GROUPBY
+-- SELECT
+--      author_lname
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname;
+-- SELECT
+--      author_lname,
+--      COUNT(*) AS books_written
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname
+-- ORDER BY
+--      books_written DESC;
+-- SELECT
+--      released_year,
+--      COUNT(*) AS how_many_times
+-- FROM
+--      books
+-- GROUP BY
+--      released_year
+-- ORDER BY
+--      how_many_times DESC;
+-- -- -->MIX MAX
+-- SELECT
+--      MIN(released_year)
+-- FROM
+--      books;
+-- SELECT
+--      MAX(pages)
+-- FROM
+--      books;
+-- SELECT
+--      MIN(author_lname),
+--      MAX(author_lname)
+-- FROM
+--      books;
+-- SELECT
+--      MIN(author_lname),
+--      title
+-- FROM
+--      books;
+-- -- -->MIX MAX SUBQUERIES
+-- SELECT
+--      title,
+--      pages
+-- FROM
+--      books
+-- ORDER BY
+--      pages DESC
+-- LIMIT
+--      1;
+-- INSERT INTO
+--      books (title, pages)
+-- VALUES
+--      ('my life in words', 634);
+-- SELECT
+--      title,
+--      pages
+-- FROM
+--      books
+-- WHERE
+--      pages = (
+--           SELECT
+--                MAX(pages)
+--           FROM
+--                books
+--      );
+-- SELECT
+--      MIN(released_year)
+-- FROM
+--      books;
+-- SELECT
+--      title,
+--      released_year
+-- FROM
+--      books
+-- WHERE
+--      released_year = (
+--           SELECT
+--                MIN(released_year)
+--           FROM
+--                books
+--      );
+-- -- -->GROUP BY
+-- SELECT
+--      author_fname,
+--      author_lname
+-- FROM
+--      books
+-- ORDER BY
+--      author_lname;
+-- SELECT
+--      author_lname,
+--      COUNT(*)
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname;
+-- SELECT
+--      author_fname,
+--      author_lname,
+--      COUNT(*)
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname,
+--      author_fname;
+-- SELECT
+--      CONCAT(author_fname, ' ', author_lname) AS author,
+--      COUNT(*)
+-- FROM
+--      books
+-- GROUP BY
+-- author;
+-- -- -->MIN MAX GROUP BY
+-- SELECT
+--      author_fname AS author_first_name,
+--      author_lname AS author_last_name,
+--      COUNT(*) AS books_written,
+--      MIN(released_year) AS first_publication_year,
+--      MAX(released_year) AS last_publication_year,
+--      MAX(pages) AS max_page_count
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname,
+--      author_fname;
+-- -- -->SUM
+-- SELECT
+--      SUM(pages)
+-- FROM
+--      books;
+-- SELECT
+--      author_lname,
+--      SUM(pages)
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname;
+-- -- -->AVG
+-- SELECT
+--      AVG(pages)
+-- FROM
+--      books;
+-- SELECT
+--      released_year,
+--      AVG(stock_quantity),
+--      COUNT(*)
+-- FROM
+--      books
+-- GROUP BY
+--      released_year;
+-- -- CODING CHALLENGE
+-- SELECT
+--      COUNT(*)
+-- FROM
+--      books;
+-- SELECT
+--      released_year,
+--      SUM(stock_quantity) AS book_count
+-- FROM
+--      books
+-- GROUP BY
+--      released_year
+-- ORDER BY
+--      released_year DESC;
+-- SELECT
+--      SUM(stock_quantity) AS 'number of books'
+-- FROM
+--      books;
+-- SELECT
+--      author_fname,
+--      author_lname,
+--      AVG(released_year) AS avg_release_year
+-- FROM
+--      books
+-- GROUP BY
+--      author_fname,
+--      author_lname
+-- SELECT
+--      CONCAT(author_fname, ' ', author_lname) AS author_name,
+--      pages
+-- FROM
+--      books
+-- WHERE
+--      pages = (
+--           SELECT
+--                MAX(pages)
+--           FROM
+--                books
+--      );
+-- SELECT
+--      released_year AS year,
+--      COUNT(*) AS '# books',
+--      AVG(pages) AS 'avg pages'
+-- FROM
+--      books
+-- GROUP BY
+--      1
+-- ORDER BY
+--      1;
+-- -- LESSON 10 REVISITING DATA TYPES
