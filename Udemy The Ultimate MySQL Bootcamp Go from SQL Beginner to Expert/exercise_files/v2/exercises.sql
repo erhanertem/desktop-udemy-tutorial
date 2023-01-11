@@ -1,3 +1,6 @@
+-- -- NOTE: ESCAPE CHARACTERS WITH A ' OR "
+-- SELECT
+--   'it'' s escaped ';
 -- -- LESSON 3: CREATE DATABASES & TABLES
 -- SHOW DATABASES;
 -- CREATE DATABASE pet_shop;
@@ -1163,7 +1166,154 @@
 --     '23:59:00',
 --     '2020-08-15 23:59:00'
 --   );
-SELECT
-  *
-FROM
-  people;
+-- -- -->DATE FUNCTIONS
+-- SELECT
+--   CURDATE(),
+--   CURRENT_DATE(),
+--   CURTIME(),
+--   CURRENT_TIME(),
+--   NOW(),
+--   CURRENT_TIMESTAMP;
+-- INSERT INTO
+--   people (name, birthdate, birthtime, birthdt)
+-- VALUES
+--   ('Hazel', CURDATE(), CURTIME(), NOW());
+-- SELECT
+--   birthdate,
+--   DAY(birthdate),
+--   DAYOFWEEK(birthdate) -1,
+--   DAYOFYEAR(birthdate),
+--   MONTHNAME(birthdate),
+--   YEAR(birthdate),
+--   WEEK(birthdate),
+--   YEARWEEK(birthdate)
+-- FROM
+--   people;
+-- SELECT
+--   name,
+--   birthdt,
+--   YEAR(birthdt),
+--   MONTHNAME(birthdt)
+-- FROM
+--   people;
+-- -- -->TIME FUNCTIONS
+-- SELECT
+--   name,
+--   birthtime,
+--   HOUR(birthtime),
+--   HOUR(birthdt),
+--   MINUTE(birthtime),
+--   MINUTE(birthdt),
+--   SECOND(birthtime),
+--   SECOND(birthdt)
+-- FROM
+--   people;
+-- SELECT
+--   birthdt,
+--   DATE(birthdt),
+--   TIME(birthdt)
+-- FROM
+--   people;
+-- SELECT
+--   *
+-- FROM
+--   people;
+-- -- -->FORMATTING DATES
+-- SELECT
+--   CONCAT_WS(
+--     (' '),
+--     MONTHNAME(birthdate),
+--     DAY(birthdate),
+--     YEAR(birthdate)
+--   )
+-- FROM
+--   people;
+-- SELECT
+--   DATE_FORMAT(birthdate, '%a %b %D')
+-- FROM
+--   people;
+-- SELECT
+--   DATE_FORMAT(birthdt, '%a,%b,%D at %r')
+-- FROM
+--   people;
+-- -- -->DATE MATH
+-- SELECT
+--   name,
+--   birthdate
+-- FROM
+--   people;
+-- SELECT
+--   DATEDIFF(CURDATE(), birthdate)
+-- FROM
+--   people;
+-- SELECT
+--   DATE_ADD(CURDATE(), INTERVAL 1 YEAR);
+-- SELECT
+--   DATE_ADD(CURDATE(), INTERVAL 1 MONTH);
+-- SELECT
+--   DATE_ADD(NOW(), INTERVAL 1 MONTH);
+-- SELECT
+--   birthdt,
+--   birthdt - INTERVAL 1 MONTH
+-- FROM
+--   people;
+-- SELECT
+--   NOW() - INTERVAL 14 YEAR;
+-- SELECT
+--   name,
+--   birthdate,
+--   YEAR(birthdate + INTERVAL 21 YEAR) AS will_be_21
+-- FROM
+-- people;
+-- -- -->TIME MATH
+-- SELECT
+--   TIMEDIFF(CURTIME(), '7:00:00');
+-- SELECT
+--   CURTIME() - INTERVAL 1 HOUR;
+-- -- -->TIMESTAMP
+-- CREATE TABLE captions (
+--   text VARCHAR(50),
+--   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
+-- INSERT INTO
+--   captions (text)
+-- VALUES
+--   ('beautiful sunset');
+-- CREATE TABLE captions2 (
+--   text VARCHAR(50),
+--   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--   updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+-- );
+-- INSERT INTO
+--   captions2 (text)
+-- VALUES
+--   ('i love life!!!!');
+-- UPDATE
+--   captions2
+-- SET
+--   text = 'i love life!';
+-- -- CODING CHALLENGE
+-- CREATE TABLE inventory (
+--   item_name VARCHAR(100),
+--   price DECIMAL(8, 2),
+--   quantity INT
+-- );
+-- SELECT
+--   CURTIME();
+-- SELECT
+--   CURDATE();
+-- SELECT
+--   DAYOFWEEK(CURDATE()) -1 AS CURRENT_DAY_OF_THE_WEEK;
+-- SELECT
+--   DAYOFWEEK(NOW()) -1 AS CURRENT_DAY_OF_THE_WEEK;
+-- SELECT
+--   DATE_FORMAT(NOW(), '%w');
+-- SELECT
+--   DATE_FORMAT(CURDATE(), '%m/%d/%Y');
+-- SELECT
+--   DATE_FORMAT(CURTIME(), '%M %D at %H:%i');
+-- CREATE TABLE tweets(
+--   content VARCHAR(140),
+--   username VARCHAR(20),
+--   created_at TIMESTAMP DEFAULT NOW()
+-- );
