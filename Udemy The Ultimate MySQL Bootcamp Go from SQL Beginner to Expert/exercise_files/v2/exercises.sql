@@ -1317,3 +1317,259 @@
 --   username VARCHAR(20),
 --   created_at TIMESTAMP DEFAULT NOW()
 -- );
+-- -- LESSON 11  COMPARISON & LOGICAL OPERATORS
+-- -- -->NOT EQUAL
+-- SELECT
+--   title,
+--   author_lname
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Gaiman';
+-- SELECT
+--   title,
+--   author_lname
+-- FROM
+--   books
+-- WHERE
+--   author_lname != 'Gaiman';
+-- -- -->NOT LIKE
+-- SELECT
+--   title
+-- FROM
+--   books
+-- WHERE
+--   title LIKE '% %';
+-- SELECT
+--   title
+-- FROM
+--   books
+-- WHERE
+--   title NOT LIKE '% %';
+-- SELECT
+--   title,
+--   author_fname
+-- FROM
+--   books
+-- WHERE
+--   author_fname LIKE 'da%';
+-- SELECT
+--   title,
+--   author_fname
+-- FROM
+--   books
+-- WHERE
+--   author_fname NOT LIKE 'da%';
+-- -- -->GREATER THAN
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   released_year > 2010;
+-- -- -->LESS THAN OR EQUAL
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   released_year <= 2005;
+-- -- -->LOGICAL AND 
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Eggers'
+--   AND author_fname = 'Dave'
+--   AND released_year > 2010
+--   AND title LIKE '%novel%';
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year >= 2000
+--   AND released_year % 2 != 0;
+-- -- -->LOGICAL OR
+-- SELECT
+--   title,
+--   author_lname,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Eggers' || released_year > 2010;
+-- SELECT
+--   title,
+--   author_lname,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Eggers'
+--   OR released_year > 2010;
+-- SELECT
+--   title,
+--   pages
+-- FROM
+--   books
+-- WHERE
+--   pages < 200
+--   OR title LIKE '%stories%';
+-- -- -->BETWEEN
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year <= 2015
+--   AND released_year >= 2014;
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year BETWEEN 2014
+--   AND 2015;
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year NOT BETWEEN 2014
+--   AND 2015;
+-- -- -->COMPARING DATES
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   birthdate < '2005-01-01';
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   YEAR(birthdate) < 2005;
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   birthtime > '12:00:00';
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   HOUR(birthtime) > 12;
+-- SELECT
+--   CAST('09:00:00' AS TIME);
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   birthtime BETWEEN '10:00:00'
+--   AND '16:00:00';
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   birthtime BETWEEN CAST('10:00:00' AS TIME)
+--   AND CAST('16:00:00' AS TIME);
+-- -- -->IN
+-- SELECT
+--   title,
+--   author_lname
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Carver'
+--   OR author_lname = 'Lahiri'
+--   OR author_lname = 'Smith';
+-- SELECT
+--   title,
+--   author_lname
+-- FROM
+--   books
+-- WHERE
+--   author_lname IN ('Carver', 'Lahiri', 'Smith');
+-- SELECT
+--   title,
+--   author_lname
+-- FROM
+--   books
+-- WHERE
+--   author_lname NOT IN ('Carver', 'Lahiri', 'Smith');
+-- -- -->MODULO
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year >= 2000
+--   AND released_year % 2 = 1;
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year >= 2000
+--   AND released_year % 2 = 0;
+-- -- -->CASE
+-- SELECT
+--   title,
+--   released_year,
+--   CASE
+--     WHEN released_year >= 2000 THEN 'modern lit'
+--     ELSE '20th century lit'
+--   END AS genre
+-- FROM
+--   books;
+-- SELECT
+--   title,
+--   stock_quantity,
+--   CASE
+--     WHEN stock_quantity <= 40 THEN '*'
+--     WHEN stock_quantity <= 70 THEN '**'
+--     WHEN stock_quantity <= 100 THEN '***'
+--     WHEN stock_quantity <= 140 THEN '****'
+--     ELSE '*****'
+--   END AS stock_range
+-- FROM
+--   books;
+-- -- -->IS NULL
+-- SELECT
+--   *
+-- FROM
+--   books;
+-- INSERT INTO
+--   books
+-- SET
+--   title = '';
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname IS NULL;
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname IS NOT NULL;
+-- DELETE FROM
+--   books
+-- WHERE
+--   author_fname IS NULL;
+-- -- CODING CHALLENGE
