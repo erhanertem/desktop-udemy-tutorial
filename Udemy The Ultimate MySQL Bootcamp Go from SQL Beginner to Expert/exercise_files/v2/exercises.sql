@@ -1096,3 +1096,74 @@
 -- ORDER BY
 --      1;
 -- -- LESSON 10 REVISITING DATA TYPES
+-- -- -->VARCHAR/VAR
+-- CREATE TABLE friends (name VARCHAR(10));
+-- INSERT INTO
+--   friends (name)
+-- VALUES
+--   ('tom'),
+--   ('juan pablo'), ('james');
+-- -- -->INT TYPES
+-- CREATE TABLE parent (children TINYINT UNSIGNED);
+-- NOTE: UNSIGNED MEANS ONLY POSITIVE NUMBERS ARE ALLOWED.
+-- INSERT INTO
+--   parent
+-- VALUES
+--   ('-1');
+-- NOTE: The decimal is rounded off when being registered to table
+-- INSERT INTO
+--   parent
+-- VALUES
+--   ('1.5');
+-- INSERT INTO
+--   parent
+-- VALUES
+--   ('91.001');
+-- -- -->DEC
+-- CREATE TABLE products (price DECIMAL(5, 2));
+-- INSERT INTO
+--   products
+-- VALUES
+--   (222.1),
+--   (516.99);
+-- -- -->FLOAT/DOUBLE
+-- CREATE TABLE nums(x FLOAT, y DOUBLE);
+-- INSERT INTO
+--   nums (x, y)
+-- VALUES
+--   (1.12345678, 1.1234567898786868866);
+-- -- -->DATE
+-- CREATE TABLE people (
+--   name VARCHAR(100),
+--   birthdate DATE,
+--   birthtime TIME,
+--   birthdt DATETIME
+-- );
+-- INSERT INTO
+--   people (name, birthdate, birthtime, birthdt)
+-- VALUES
+--   (
+--     'Elton',
+--     '2000-12-25',
+--     '11:00:00',
+--     '2000-12-25 11:00:00'
+--   );
+-- INSERT INTO
+--   people (name, birthdate, birthtime, birthdt)
+-- VALUES
+--   (
+--     'Lulu',
+--     '1985-04-11',
+--     '9:45:10',
+--     '1985-04-11 9:45:10'
+--   ),
+--   (
+--     'Juan',
+--     '2020-08-15',
+--     '23:59:00',
+--     '2020-08-15 23:59:00'
+--   );
+SELECT
+  *
+FROM
+  people;
