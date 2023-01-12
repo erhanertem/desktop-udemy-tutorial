@@ -1573,3 +1573,77 @@
 -- WHERE
 --   author_fname IS NULL;
 -- -- CODING CHALLENGE
+-- SELECT
+--   10 != 10;
+-- RETURNS 0 - FALSY
+-- SELECT
+--   15 > 14
+--   AND 99 -5 <= 94;
+-- 1 && 1 RETURNS 1
+-- SELECT
+--   1 IN (5, 3)
+--   OR 9 BETWEEN 8
+--   AND 10;
+-- 0 || 1 RETURNS 1
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   released_year < 1980;
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname IN ('Eggers', 'Chabon');
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Lahiri'
+--   AND released_year > 2000;
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   pages BETWEEN 100
+--   AND 200;
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname LIKE 'C%'
+--   OR author_lname LIKE 'S%';
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   SUBSTR(author_lname, 1, 1) IN ('C', 'S');
+-- SELECT
+--   title,
+--   author_lname,
+--   CASE
+--     WHEN title LIKE '%stories%' THEN 'Short Stories'
+--     WHEN title LIKE 'Just%' THEN 'Memoir'
+--     WHEN title LIKE 'A-Heartbreaking%' THEN 'Memoir'
+--     ELSE 'Novel'
+--   END AS type
+-- FROM
+--   books;
+-- SELECT
+--   author_fname,
+--   author_lname,
+--   CASE
+--     WHEN COUNT(*) = 1 THEN CONCAT(COUNT(*), ' book')
+--     ELSE CONCAT(COUNT(*), ' books')
+--   END AS COUNT
+-- FROM
+--   books
+-- GROUP BY
+--   author_lname,
+--   author_fname;
