@@ -1787,3 +1787,183 @@
 --   (10, 4);
 -- DESC houses;
 -- -- LESSON 13  ONE TO MANY & JOINS
+-- USE book_shop;
+-- CREATE TABLE customers (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   first_name VARCHAR(50) NOT NULL,
+--   last_name VARCHAR(50) NOT NULL,
+--   email VARCHAR(50) NOT NULL
+-- );
+-- -- -->ON DELETE CASCADE
+-- CREATE TABLE orders (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   order_date DATE,
+--   amount DECIMAL(8, 2),
+--   customer_id INT,
+--   FOREIGN KEY(customer_id) REFERENCES customers(id) ON DELETE CASCADE
+-- );
+-- INSERT INTO
+--   customers (first_name, last_name, email)
+-- VALUES
+--   ('Boy', 'George', 'george@gmail.com'),
+--   ('George', 'Michael', 'gm@gmail.com'),
+--   ('David', 'Bowie', 'david@gmail.com'),
+--   ('Blue', 'Steele', 'blue@gmail.com'),
+--   ('Bette', 'Davis', 'bette@aol.com');
+-- INSERT INTO
+--   orders (order_date, amount, customer_id)
+-- VALUES
+--   ('2016-02-10', 99.99, 1),
+--   ('2017-11-11', 35.50, 1),
+--   ('2014-12-12', 800.67, 2),
+--   ('2015-01-03', 12.50, 2),
+-- --   ('1999-04-11', 450.25, 5);
+-- DELETE FROM
+--   customers
+-- WHERE
+--   last_name = 'George';
+-- SELECT
+--   *
+-- FROM
+--   customers;
+-- -- -->CROSS JOIN
+-- SELECT
+--   *
+-- FROM
+--   orders,
+--   customers;
+-- -- -->INNER JOIN / JOIN - OVERLAPPING JOINS
+-- SELECT
+--   first_name,
+--   last_name,
+--   order_date,
+--   amount
+-- FROM
+--   customers
+--   JOIN orders ON orders.customer_id = customers.id;
+-- -- SAME AS ABOVE JOIN VS INNER JOIN
+-- SELECT
+--   first_name,
+--   last_name,
+--   order_date,
+--   amount
+-- FROM
+--   customers
+--   INNER JOIN orders ON orders.customer_id = customers.id;
+-- -- -->INNER JOIN - GROUP BY
+-- SELECT
+--   first_name,
+--   last_name,
+--   order_date,
+--   SUM(amount) AS total
+-- FROM
+--   customers
+--   JOIN orders ON orders.customer_id = customers.id
+-- GROUP BY
+--   first_name,
+--   last_name
+-- ORDER BY
+--   total DESC;
+-- -->LEFT JOIN 
+-- -->IFNULL
+-- SELECT
+--   first_name,
+--   last_name,
+--   order_date,
+--   IFNULL(SUM(amount), 0) AS total
+-- FROM
+--   customers
+--   LEFT JOIN orders ON orders.customer_id = customers.id
+-- GROUP BY
+--   first_name,
+--   last_name;
+-- -->RIGHT JOIN
+-- SELECT
+--   *
+-- FROM
+--   customers
+--   RIGHT JOIN orders ON customers.id = orders.customer_id;
+-- SELECT
+--   first_name,
+--   last_name,
+--   order_date,
+--   amount
+-- FROM
+--   customers
+--   RIGHT JOIN orders ON customers.id = orders.customer_id;
+-- -- CODING CHALLENGE
+-- CREATE TABLE students (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   first_name VARCHAR(50) NOT NULL
+-- );
+-- CREATE TABLE papers (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   title VARCHAR(250) NOT NULL,
+--   grade INT NOT NULL,
+--   student_id INT,
+--   FOREIGN KEY(student_id) REFERENCES students(id) ON DELETE CASCADE
+-- );
+-- INSERT INTO
+--   students (first_name)
+-- VALUES
+--   ('Caleb'),
+--   ('Samantha'),
+--   ('Raj'),
+--   ('Carlos'),
+--   ('Lisa');
+-- INSERT INTO
+--   papers (student_id, title, grade)
+-- VALUES
+--   (1, 'My First Book Report', 60),
+--   (1, 'My Second Book Report', 75),
+--   (2, 'Russian Lit Through The Ages', 94),
+--   (2, 'De Montaigne and The Art of The Essay', 98),
+--   (4, 'Borges and Magical Realism', 89);
+-- SELECT
+--   first_name,
+--   title,
+--   grade
+-- FROM
+--   students
+--   JOIN papers ON papers.student_id = students.id
+-- ORDER BY
+--   grade DESC;
+-- SELECT
+--   first_name,
+--   title,
+--   grade
+-- FROM
+--   students
+--   LEFT JOIN papers ON papers.student_id = students.id;
+-- SELECT
+--   first_name,
+--   IFNULL(title, 'MISSING'),
+--   IFNULL(grade, 0)
+-- FROM
+--   students
+--   LEFT JOIN papers ON papers.student_id = students.id;
+-- SELECT
+--   first_name,
+--   IFNULL(AVG(grade), 0) AS average
+-- FROM
+--   students
+--   LEFT JOIN papers ON papers.student_id = students.id
+-- GROUP BY
+--   first_name
+-- ORDER BY
+--   average DESC;
+-- SELECT
+--   first_name,
+--   IFNULL(ROUND(AVG(grade), 2), 0) AS average,
+--   CASE
+--     WHEN AVG(grade) >= 75 THEN 'PASSING'
+--     ELSE 'FAILING'
+--   END AS passing_status
+-- FROM
+--   students
+--   LEFT JOIN papers ON papers.student_id = students.id
+-- GROUP BY
+--   first_name
+-- ORDER BY
+--   average DESC;
+-- -- LESSON 14  MANY TO MANY
