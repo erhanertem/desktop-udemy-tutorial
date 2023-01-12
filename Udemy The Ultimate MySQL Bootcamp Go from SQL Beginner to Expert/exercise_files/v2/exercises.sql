@@ -1647,3 +1647,143 @@
 -- GROUP BY
 --   author_lname,
 --   author_fname;
+-- -- LESSON 12  CONSTRAINTS ALTER TABLE
+-- -- -->UNIQUE
+-- CREATE TABLE contacts (
+--   name VARCHAR(100) NOT NULL,
+--   phone VARCHAR(15) NOT NULL UNIQUE
+-- );
+-- INSERT INTO
+--   contacts (name, phone)
+-- VALUES
+--   ('billybob', '87878787787');
+-- INSERT INTO
+--   contacts (name, phone)
+-- VALUES
+--   ('timmytimtim', '87878787787');
+-- -- -->CHECK
+-- CREATE TABLE users (
+--   username VARCHAR(20) NOT NULL,
+--   age INT CHECK (age > 0)
+-- );
+-- INSERT INTO
+--   users (username, age)
+-- VALUES
+--   ('bluecat', 50);
+-- INSERT INTO
+--   users (username, age)
+-- VALUES
+--   ('MISTY', -3);
+-- INSERT INTO
+--   users (username, age)
+-- VALUES
+--   ('MISTY', 0);
+-- INSERT INTO
+--   users (username, age)
+-- VALUES
+--   ('MISTY', 1);
+-- CREATE TABLE palindromes (word VARCHAR(100) CHECK(REVERSE(word) = word));
+-- INSERT INTO
+--   palindromes (word)
+-- VALUES
+--   (' ');
+-- INSERT INTO
+--   palindromes (word)
+-- VALUES
+--   ('XOMA');
+-- -- -->NAMED CHECK
+-- CREATE TABLE users2 (
+--   username VARCHAR(20) NOT NULL,
+--   age INT,
+--   CONSTRAINT age_not_negative CHECK (age >= 0),
+--   CONSTRAINT age_exclude_elderly CHECK (age <= 100)
+-- );
+-- INSERT INTO
+--   users2 (username, age)
+-- VALUES
+--   ('TINA', -1);
+-- INSERT INTO
+--   users2 (username, age)
+-- VALUES
+--   ('TINA', 0);
+-- INSERT INTO
+--   users2 (username, age)
+-- VALUES
+--   ('TINA', 100);
+-- INSERT INTO
+--   users2 (username, age)
+-- VALUES
+--   ('TINA', 101);
+-- CREATE TABLE companies (
+--   name VARCHAR(255) NOT NULL,
+--   address VARCHAR(255) NOT NULL,
+--   CONSTRAINT name_address UNIQUE (name, address)
+-- );
+-- INSERT INTO
+--   companies (name, address)
+-- VALUES
+--   ('blackbird auto', '123 spurce');
+-- INSERT INTO
+--   companies (name, address)
+-- VALUES
+--   ('blackbird auto', '1123 spurce');
+-- CREATE TABLE houses (
+--   purchase_price INT NOT NULL,
+--   sale_price INT NOT NULL,
+--   CONSTRAINT sale_price_bottom_limit CHECK (purchase_price <= sale_price)
+-- );
+-- INSERT INTO
+--   houses (purchase_price, sale_price)
+-- VALUES
+--   (100, 200);
+-- INSERT INTO
+--   houses (purchase_price, sale_price)
+-- VALUES
+--   (400, 200);
+-- -- -->ALTER TABLE
+-- ALTER TABLE
+--   companies
+-- ADD
+--   COLUMN phone VARCHAR(15);
+-- ALTER TABLE
+--   companies
+-- ADD
+--   COLUMN employee_count INT NOT NULL;
+-- ALTER TABLE
+--   companies
+-- ADD
+--   COLUMN superviser_count INT NOT NULL DEFAULT 1;
+-- ALTER TABLE
+--   companies DROP COLUMN phone;
+-- ALTER TABLE
+--   companies DROP COLUMN employee_count;
+-- RENAME TABLE companies TO suppliers;
+-- ALTER TABLE
+--   suppliers RENAME TO companies;
+-- ALTER TABLE
+--   companies RENAME COLUMN name TO company_name;
+-- ALTER TABLE
+--   companies
+-- MODIFY
+--   company_name VARCHAR(100) DEFAULT 'unknown';
+-- -- -->ALTER TABLE CONSTRAINTS
+-- SELECT
+--   *
+-- FROM
+--   houses;
+-- ALTER TABLE
+--   houses
+-- ADD
+--   CONSTRAINT positive_price CHECK (purchase_price >= 0);
+-- ALTER TABLE
+--   houses DROP CONSTRAINT sale_price_bottom_limit;
+-- INSERT INTO
+--   houses (purchase_price, sale_price)
+-- VALUES
+--   (-1, 4);
+-- INSERT INTO
+--   houses (purchase_price, sale_price)
+-- VALUES
+--   (10, 4);
+-- DESC houses;
+-- -- LESSON 13  ONE TO MANY & JOINS
