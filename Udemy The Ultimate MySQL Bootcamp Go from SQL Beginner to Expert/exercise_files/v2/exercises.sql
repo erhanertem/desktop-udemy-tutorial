@@ -2262,3 +2262,224 @@
 --   @@GLOBAL.sql_mode;
 -- SELECT
 --   @@SESSION.sql_mode;
+-- -- LESSON 16  WINDOW FUNCTIONS
+-- CREATE TABLE employees (
+--   emp_no INT PRIMARY KEY AUTO_INCREMENT,
+--   department VARCHAR(20),
+--   salary INT
+-- );
+-- INSERT INTO
+--   employees (department, salary)
+-- VALUES
+--   ('engineering', 80000),
+--   ('engineering', 69000),
+--   ('engineering', 70000),
+--   ('engineering', 103000),
+--   ('engineering', 67000),
+--   ('engineering', 89000),
+--   ('engineering', 91000),
+--   ('sales', 59000),
+--   ('sales', 70000),
+--   ('sales', 159000),
+--   ('sales', 72000),
+--   ('sales', 60000),
+--   ('sales', 61000),
+--   ('sales', 61000),
+--   ('customer service', 38000),
+--   ('customer service', 45000),
+--   ('customer service', 61000),
+--   ('customer service', 40000),
+--   ('customer service', 31000),
+--   ('customer service', 56000),
+--   ('customer service', 55000);
+-- -- -->OVER() FUNCTION
+-- SELECT
+--   *
+-- FROM
+--   employees;
+-- SELECT
+--   AVG(salary) OVER()
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   AVG(salary) OVER()
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   MIN(salary) OVER(),
+--   MAX (salary) OVER()
+-- FROM
+--   employees;
+-- -- -- -->OVER(PARTITION BY....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   AVG(salary) OVER(PARTITION BY department) AS dept_average,
+--   AVG(salary) OVER() AS company_average
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   SUM(salary) OVER() AS total_payroll,
+--   SUM(salary) OVER(PARTITION BY department) AS dept_payroll
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   COUNT(*) OVER (PARTITION BY department) AS dept_count
+-- FROM
+--   employees;
+-- -- -->OVER(ORDER BY....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   SUM(salary) OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary DESC
+--   ) AS rolling_dept_payroll,
+--   SUM(salary) OVER(PARTITION BY department) AS dept_salary
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   MIN(salary) OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary
+--   ) AS rolling_MIN
+-- FROM
+--   employees;
+-- -- -->RANK() OVER(....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   RANK() OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary DESC
+--   ) AS Dept_salary_rank,
+--   RANK() OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS Overal_salary_rank
+-- FROM
+--   employees
+-- ORDER BY
+--   department DESC;
+-- -- -->DENSE_RANK() OVER(....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   DENSE_RANK() OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary DESC
+--   ) AS Dept_salary_rank,
+--   RANK() OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS Overal_salary_rank
+-- FROM
+--   employees
+-- ORDER BY
+--   department DESC;
+-- -- -->ROW_NUMBER() OVER(....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   ROW_NUMBER() OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary DESC
+--   ) AS dept_row_number
+-- FROM
+--   employees
+-- ORDER BY
+--   department;
+-- -- -->NTILE() OVER(....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   NTILE(4) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS salary_quartile
+-- FROM
+--   employees;
+-- -- -->FIRST_VALUE() OVER(...) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   FIRST_VALUE(emp_no) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS hi_paid_id_overall,
+--   FIRST_VALUE(emp_no) OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary DESC
+--   ) AS hi_paid_id_dept
+-- FROM
+--   employees;
+-- -- -->LAG() OVER(...) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   LAG(salary) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS diff_from_previous
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   salary - LAG(salary) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS diff_from_previous
+-- FROM
+--   employees;
+-- -- -->LEAD() OVER(...) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   LEAD(salary) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS diff_from_previous
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   salary - LEAD(salary) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS diff_from_previous
+-- FROM
+--   employees;
