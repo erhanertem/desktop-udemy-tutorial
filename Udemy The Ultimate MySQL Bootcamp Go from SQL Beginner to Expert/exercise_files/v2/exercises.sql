@@ -2134,3 +2134,131 @@
 --   title ASC
 -- LIMIT
 --   14;
+-- -- LESSON 15  VIEWS, MODES, ....
+-- -- -->VIEWS - a virtual baseline table
+-- -- ->CREATE VIEWS
+-- CREATE VIEW full_reviews AS
+-- SELECT
+--   title,
+--   released_year,
+--   genre,
+--   rating,
+--   first_name,
+--   last_name
+-- FROM
+--   reviews
+--   JOIN series ON series.id = reviews.series_id
+--   JOIN reviewers ON reviewers.id = reviews.reviewer_id;
+-- -- -> USE VIEWS
+-- SELECT
+--   *
+-- FROM
+--   full_reviews
+-- WHERE
+--   genre = 'Animation';
+-- SELECT
+--   genre,
+--   AVG(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   genre;
+-- -- ->ALTER VIEW
+-- CREATE VIEW ordered_series AS
+-- SELECT
+--   *
+-- FROM
+--   series
+-- ORDER BY
+--   released_year;
+-- -- #1.method for altering
+-- CREATE
+-- OR REPLACE VIEW ordered_series AS
+-- SELECT
+--   *
+-- FROM
+--   series
+-- ORDER BY
+--   released_year DESC;
+-- -- #2.method for altering
+-- ALTER VIEW ordered_series AS
+-- SELECT
+--   *
+-- FROM
+--   series
+-- ORDER BY
+--   released_year;
+-- SELECT
+--   *
+-- FROM
+--   ordered_series;
+-- -- -- -->GROUP BY ...HAVING CLAUSE
+-- SELECT
+--   title,
+--   AVG(rating) AS rate
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title
+-- HAVING
+--   rate > 9;
+-- SELECT
+--   title,
+--   AVG(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title
+-- HAVING
+--   COUNT(rating) > 2;
+-- -- -- -->GROUP BY....WITH ROLLUP CLAUSE
+-- SELECT
+--   AVG(rating)
+-- FROM
+--   full_reviews;
+-- SELECT
+--   title,
+--   AVG(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title;
+-- SELECT
+--   title,
+--   AVG(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title WITH ROLLUP;
+-- SELECT
+--   title,
+--   COUNT(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title;
+-- SELECT
+--   title,
+--   COUNT(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title WITH ROLLUP;
+-- SELECT
+--   released_year,
+--   genre,
+--   AVG(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   released_year,
+--   genre WITH ROLLUP;
+-- -- -- -->SQL MODES
+-- SET
+--   GLOBAL sql_mode = 'modes';
+-- SET
+--   SESSION sql_mode = 'modes';
+-- SELECT
+--   @@GLOBAL.sql_mode;
+-- SELECT
+--   @@SESSION.sql_mode;
