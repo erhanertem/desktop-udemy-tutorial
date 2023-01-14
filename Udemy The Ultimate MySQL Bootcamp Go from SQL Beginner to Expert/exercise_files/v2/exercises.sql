@@ -1832,6 +1832,11 @@
 -- FROM
 --   orders,
 --   customers;
+-- SELECT
+--   *
+-- FROM
+--   orders
+--   CROSS JOIN customers;
 -- -- -->INNER JOIN / JOIN - OVERLAPPING JOINS
 -- SELECT
 --   first_name,
