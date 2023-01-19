@@ -197,3 +197,184 @@ FROM
   phones;
 
 -- -- LESSON 3 WORKING WITH TABLES
+--ONE TO MANY
+DROP TABLE IF EXISTS photos,
+users;
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(50) NOT NULL
+);
+
+INSERT INTO
+  users (username)
+VALUES
+  ('monahan93'),
+  ('pferrer'),
+  ('si93onis'),
+  ('99stroman');
+
+CREATE TABLE photos (
+  id SERIAL PRIMARY KEY,
+  url VARCHAR(200) NOT NULL,
+  user_id INT REFERENCES users(id) ON DELETE CASCADE
+);
+
+INSERT INTO
+  photos (url, user_id)
+VALUES
+  ('http://one.jpg', 4);
+
+INSERT INTO
+  photos (url, user_id)
+VALUES
+  ('http://two.jpg', 1),
+  ('http://three.jpg', 1),
+  ('http://four.jpg', 1),
+  ('http://five.jpg', 2),
+  ('http://six.jpg', 3),
+  ('http://123.jpg', 4);
+
+SELECT
+  *
+FROM
+  photos
+WHERE
+  user_id = 4;
+
+SELECT
+  url,
+  username
+FROM
+  photos
+  INNER JOIN users ON users.id = photos.user_id;
+
+SELECT
+  *
+FROM
+  crew_members;
+
+-- CODING CHALLENGE
+-- Create table called 'boats'
+CREATE TABLE boats (id SERIAL PRIMARY KEY, name VARCHAR(50));
+
+-- Insert two boats 
+INSERT INTO
+  boats (name)
+VALUES
+  ('Rogue Wave'),
+  ('Harbor Master');
+
+-- Create table called 'crew_members'
+CREATE TABLE crew_members (
+  id SERIAL PRIMARY KEY,
+  first_name VARCHAR,
+  boats_id INT REFERENCES boats(id)
+);
+
+-- Insert three crew members
+INSERT INTO
+  crew_members (first_name, boats_id)
+VALUES
+  ('Alex', 1),
+  ('Lucia', 1),
+  ('Ari', 2);
+
+-- Write query here to fetch all columns for all crew_members associated with the boat that has an ID of 1
+-- >>>>>>>> TODO #2 HERE!!!
+SELECT
+  first_name,
+  boats_id
+FROM
+  crew_members
+WHERE
+  boats_id = 1;
+
+SELECT
+  first_name,
+  name
+FROM
+  crew_members
+  JOIN boats ON crew_members.boats_id = boats.id
+WHERE
+  boats_id = 1;
+
+-- -----------------------
+INSERT INTO
+  photos (url, user_id)
+VALUES
+  ('http://jpg', 123432);
+
+INSERT INTO
+  photos (url, user_id)
+VALUES
+  ('http://jpg', NULL);
+
+DELETE FROM
+  users
+WHERE
+  id = 1;
+
+DELETE FROM
+  photos
+WHERE
+  id = 9;
+
+-- TESTING DELETION CONSTRAINTS
+DROP TABLE IF EXISTS photos,
+users;
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(50) NOT NULL
+);
+
+INSERT INTO
+  users (username)
+VALUES
+  ('monahan93'),
+  ('pferrer'),
+  ('si93onis'),
+  ('99stroman');
+
+-- CREATE TABLE photos (
+--   id SERIAL PRIMARY KEY,
+--   url VARCHAR(200),
+--   user_id INT REFERENCES users(id) ON DELETE
+--   SET
+--     NULL
+-- );
+CREATE TABLE photos (
+  id SERIAL PRIMARY KEY,
+  url VARCHAR(200),
+  user_id INT REFERENCES users(id) ON DELETE CASCADE
+);
+
+INSERT INTO
+  photos (url, user_id)
+VALUES
+  ('http:/one.jpg', 4),
+  ('http:/two.jpg', 1),
+  ('http:/25.jpg', 1),
+  ('http:/36.jpg', 1),
+  ('http:/754.jpg', 2),
+  ('http:/35.jpg', 3),
+  ('http:/256.jpg', 4);
+
+-- TEST CASCADE DELETION
+DELETE FROM
+  users
+WHERE
+  id = 1;
+
+SELECT
+  *
+FROM
+  photos;
+
+SELECT
+  *
+FROM
+  users;
+
+-- -- LESSON 4 RELATING RECORDS WITH JOINS
