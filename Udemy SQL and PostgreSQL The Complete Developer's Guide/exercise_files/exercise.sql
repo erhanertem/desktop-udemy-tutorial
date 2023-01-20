@@ -863,3 +863,110 @@ FROM
   users;
 
 -- -- LESSON 5 AGGREGATION OF RECORDS
+-- GROUP BY - CONDENSES THE SIMILAR ITEMS INTO ONE ROW
+SELECT
+  user_id
+FROM
+  comments
+GROUP BY
+  user_id;
+
+-- AGGREGATE FUNCTIONS - CONDENSES THE OUTPOUT TO A SINGLE VALUE
+SELECT
+  MIN(id),
+  MAX(id),
+  SUM(id),
+  ROUND(AVG(id), 2)
+FROM
+  comments;
+
+-- COMBINING AGGREGATE FUNCTIONS AND GROUP BY
+SELECT
+  user_id,
+  COUNT(c.id) -- NUMBER OF IDS ON EACH user_id GROUP
+FROM
+  comments c
+GROUP BY
+  user_id;
+
+SELECT
+  *
+FROM
+  photos;
+
+-- COUNT ALL ROWS NO MATTER ITS NULL OR NOT
+-- NOTE: COUNT DOES NOT COUNT FOR NULL!!!
+SELECT
+  user_id,
+  COUNT(*)
+FROM
+  comments
+GROUP BY
+  user_id;
+
+SELECT
+  photo_id,
+  COUNT(*)
+FROM
+  comments
+GROUP BY
+  photo_id;
+
+SELECT
+  authors.name,
+  COUNT(*)
+FROM
+  books
+  JOIN authors ON authors.id = books.author_id
+GROUP BY
+  authors.name;
+
+SELECT
+  photo_id,
+  COUNT(*)
+FROM
+  comments
+WHERE
+  photo_id < 3
+GROUP BY
+  photo_id
+HAVING
+  COUNT(*) > 2;
+
+SELECT
+  c.user_id,
+  COUNT(*)
+FROM
+  comments c
+  JOIN photos p ON p.id = c.photo_id
+WHERE
+  p.id IN (1, 2)
+GROUP BY
+  c.user_id
+HAVING
+  COUNT(*) > 2;
+
+SELECT
+  c.user_id,
+  COUNT(*)
+FROM
+  comments c
+  JOIN photos p ON p.id = c.photo_id
+WHERE
+  p.id < 3
+GROUP BY
+  c.user_id
+HAVING
+  COUNT(*) > 2;
+
+SELECT
+  manufacturer,
+  SUM(price * units_sold) AS total_revenue
+FROM
+  phones
+GROUP BY
+  manufacturer
+HAVING
+  total_revenue > 2000000;
+
+-- -- LESSON 6 WORKING WITH LARGE DATASETS
