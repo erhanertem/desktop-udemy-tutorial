@@ -1693,3 +1693,53 @@ FROM
   JOIN orders ON users.id = orders.user_id
 LIMIT
   10;
+
+-- -- LESSON 7 SORTING RECORDS
+-- ORDER BY ASC / DESC
+SELECT
+  *
+FROM
+  products
+ORDER BY
+  price DESC;
+
+SELECT
+  *
+FROM
+  products
+ORDER BY
+  price ASC,
+  weight DESC OFFSET 40;
+
+-- LIMIT
+SELECT
+  *
+FROM
+  products
+ORDER BY
+  price ASC,
+  weight DESC
+LIMIT
+  4;
+
+-- RANGE TRIM LIMIT
+SELECT
+  *
+FROM
+  products
+ORDER BY
+  price ASC,
+  weight DESC
+LIMIT
+  3 OFFSET 1;
+
+SELECT
+  name
+FROM
+  phones
+ORDER BY
+  price DESC
+LIMIT
+  2 OFFSET 1;
+
+-- -- LESSON 8 UNIONS AND INTERSECTIONS WITH SETS
