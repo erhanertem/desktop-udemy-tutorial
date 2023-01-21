@@ -1743,3 +1743,118 @@ LIMIT
   2 OFFSET 1;
 
 -- -- LESSON 8 UNIONS AND INTERSECTIONS WITH SETS
+-- UNION 
+-- NOTE: OMITS ANY DUPLICATE SHARED BY BOTH TABLES
+(
+  SELECT
+    *
+  FROM
+    products
+  ORDER BY
+    price DESC
+  LIMIT
+    4
+)
+UNION
+(
+  SELECT
+    *
+  FROM
+    products
+  ORDER BY
+    (price / weight) DESC
+  LIMIT
+    4
+);
+
+-- UNION ALL
+-- NOTE: DOES NOT OMIT DUPLICATES SHARED BY BOTH TABLES
+(
+  SELECT
+    *
+  FROM
+    products
+  ORDER BY
+    price DESC
+  LIMIT
+    4
+)
+UNION
+ALL (
+  SELECT
+    *
+  FROM
+    products
+  ORDER BY
+    (price / weight) DESC
+  LIMIT
+    4
+);
+
+-- INTERSECT
+(
+  SELECT
+    *
+  FROM
+    products
+  ORDER BY
+    price DESC
+  LIMIT
+    4
+)
+INTERSECT
+(
+  SELECT
+    *
+  FROM
+    products
+  ORDER BY
+    (price / weight) DESC
+  LIMIT
+    4
+);
+
+-- EXCEPT
+(
+  SELECT
+    *
+  FROM
+    products
+  ORDER BY
+    price DESC
+  LIMIT
+    4
+)
+EXCEPT
+  (
+    SELECT
+      *
+    FROM
+      products
+    ORDER BY
+      (price / weight) DESC
+    LIMIT
+      4
+  );
+
+(
+  SELECT
+    manufacturer
+  FROM
+    phones
+  WHERE
+    price < 170
+)
+UNION
+(
+  SELECT
+    manufacturer
+  FROM
+    phones
+  GROUP BY
+    manufacturer
+  HAVING
+    COUNT(*) > 2
+);
+
+-- -- LESSON 9 ASSEMBLING QUERIES WITH SUBQUERIES
