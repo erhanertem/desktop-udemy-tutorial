@@ -1858,3 +1858,328 @@ UNION
 );
 
 -- -- LESSON 9 ASSEMBLING QUERIES WITH SUBQUERIES
+SELECT
+  name,
+  price
+FROM
+  products
+WHERE
+  price > (
+    SELECT
+      MAX(price)
+    FROM
+      products
+    WHERE
+      department = 'Toys'
+  );
+
+--  SELECT... SUBQUERY
+SELECT
+  name,
+  price,
+  (
+    SELECT
+      MAX(price)
+    FROM
+      products
+  )
+FROM
+  products
+WHERE
+  price > 867;
+
+SELECT
+  name,
+  price,
+  (
+    SELECT
+      price
+    FROM
+      products
+    WHERE
+      id = 3
+  ) AS id_3_price
+FROM
+  products
+WHERE
+  price > 867;
+
+SELECT
+  name,
+  price,
+  price / (
+    SELECT
+      MAX(price)
+    FROM
+      phones
+  ) AS price_ratio
+FROM
+  phones;
+
+--  FROM... SUBQUERY
+-- SUBQUERY RETURNING MULTIPLE COLUMN/MULTIPLE VALUES
+SELECT
+  name,
+  price_weight_ratio
+FROM
+  (
+    SELECT
+      name,
+      (price / weight) AS price_weight_ratio
+    FROM
+      products
+  ) AS p
+WHERE
+  price_weight_ratio > 5;
+
+-- SUBQUERY RETURNING SINGLE COLUMN/SINGLE VALUE
+SELECT
+  *
+FROM
+  (
+    SELECT
+      MAX(price)
+    FROM
+      products
+  ) p;
+
+SELECT
+  AVG(order_count)
+FROM
+  (
+    SELECT
+      user_id,
+      COUNT(*) AS order_count
+    FROM
+      orders
+    GROUP BY
+      user_id
+  ) c;
+
+SELECT
+  MAX(avg_price) AS max_average_price
+FROM
+  (
+    SELECT
+      manufacturer,
+      AVG(price) AS avg_price
+    FROM
+      phones
+    GROUP BY
+      manufacturer
+  );
+
+-- FROM JOIN() SUBQUERY
+SELECT
+  first_name
+FROM
+  users
+  JOIN (
+    SELECT
+      user_id
+    FROM
+      orders
+    WHERE
+      product_id = 3
+  ) o ON o.user_id = users.id;
+
+-- REWRITE ABOVE CODE WITH WHERE CLAUSE 
+SELECT
+  first_name
+FROM
+  users
+  JOIN orders ON orders.user_id = users.id
+WHERE
+  orders.product_id = 3;
+
+-- WHERE CLAUSE SUBQUERY
+SELECT
+  id
+FROM
+  orders
+WHERE
+  product_id IN (
+    SELECT
+      id
+    FROM
+      products
+    WHERE
+      price / weight > 50
+  );
+
+SELECT
+  name,
+  price
+FROM
+  products
+WHERE
+  price >(
+    SELECT
+      AVG(price)
+    FROM
+      products
+  )
+ORDER BY
+  price;
+
+SELECT
+  name,
+  price
+FROM
+  phones
+WHERE
+  price > (
+    SELECT
+      price
+    FROM
+      phones
+    WHERE
+      name = 'S5620 Monte'
+  );
+
+SELECT
+  name,
+  department
+FROM
+  products
+WHERE
+  department NOT IN (
+    SELECT
+      department
+    FROM
+      products
+    WHERE
+      price < 100
+    GROUP BY
+      department
+  );
+
+-- ALL
+SELECT
+  name,
+  department,
+  price
+FROM
+  products
+WHERE
+  price > ALL (
+    SELECT
+      price
+    FROM
+      products
+    WHERE
+      department = 'Industrial'
+  );
+
+-- SOME/ANY
+SELECT
+  name
+FROM
+  products
+WHERE
+  price > ANY (
+    SELECT
+      price
+    FROM
+      products
+    WHERE
+      department = 'Industrial'
+  );
+
+SELECT
+  name
+FROM
+  phones
+WHERE
+  price > ALL (
+    SELECT
+      price
+    FROM
+      phones
+    WHERE
+      manufacturer = 'Samsung'
+  );
+
+-- CORRELATED WHERE SUBQUERY
+SELECT
+  name,
+  department,
+  price
+FROM
+  products AS p1
+WHERE
+  p1.price = (
+    SELECT
+      MAX(price)
+    FROM
+      products AS p2
+    WHERE
+      p1.department = p2.department
+  );
+
+-- SELECT * FROM products;
+-- INSERT INTO
+--   products(name, department, price, weight)
+-- VALUES
+-- ('TEST', 'Home', 939, 3);
+SELECT
+  name,
+  department,
+  price
+FROM
+  products AS p1
+WHERE
+  (p1.price, p1.department) = ANY (
+    SELECT
+      MAX(price),
+      department
+    FROM
+      products AS p2
+    GROUP BY
+      p2.department
+  );
+
+SELECT
+  name,
+  department,
+  price
+FROM
+  products
+WHERE
+  (price, department) IN (
+    SELECT
+      MAX(price),
+      department
+    FROM
+      products
+    GROUP BY
+      department
+  );
+
+SELECT
+  name,
+  (
+    SELECT
+      COUNT(*)
+    FROM
+      orders o
+    WHERE
+      o.product_id = p.id
+  ) AS num_orders
+FROM
+  products p;
+
+SELECT
+  (
+    (
+      SELECT
+        MAX(price)
+      FROM
+        products
+    ) /(
+      SELECT
+        MIN(price)
+      FROM
+        products
+    )
+  );
