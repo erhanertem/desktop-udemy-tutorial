@@ -2305,3 +2305,112 @@ SELECT
   ) - ('4D' :: INTERVAL);
 
 -- -- LESSON 14 DATABASE SIDE VALIDATION AND CONSTRAINTS
+CREATE TABLE products(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(40),
+  department VARCHAR(40),
+  price INT,
+  weight INT
+);
+
+INSERT INTO
+  products (name, department, price, weight)
+VALUES
+  ('Shirt', 'Clothes', 20, 1);
+
+INSERT INTO
+  products (name, department, weight)
+VALUES
+  ('Pants', 'Clothes', 3);
+
+-- FIRST LETS GET RID OF THE NULL VALUES IN THE COLUMNS BEFORE ALTERING COLUMN
+UPDATE
+  products
+SET
+  price = 9999
+WHERE
+  price IS NULL;
+
+-- CHANGE SETTINGS FOR THE COLUMN
+ALTER TABLE
+  products
+ALTER COLUMN
+  price
+SET
+  NOT NULL;
+
+INSERT INTO
+  products (name, department, weight)
+VALUES
+  ('Shoes', 'Clothes', 5);
+
+-- ADDING DEFAULT CONSTRAINT
+ALTER TABLE
+  products
+ALTER COLUMN
+  price
+SET
+  DEFAULT 9999;
+
+ALTER TABLE
+  products
+ALTER COLUMN
+  name
+SET
+  DEFAULT 'anonymous';
+
+-- ADDING A NULL CONTRAINT
+ALTER TABLE
+  products
+ALTER COLUMN
+  name
+SET
+  NOT NULL;
+
+-- ADDING A UNIQUE CONSTRAINT
+ALTER TABLE
+  products
+ADD
+  UNIQUE(name);
+
+INSERT INTO
+  products (name, department, weight)
+VALUES
+  ('Shoes', 'Warehouse', 15);
+
+-- DELETING A CONSTRAINT
+ALTER TABLE
+  products DROP CONSTRAINT products_name_key;
+
+-- ADDING A NAMED CONSTRAINT FOR MULTIPLE FIELDS
+ALTER TABLE
+  products
+ADD
+  CONSTRAINT unique_const UNIQUE(name, department);
+
+ALTER TABLE
+  products
+ADD
+  CONSTRAINT non_negative_price CHECK(price > 0);
+
+INSERT INTO
+  products (name, department, price, weight)
+VALUES
+  ('Shoes', 'Warehouse', -90, 15);
+
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(40) NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  est_delivery TIMESTAMP NOT NULL,
+  CHECK(created_at < est_delivery)
+);
+
+INSERT INTO
+  orders (name, created_at, est_delivery)
+VALUES
+  (
+    'Shirt',
+    '2000-NOV-20 01:00AM',
+    '2000-NOV-10 01:00AM'
+  );
