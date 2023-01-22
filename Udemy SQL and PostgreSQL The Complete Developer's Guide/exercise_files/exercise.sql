@@ -2183,3 +2183,49 @@ SELECT
         products
     )
   );
+
+SELECT
+  (
+    SELECT
+      MAX(price)
+    FROM
+      phones
+  ) AS max_price,
+  (
+    SELECT
+      MIN(price)
+    FROM
+      phones
+  ) AS min_price,
+  (
+    SELECT
+      AVG(price)
+    FROM
+      phones
+  ) AS avg_price;
+
+-- -- LESSON 10 SELECTING DISTINCT RECORDS
+SELECT
+  DISTINCT department
+FROM
+  products;
+
+-- COUNT ONLY POSSIBLE ON A SINGLE COLUMN
+SELECT
+  COUNT(DISTINCT department)
+FROM
+  products;
+
+-- DISTINCT CONSIDERS BOTH DEPARTMENT AND NAME AT THE SAME TIME.
+SELECT
+  DISTINCT department,
+  name
+FROM
+  products;
+
+SELECT
+  DISTINCT manufacturer
+FROM
+  phones;
+
+-- -- LESSON 11 UTILITY OPERATORS, KEYWORDS AND FUNCTIONS
