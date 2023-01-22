@@ -2229,3 +2229,37 @@ FROM
   phones;
 
 -- -- LESSON 11 UTILITY OPERATORS, KEYWORDS AND FUNCTIONS
+-- GREATEST() FUNCTION
+SELECT
+  GREATEST(20, 10, 30);
+
+SELECT
+  name,
+  weight,
+  GREATEST(weight * 2, 30)
+FROM
+  products;
+
+-- LEAST FUNCTION
+SELECT
+  LEAST(1, 100, 20, 500);
+
+SELECT
+  name,
+  price,
+  LEAST(price * 0.5, 400)
+FROM
+  products;
+
+-- CASE KEYWORD
+-- IF WE DONT HAVE ELSE THIS CONDIUTION RETURNS NULL
+SELECT
+  name,
+  price,
+  CASE
+    WHEN price > 600 THEN 'high'
+    WHEN price > 300 THEN 'medium'
+    ELSE 'cheap'
+  END AS pricing_taste
+FROM
+  products;
