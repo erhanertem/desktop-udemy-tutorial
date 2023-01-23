@@ -2416,11 +2416,19 @@ VALUES
   );
 
 -- -- LESSON 15 DATABASE STRUCTURE DESIGN PATTERNS
+CREATE TYPE status_type AS ENUM('busy', 'offline', 'online', 'away');
+
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   created_at TIMESTAMP,
   updated_at TIMESTAMP,
-  username VARCHAR(30)
+  username VARCHAR(30),
+  bio VARCHAR(400),
+  avatar VARCHAR(200),
+  phone VARCHAR(25),
+  email VARCHAR(40),
+  password VARCHAR(50),
+  status status_type
 );
 
 CREATE TABLE posts (
@@ -2501,5 +2509,18 @@ CREATE TABLE caption_tags (
   id SERIAL PRIMARY KEY,
   created_at TIMESTAMP,
   user_id INT REFERENCES users(id),
+  post_id INT REFERENCES posts(id)
+);
+
+-- -- LESSON 18 HOW TO BUILD A HASHTAG SYSTEM
+CREATE TABLE hastags (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP,
+  title VARCHAR(20)
+);
+
+CREATE TABLE hashtags_posts (
+  id SERIAL PRIMARY KEY,
+  hashtag_id INT REFERENCES hastags(id),
   post_id INT REFERENCES posts(id)
 );
