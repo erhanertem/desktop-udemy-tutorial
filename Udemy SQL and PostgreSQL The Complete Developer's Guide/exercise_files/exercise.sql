@@ -2428,6 +2428,9 @@ CREATE TABLE posts (
   created_at TIMESTAMP,
   updated_at TIMESTAMP,
   url VARCHAR(200),
+  caption VARCHAR(240),
+  lat REAL,
+  lng REAL,
   user_id INT REFERENCES users(id)
 );
 
@@ -2441,19 +2444,17 @@ CREATE TABLE comments (
 );
 
 -- -- LESSON 16 HOW TO BUILD A LIKE SYSTEM
--- SOLUTION #1 POLYMORPHIC ASSOCIATIONS - BAD 
--- VERY IMPORTANT! liked_id is tracked via APP LEVEL DEVELOPER CODE. liked_id is not hardwired via database relationships
--- NOTE: MORE CODE, LESS DB LOGIC DEPENDANT!
-CREATE TYPE types AS ENUM('post', 'comment');
-
-CREATE TABLE likes (
-  id SERIAL PRIMARY KEY,
-  created_at TIMESTAMP,
-  user_id INT REFERENCES users(id),
-  liked_id INT NOT NULL,
-  liked_type types
-);
-
+-- -- SOLUTION #1 POLYMORPHIC ASSOCIATIONS - BAD 
+-- -- VERY IMPORTANT! liked_id is tracked via APP LEVEL DEVELOPER CODE. liked_id is not hardwired via database relationships
+-- -- NOTE: MORE CODE, LESS DB LOGIC DEPENDANT!
+-- CREATE TYPE types AS ENUM('post', 'comment');
+-- CREATE TABLE likes (
+--   id SERIAL PRIMARY KEY,
+--   created_at TIMESTAMP,
+--   user_id INT REFERENCES users(id),
+--   liked_id INT NOT NULL,
+--   liked_type types
+-- );
 -- SOLUTION #2 POLYMORPHIC ASSOCIATIONS ALTERNATE 
 -- NOTE: MORE COMPACT AND EFFICIENT COMPARED TO SOLUTION #3 IF LIKES MECHANISIMS ARE ALL SIMILAR. 
 -- IMPORTANT! WHEN WE LIKE EITHER A POST OR COMMENT, THE LIKE ROW SHOULD EITHER MARK POST_ID OR COMMENT_ID NULL DEPENDIGN ON WHICH LIKED. THEREBY, WE ADD A like_input_chk NAMED CONSTRAINT TO CHECK IF THE SUM OF INTEGER VALUE OF BOOLEAN DEFINITION OF post_id AND comment_id IS EQUAL TO 1. BECAUSE WE ONLY ACCEPT EITHER 1+0 OR 0+1 SCENARIOS WHICH SHALL RETURN ALWAYS 1.
@@ -2468,23 +2469,37 @@ CREATE TABLE likes (
   ) = 1
 );
 
--- SOLUTION #3 - SIMPLE DECENTRILIZED SOLUTION
--- NOTE: MAY PROVE A GOOD SOLUTION IF MULTIPLE COMMENT TYPES/POST LIKE TYPES AND EACH HAVE THEIR OWN SETTINGS OR REACTIONS IMPLEMENTATION
-CREATE TYPE reaction AS ENUM('sad', 'ok', 'happy');
-
-CREATE TABLE comments_like (
+-- -- SOLUTION #3 - SIMPLE DECENTRILIZED SOLUTION
+-- -- NOTE: MAY PROVE A GOOD SOLUTION IF MULTIPLE COMMENT TYPES/POST LIKE TYPES AND EACH HAVE THEIR OWN SETTINGS OR REACTIONS IMPLEMENTATION
+-- CREATE TYPE reaction AS ENUM('sad', 'ok', 'happy');
+-- CREATE TABLE comments_like (
+--   id SERIAL PRIMARY KEY,
+--   created_at TIMESTAMP,
+--   user_id INT REFERENCES users(id),
+--   comment_id INT REFERENCES comments(id),
+--   reaction_type reaction
+-- );
+-- CREATE TABLE posts_like (
+--   id SERIAL PRIMARY KEY,
+--   created_at TIMESTAMP,
+--   user_id INT REFERENCES users(id),
+--   post_id INT REFERENCES posts(id)
+-- );
+-- -- LESSON 17 HOW TO BUILD A MENTION SYSTEM
+-- LOCATION X/Y COORDINATE OF THE MENTION CLICK ON THE PHOTO AREA
+CREATE TABLE photo_tags (
   id SERIAL PRIMARY KEY,
   created_at TIMESTAMP,
+  updated_at TIMESTAMP,
+  x_mention INT NOT NULL,
+  y_mention INT NOT NULL,
   user_id INT REFERENCES users(id),
-  comment_id INT REFERENCES comments(id),
-  reaction_type reaction
+  post_id INT REFERENCES posts(id)
 );
 
-CREATE TABLE posts_like (
+CREATE TABLE caption_tags (
   id SERIAL PRIMARY KEY,
   created_at TIMESTAMP,
   user_id INT REFERENCES users(id),
   post_id INT REFERENCES posts(id)
 );
-
--- -- LESSON 17 HOW TO BUILD A MENTION SYSTEM
