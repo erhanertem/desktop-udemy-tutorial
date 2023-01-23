@@ -2414,3 +2414,30 @@ VALUES
     '2000-NOV-20 01:00AM',
     '2000-NOV-10 01:00AM'
   );
+
+-- -- LESSON 15 DATABASE STRUCTURE DESIGN PATTERNS
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP,
+  username VARCHAR(30)
+);
+
+CREATE TABLE posts (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP,
+  url VARCHAR(200),
+  user_id INT REFERENCES users(id)
+);
+
+CREATE TABLE comments (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP,
+  comment VARCHAR(240),
+  user_id INT REFERENCES users(id),
+  post_id INT REFERENCES posts(id)
+);
+
+-- -- LESSON 16 HOW TO BUILD A LIKE SYSTEM
