@@ -2524,3 +2524,23 @@ CREATE TABLE hashtags_posts (
   hashtag_id INT REFERENCES hastags(id),
   post_id INT REFERENCES posts(id)
 );
+
+-- -- LESSON 19 HOW TO DESIGN A FOLLOWER SYSTEM
+--NOTE: A USER SHOULD NOT FOLLOW ITSELF
+CREATE TABLE follower (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP,
+  follower_id INT REFERENCES users(id),
+  followee_id INT REFERENCES users(id),
+  CONSTRAINT not_follow_urself_chk CHECK (followee_id != follower_id)
+);
+
+-- -- ALTERNATE CONSTRAINT
+-- CREATE TABLE follower (
+--   id SERIAL PRIMARY KEY,
+--   created_at TIMESTAMP,
+--   follower_id INT REFERENCES users(id),
+--   followee_id INT REFERENCES users(id),
+--   CONSTRAINT not_follow_urself_chk CHECK UNIQUE(followee_id, follower_id)
+-- );
+-- -- LESSON 20 IMPLEMENTING DATABASE DESIGN PATTERNS
