@@ -2655,7 +2655,7 @@ CREATE TABLE caption_tags (
   UNIQUE(user_id, post_id)
 );
 
-CREATE TABLE hastags (
+CREATE TABLE hashtags (
   id SERIAL PRIMARY KEY,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   title VARCHAR(20) NOT NULL UNIQUE
@@ -2663,18 +2663,18 @@ CREATE TABLE hastags (
 
 CREATE TABLE hashtags_posts (
   id SERIAL PRIMARY KEY,
-  hashtag_id INT NOT NULL REFERENCES hastags(id) ON DELETE CASCADE,
+  hashtag_id INT NOT NULL REFERENCES hashtags(id) ON DELETE CASCADE,
   post_id INT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
   UNIQUE(hashtag_id, post_id)
 );
 
-CREATE TABLE follower (
+CREATE TABLE followers (
   id SERIAL PRIMARY KEY,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  leader_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   follower_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  followee_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   --#1 ALTERNATE
   -- CONSTRAINT not_follow_urself_chk CHECK (followee_id != follower_id)
   --#2 ALTERNATE
-  UNIQUE(follower_id, followee_id)
+  UNIQUE(follower_id, leader_id)
 );
