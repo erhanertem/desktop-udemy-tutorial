@@ -2544,3 +2544,137 @@ CREATE TABLE follower (
 --   CONSTRAINT not_follow_urself_chk CHECK UNIQUE(followee_id, follower_id)
 -- );
 -- -- LESSON 20 IMPLEMENTING DATABASE DESIGN PATTERNS
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  username VARCHAR(30) NOT NULL,
+  bio VARCHAR(400),
+  avatar VARCHAR(200),
+  phone VARCHAR(25),
+  email VARCHAR(40),
+  password VARCHAR(50),
+  status VARCHAR(15),
+  -- -- #1 alternative
+  -- -- NOTE: user must provide either phone or email for registering an account, user must provide a login password if opts for email
+  -- CONSTRAINT register_chk1 CHECK (COALESCE(phone, email) IS NOT NULL),
+  -- CONSTRAINT register_chk2 CHECK (COALESCE(phone, password) IS NOT NULL),
+  -- #2 alternative
+  CONSTRAINT register_chk CHECK (
+    (
+      email IS NOT NULL
+      AND password IS NOT NULL
+      AND phone IS NULL
+    )
+    OR (
+      phone IS NOT NULL
+      AND password IS NULL
+      AND email IS NULL
+    )
+  )
+);
+
+CREATE TABLE posts (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  url VARCHAR(200) NOT NULL,
+  caption VARCHAR(240),
+  --make sure that BOTH lat and lng are null or set your custom limitations for each lat, lng.
+  lat REAL CHECK(
+    (
+      lat IS NULL
+      AND lng IS NULL
+    )
+    OR (
+      lat >= -90
+      AND lat <= 90
+    )
+  ),
+  lng REAL CHECK(
+    (
+      lat IS NULL
+      AND lng IS NULL
+    )
+    OR (
+      lng >= -180
+      AND lng <= 180
+    )
+  ),
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE comments (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  contents VARCHAR(240) NOT NULL,
+  --its existance is strictly bind to user_id - NOT NULL
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  --its existance is strictly bind to post_id - NOT NULL
+  post_id INT NOT NULL REFERENCES posts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE likes (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  --its existance is strictly bind to user_id - NOT NULL
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  --at any given time post_id or comment_id might be null  so we skip NOT NULL
+  post_id INT REFERENCES posts(id) ON DELETE CASCADE,
+  comment_id INT REFERENCES comments(id) ON DELETE CASCADE,
+  CONSTRAINT like_input_chk CHECK (
+    -- we do not want both likes at the same time
+    -- (null,0)+(1,0)=1 checks
+    -- (1,0)+(1,0)!=1 not checks
+    COALESCE((post_id) :: BOOLEAN :: INTEGER, 0) + COALESCE((comment_id) :: BOOLEAN :: INTEGER, 0) = 1
+  ),
+  -- we want a single like on a single post for a user. No dublicate combinations are allowed.
+  UNIQUE(user_id, post_id, comment_id)
+);
+
+CREATE TABLE photo_tags (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  -- LOCATION X/Y COORDINATE OF THE MENTION CLICK ON THE PHOTO AREA
+  x INT NOT NULL,
+  y INT NOT NULL,
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  post_id INT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+  -- ONE TAG PER USER ON THE SAME PHOTO
+  UNIQUE(user_id, post_id)
+);
+
+CREATE TABLE caption_tags (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  post_id INT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+  -- ONE CAPTION TAG PER USER ON THE SAME COMMENT
+  UNIQUE(user_id, post_id)
+);
+
+CREATE TABLE hastags (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  title VARCHAR(20) NOT NULL UNIQUE
+);
+
+CREATE TABLE hashtags_posts (
+  id SERIAL PRIMARY KEY,
+  hashtag_id INT NOT NULL REFERENCES hastags(id) ON DELETE CASCADE,
+  post_id INT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+  UNIQUE(hashtag_id, post_id)
+);
+
+CREATE TABLE follower (
+  id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  follower_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  followee_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  --#1 ALTERNATE
+  -- CONSTRAINT not_follow_urself_chk CHECK (followee_id != follower_id)
+  --#2 ALTERNATE
+  UNIQUE(follower_id, followee_id)
+);
