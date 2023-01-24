@@ -2678,3 +2678,32 @@ CREATE TABLE followers (
   --#2 ALTERNATE
   UNIQUE(follower_id, leader_id)
 );
+
+-- -- LESSON 21 APPROACHING AND WRITING COMPLEX QUERIES
+SELECT
+  id,
+  username
+FROM
+  users
+ORDER BY
+  id DESC
+LIMIT
+  3;
+
+SELECT
+  users.username,
+  posts.caption
+FROM
+  users
+  JOIN posts ON posts.user_id = users.id
+WHERE
+  posts.user_id = 200;
+
+SELECT
+  username,
+  COUNT(*)
+FROM
+  users
+  JOIN likes ON likes.user_id = users.id
+GROUP BY
+  username;
