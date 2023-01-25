@@ -2877,3 +2877,99 @@ FROM
   JOIN users ON users.id = suggestions.leader_id
 WHERE
   depth > 1;
+
+-- -- LESSON 28 SIMPLIFY QUERIES WITH VIEWS
+SELECT
+  username,
+  COUNT(*)
+FROM
+  users
+  JOIN (
+    SELECT
+      user_id
+    FROM
+      photo_tags
+    UNION
+    ALL
+    SELECT
+      user_id
+    FROM
+      caption_tags
+  ) tags ON tags.user_id = users.id
+GROUP BY
+  username
+ORDER BY
+  COUNT(*) DESC;
+
+CREATE VIEW tags AS (
+  SELECT
+    id,
+    created_at,
+    user_id,
+    post_id,
+    'photo_tag' AS TYPE
+  FROM
+    photo_tags
+  UNION
+  ALL
+  SELECT
+    id,
+    created_at,
+    user_id,
+    post_id,
+    'caption_tag' AS TYPE
+  FROM
+    caption_tags
+);
+
+SELECT
+  *
+FROM
+  tags
+WHERE
+  type = 'caption_tag';
+
+--LETS REWRITE THE QUERY WITH OUR VIEW QUERY
+SELECT
+  username,
+  COUNT(*)
+FROM
+  users
+  JOIN tags ON tags.user_id = users.id
+GROUP BY
+  username
+ORDER BY
+  COUNT(*) DESC;
+
+CREATE VIEW recent_posts AS (
+  SELECT
+    *
+  FROM
+    posts
+  ORDER BY
+    created_at DESC
+  LIMIT
+    10
+);
+
+SELECT
+  username
+FROM
+  recent_posts
+  JOIN users ON users.id = recent_posts.user_id;
+
+CREATE
+OR REPLACE VIEW recent_posts AS (
+  SELECT
+    *
+  FROM
+    posts
+  ORDER BY
+    created_at DESC
+  LIMIT
+    5
+);
+
+DROP VIEW recent_posts;
+
+-- -- LESSON 29 OPTIMIZING QUERIES WITH MATERIALIZED VIEWS
