@@ -42,7 +42,7 @@ app.get('/posts', async (req, res) => {
   const { rows } = await pool.query(`
   SELECT * FROM posts;
   `);
-
+  // console.log(rows);
   res.send(`
   <table>
     <thead>
@@ -58,8 +58,8 @@ app.get('/posts', async (req, res) => {
           return `
           <tr>
             <td>${row.id}</td>
-            <td>${row.lng}</td>
-            <td>${row.lat}</td>
+            <td>${row.loc.x}</td>
+            <td>${row.loc.y}</td>
           </tr>
         `;
         })
@@ -85,11 +85,7 @@ app.get('/posts', async (req, res) => {
 app.post('/posts', async (req, res) => {
   const { lng, lat } = req.body;
 
-  await pool.query('INSERT INTO posts (lat,lng,loc) VALUES ($1,$2,$3);', [
-    lat,
-    lng,
-    `(${lng},${lat})`,
-  ]);
+  await pool.query('INSERT INTO posts (loc) VALUES ($1);', [`(${lng},${lat})`]);
 
   res.redirect('/posts');
 });
