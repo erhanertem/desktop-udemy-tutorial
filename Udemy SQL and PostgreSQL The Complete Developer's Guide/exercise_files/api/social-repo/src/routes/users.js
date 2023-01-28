@@ -24,10 +24,44 @@ router.get('/users/:id', async (req, res) => {
   }
 });
 // create a new user
-router.post('/users', async (req, res) => {});
+router.post('/users', async (req, res) => {
+  // console.log(req.body);
+  // receive user input as JSON format
+  const { username, bio } = req.body;
+  // Register the user to DB
+  const user = await UserRepo.insert(username, bio);
+  // Return a response
+  res.send(user);
+});
 // update a user with ID
-router.put('/users/:id', async (req, res) => {});
+router.put('/users/:id', async (req, res) => {
+  //Pull out the user id for udpate
+  const { id } = req.params;
+  //Get the user input for the user data changes
+  const { username, bio } = req.body;
+  // Update the user info in the DB
+  const user = await UserRepo.update(id, username, bio, new Date());
+
+  // Return a response
+  if (user) {
+    res.send(user);
+  } else {
+    res.sendStatus(404);
+  }
+});
 // delete a user with ID
-router.delete('/users/:id', async (req, res) => {});
+router.delete('/users/:id', async (req, res) => {
+  //Pull out the user id for delete
+  const { id } = req.params;
+  // Update the user info in the DB
+  const user = await UserRepo.delete(id);
+
+  // Return a response
+  if (user) {
+    res.send(user);
+  } else {
+    res.sendStatus(404);
+  }
+});
 
 module.exports = router;
