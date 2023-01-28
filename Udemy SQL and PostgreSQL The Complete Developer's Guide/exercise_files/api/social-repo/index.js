@@ -3,7 +3,7 @@ const pool = require('./src/pool');
 
 pool
   .connect({
-    host: 'locwwalhost',
+    host: 'localhost',
     port: 5432,
     database: 'socialnetwork',
     user: 'postgres',
