@@ -5,13 +5,13 @@ const UserRepo = require('../../repos/user-repo');
 
 const { randomBytes } = require('crypto'); //node.js module
 const { default: migrate } = require('node-pg-migrate');
-const format = require('pg-format');
+const format = require('pg-format'); //NOTE: Parameters for users, database, etc are not allowerd per node-pg. Therefore we would need this module to be able create parameterized input for these special cases
 
 //--->CONNECT TO DB
 beforeAll(async () => {
-  //Randomly generate a user/role name to connect to PG as
+  //->Randomly generate a user/role name to connect to PG as
   const roleName = 'a' + randomBytes(4).toString('hex');
-  // Connect to PG as usual
+  //->Connect to PG as usual
   await pool.connect({
     host: 'localhost',
     port: 5432,
@@ -19,15 +19,21 @@ beforeAll(async () => {
     user: 'postgres',
     password: 'password',
   });
-  //Create a new user/role
+  //->Create a new user/role
+  // await pool.query(
+  //   `CREATE ROLE ${roleName} WITH LOGIN PASSWORD '${roleName}';`
+  // );
   await pool.query(
-    `CREATE ROLE ${roleName} WITH LOGIN PASSWORD '${roleName}';`
+    format('CREATE ROLE %I WITH LOGIN PASSWORD %L;', roleName, roleName)
   );
-  //Create a schema with the same name
-  await pool.query(`CREATE SCHEMA ${roleName} AUTHORIZATION ${roleName};`);
-  //Disconnect entirely from PG
+  //->Create a schema with the same name
+  // await pool.query(`CREATE SCHEMA ${roleName} AUTHORIZATION ${roleName};`);
+  await pool.query(
+    format('CREATE SCHEMA %I AUTHORIZATION %L;', roleName, roleName)
+  );
+  //->Disconnect entirely from PG
   await pool.close();
-  //Initiate schema migration for the new schema
+  //->Initiate schema migration for the new schema
   await migrate({
     schema: roleName,
     direction: 'up', //up migrate
@@ -42,7 +48,7 @@ beforeAll(async () => {
       password: roleName,
     },
   });
-  //Connect to PG as the new user/role
+  //->Connect to PG as the new user/role
   await pool.connect({
     host: 'localhost',
     port: 5432,
