@@ -3063,7 +3063,7 @@ VALUES
   ('This is my bio', 'Alyson14'),
   ('This is about me', 'Gia67');
 
--- -- LESSON 34 SECURITY AROUND POSTGRESQL
+-- -- LESSON 35 SECURITY AROUND POSTGRESQL
 -- -- VERY IMPORTANT ! REALLY BIG SECURITY ISSUE ! 
 -- const { rows } = await pool.query(
 --   `
@@ -3092,3 +3092,29 @@ VALUES
  PREPARE XHDHDHDHH (INTEGER) AS SELECT id, username, bio FROM users
  WHERE id = $1;
  */
+-- -- LESSON 36 FAST PARALLEL TESTING
+--CREATE A NEW SCHEMA
+CREATE SCHEMA test;
+
+-- DEFINE TABLE FOR A SPECIFIC SCHEMA
+CREATE TABLE test.users (id SERIAL PRIMARY KEY, username VARCHAR(20));
+
+-- CURRENTLY ACTIVE SCHEMA 
+-- "$user", public
+SHOW search_path;
+
+-- SET CURRENT SCHEMA TO test and public AS A SECOND OPTION
+SET
+  search_path TO test,
+  public;
+
+-- Searches from the test schema not public in this case
+SELECT
+  *
+FROM
+  users;
+
+-- SET TO DEFAULT SCHEMA
+SET
+  search_path TO "$user",
+  public;
