@@ -3,7 +3,7 @@ http://localhost:3005/users
 
 ###
 
-http://localhost:3005/users/2
+http://localhost:3005/users/1
 
 ###
 # VERY IMPORTANT! SECURITY ISSUE EXAMPLE - SQL INJECTION EXPLOIT SAMPLE
@@ -14,7 +14,7 @@ POST http://localhost:3005/users HTTP/1.1
 content-type: application/json
 
 {
-  "username": "prop12",
+  "username": "p1232rop12",
   "bio": "I am a real prop"
 }
 

@@ -70,7 +70,7 @@ class UserRepo {
   }
   static async insert(username, bio) {
     const { rows } = await pool.query(
-      `INSERT INTO users (username, bio) VALUES($1,$2) RETURNING *;`,
+      'INSERT INTO users (username, bio) VALUES($1,$2) RETURNING *;',
       [username, bio]
     );
 
@@ -79,8 +79,7 @@ class UserRepo {
   }
   static async update(id, username, bio, date) {
     const { rows } = await pool.query(
-      `UPDATE users SET username =$1, bio=$2, updated_at=$4 
-      WHERE id =$3 RETURNING *`,
+      'UPDATE users SET username =$1, bio=$2, updated_at=$4 WHERE id =$3 RETURNING *',
       [username, bio, id, date]
     );
 
@@ -89,7 +88,7 @@ class UserRepo {
   }
   static async delete(id) {
     const { rows } = await pool.query(
-      `DELETE FROM users WHERE id = $1 RETURNING *;`,
+      'DELETE FROM users WHERE id = $1 RETURNING *;',
       [id]
     );
 
