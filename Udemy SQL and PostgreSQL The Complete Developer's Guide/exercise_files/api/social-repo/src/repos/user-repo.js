@@ -65,33 +65,32 @@ class UserRepo {
     // `,
     //   [id, username]
     // );
-
     return toCamelCase(rows)[0];
   }
+
   static async insert(username, bio) {
     const { rows } = await pool.query(
       'INSERT INTO users (username, bio) VALUES($1,$2) RETURNING *;',
       [username, bio]
     );
-
     // RETURNING * ENABLES A FULL FLEDGED DB REPORT OF THE ITEM CHANGED IN OUR RESPONSE
     return toCamelCase(rows)[0];
   }
+
   static async update(id, username, bio, date) {
     const { rows } = await pool.query(
       'UPDATE users SET username =$1, bio=$2, updated_at=$4 WHERE id =$3 RETURNING *;',
       [username, bio, id, date]
     );
-
     // RETURNING * ENABLES A FULL FLEDGED DB REPORT OF THE ITEM CHANGED IN OUR RESPONSE
     return toCamelCase(rows)[0];
   }
+
   static async delete(id) {
     const { rows } = await pool.query(
       'DELETE FROM users WHERE id = $1 RETURNING *;',
       [id]
     );
-
     // RETURNING * ENABLES A FULL FLEDGED DB REPORT OF THE ITEM CHANGED IN OUR RESPONSE
     return toCamelCase(rows)[0];
   }

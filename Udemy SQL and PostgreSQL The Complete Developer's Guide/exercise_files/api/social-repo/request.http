@@ -19,12 +19,12 @@ content-type: application/json
 }
 
 ###
-PUT http://localhost:3005/users/1 HTTP/1.1
+PUT http://localhost:3005/users/6 HTTP/1.1
 content-type: application/json
 
 {
-  "username": "prop12",
-  "bio": "I am a hint"
+  "username": "p1232rop12",
+  "bio": "I am a zinc"
 }
 ###
-DELETE http://localhost:3005/users/1 HTTP/1.1
+DELETE http://localhost:3005/users/5 HTTP/1.1
