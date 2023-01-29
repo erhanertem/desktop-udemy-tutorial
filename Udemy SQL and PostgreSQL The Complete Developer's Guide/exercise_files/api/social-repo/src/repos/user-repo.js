@@ -94,6 +94,12 @@ class UserRepo {
     // RETURNING * ENABLES A FULL FLEDGED DB REPORT OF THE ITEM CHANGED IN OUR RESPONSE
     return toCamelCase(rows)[0];
   }
+
+  static async count() {
+    const { rows } = await pool.query('SELECT COUNT(*) FROM users;');
+    // definition of returned rows === [{ count: 16263 }];
+    return parseInt(rows[0].count);
+  }
 }
 
 // In static objects, an instance does not need to be created and the static methods are called directly

@@ -22,7 +22,7 @@
 | npm i pg-format            |                                                                                              |
 | npm i --save-dev nodemon   | Autostart upon app update                                                                    |
 | npm i --save-dev jest      | Testing framework developed uses built-in test runners and assertion libraries in JavaScript |
-| npm i --save-dev supertest | Test HTTP servers by sending a method like GET, PUT, POST or DELETE                          |
+| npm i --save-dev supertest | Allows testing HTTP servers by sending a method like GET, PUT, POST or DELETE in express     |
 
 | Testing Tools           |
 | ----------------------- |
