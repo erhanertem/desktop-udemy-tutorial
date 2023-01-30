@@ -15,6 +15,10 @@ beforeAll(async () => {
 afterAll(() => {
   return context.close();
 });
+//--->BEFORE EACH TEST IN THSI FILE
+beforeEach(async () => {
+  await context.reset();
+});
 //--->TEST
 it('create a user', async () => {
   const startingCount = await UserRepo.count();
