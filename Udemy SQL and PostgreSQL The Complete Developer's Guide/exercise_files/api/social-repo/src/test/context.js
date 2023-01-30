@@ -31,7 +31,7 @@ class Context {
     //->Create a schema with the same name
     // await pool.query(`CREATE SCHEMA ${roleName} AUTHORIZATION ${roleName};`);
     await pool.query(
-      format('CREATE SCHEMA %I AUTHORIZATION %L;', roleName, roleName)
+      format('CREATE SCHEMA %I AUTHORIZATION %I;', roleName, roleName)
     );
     //->Disconnect entirely from PG
     await pool.close();
