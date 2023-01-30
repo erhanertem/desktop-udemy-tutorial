@@ -1,10 +1,9 @@
-const pool = require('../../pool');
-
 const { randomBytes } = require('crypto'); //node.js module
-const { default: migrate } = require('node-pg-migrate');
 const format = require('pg-format'); //NOTE: Parameters for users, database, etc are not allowerd per node-pg. Therefore we would need this module to be able create parameterized input for these special cases
+const { default: migrate } = require('node-pg-migrate');
+const pool = require('../pool');
 
-const DEFAULT_DB_OPTS = {
+const DEFAULT_DB = {
   host: 'localhost',
   port: 5432,
   database: 'socialnetwork-test',
@@ -21,7 +20,7 @@ class Context {
     //->Randomly generate a user/role name to connect to PG as
     const roleName = 'a' + randomBytes(4).toString('hex');
     //->Connect to PG as usual
-    await pool.connect(DEFAULT_DB_OPTS);
+    await pool.connect(DEFAULT_DB);
     //->Create a new user/role
     // await pool.query(
     //   `CREATE ROLE ${roleName} WITH LOGIN PASSWORD '${roleName}';`
@@ -67,7 +66,7 @@ class Context {
     //->Disconnect from PG
     await pool.close();
     //->Reconnect as our root user
-    await pool.connect(DEFAULT_DB_OPTS);
+    await pool.connect(DEFAULT_DB);
     //->Delete the schema we created
     await pool.query(format('DROP SCHEMA %I CASCADE;', this.roleName));
     //->Delete the role we created
