@@ -73,85 +73,138 @@
 // let regEx = /801-/;
 // console.log(phoneNums.filter(el => regEx.test(el)));
 
-// LESSON 3 WORKING WITH CHARACTERS
-let txt = `Make the outline for t-he square gray and the fill for the circle grey.`;
-let regex = /gr[ae]y/g;
-regex = /[abcd]/g;
-regex = /[abcd][i]/g;
-regex = /[abcd][ i]/g;
-regex = /[r ][abcd][ i]/g;
-regex = /gr[ae]y[.]/g;
+// // LESSON 3 WORKING WITH CHARACTERS
+// let txt = `Make the outline for t-he square gray and the fill for the circle grey.`;
+// let regex = /gr[ae]y/g;
+// regex = /[abcd]/g;
+// regex = /[abcd][i]/g;
+// regex = /[abcd][ i]/g;
+// regex = /[r ][abcd][ i]/g;
+// regex = /gr[ae]y[.]/g;
 
-// - range metacharacter
-txt = `There have been 42  4 - 5 times I have tried, but I will try it BEZ fagain.`;
-regex = /[\-.]/g;
-regex = /[1-5]/g;
-regex = /[1-5][1-6]/g;
-regex = /[1-6a-zA-Z]/g;
-regex = /[12\-5]/g;
-regex = /[A-Z][a-i]/g;
-regex = /[A-e]/g; // means a range of A-Z + a-e
-regex = /[125-]/g; //- here is not confused as a range so there is no need for an escape character
-regex = /[-,.]/g; //- here is not confused as a range so there is no need for an escape character
+// // - range metacharacter
+// txt = `There have been 42  4 - 5 times I have tried, but I will try it BEZ fagain.`;
+// regex = /[\-.]/g;
+// regex = /[1-5]/g;
+// regex = /[1-5][1-6]/g;
+// regex = /[1-6a-zA-Z]/g;
+// regex = /[12\-5]/g;
+// regex = /[A-Z][a-i]/g;
+// regex = /[A-e]/g; // means a range of A-Z + a-e
+// regex = /[125-]/g; //- here is not confused as a range so there is no need for an escape character
+// regex = /[-,.]/g; //- here is not confused as a range so there is no need for an escape character
 
-txt = `Exception 0xF89F`;
-regex = /0x/g;
-regex = /[0x]/g;
-regex = /[0x]/g;
-regex = /0x[0-9A-F]..[0-9A-F]/g;
+// txt = `Exception 0xF89F`;
+// regex = /0x/g;
+// regex = /[0x]/g;
+// regex = /[0x]/g;
+// regex = /0x[0-9A-F]..[0-9A-F]/g;
 
-txt = `How do we capture the numbers 13 - 20?`;
-regex = /[0-9][0-9]/g;
-regex = /[10-20]/g;
+// txt = `How do we capture the numbers 13 - 20?`;
+// regex = /[0-9][0-9]/g;
+// regex = /[10-20]/g;
 
-// ^ negate character
-txt = `Exception 0xF89F`;
-regex = /0x[^0-9A-F][^0-9A-F]/g;
+// // ^ negate character
+// txt = `Exception 0xF89F`;
+// regex = /0x[^0-9A-F][^0-9A-F]/g;
 
-txt = `abcdefghijklmnop`;
-regex = /[a-z]/g;
-regex = /[^a-z]/g;
-txt = `abcdefghijklmnop]^`;
-regex = /[^a-z^]/g;
-regex = /[^a-z]/g;
+// txt = `abcdefghijklmnop`;
+// regex = /[a-z]/g;
+// regex = /[^a-z]/g;
+// txt = `abcdefghijklmnop]^`;
+// regex = /[^a-z^]/g;
+// regex = /[^a-z]/g;
 
-// Escaping metacharacters
-regex = /[A-b\]]/g;
-regex = /[Ab\]]/g;
+// // Escaping metacharacters
+// regex = /[A-b\]]/g;
+// regex = /[Ab\]]/g;
 
-// Regex shorthands
+// // Regex shorthands
+// txt = `
+// A string that contains numbers (12345)
+// A second line _ (12345)			3 Tabs.
+// `;
+// regex = /\d/g;
+// regex = /\w/g;
+// regex = /\s/g;
+// regex = /\D/g;
+// regex = /\W/g;
+// regex = /\S/g;
+// console.log(txt.match(regex));
+
+// // CODING CHALLENGE
+// /*
+// Using the provided array, create a second array that only includes the numbers with the 801 area code. (The area code is the first 3 numbers.) Make sure that the phone numbers are valid (nnn-nnn-nnnn).
+// */
+
+// let phoneNums = [
+//   '801-766-9754',
+//   '801-545-5454',
+//   '435-666-1212',
+//   '801-796-8010',
+//   '435-555-9801',
+//   '801-009-0909',
+//   '435-222-8013',
+//   '801-777-66553',
+//   '801-777-665-',
+//   '801-77A-6655',
+//   '801-778-665',
+// ];
+
+// console.log(phoneNums.filter(el => el.match(/^801/) !== null));
+// console.log(phoneNums.filter(el => el.match(/^801-\d\d\d-\d\d\d\d/) !== null));
+
+// LESSON 4 USING REPITITION IN REGULAR EXPRESSIONS
+txt = `SHe sells seashells on a seashore. The SHElls she sells are seashells, I’m sure.`;
+
+// + Repitition metacharacter - Matches one or more occurances
+regex = /[A-Z]/g;
+regex = /[A-Z]+/g;
+// ? Repitition metacharacter - Matches zero or one occurances
+regex = /[A-Z]?/g;
+// * Repitition metacharacter - Matches zero or more occurances
+regex = /[A-Z]*/g;
+
 txt = `
-A string that contains numbers (12345)
-A second line _ (12345)			3 Tabs.
+<p>This is the first paragraph.</p><p>Paragraph number two.</p>
+<p>This is the first paragraph.</p><p>Paragraph number two.</p>
 `;
-regex = /\d/g;
-regex = /\w/g;
-regex = /\s/g;
-regex = /\D/g;
-regex = /\W/g;
-regex = /\S/g;
+regex = /<p>.*/g;
+regex = /<p>.*?<\/p>/g;
+regex = /<p>.*?/g;
+regex = /<p>/g;
+console.log(txt.match(regex));
+
+//repitition control on regex
+txt = `
+My telephone number is as follows: 801-555-6789.
+#ff0000  #C0C0C0 these are hex numbers
+529-66-9898
+`;
+regex = /\w{3,5}/g;
+regex = /\w{3,}/g;
+regex = /\w{3}/g;
+regex = /\w{3}/g;
+
+txt = '235-15-5654 , 12-12-1212, 1252-152-1212, 125-12-1212';
+regex = /\d{3}-\d{2}-\d{4}/g;
+
+txt = '32-6678 , 45-668778, 65-454';
+regex = /\d{2}-\d{4,6}/g;
+console.log(txt.match(regex));
+regex = /\d{2}-\d{4,6}?/g;
 console.log(txt.match(regex));
 
 // CODING CHALLENGE
 /*
-Using the provided array, create a second array that only includes the numbers with the 801 area code. (The area code is the first 3 numbers.) Make sure that the phone numbers are valid (nnn-nnn-nnnn).
+Validate phone numbers entered into the text field. As the number is entered, 
+check to see if it matches these formats: (nnn)-nnn-nnnn, nnn.nnn.nnnn, nnn-nnn-nnnn, nnnnnnnnnn, (nnn)nnn-nnnn. 
+If the number matches, change the text color from red to green.
+
+Use several different phone numbers to test.
+
+HINT: You can use the keyup event to respond to entered text. There is a CSS Class for red and green.
 */
-
-let phoneNums = [
-  '801-766-9754',
-  '801-545-5454',
-  '435-666-1212',
-  '801-796-8010',
-  '435-555-9801',
-  '801-009-0909',
-  '435-222-8013',
-  '801-777-66553',
-  '801-777-665-',
-  '801-77A-6655',
-  '801-778-665',
-];
-
-console.log(phoneNums.filter(el => el.match(/^801/) !== null));
-console.log(phoneNums.filter(el => el.match(/^801-\d\d\d-\d\d\d\d/) !== null));
-
-// LESSON 4 USING REPITITION IN REGULAR EXPRESSIONS
+txt = '(111)-111-1111, 111.111.1111, 111-111-1111, 1111111111, (111)111-1111';
+regex = /\(?\d{3}\)?[-.]?\d{3}[-.]?\d{4}/g;
+console.log(txt.match(regex));
