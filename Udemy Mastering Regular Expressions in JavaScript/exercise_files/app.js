@@ -154,57 +154,97 @@
 // console.log(phoneNums.filter(el => el.match(/^801/) !== null));
 // console.log(phoneNums.filter(el => el.match(/^801-\d\d\d-\d\d\d\d/) !== null));
 
-// LESSON 4 USING REPITITION IN REGULAR EXPRESSIONS
-txt = `SHe sells seashells on a seashore. The SHElls she sells are seashells, I’m sure.`;
+// // LESSON 4 USING REPITITION IN REGULAR EXPRESSIONS
+// txt = `SHe sells seashells on a seashore. The SHElls she sells are seashells, I’m sure.`;
 
-// + Repitition metacharacter - Matches one or more occurances
-regex = /[A-Z]/g;
-regex = /[A-Z]+/g;
-// ? Repitition metacharacter - Matches zero or one occurances
-regex = /[A-Z]?/g;
-// * Repitition metacharacter - Matches zero or more occurances
-regex = /[A-Z]*/g;
+// // + Repitition metacharacter - Matches one or more occurances
+// regex = /[A-Z]/g;
+// regex = /[A-Z]+/g;
+// // ? Repitition metacharacter - Matches zero or one occurances
+// regex = /[A-Z]?/g;
+// // * Repitition metacharacter - Matches zero or more occurances
+// regex = /[A-Z]*/g;
 
-txt = `
-<p>This is the first paragraph.</p><p>Paragraph number two.</p>
-<p>This is the first paragraph.</p><p>Paragraph number two.</p>
-`;
-regex = /<p>.*/g;
-regex = /<p>.*?<\/p>/g;
-regex = /<p>.*?/g;
-regex = /<p>/g;
-console.log(txt.match(regex));
+// txt = `
+// <p>This is the first paragraph.</p><p>Paragraph number two.</p>
+// <p>This is the first paragraph.</p><p>Paragraph number two.</p>
+// `;
+// regex = /<p>.*/g;
+// regex = /<p>.*?<\/p>/g;
+// regex = /<p>.*?/g;
+// regex = /<p>/g;
+// console.log(txt.match(regex));
 
-//repitition control on regex
-txt = `
-My telephone number is as follows: 801-555-6789.
-#ff0000  #C0C0C0 these are hex numbers
-529-66-9898
-`;
-regex = /\w{3,5}/g;
-regex = /\w{3,}/g;
-regex = /\w{3}/g;
-regex = /\w{3}/g;
+// //repitition control on regex
+// txt = `
+// My telephone number is as follows: 801-555-6789.
+// #ff0000  #C0C0C0 these are hex numbers
+// 529-66-9898
+// `;
+// regex = /\w{3,5}/g;
+// regex = /\w{3,}/g;
+// regex = /\w{3}/g;
+// regex = /\w{3}/g;
 
-txt = '235-15-5654 , 12-12-1212, 1252-152-1212, 125-12-1212';
-regex = /\d{3}-\d{2}-\d{4}/g;
+// txt = '235-15-5654 , 12-12-1212, 1252-152-1212, 125-12-1212';
+// regex = /\d{3}-\d{2}-\d{4}/g;
 
-txt = '32-6678 , 45-668778, 65-454';
-regex = /\d{2}-\d{4,6}/g;
-console.log(txt.match(regex));
-regex = /\d{2}-\d{4,6}?/g;
+// txt = '32-6678 , 45-668778, 65-454';
+// regex = /\d{2}-\d{4,6}/g;
+// console.log(txt.match(regex));
+// regex = /\d{2}-\d{4,6}?/g;
+// console.log(txt.match(regex));
+
+// // CODING CHALLENGE
+// /*
+// Validate phone numbers entered into the text field. As the number is entered,
+// check to see if it matches these formats: (nnn)-nnn-nnnn, nnn.nnn.nnnn, nnn-nnn-nnnn, nnnnnnnnnn, (nnn)nnn-nnnn.
+// If the number matches, change the text color from red to green.
+
+// Use several different phone numbers to test.
+
+// HINT: You can use the keyup event to respond to entered text. There is a CSS Class for red and green.
+// */
+// txt = '(111)-111-1111, 111.111.1111, 111-111-1111, 1111111111, (111)111-1111';
+// regex = /\(?\d{3}\)?[-.]?\d{3}[-.]?\d{4}/g;
+// console.log(txt.match(regex));
+
+// LESSON 5 USING ANCHORED EXPRESSIONS
+// ^ Start Anchor metacharacter
+let txt = `801-766-9754, 801-545-5454, 435-666-1212, 801-796-8010, 435-555-9801, 801-009-0909, 435-222-8013, 801-777-801`;
+regex = /^801/g;
+// $ End Anchor metacharacter
+regex = /801$/g;
+// Mixed ^ $
+txt = '801';
+regex = /^801$/g;
+txt = '801a';
+regex = /^801.$/g;
+
+txt = `The dot is a very powerful regex metacharacter. It allows you to be lazy. Put in a dot, and 
+everything matches just fine when you test the regex on valid data.
+The problem is that the regex also matches in cases where it should not match. If you are new to regular expressions, 
+some of these cases may not be so obvious at first.`;
+regex = /^The/gim;
+regex = /\.$/gm;
+
+// boundary metacharacters
+txt = 'HELLO, LOOK AT YOU!';
+regex = /LO\b/;
+regex = /\bLO/;
+txt = 'Inplant this idea: plan to plant multiple trees on this planet.';
+regex = /\bplant\b/g;
+regex = /\bthis\b/g;
+regex = /\Bplan\B/g;
 console.log(txt.match(regex));
 
 // CODING CHALLENGE
 /*
-Validate phone numbers entered into the text field. As the number is entered, 
-check to see if it matches these formats: (nnn)-nnn-nnnn, nnn.nnn.nnnn, nnn-nnn-nnnn, nnnnnnnnnn, (nnn)nnn-nnnn. 
-If the number matches, change the text color from red to green.
-
-Use several different phone numbers to test.
-
-HINT: You can use the keyup event to respond to entered text. There is a CSS Class for red and green.
+The content.js file contains a string of text stored in a variable text1. This string of text is a statement that contains a day of the week as a part of the statement. Write a regular expression that will match any day of the week and then replace that day of the week in the string with Monday. Display the results to the console. 
 */
-txt = '(111)-111-1111, 111.111.1111, 111-111-1111, 1111111111, (111)111-1111';
-regex = /\(?\d{3}\)?[-.]?\d{3}[-.]?\d{4}/g;
-console.log(txt.match(regex));
+let text1 =
+  'Each and every Tuesday, at the beginning of the day, we hold a staff meeting. At the Tuesday staff meeting, you will need to make a report on the past weeks progress, and you will receive assignments for the following Tuesday. Just be aware that somedays this Tuesday meeting might not occur. When that happens, we will make an announcement.';
+regex = /(Tuesday|Wendesday|Thursday|Friday|Saturday|Sunday)/gi;
+regex = /(Tues|Wendes|Thurs|Fri|Satur|Sun)day/gim;
+regex = /\b[mtwfs][a-z]{1,4}[nris]day\b/gi;
+console.log(text1.replace(regex, 'Monday'));
