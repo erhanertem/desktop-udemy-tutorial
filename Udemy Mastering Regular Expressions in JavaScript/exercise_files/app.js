@@ -249,83 +249,88 @@
 // regex = /\b[mtwfs][a-z]{1,4}[nris]day\b/gi;
 // console.log(text1.replace(regex, 'Monday'));
 
-// LESSON 6 WORKING WITH ALTERNATES AND GROUPS
-// () grouping metacharacter
-let txt =
-  'a5c3a2b1d1 a1e3a2b1a4 d5c3a2b1d1 aac3a2b1d1 a5c3a2b1d6 a5c312b1d1 d4b2a5b2d3';
-regex = /([a-z][0-9]){5}/g;
+// // LESSON 6 WORKING WITH ALTERNATES AND GROUPS
+// // () grouping metacharacter
+// let txt =
+//   'a5c3a2b1d1 a1e3a2b1a4 d5c3a2b1d1 aac3a2b1d1 a5c3a2b1d6 a5c312b1d1 d4b2a5b2d3';
+// regex = /([a-z][0-9]){5}/g;
 
-txt = '2018/3/9';
-regex = /^(\d{4})[-./](\d{1,2})[-./](\d{1,2})$/;
-// console.log(txt.match(regex));
-// console.log(regex.exec(txt));
+// txt = '2018/3/9';
+// regex = /^(\d{4})[-./](\d{1,2})[-./](\d{1,2})$/;
+// // console.log(txt.match(regex));
+// // console.log(regex.exec(txt));
 
-txt = 'yoyomo yo yoyomoyoyo';
-regex = /(yo)\1/g;
-regex = /yoyo/g;
+// txt = 'yoyomo yo yoyomoyoyo';
+// regex = /(yo)\1/g;
+// regex = /yoyo/g;
 
-// capturing groups
-txt = '2018/9/9';
-regex = /^(\d{4})[-./](\d{1,2})[-./]\2$/g;
-//non-capturing groups with (?:)
-regex = /^(?:\d{4})[-./](\d{1,2})[-./]\1$/g;
+// // capturing groups
+// txt = '2018/9/9';
+// regex = /^(\d{4})[-./](\d{1,2})[-./]\2$/g;
+// //non-capturing groups with (?:)
+// regex = /^(?:\d{4})[-./](\d{1,2})[-./]\1$/g;
 
-txt = 'a1a1c1d5c1c1d5b2b3d4';
-regex = /([a-d][1-5])/g;
-regex = /([a-d][1-5])\1/g;
-regex = /(?:[a-d][1-5])\1/g;
+// txt = 'a1a1c1d5c1c1d5b2b3d4';
+// regex = /([a-d][1-5])/g;
+// regex = /([a-d][1-5])\1/g;
+// regex = /(?:[a-d][1-5])\1/g;
 
-txt = '<strong>This is a strong tag</strong><i>this is italic</i>';
-regex = /<(strong>).*\/\1/g;
-regex = /<(\w+>).*\/\1/g;
-regex = /<(\w+>)[\w\s]+<\/\1/g;
+// txt = '<strong>This is a strong tag</strong><i>this is italic</i>';
+// regex = /<(strong>).*\/\1/g;
+// regex = /<(\w+>).*\/\1/g;
+// regex = /<(\w+>)[\w\s]+<\/\1/g;
 
-// named capture group
-txt = '<strong>This is a strong tag</strong><i>this is italic</i>';
-regex = /<(?<first_group>\w+>)[\w\s]+<\/\k<first_group>/g;
+// // named capture group
+// txt = '<strong>This is a strong tag</strong><i>this is italic</i>';
+// regex = /<(?<first_group>\w+>)[\w\s]+<\/\k<first_group>/g;
 
-//lookahead group (?=)
-txt = 'allthingsjavascript.com google.com youtube.com';
-regex = /\w+(?=\.com)/g;
+// //lookahead group (?=)
+// txt = 'allthingsjavascript.com google.com youtube.com';
+// regex = /\w+(?=\.com)/g;
 
-txt = '16262ertrteAtetyte';
-regex = /^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$/g;
-// console.log(txt.match(regex));
+// txt = '16262ertrteAtetyte';
+// regex = /^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$/g;
+// // console.log(txt.match(regex));
 
-// CODING CHALLENGE
-/*
-Iterate through the data provided. Use a regular expression to store the names in a new array but change the order of the name so first name is listed first and last name is last. 
-*/
-txt = 'Jensen, Dale';
-let data = [
-  'Jensen, Dale',
-  'Smith, Andrea',
-  'Jorgensen, Michael',
-  'Vasefi, Annika',
-  'Lopez, Monica',
-  'Crockett, Steven',
-  36456464,
-  true,
-  'Prueba 1',
-];
-let data_n = [];
-//#1 solution
-// regex = /^([a-z]+)[,\s]\s*([a-z]+)$/i;
-//#2 solution - named group solution
-regex = /^(?<last>[a-z]+)[,\s]\s*(?<first>[a-z]+)$/i;
-data.forEach((el, i, _) => {
-  console.log(el);
-  if (typeof el === 'string' && regex.test(el)) {
-    // console.log(el.match(regex));
-    // #1 solution
-    // data_n[i] = el.match(regex)[2] + ', ' + el.match(regex)[1];
-    // #2 solution - named group solution
-    data_n[i] =
-      el.match(regex).groups.first + ', ' + el.match(regex).groups.last;
-  }
-});
+// // CODING CHALLENGE
+// /*
+// Iterate through the data provided. Use a regular expression to store the names in a new array but change the order of the name so first name is listed first and last name is last.
+// */
+// txt = 'Jensen, Dale';
+// let data = [
+//   'Jensen, Dale',
+//   'Smith, Andrea',
+//   'Jorgensen, Michael',
+//   'Vasefi, Annika',
+//   'Lopez, Monica',
+//   'Crockett, Steven',
+//   36456464,
+//   true,
+//   'Prueba 1',
+// ];
+// let data_n = [];
+// //#1 solution
+// // regex = /^([a-z]+)[,\s]\s*([a-z]+)$/i;
+// //#2 solution - named group solution
+// regex = /^(?<last>[a-z]+)[,\s]\s*(?<first>[a-z]+)$/i;
+// data.forEach((el, i, _) => {
+//   console.log(el);
+//   if (typeof el === 'string' && regex.test(el)) {
+//     // console.log(el.match(regex));
+//     // #1 solution
+//     // data_n[i] = el.match(regex)[2] + ', ' + el.match(regex)[1];
+//     // #2 solution - named group solution
+//     data_n[i] =
+//       el.match(regex).groups.first + ', ' + el.match(regex).groups.last;
+//   }
+// });
 
-console.log(data);
-console.log(data_n);
+// console.log(data);
+// console.log(data_n);
 
-// LESSON 7 WORKIGN WITH UNICODE
+// LESSON 7 WORKING WITH UNICODE
+// unicode characters
+let txt = 'Smith, Andrea';
+let regex = /\u0061/g;
+regex = /[\u0061-\u0067]/g;
+console.log(txt.match(regex));
