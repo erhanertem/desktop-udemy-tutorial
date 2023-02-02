@@ -328,9 +328,113 @@
 // console.log(data);
 // console.log(data_n);
 
-// LESSON 7 WORKING WITH UNICODE
-// unicode characters
-let txt = 'Smith, Andrea';
-let regex = /\u0061/g;
-regex = /[\u0061-\u0067]/g;
+// // LESSON 7 WORKING WITH UNICODE
+// // unicode characters
+// let txt = 'Smith, Andrea';
+// let regex = /\u0061/g;
+// regex = /[\u0061-\u0067]/g;
+// console.log(txt.match(regex));
+
+// LESSON 8 APPLYING REGULAR EXPRESSIONS
+// matching an email adress
+let txt = 'erhan1@hotmail.com';
+let regex = /.+@.+\..+/g;
+regex = /^[^\s@]+@[^\s@.]+\.[^\s@.]+$/g;
+
+//matching a twitter handle
+txt = '@javasctiptthing';
+regex = /^@?(\w+)$/g;
 console.log(txt.match(regex));
+
+//testing passwords
+let password = 'NsRN3/>zvd';
+
+let checkPass = function (password) {
+  let theLength = /^.{8,32}$/,
+    upper = /[A-Z]/,
+    lower = /[a-z]/,
+    numbers = /[0-9]/,
+    special = /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/;
+
+  if (
+    theLength.test(password) &&
+    upper.test(password) &&
+    lower.test(password) &&
+    numbers.test(password) &&
+    special.test(password)
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+console.log(checkPass(password));
+
+//replace with regexp
+
+console.log('<b>This is bold</b>'.replace(/b>/g, 'strong>'));
+
+/*
+Create a new array that shows the names with the firstname and then the surname.
+*/
+
+let names = [
+  'Smith, James',
+  'Peterson, Alyssa',
+  'Johnson, Lynette',
+  'Lopez, Tony',
+];
+
+let switchedNames = names.map(function (el) {
+  return el.replace(/(\w+), (\w+)/, '$2, $1');
+});
+
+console.log(switchedNames);
+
+//matching a word next to another word
+txt =
+  'Lets put together several different words more text together and see what we can match.';
+regex =
+  /\b(?:words\W+(?:\w+\W+){0,2}together)|(?:together\W+(?:\w+\W+){0,2}words)\b/g;
+
+// validating dates
+txt = '24/06/1966 24/06/99';
+regex = /\b(3[01]|[12][0-9]|0?[1-9])\/(1[0-2]|0?[1-9])\/([0-9]{2})?[0-9]{2}\b/g;
+
+// restricted validating dates ex: >=2000
+txt = '24/06/1999 24/06/2000 24/06/2199';
+regex = /\b(3[01]|[12][0-9]|0?[1-9])\/(1[0-2]|0?[1-9])\/2[0-9][0-9]{2}\b/g;
+
+//validating ip address
+txt = '25.013.55.255 192.32.1.1 832.26.123.5 0.1.12.1 255.255.255.1';
+regex =
+  /\b((0?[0-9]|0?[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}(0?[0-9]|0?[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\b/g;
+console.log(txt.match(regex));
+
+//capturing matched text
+/*
+Extract all the numbers from this phrase and capture those numbers. Then sum the numbers.
+*/
+
+let phrase =
+  'First number: 32, and a second number 100. Here is the last number 15.';
+regex = /\d+/g;
+
+//#1 solutiuon
+console.log(phrase.match(regex));
+const sums = phrase
+  .match(regex)
+  .reduce((acc, cur) => (acc += parseInt(cur)), 0);
+console.log(sums);
+
+//#2 solution
+regex = /\d*/g;
+let acc2 = 0;
+while ((match = regex.exec(phrase))) {
+  if (match.index == regex.lastIndex) regex.lastIndex++; //prevents zero digit infinite loop
+  acc2 += parseInt(match[0]);
+  console.log(match);
+  console.log(regex);
+  console.log('🎗', regex.lastIndex);
+}
+console.log(acc2);
