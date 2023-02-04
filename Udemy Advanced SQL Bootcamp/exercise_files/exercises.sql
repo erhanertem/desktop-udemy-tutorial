@@ -404,4 +404,251 @@ WHERE
   );
 
 -- find accounts with a total accounyt balance over $10000 and at least one ICU encounter
+SELECT
+  a.account_id,
+  a.total_account_balance
+FROM
+  accounts a
+WHERE
+  total_account_balance > 10000
+  AND EXISTS(
+    SELECT
+      1
+    FROM
+      encounters e
+    WHERE
+      e.hospital_account_id = a.account_id
+      AND patient_in_icu_flag = 'Yes'
+  );
+
 -- find encounters for patients born on or after 1995-01-01 whose length of stay is greater than or equal to the average surgical length of stay for patients 65 or older
+WITH old_los AS (
+  SELECT
+    EXTRACT(
+      YEAR
+      FROM
+        AGE(NOW(), p.date_of_birth)
+    ) AS age,
+    AVG(
+      s.surgical_discharge_date - s.surgical_admission_date
+    ) AS avg_los
+  FROM
+    patients p
+    INNER JOIN surgical_encounters s ON p.master_patient_id = s.master_patient_id
+  WHERE
+    p.date_of_birth IS NOT NULL
+    AND EXTRACT(
+      YEAR
+      FROM
+        AGE(NOW(), p.date_of_birth)
+    ) >= 65
+  GROUP BY
+    EXTRACT(
+      YEAR
+      FROM
+        AGE(NOW(), p.date_of_birth)
+    )
+)
+SELECT
+  e.*
+FROM
+  encounters e
+  INNER JOIN patients p ON e.master_patient_id = p.master_patient_id
+WHERE
+  p.date_of_birth >= '1995-01-01'
+  AND EXTRACT(
+    DAYS
+    FROM
+      (
+        e.patient_discharge_datetime - e.patient_admission_datetime
+      )
+  ) >= ALL(
+    SELECT
+      avg_los
+    FROM
+      old_los
+  );
+
+-- LESSON 3 WINDOW FUNCTIONS
+-- ---> PERFORMING DYNAMIC CALCS ON DATA WITHIN GROUPS 
+-- --> WINDOW FUNCTIONS with CTEs
+WITH surgical_los AS (
+  SELECT
+    surgery_id,
+    (
+      surgical_discharge_date - surgical_admission_date
+    ) AS los,
+    AVG(
+      surgical_discharge_date - surgical_admission_date
+    ) OVER() AS avg_los
+  FROM
+    "surgical_encounters"
+)
+SELECT
+  *,
+  ROUND(los - avg_los, 2)
+FROM
+  surgical_los;
+
+-- --> RANK() OVER([PARTITION BY]... [ORDER BY]...)
+SELECT
+  account_id,
+  primary_icd,
+  total_account_balance,
+  RANK() OVER(
+    PARTITION BY primary_icd
+    ORDER BY
+      total_account_balance DESC
+  )
+FROM
+  "accounts";
+
+-- --> ROW_NUMBER() OVER(...)
+SELECT
+  s.surgery_id,
+  p.full_name,
+  s.total_cost,
+  diagnosis_description,
+  total_profit,
+  RANK() OVER(
+    PARTITION BY surgeon_id
+    ORDER BY
+      total_cost ASC
+  ) AS cost_rank,
+  ROW_NUMBER() OVER(
+    PARTITION BY surgeon_id,
+    diagnosis_description
+    ORDER BY
+      total_profit DESC
+  ) AS profit_row_number
+FROM
+  "surgical_encounters" s
+  LEFT OUTER JOIN "physicians" p ON s.surgeon_id = p.id
+ORDER BY
+  s.surgeon_id,
+  s.diagnosis_description;
+
+-- --> LAG(...) OVER(...) / LEAD(...) OVER(...)
+SELECT
+  patient_encounter_id,
+  master_patient_id,
+  patient_admission_datetime,
+  patient_discharge_datetime,
+  LAG(patient_discharge_datetime) OVER w AS previous_discharge_datetime,
+  LEAD(patient_admission_datetime) OVER w AS next_admission_date
+FROM
+  "encounters" WINDOW w AS (
+    PARTITION BY master_patient_id
+    ORDER BY
+      patient_admission_datetime
+  );
+
+-- --->REUSUABLE WINDOW FUNCTIONS
+-- WINDOW FUNCTIONS ON ITS OWN
+SELECT
+  s.surgery_id,
+  p.full_name,
+  s.total_profit,
+  s.total_cost,
+  AVG(total_profit) OVER(PARTITION BY s.surgeon_id) AS avg_total_profit,
+  SUM(total_cost) OVER(PARTITION BY s.surgeon_id) AS total_surgeon_cost
+FROM
+  "surgical_encounters" s
+  LEFT OUTER JOIN "physicians" p ON s.surgeon_id = p.id;
+
+-- same code with reusable window function after from...
+SELECT
+  s.surgery_id,
+  p.full_name,
+  s.total_profit,
+  s.total_cost,
+  AVG(total_profit) OVER w AS avg_total_profit,
+  SUM(total_cost) OVER w AS total_surgeon_cost
+FROM
+  "surgical_encounters" s
+  LEFT OUTER JOIN "physicians" p ON s.surgeon_id = p.id WINDOW w AS (PARTITION BY s.surgeon_id);
+
+-- CODING CHALLENGE
+-- FIND SURGERIES THAT OCCURED WITHIN 30 DAYS OF A PREVIOUS SURGERY
+WITH prior_surgery AS (
+  SELECT
+    surgery_id,
+    master_patient_id,
+    surgical_admission_date,
+    surgical_discharge_date,
+    LAG(surgical_discharge_date) OVER(
+      PARTITION BY master_patient_id
+      ORDER BY
+        surgical_admission_date
+    ) AS previous_discharge_date
+  FROM
+    surgical_encounters
+)
+SELECT
+  *,
+  (
+    surgical_admission_date - previous_discharge_date
+  ) AS days_between_surgeries
+FROM
+  prior_surgery
+WHERE
+  (
+    surgical_admission_date - previous_discharge_date
+  ) <= 30;
+
+--FOR EACH DEPARTMENT, FIND THE 3 PHYSICIANS WITH THE MOST ADMISSIONS
+WITH provider_department AS (
+  SELECT
+    admitting_provider_id,
+    department_id,
+    COUNT(*) AS num_encounters
+  FROM
+    encounters
+  GROUP BY
+    admitting_provider_id,
+    department_id
+),
+pd_ranked AS (
+  SELECT
+    *,
+    ROW_NUMBER() OVER(
+      PARTITION BY department_id
+      ORDER BY
+        num_encounters DESC
+    ) AS encounter_rank
+  FROM
+    provider_department
+)
+SELECT
+  d.department_name,
+  p.full_name AS physician_name,
+  encounter_rank
+FROM
+  pd_ranked pd
+  LEFT OUTER JOIN physicians p ON p.id = pd.admitting_provider_id
+  LEFT OUTER JOIN departments d ON d.department_id = pd.department_id
+WHERE
+  encounter_rank <= 3
+ORDER BY
+  d.department_name,
+  encounter_rank DESC;
+
+-- FOR EACH SURGERY, FIND ANY RESOURCES THAT ACCOUNTED FOR MORE THAN 50% OF TOTAL SURGERY COST
+WITH total_cost AS (
+  SELECT
+    surgery_id,
+    resource_name,
+    resource_cost,
+    SUM(resource_cost) OVER(PARTITION BY surgery_id) AS total_surgery_cost
+  FROM
+    surgical_costs
+)
+SELECT
+  *,
+  (resource_cost / total_surgery_cost) * 100 AS pct_total_cost
+FROM
+  total_cost
+WHERE
+  (resource_cost / total_surgery_cost) * 100 > 50;
+
+-- LESSON 4 ADVANCED JOIN OPERATIONS
