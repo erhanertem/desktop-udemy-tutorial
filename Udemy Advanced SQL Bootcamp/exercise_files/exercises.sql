@@ -775,7 +775,8 @@ LIMIT
 SELECT
   p.full_name,
   AVG(v.bp_diastolic) AS avg_diastolic_bp,
-  AVG(v.bp_systolic) AS avg_systolic_bp
+  AVG(v.bp_systolic) AS avg_systolic_bp,
+  (AVG(v.bp_diastolic) + AVG(v.bp_systolic)) * 0.5 AS median_bp
 FROM
   vitals v
   INNER JOIN encounters e USING(patient_encounter_id)
@@ -793,3 +794,159 @@ WHERE
   se.surgery_id IS NULL;
 
 -- LESSON 5 SET OPERATIONS
+-- -->QUERY JOINING UNION /UNION ALL OPERATOR
+-- -> UNION REMOVES DUPLICATES
+SELECT
+  surgery_id
+FROM
+  surgical_encounters
+UNION
+SELECT
+  surgery_id
+FROM
+  surgical_costs
+ORDER BY
+  surgery_id;
+
+-- -> UNION ALL ALLOWS DUPLICATES
+SELECT
+  surgery_id
+FROM
+  surgical_encounters
+UNION
+ALL
+SELECT
+  surgery_id
+FROM
+  surgical_costs
+ORDER BY
+  surgery_id;
+
+-- -->QUERY JOINING UNION /UNION ALL OPERATOR
+SELECT
+  surgery_id
+FROM
+  surgical_encounters
+INTERSECT
+SELECT
+  surgery_id
+FROM
+  surgical_costs
+ORDER BY
+  surgery_id;
+
+-- Display names of patients that had both encounters and surgical encounters
+WITH all_patients AS (
+  SELECT
+    master_patient_id
+  FROM
+    encounters
+  INTERSECT
+  SELECT
+    master_patient_id
+  FROM
+    surgical_encounters
+)
+SELECT
+  ap.master_patient_id,
+  p.name
+FROM
+  all_patients ap
+  INNER JOIN patients p ON ap.master_patient_id = p.master_patient_id;
+
+-- -->QUERY JOINING EXCEPT /EXCEPT ALL OPERATOR
+SELECT
+  surgery_id
+FROM
+  surgical_costs
+EXCEPT
+SELECT
+  surgery_id
+FROM
+  surgical_encounters
+ORDER BY
+  surgery_id;
+
+WITH missing_departments AS (
+  SELECT
+    department_id
+  FROM
+    departments
+  EXCEPT
+  SELECT
+    department_id
+  FROM
+    encounters
+)
+SELECT
+  m.department_id,
+  d.department_name
+FROM
+  missing_departments m
+  INNER JOIN departments d ON m.department_id = d.department_id;
+
+-- CODING CHALLENGE
+-- GENERATE A LIST OF ALL PHYSICIANS AND PHYSICIAN TYPES IN THE ENCOUNTERS TABLE INCLUDING THEIR NAMES
+WITH combined_physicians AS (
+  SELECT
+    admitting_provider_id AS provider_id,
+    'Admitting' AS provider_type
+  FROM
+    encounters
+  UNION
+  SELECT
+    discharging_provider_id,
+    -- NO NEED TO ALIAS THIS AS FIRST UNION IS ALIASED
+    'Discharging' -- NO NEED TO ALIAS THIS
+  FROM
+    encounters
+  UNION
+  SELECT
+    attending_provider_id,
+    -- NO NEED TO ALIAS THIS
+    'Attending' -- NO NEED TO ALIAS THIS
+  FROM
+    encounters
+)
+SELECT
+  cp.provider_id,
+  p.full_name,
+  cp.provider_type
+FROM
+  combined_physicians cp
+  INNER JOIN physicians p ON p.id = cp.provider_id
+ORDER BY
+  p.full_name,
+  cp.provider_type;
+
+-- FIND ALL PRIMARY CARE PHYSICIANS WHO ALSO ADMITTING PROVIDERS
+WITH admitting_pcps AS (
+  SELECT
+    pcp_id
+  FROM
+    patients
+  INTERSECT
+  SELECT
+    admitting_provider_id
+  FROM
+    encounters
+)
+SELECT
+  a.pcp_id,
+  p.full_name
+FROM
+  admitting_pcps a
+  INNER JOIN physicians p ON p.id = a.pcp_id;
+
+-- DETERMINE WHETHER THERE ARE ANY SURGEONS IN THE SURGICAL_ENCOUNTERS TABLE WHO ARE NOT IN THE PHYSICIANS TABLE
+SELECT
+  surgeon_id
+FROM
+  surgical_encounters
+EXCEPT
+SELECT
+  id
+FROM
+  physicians;
+
+-- LESSON 6 GROUPING SETS
