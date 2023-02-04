@@ -652,3 +652,144 @@ WHERE
   (resource_cost / total_surgery_cost) * 100 > 50;
 
 -- LESSON 4 ADVANCED JOIN OPERATIONS
+-- --->SELF JOIN
+SELECT
+  se1.surgery_id AS surgery_id1,
+  (
+    se1.surgical_discharge_date - se1.surgical_admission_date
+  ) AS los1,
+  se2.surgery_id AS surgery_id2,
+  (
+    se2.surgical_discharge_date - se2.surgical_admission_date
+  ) AS los2
+FROM
+  "surgical_encounters" se1
+  INNER JOIN "surgical_encounters" se2 ON (
+    se1.surgical_discharge_date - se1.surgical_admission_date
+  ) = (
+    se2.surgical_discharge_date - se2.surgical_admission_date
+  )
+LIMIT
+  1000;
+
+SELECT
+  o1.order_procedure_id,
+  o1.order_procedure_description,
+  o1.order_parent_order_id,
+  o2.order_procedure_description
+FROM
+  "orders_procedures" o1
+  INNER JOIN "orders_procedures" o2 ON o1.order_parent_order_id = o2.order_procedure_id;
+
+-- --->FULL JOIN
+-- SORT OUT NULL CASES
+SELECT
+  a.account_id,
+  e.patient_encounter_id
+FROM
+  "accounts" a FULL
+  JOIN "encounters" e ON a.account_id = e.hospital_account_id
+WHERE
+  a.account_id IS NULL
+  OR e.patient_encounter_id IS NULL;
+
+SELECT
+  d.department_id,
+  d.department_name
+FROM
+  "departments" d FULL
+  JOIN "hospitals" h ON d.hospital_id = h.hospital_id
+WHERE
+  h.hospital_id IS NULL;
+
+-- --->CROSS JOIN
+SELECT
+  h.hospital_name,
+  d.department_name
+FROM
+  hospitals h
+  CROSS JOIN departments d;
+
+SELECT
+  h.hospital_name,
+  d.department_name
+FROM
+  hospitals h,
+  departments d;
+
+-- ->CROSS JOIN AS INNER JOIN
+SELECT
+  h.hospital_name,
+  d.department_name
+FROM
+  hospitals h
+  CROSS JOIN departments d
+WHERE
+  d.hospital_id = h.hospital_id;
+
+SELECT
+  h.hospital_name,
+  d.department_name
+FROM
+  hospitals h,
+  departments d
+WHERE
+  d.hospital_id = h.hospital_id;
+
+-- --->NATURAL JOIN / INNER JOIN...USING()
+SELECT
+  h.hospital_name,
+  d.department_name
+FROM
+  departments d
+  INNER JOIN hospitals h USING (hospital_id);
+
+SELECT
+  h.hospital_name,
+  d.department_name
+FROM
+  departments d NATURAL
+  JOIN hospitals h;
+
+-- CODING CHALLENGE
+-- find all combinations of physicians and practices in the DATABASE
+SELECT
+  pr.name,
+  py.full_name
+FROM
+  "practices" pr
+  CROSS JOIN "physicians" py
+LIMIT
+  50000;
+
+SELECT
+  pr.name,
+  py.full_name
+FROM
+  "practices" pr,
+  "physicians" py
+LIMIT
+  100000;
+
+-- find the avg blood pressure(systolic and diastolic) by admitting provider/physician
+SELECT
+  p.full_name,
+  AVG(v.bp_diastolic) AS avg_diastolic_bp,
+  AVG(v.bp_systolic) AS avg_systolic_bp
+FROM
+  vitals v
+  INNER JOIN encounters e USING(patient_encounter_id)
+  LEFT OUTER JOIN physicians p ON e.admitting_provider_id = p.id
+GROUP BY
+  p.full_name;
+
+-- find the number of surgeries in the surgical costs table without data in the surgical encounters table
+SELECT
+  COUNT(DISTINCT sc.surgery_id)
+FROM
+  surgical_costs sc FULL
+  JOIN surgical_encounters se USING(surgery_id)
+WHERE
+  se.surgery_id IS NULL;
+
+-- LESSON 5 SET OPERATIONS
