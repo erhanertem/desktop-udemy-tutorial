@@ -950,3 +950,337 @@ FROM
   physicians;
 
 -- LESSON 6 GROUPING SETS
+-- -->GROUP BY GROUPING SETS 
+SELECT
+  state,
+  county,
+  COUNT(*) AS num_patients
+FROM
+  "patients"
+GROUP BY
+  GROUPING SETS ((state), (state, county),())
+ORDER BY
+  state DESC,
+  county;
+
+SELECT
+  p.full_name,
+  se.admission_type,
+  se.diagnosis_description,
+  COUNT(*) AS num_surgeries,
+  AVG(total_profit) AS avg_total_profit
+FROM
+  "surgical_encounters" se
+  LEFT JOIN "physicians" p ON se.surgeon_id = p.id
+GROUP BY
+  GROUPING SETS (
+    (p.full_name),
+    (se.admission_type),
+    (se.diagnosis_description),
+    (p.full_name, se.admission_type),
+    (p.full_name, se.diagnosis_description)
+  );
+
+-- CREATE TABLE inventory (
+--   warehouse VARCHAR(255),
+--   product VARCHAR(255) NOT NULL,
+--   model VARCHAR(50) NOT NULL,
+--   quantity INT,
+--   PRIMARY KEY (warehouse, product, model)
+-- );
+-- INSERT INTO
+--   inventory(warehouse, product, model, quantity)
+-- VALUES
+--   ('San Jose', 'iPhone', '6s', 100);
+-- INSERT INTO
+--   inventory(warehouse, product, model, quantity)
+-- VALUES
+--   ('San Fransisco', 'iPhone', '6s', 50);
+-- INSERT INTO
+--   inventory(warehouse, product, model, quantity)
+-- VALUES
+--   ('San Jose', 'iPhone', '7', 50);
+-- INSERT INTO
+--   inventory(warehouse, product, model, quantity)
+-- VALUES
+--   ('San Fransisco', 'iPhone', '7', 10);
+-- INSERT INTO
+--   inventory(warehouse, product, model, quantity)
+-- VALUES
+--   ('San Jose', 'iPhone', 'X', 150);
+-- INSERT INTO
+--   inventory(warehouse, product, model, quantity)
+-- VALUES
+--   ('San Fransisco', 'iPhone', 'X', 200);
+-- INSERT INTO
+--   inventory(warehouse, product, model, quantity)
+-- VALUES
+--   ('San Jose', 'Samsung', 'Galaxy S', 200);
+-- INSERT INTO
+--   inventory(warehouse, product, model, quantity)
+-- VALUES
+--   ('San Fransisco', 'Samsung', 'Galaxy S', 200);
+-- INSERT INTO
+--   inventory(warehouse, product, model, quantity)
+-- VALUES
+--   ('San Fransisco', 'Samsung', 'Note 8', 100);
+-- INSERT INTO
+--   inventory(warehouse, product, model, quantity)
+-- VALUES
+--   ('San Jose', 'Samsung', 'Note 8', 150);
+-- SELECT
+--   *
+-- FROM
+--   inventory;
+-- SELECT
+--   warehouse,
+--   product,
+--   SUM (quantity) qty
+-- FROM
+--   inventory
+-- GROUP BY
+--   warehouse,
+--   product;
+-- SELECT
+--   warehouse,
+--   SUM (quantity) qty
+-- FROM
+--   inventory
+-- GROUP BY
+--   warehouse;
+-- SELECT
+--   product,
+--   SUM (quantity) qty
+-- FROM
+--   inventory
+-- GROUP BY
+--   product;
+-- SELECT
+--   SUM(quantity) qty
+-- FROM
+--   inventory;
+-- manual version of grouping sets
+SELECT
+  warehouse,
+  product,
+  SUM (quantity) qty
+FROM
+  inventory
+GROUP BY
+  warehouse,
+  product
+UNION
+ALL
+SELECT
+  warehouse,
+  null,
+  SUM (quantity) qty
+FROM
+  inventory
+GROUP BY
+  warehouse
+UNION
+ALL
+SELECT
+  null,
+  product,
+  SUM (quantity) qty
+FROM
+  inventory
+GROUP BY
+  product
+UNION
+ALL
+SELECT
+  null,
+  null,
+  SUM(quantity) qty
+FROM
+  inventory;
+
+SELECT
+  warehouse,
+  product,
+  SUM (quantity) qty
+FROM
+  inventory
+GROUP BY
+  GROUPING SETS(
+    (warehouse, product),
+    (warehouse),
+    (product),
+    ()
+  );
+
+-- postgre sql version
+SELECT
+  warehouse,
+  product,
+  SUM (quantity) qty
+FROM
+  inventory
+GROUP BY
+  ROLLUP (warehouse, product);
+
+-- mysql version
+SELECT
+  warehouse,
+  product,
+  SUM (quantity) qty
+FROM
+  inventory
+GROUP BY
+  warehouse,
+  product WITH ROLLUP;
+
+-- -->GROUP BY CUBE
+-- VIA GROUPING SETS
+SELECT
+  warehouse,
+  product,
+  SUM (quantity) qty
+FROM
+  inventory
+GROUP BY
+  GROUPING SETS(
+    (warehouse, product),
+    (warehouse),
+    (product),
+    ()
+  );
+
+-- VIA CUBE
+SELECT
+  warehouse,
+  product,
+  SUM (quantity) qty
+FROM
+  inventory
+GROUP BY
+  CUBE(warehouse, product);
+
+SELECT
+  state,
+  county,
+  COUNT(*) AS num_patients
+FROM
+  "patients"
+GROUP BY
+  CUBE(state, county)
+ORDER BY
+  state DESC,
+  county;
+
+SELECT
+  p.full_name,
+  se.admission_type,
+  se.diagnosis_description,
+  COUNT(*) AS num_surgeries,
+  AVG(total_profit)
+FROM
+  "surgical_encounters" se
+  LEFT JOIN physicians p ON se.surgeon_id = p.id
+GROUP BY
+  cube(
+    p.full_name,
+    se.admission_type,
+    se.diagnosis_description
+  );
+
+-- -->GROUP BY ROLLUP
+SELECT
+  h.state,
+  h.hospital_name,
+  d.department_name,
+  COUNT(e.patient_encounter_id) AS num_encounters
+FROM
+  encounters e
+  LEFT JOIN departments d ON e.department_id = d.department_id
+  LEFT JOIN hospitals h ON d.hospital_id = h.hospital_id
+GROUP BY
+  ROLLUP (h.state, h.hospital_name, d.department_name)
+ORDER BY
+  h.state,
+  h.hospital_name,
+  d.department_name;
+
+SELECT
+  state,
+  county,
+  city,
+  COUNT(master_patient_id) AS num_patients,
+  AVG(
+    EXTRACT(
+      YEAR
+      FROM
+        AGE(NOW(), date_of_birth)
+    )
+  ) AS avg_age
+FROM
+  patients
+GROUP BY
+  ROLLUP (state, county, city)
+HAVING
+  AVG(
+    EXTRACT(
+      YEAR
+      FROM
+        AGE(NOW(), date_of_birth)
+    )
+  ) IS NOT NULL
+ORDER BY
+  state,
+  county,
+  city;
+
+-- CODING CHALLENGE
+--FIND THE AVERAGE PULSE AND AVERAGE BODY SURFACE AREA BY WEIGHT, HEIGHT, WEIGHT/HEIGHT (@VITALS TABLE)
+SELECT
+  weight,
+  height,
+  ROUND(AVG(pulse), 2) AS avg_pulse,
+  ROUND(AVG(body_surface_area), 2) AS avg_bsa
+FROM
+  vitals
+GROUP BY
+  CUBE(weight, height)
+ORDER BY
+  height,
+  weight;
+
+--GENERATE A REPORT ON SURGICAL ADMISSIONS BY YEAR,MONTH, AND DAY USING ROLLUP
+SELECT
+  date_part('year', surgical_admission_date) AS year,
+  -- YEAR(surgical_admission_date) AS year, -- IN MYSQL
+  date_part('month', surgical_admission_date) AS month,
+  -- MONTH(surgical_admission_date) AS month, -- IN MYSQL
+  date_part('day', surgical_admission_date) AS day,
+  -- DATE(surgical_admission_date) AS day, -- IN MYSQL
+  COUNT(surgery_id) AS num_surgeries
+FROM
+  "surgical_encounters"
+GROUP BY
+  ROLLUP(1, 2, 3)
+ORDER BY
+  1,
+  2,
+  3;
+
+--GENERATE A REPORT ON THE NUMBER OF PATIENTS BY PRIMARY LANGUAGE,CITIZENSHIP,PRIMARY LANG AND CITIZENSHIP, AND PRIMARY LANG AND ETHNICITY
+-- NOTE: WE ARE ASKING SPECIFIC RELATIONS, NOT PURSUING A HIEARCHICAL FLOW SO GROUPING SETS IS BEST FOR THESE KIND OF CUSTOM GROUP SETS
+SELECT
+  primary_language,
+  is_citizen,
+  ethnicity,
+  COUNT(master_patient_id) AS num_patients
+FROM
+  "patients"
+GROUP BY
+  GROUPING SETS (
+    (primary_language),
+    (is_citizen),
+    (primary_language, is_citizen),
+    (primary_language, ethnicity)
+  );
+
+-- LESSON 7 SCHEMA STRUCTURES AND TABLE RELATIONSHIPS
