@@ -1284,3 +1284,137 @@ GROUP BY
   );
 
 -- LESSON 7 SCHEMA STRUCTURES AND TABLE RELATIONSHIPS
+-- -->INFORMATION SCHEMA
+SELECT
+  *
+FROM
+  information_schema.tables
+WHERE
+  table_schema = 'general_hospital'
+ORDER BY
+  table_name;
+
+SELECT
+  *
+FROM
+  information_schema.columns
+WHERE
+  table_schema = 'general_hospital'
+ORDER BY
+  table_name,
+  ordinal_position;
+
+SELECT
+  *
+FROM
+  information_schema.columns
+WHERE
+  table_schema = 'general_hospital'
+  AND column_name ILIKE '%id'
+ORDER BY
+  table_name;
+
+-- -->COMMENTS ON DB OBJECTS
+-- ->SCHEMA
+-- COMMENTING
+COMMENT ON SCHEMA general_hospital IS 'Hospital schema for Udemy Course';
+
+-- READING
+SELECT
+  obj_description('general_hospital' :: regnamespace);
+
+-- ->TABLE
+-- COMMENTING 
+COMMENT ON TABLE general_hospital.vitals IS 'Patient vital sign data taken at the beginning of the encounter';
+
+-- READING
+SELECT
+  obj_description('general_hospital.vitals' :: regclass);
+
+-- ->COLUMN
+-- COMMENTING
+COMMENT ON COLUMN general_hospital.accounts.primary_icd IS 'Primary International Classification of Diseases (ICD)';
+
+-- READING
+SELECT
+  *
+FROM
+  information_schema.columns
+WHERE
+  table_schema = 'general_hospital'
+  AND table_name = 'accounts';
+
+-- READING COLUMN primary_ic @ table accounts
+SELECT
+  col_description('general_hospital.accounts' :: regclass, 1);
+
+-- -->ADDING DROPPING CONSTRAINTS
+ALTER TABLE
+  general_hospital.surgical_encounters
+ADD
+  CONSTRAINT check_positive_cost CHECK(total_cost > 0);
+
+SELECT
+  *
+FROM
+  information_schema.table_constraints
+WHERE
+  table_schema = 'general_hospital'
+  AND table_name = 'surgical_encounters';
+
+ALTER TABLE
+  general_hospital.surgical_encounters DROP CONSTRAINT check_positive_cost;
+
+-- -->ADDING DROPPING FOREIGN KEYS
+-- ADD FOREIGN KEY
+ALTER TABLE
+  general_hospital.encounters
+ADD
+  CONSTRAINT encounters_attending_provider_id_fk FOREIGN KEY(attending_provider_id) REFERENCES general_hospital.physicians(id);
+
+SELECT
+  *
+FROM
+  information_schema.table_constraints
+WHERE
+  table_schema = 'general_hospital'
+  AND table_name = 'encounters'
+  AND constraint_type = 'FOREIGN KEY';
+
+-- DROP FOREIGN KEY
+ALTER TABLE
+  general_hospital.encounters DROP CONSTRAINT encounters_attending_provider_id_fk;
+
+-- CODING CHALLENGE
+--ADD A COMMENT FOR ADMITTING ICD AND VERIFY THAT IT WAS ADDED
+COMMENT ON COLUMN general_hospital.accounts.admit_icd IS 'Admitting diagnosis code from the Internation Classification of Dsieases (ICD)';
+
+SELECT
+  col_description('general_hospital.accounts' :: regclass, 2);
+
+--ADD NOT NULL CONSTRAINT ON SURGICAL_ADMISSION_DATE FIELD
+ALTER TABLE
+  general_hospital.surgical_encounters
+ALTER COLUMN
+  surgical_admission_date
+SET
+  NOT NULL;
+
+ALTER TABLE
+  general_hospital.surgical_encounters
+ALTER COLUMN
+  surgical_admission_date DROP NOT NULL;
+
+--ADD CONSTRAINT TO ENSURE THAT PATIENT_DISCHARGE_DATETIME IS AFTER PATIENT_ADMISSION_DATETIME OR EMPTY
+ALTER TABLE
+  general_hospital.encounters
+ADD
+  CONSTRAINT check_discharge_after_admission CHECK (
+    (
+      patient_admission_datetime < patient_discharge_datetime
+    )
+    OR (patient_discharge_datetime IS NULL)
+  );
+
+ALTER TABLE
+  general_hospital.encounters DROP CONSTRAINT IF EXISTS check_discharge_after_admission;
