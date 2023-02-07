@@ -1594,3 +1594,428 @@ WHERE
   account_id = 11417340;
 
 -- LESSON 9 TABLE INHERITANCE AND PARTITIONING
+-- -->RANGE/HORIZONTAL PARTITIONING
+-- ->CREATE PARTITION TABLE
+CREATE TABLE surgical_encounters_partitioned (
+  surgery_id INT NOT NULL,
+  master_patient_id INT NOT NULL,
+  surgical_admission_date DATE NOT NULL,
+  surgical_discharge_date DATE
+) PARTITION BY RANGE(surgical_admission_date);
+
+-- ->CREATE PARTITIONS FOR THE TABLE
+CREATE TABLE surgical_encounters_y2016 PARTITION OF surgical_encounters_partitioned FOR
+VALUES
+FROM
+  ('2016-01-01') TO ('2017-01-01');
+
+CREATE TABLE surgical_encounters_y2017 PARTITION OF surgical_encounters_partitioned FOR
+VALUES
+FROM
+  ('2017-01-01') TO ('2018-01-01');
+
+CREATE TABLE surgical_encounters_default PARTITION OF surgical_encounters_partitioned DEFAULT;
+
+-- ->COPY DATA OVER TO PARTIONED TABLE
+INSERT INTO
+  surgical_encounters_partitioned
+SELECT
+  surgery_id,
+  master_patient_id,
+  surgical_admission_date,
+  surgical_discharge_date
+FROM
+  surgical_encounters;
+
+-- ->CREATE INDEX FOR PARITION COLUMN
+CREATE INDEX ON surgical_encounters_partitioned (surgical_admission_date);
+
+-- ->TESTING
+SELECT
+  EXTRACT(
+    YEAR
+    FROM
+      surgical_admission_date
+  ),
+  COUNT(*)
+FROM
+  "surgical_encounters"
+GROUP BY
+  1;
+
+SELECT
+  COUNT(*),
+  MIN(surgical_admission_date),
+  MAX(surgical_admission_date)
+FROM
+  "surgical_encounters_y2016";
+
+SELECT
+  *
+FROM
+  "surgical_encounters"
+LIMIT
+  10;
+
+-- ANOTHER EXAMPLE
+CREATE TABLE Sales (
+  cust_id INT NOT NULL,
+  name VARCHAR(40),
+  store_id VARCHAR(20) NOT NULL,
+  bill_no INT NOT NULL,
+  bill_date DATE PRIMARY KEY NOT NULL,
+  amount DECIMAL(8, 2) NOT NULL
+);
+
+INSERT INTO
+  Sales
+VALUES
+  (1, 'Mike', 'S001', 101, '2015-01-02', 125.56),
+  (2, 'Robert', 'S003', 103, '2015-01-25', 476.50),
+  (3, 'Peter', 'S012', 122, '2016-02-15', 335.00),
+  (4, 'Joseph', 'S345', 121, '2016-03-26', 787.00),
+  (5, 'Harry', 'S234', 132, '2017-04-19', 678.00),
+  (6, 'Stephen', 'S743', 111, '2017-05-31', 864.00),
+  (7, 'Jacson', 'S234', 115, '2018-06-11', 762.00),
+  (8, 'Smith', 'S012', 125, '2019-07-24', 300.00),
+  (9, 'Adam', 'S456', 119, '2019-08-02', 492.20);
+
+SELECT
+  *
+FROM
+  Sales;
+
+-- ->CREATE PARTITION TABLE
+CREATE TABLE Sales_partitioned (
+  cust_id INT NOT NULL,
+  name VARCHAR(40),
+  store_id VARCHAR(20) NOT NULL,
+  bill_no INT NOT NULL,
+  bill_date DATE NOT NULL,
+  amount DECIMAL(8, 2) NOT NULL
+) PARTITION BY RANGE(bill_date);
+
+-- ->CREATE PARTITIONS FOR THE TABLE
+CREATE TABLE Sales_default PARTITION OF Sales_partitioned DEFAULT;
+
+CREATE TABLE Sales_y2017 PARTITION OF Sales_partitioned FOR
+VALUES
+FROM
+  ('2017-01-01') TO ('2018-01-01');
+
+CREATE TABLE Sales_y2018 PARTITION OF Sales_partitioned FOR
+VALUES
+FROM
+  ('2018-01-01') TO ('2019-01-01');
+
+-- ->COPY DATA OVER TO PARTIONED TABLE
+INSERT INTO
+  Sales_partitioned
+SELECT
+  cust_id,
+  name,
+  store_id,
+  bill_no,
+  bill_date,
+  amount
+FROM
+  Sales;
+
+-- ->CREATE INDEX FOR PARITION COLUMN
+CREATE INDEX ON Sales_partitioned (bill_date);
+
+INSERT INTO
+  Sales_partitioned
+VALUES
+  (11, 'MErhan', 'S992', 991, '2022-01-12', 123);
+
+INSERT INTO
+  Sales
+VALUES
+  (12, 'ZErhan', 'S892', 891, '2021-01-22', 193);
+
+-- -->LIST/HORIZONTAL PARTITIONING
+-- ->CREATE PARTITION TABLE
+CREATE TABLE departments_partitioned (
+  hospital_id INT NOT NULL,
+  department_id INT NOT NULL,
+  department_name TEXT,
+  specialty_description TEXT
+) PARTITION BY LIST(hospital_id);
+
+SELECT
+  DISTINCT hospital_id
+FROM
+  departments;
+
+-- ->CREATE PARTITIONS FOR THE TABLE
+CREATE TABLE departments_h111000 PARTITION OF departments_partitioned FOR
+VALUES
+  IN (111000);
+
+CREATE TABLE departments_h112000 PARTITION OF departments_partitioned FOR
+VALUES
+  IN (112000);
+
+CREATE TABLE departments_default PARTITION OF departments_partitioned DEFAULT;
+
+-- ->COPY DATA OVER TO PARTIONED TABLE
+INSERT INTO
+  departments_partitioned
+SELECT
+  hospital_id,
+  department_id,
+  department_name,
+  specialty_description
+FROM
+  departments;
+
+-- ->CREATE INDEX FOR PARITION COLUMN
+CREATE INDEX ON departments_partitioned (hospital_id);
+
+-- ->TESTING
+SELECT
+  hospital_id,
+  COUNT(*)
+FROM
+  departments_h112000
+GROUP BY
+  1;
+
+SELECT
+  hospital_id,
+  COUNT(*)
+FROM
+  departments_default
+GROUP BY
+  1;
+
+-- -->HASH/HORIZONTAL PARTITIONING
+-- ->CREATE PARTITION TABLE
+CREATE TABLE orders_procedures_partitioned (
+  order_procedure_id INT NOT NULL,
+  patient_encounter_id INT NOT NULL,
+  ordering_provider_id INT REFERENCES physicians(id),
+  order_cd text,
+  order_procedure_description text
+) PARTITION BY HASH(order_procedure_id, patient_encounter_id);
+
+-- ->CREATE PARTITIONS FOR THE TABLE
+CREATE TABLE orders_procedures_hash0 PARTITION OF orders_procedures_partitioned FOR
+VALUES
+  WITH (MODULUS 3, REMAINDER 0);
+
+CREATE TABLE orders_procedures_hash1 PARTITION OF orders_procedures_partitioned FOR
+VALUES
+  WITH (MODULUS 3, REMAINDER 1);
+
+CREATE TABLE orders_procedures_hash2 PARTITION OF orders_procedures_partitioned FOR
+VALUES
+  WITH (MODULUS 3, REMAINDER 2);
+
+-- ->COPY DATA OVER TO PARTIONED TABLE
+INSERT INTO
+  "orders_procedures_partitioned"
+SELECT
+  order_procedure_id,
+  patient_encounter_id,
+  ordering_provider_id,
+  order_cd,
+  order_procedure_description
+FROM
+  "orders_procedures";
+
+-- ->TESTING
+SELECT
+  'hash0',
+  COUNT(*)
+FROM
+  orders_procedures_hash0
+UNION
+SELECT
+  'hash1',
+  COUNT(*)
+FROM
+  orders_procedures_hash1
+UNION
+SELECT
+  'hash2',
+  COUNT(*)
+FROM
+  orders_procedures_hash2;
+
+-- -->TABLE INHERITANCE
+-- ->CREATE A PARENT BASE TABLE 
+CREATE TABLE visit (
+  id SERIAL NOT NULL PRIMARY KEY,
+  start_datetime TIMESTAMP,
+  end_datetime TIMESTAMP
+);
+
+-- ->CREATE A CHILD TABLE WITH PARENT RELATIONSHIP
+CREATE TABLE emergency_visit(
+  emergency_department_id INT NOT NULL,
+  triage_level INT,
+  triage_datetime TIMESTAMP
+) INHERITS (visit);
+
+-- ->TESTING
+-- REGISTER DATA TO CHILD TABLE
+INSERT INTO
+  emergency_visit
+VALUES
+  (
+    default,
+    '2022-01-01 12:00:00',
+    null,
+    12,
+    3,
+    null
+  );
+
+-- IMPORTANT! Dublicate primary key and breaking data consistency across parent and child tables.
+INSERT INTO
+  "emergency_visit"
+VALUES
+  (
+    2,
+    '2022-03-01 10:45:00',
+    '2022-03-03 12:00:00',
+    1,
+    1,
+    null
+  );
+
+-- REGISTER DATA TO PARENT TABLE
+INSERT INTO
+  visit
+VALUES
+  (
+    default,
+    '2022-03-01 10:45:00',
+    '2022-03-03 12:00:00'
+  );
+
+-- CODING CHALLENGE
+-- CREATE AND POPULATE encounters table partitioned by hospital_id
+CREATE TABLE encounters_partitioned(
+  hospital_id INT NOT NULL,
+  patient_encounter_id INT NOT NULL,
+  master_patient_id INT NOT NULL,
+  admitting_provider_id INT REFERENCES physicians(id),
+  department_id INT REFERENCES departments(department_id),
+  patient_admission_datetime TIMESTAMP,
+  patient_discharge_datetime TIMESTAMP,
+  CONSTRAINT encounters_partitioned_pk PRIMARY KEY (hospital_id, patient_encounter_id)
+) PARTITION BY LIST(hospital_id);
+
+SELECT
+  DISTINCT d.hospital_id
+FROM
+  encounters e
+  LEFT OUTER JOIN departments d ON e.department_id = d.department_id
+ORDER BY
+  1;
+
+CREATE TABLE encounters_h111000 PARTITION OF encounters_partitioned FOR
+VALUES
+  IN (111000);
+
+CREATE TABLE encounters_h112000 PARTITION OF encounters_partitioned FOR
+VALUES
+  IN (112000);
+
+CREATE TABLE encounters_h114000 PARTITION OF encounters_partitioned FOR
+VALUES
+  IN (114000);
+
+CREATE TABLE encounters_h115000 PARTITION OF encounters_partitioned FOR
+VALUES
+  IN (115000);
+
+CREATE TABLE encounters_h9900006 PARTITION OF encounters_partitioned FOR
+VALUES
+  IN (9900006);
+
+CREATE TABLE encounters_default PARTITION OF encounters_partitioned DEFAULT;
+
+INSERT INTO
+  encounters_partitioned
+SELECT
+  d.hospital_id,
+  e.patient_encounter_id,
+  e.master_patient_id,
+  e.admitting_provider_id,
+  e.department_id,
+  e.patient_admission_datetime,
+  e.patient_discharge_datetime
+FROM
+  encounters e
+  LEFT OUTER JOIN departments d ON e.department_id = d.department_id;
+
+CREATE INDEX ON encounters_partitioned(patient_encounter_id);
+
+-- CREATE A NEW vitals tablepartitioned by a datetime field
+CREATE TABLE vitals_partitioned (
+  patient_encounter_id INT NOT NULL REFERENCES encounters(patient_encounter_id),
+  patient_admission_datetime TIMESTAMP NOT NULL,
+  bp_diastolic INT,
+  bp_systolic INT,
+  bmi NUMERIC,
+  temperature NUMERIC,
+  weight INT
+) PARTITION BY RANGE (patient_admission_datetime);
+
+SELECT
+  DISTINCT EXTRACT(
+    YEAR
+    FROM
+      patient_admission_datetime
+  )
+FROM
+  encounters;
+
+CREATE TABLE vitals_y2015 PARTITION OF vitals_partitioned FOR
+VALUES
+FROM
+  ('2015-01-01') TO ('2016-01-01');
+
+CREATE TABLE vitals_y2016 PARTITION OF vitals_partitioned FOR
+VALUES
+FROM
+  ('2016-01-01') TO ('2017-01-01');
+
+CREATE TABLE vitals_y2017 PARTITION OF vitals_partitioned FOR
+VALUES
+FROM
+  ('2017-01-01') TO ('2018-01-01');
+
+CREATE TABLE vitals_default PARTITION OF vitals_partitioned DEFAULT;
+
+INSERT INTO
+  vitals_partitioned
+SELECT
+  e.patient_encounter_id,
+  e.patient_admission_datetime,
+  v.bp_diastolic,
+  v.bp_systolic,
+  v.bmi,
+  v.temperature,
+  v.weight
+FROM
+  vitals v
+  LEFT OUTER JOIN encounters e ON v.patient_encounter_id = e.patient_encounter_id;
+
+SELECT
+  *
+FROM
+  vitals_y2016;
+
+SELECT
+  DISTINCT EXTRACT(
+    YEAR
+    FROM
+      patient_admission_datetime
+  )
+FROM
+  vitals_y2016;
