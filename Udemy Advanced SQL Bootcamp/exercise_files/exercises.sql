@@ -1418,3 +1418,179 @@ ADD
 
 ALTER TABLE
   general_hospital.encounters DROP CONSTRAINT IF EXISTS check_discharge_after_admission;
+
+-- LESSON 8 TRANSACTIONS
+-- UPDATE DATA
+SELECT
+  *
+FROM
+  vitals
+WHERE
+  patient_encounter_id = 1854663;
+
+UPDATE
+  vitals
+SET
+  bp_diastolic = 100
+WHERE
+  patient_encounter_id = 1854663;
+
+SELECT
+  *
+FROM
+  accounts
+WHERE
+  account_id = 11417340;
+
+UPDATE
+  accounts
+SET
+  total_account_balance = 0
+WHERE
+  account_id = 11417340;
+
+-- -->TRANSACTIONS BEGIN/END
+-- -> COMMIT --------------TRANSACTION
+BEGIN TRANSACTION;
+
+UPDATE
+  physicians
+SET
+  first_name = 'Bill',
+  full_name = CONCAT(last_name, ', Bill')
+WHERE
+  id = 1;
+
+END TRANSACTION;
+
+-- OR ALTERNATIVELY USE COMMIT TRANSACTION;
+SELECT
+  *
+FROM
+  physicians
+WHERE
+  id = 1;
+
+-- -> ROLLBACK --------------TRANSACTION
+BEGIN TRANSACTION;
+
+UPDATE
+  physicians
+SET
+  first_name = 'Gage',
+  full_name = CONCAT(last_name, ', Gage')
+WHERE
+  id = 1;
+
+ROLLBACK TRANSACTION;
+
+SELECT
+  *
+FROM
+  physicians
+WHERE
+  id = 1;
+
+-- -->SAVEPOINT TRANSACTION
+SELECT
+  *
+FROM
+  vitals;
+
+BEGIN;
+
+UPDATE
+  vitals
+SET
+  bp_diastolic = 120
+WHERE
+  patient_encounter_id = 2570046;
+
+SAVEPOINT vitals_updated;
+
+UPDATE
+  accounts
+SET
+  total_account_balance = 1000
+WHERE
+  account_id = 11417340;
+
+ROLLBACK TO vitals_updated;
+
+COMMIT;
+
+SELECT
+  *
+FROM
+  vitals
+WHERE
+  patient_encounter_id = 2570046;
+
+SELECT
+  *
+FROM
+  accounts
+WHERE
+  account_id = 11417340;
+
+-- CODING CHALLENGE
+-- --------------
+BEGIN TRANSACTION;
+
+LOCK TABLE physicians;
+
+UPDATE
+  physicians
+SET
+  first_name = 'Gage',
+  full_name = CONCAT(last_name, ', Gage')
+WHERE
+  id = 1;
+
+COMMIT;
+
+SELECT
+  *
+FROM
+  physicians
+WHERE
+  id = 1;
+
+-- --------------
+BEGIN TRANSACTION;
+
+DROP TABLE practices;
+
+ROLLBACK TRANSACTION;
+
+SELECT
+  *
+FROM
+  practices;
+
+-- --------------
+BEGIN TRANSACTION;
+
+UPDATE
+  accounts
+SET
+  total_account_balance = 15077.90
+WHERE
+  account_id = 11417340;
+
+SAVEPOINT account_updated;
+
+DROP TABLE vitals;
+
+ROLLBACK TO account_updated;
+
+COMMIT TRANSACTION;
+
+SELECT
+  *
+FROM
+  accounts
+WHERE
+  account_id = 11417340;
+
+-- LESSON 9 TABLE INHERITANCE AND PARTITIONING
