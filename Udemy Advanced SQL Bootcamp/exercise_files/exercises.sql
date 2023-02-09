@@ -2019,3 +2019,252 @@ SELECT
   )
 FROM
   vitals_y2016;
+
+-- LESSON 10 VIEWS
+-- -->SIMPLE VIEWS
+-- ->CREATING SIMPLE VIEWS
+CREATE VIEW view_monthly_surgery_stats_by_department AS
+SELECT
+  to_char(surgical_admission_date, 'YYYY-MM'),
+  unit_name,
+  COUNT(surgery_id) AS num_surgeries,
+  SUM(total_cost) AS total_cost,
+  SUM(total_profit) AS total_profit
+FROM
+  surgical_encounters
+GROUP BY
+  to_char(surgical_admission_date, 'YYYY-MM'),
+  unit_name
+ORDER BY
+  unit_name,
+  to_char(surgical_admission_date, 'YYYY-MM');
+
+SELECT
+  *
+FROM
+  information_schema.views
+WHERE
+  table_schema = 'general_hospital';
+
+-- ->REPLACING SIMPLE REVIEWS
+CREATE
+OR REPLACE VIEW v_monthly_surgery_stats AS
+SELECT
+  to_char(surgical_admission_date, 'YYYY-MM') AS year_month,
+  COUNT(surgery_id) AS num_surgeries,
+  SUM(total_cost) AS total_cost,
+  SUM(total_profit) AS total_profit
+FROM
+  surgical_encounters
+GROUP BY
+  1
+ORDER BY
+  1;
+
+-- ->RENAMING SIMPLE REVIEWS
+ALTER VIEW v_monthly_surgery_stats RENAME TO view_monthly_surgery_stats;
+
+-- ->DELETING SIMPLE REVIEWS
+DROP VIEW IF EXISTS view_monthly_surgery_stats_by_department;
+
+-- -->MATERIALIZED VIEWS
+-- ->CREATING A MATERIALIZED VIEW
+CREATE MATERIALIZED VIEW v_monthly_surgery_stats AS
+SELECT
+  to_char(surgical_admission_date, 'YYYY-MM') AS year_month,
+  unit_name,
+  COUNT(surgery_id) AS num_surgeries,
+  SUM(total_cost) AS total_cost,
+  SUM(total_profit) AS total_profit
+FROM
+  surgical_encounters
+GROUP BY
+  1,
+  2
+ORDER BY
+  2,
+  1 WITH NO DATA;
+
+-- ->UPDATE A MATERIALIZED VIEW
+REFRESH MATERIALIZED VIEW v_monthly_surgery_stats;
+
+-- ->RENAME A MATERIALIZED VIEW
+ALTER MATERIALIZED VIEW v_monthly_surgery_stats RENAME TO mview_monthly_surgery_stats;
+
+SELECT
+  *
+FROM
+  "v_monthly_surgery_stats";
+
+ALTER MATERIALIZED VIEW mview_monthly_surgery_stats RENAME COLUMN year_month TO year_month_ext;
+
+-- -->RECURSIVE VIEWS
+-- FIRST WAY OF WRITING RECURSIVE VIEW
+CREATE VIEW v_fibonacci AS WITH RECURSIVE fibonacci AS (
+  SELECT
+    1 AS a,
+    1 AS b
+  UNION
+  ALL
+  SELECT
+    b,
+    a + b
+  WHERE
+    b < 200
+)
+SELECT
+  *
+FROM
+  fibonacci;
+
+-- SECOND WAY OF WRITING RECURSIVE VIEW
+CREATE RECURSIVE VIEW v_fibonacci(a, b) AS
+SELECT
+  1 AS a,
+  1 AS b
+UNION
+ALL
+SELECT
+  b,
+  a + b
+FROM
+  v_fibonacci
+WHERE
+  b < 200;
+
+-- TESTING RECURSIVE VIEW
+SELECT
+  *
+FROM
+  v_fibonacci;
+
+-- ----------------------
+SELECT
+  *
+FROM
+  "orders_procedures"
+LIMIT
+  10;
+
+CREATE RECURSIVE VIEW v_orders(order_procedure_id, order_parent_order_id, level) AS
+SELECT
+  order_procedure_id,
+  order_parent_order_id,
+  0 AS level
+FROM
+  orders_procedures
+WHERE
+  order_parent_order_id IS NULL
+UNION
+ALL
+SELECT
+  op.order_procedure_id,
+  op.order_parent_order_id,
+  o.level + 1 AS level
+FROM
+  orders_procedures op
+  INNER JOIN v_orders o ON op.order_parent_order_id = o.order_procedure_id;
+
+SELECT
+  *
+FROM
+  v_orders;
+
+-- CODING CHALLENGE
+-- -------------
+CREATE VIEW v_patients_primary_care AS
+SELECT
+  p.master_patient_id,
+  p.name AS patient_name,
+  p.gender,
+  p.primary_language,
+  p.date_of_birth,
+  p.pcp_id,
+  ph.full_name AS pcp_name
+FROM
+  patients p
+  INNER JOIN physicians ph ON p.pcp_id = ph.id;
+
+SELECT
+  *
+FROM
+  "v_patients_primary_care"
+WHERE
+  primary_language IS NOT NULL;
+
+-- -------------
+CREATE MATERIALIZED VIEW mv_hospital_encounters AS
+SELECT
+  h.hospital_id,
+  h.hospital_name,
+  to_char(patient_admission_datetime, 'YYYY-MM') AS year_month,
+  COUNT(patient_encounter_id) AS num_encounters,
+  COUNT(NULLIF(patient_in_icu_flag, 'No')) AS num_icu_patterns
+FROM
+  encounters e
+  LEFT JOIN departments d ON e.department_id = d.department_id
+  LEFT JOIN hospitals h ON d.hospital_id = h.hospital_id
+GROUP BY
+  1,
+  2,
+  3
+ORDER BY
+  1,
+  3 WITH NO DATA;
+
+REFRESH MATERIALIZED VIEW mv_hospital_encounters;
+
+SELECT
+  *
+FROM
+  mv_hospital_encounters;
+
+ALTER MATERIALIZED VIEW mv_hospital_encounters RENAME TO mv_hospital_encounters_statistics;
+
+-- -------------
+CREATE VIEW v_patients_primary_maleham AS
+SELECT
+  p.master_patient_id,
+  p.name AS patient_name,
+  p.gender,
+  p.primary_language,
+  p.pcp_id,
+  p.date_of_birth
+FROM
+  patients p
+WHERE
+  p.pcp_id = 4121 WITH CHECK OPTION;
+
+ALTER VIEW v_patients_primary_maleham
+ALTER COLUMN
+  pcp_id
+SET
+  DEFAULT 4121;
+
+ALTER VIEW v_patients_primary_maleham RENAME TO v_patients_primary_care_maleham;
+
+INSERT INTO
+  v_patients_primary_care_maleham
+VALUES
+  (
+    1245,
+    'John Doe',
+    'Male',
+    'ENGLISH',
+    DEFAULT,
+    '2003-07-09'
+  );
+
+INSERT INTO
+  v_patients_primary_care_maleham
+VALUES
+  (
+    1246,
+    'Mary Hartwebee',
+    'Female',
+    'ENGLISH',
+    4122,
+    '2003-07-09'
+  );
+
+-- LESSON 11 SQL FUNCTIONS
