@@ -2423,3 +2423,77 @@ RENAME TO f_mask_patient_name;
 DROP FUNCTION IF EXISTS f_mask_patient_name;
 
 -- LESSON 12 STORED PROCEDURES
+-- -->CREATING STORED PROCEDURE
+CREATE PROCEDURE sp_test_procedure () LANGUAGE plpgsql AS $$
+BEGIN
+DROP TABLE IF EXISTS general_hospital.test_table;
+CREATE TABLE general_hospital.test_table( id INT);
+COMMIT;
+END;
+$$;
+
+-- -->RUNNING STORED PROCEDURE
+CALL sp_test_procedure ();
+
+-- -->RENAMING STORED PROCEDURE
+ALTER PROCEDURE sp_test_procedure
+RENAME TO spp_test;
+
+-- -->INQUIRE STORED PROCEDUR
+SELECT
+  *
+FROM
+  information_schema.routines
+WHERE
+  routine_schema = 'general_hospital'
+  AND routine_type = 'PROCEDURE';
+
+-- -->MODIFYING STORED PROCEDURES
+CREATE
+OR REPLACE PROCEDURE sp_test_procedure () LANGUAGE plpgsql AS $$
+BEGIN
+DROP TABLE IF EXISTS general_hospital.test_table_new;
+CREATE TABLE general_hospital.test_table_new(id INT);
+COMMIT;
+END;
+$$;
+
+CALL sp_test_procedure ();
+
+-- ->RELOCATING STORED PROCEDURE TO ANOTHER SCHEMA
+ALTER PROCEDURE sp_test_procedure
+SET schema public;
+
+-- -->DELETE STORED PROCEDURES
+DROP PROCEDURE IF EXISTS public.sp_test_procedure;
+
+-- CODING CHALLENGE
+-- -------------
+CREATE PROCEDURE sp_update_surgery_cost (surgery_to_update INT, cost_change NUMERIC) LANGUAGE plpgsql AS $$
+DECLARE 
+num_resources INT;
+BEGIN
+-- Update surgical encounters
+UPDATE general_hospital.surgical_encounters SET total_cost = total_cost+cost_change WHERE surgery_id = surgery_to_update;
+COMMIT;
+-- Get number of resources
+SELECT COUNT(*) INTO num_resources FROM general_hospital.surgical_costs WHERE surgery_id = surgery_to_update;
+-- Update costs table 
+UPDATE general_hospital.surgical_costs SET resource_cost = resource_cost+(cost_change / num_resources) WHERE surgery_id = surgery_to_update;
+COMMIT;
+END;
+$$;
+
+CALL sp_update_surgery_cost (6518, 1000);
+
+SELECT
+  *
+FROM
+  surgical_encounters
+WHERE
+  surgery_id = 6518;
+
+ALTER PROCEDURE sp_update_surgery_cost
+RENAME TO sp_update_surgical_cost;
+
+-- LESSON 13 TRIGGERS
