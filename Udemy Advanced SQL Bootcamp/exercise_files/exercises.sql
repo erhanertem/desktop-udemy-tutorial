@@ -2497,3 +2497,102 @@ ALTER PROCEDURE sp_update_surgery_cost
 RENAME TO sp_update_surgical_cost;
 
 -- LESSON 13 TRIGGERS
+-- -->CREATE TRIGGER
+CREATE FUNCTION f_clean_physician_name () RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+IF NEW.last_name IS NULL OR NEW.first_name IS NULL THEN RAISE EXCEPTION 'Name cannot be null';
+ELSE 
+NEW.first_name = TRIM(NEW.first_name);
+NEW.last_name= TRIM(NEW.last_name);
+NEW.full_name = CONCAT(NEW.last_name, ', ', NEW.first_name);
+RETURN NEW;
+END IF;
+END;
+$$;
+
+-- -->ATTACH TRIGGER ONTO TABLE
+CREATE TRIGGER tr_clean_physician_name BEFORE INSERT ON physicians FOR EACH ROW
+EXECUTE PROCEDURE f_clean_physician_name ();
+
+INSERT INTO
+  physicians
+VALUES
+  (' John ', ' Doe', 'Something', 12345);
+
+SELECT
+  *
+FROM
+  physicians
+WHERE
+  id = 12345;
+
+-- -->LIST TRIGGER
+SELECT
+  trigger_schema,
+  trigger_name,
+  event_manipulation,
+  action_statement
+FROM
+  information_schema.triggers
+WHERE
+  event_object_table = 'physicians';
+
+-- -->ENABLE/DISABLE TRIGGER
+-- ->SELECTIVE ENABLE/DISABLE TRIGGER
+ALTER TABLE physicians DISABLE TRIGGER tr_clean_physician_name;
+
+ALTER TABLE physicians ENABLE TRIGGER tr_clean_physician_name;
+
+-- ->TOTAL ENABLE/DISABLE TRIGGER
+ALTER TABLE physicians DISABLE TRIGGER ALL;
+
+ALTER TABLE physicians ENABLE TRIGGER ALL;
+
+-- -->ALTERING TRIGGER
+-- ->RENAME TRIGGER
+ALTER TRIGGER tr_clean_physician_name ON physicians
+RENAME TO tr_physician_name;
+
+-- -->DELETE TRIGGER
+DROP TRIGGER IF EXISTS tr_clean_physician_name ON physicians;
+
+-- CODING CHALLENGE
+-- -------------
+CREATE FUNCTION f_update_surgical_costs () RETURNS TRIGGER LANGUAGE plpgsql AS $$
+DECLARE 
+num_resources INT;
+BEGIN
+--GET RESOURCE COUNT
+SELECT COUNT(*) INTO num_resources
+FROM general_hospital.surgical_costs
+WHERE surgery_id = NEW.surgery_id;
+--UPDATE COSTS TABLE
+IF NEW.total_cost != OLD.total_cost THEN
+UPDATE general_hospital.surgical_costs SET resource_cost = NEW.total_cost / num_resources WHERE surgery_id = NEW.surgery_id;
+END IF;
+RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER tr_my_trigger
+AFTER
+UPDATE ON general_hospital.surgical_encounters FOR EACH ROW
+EXECUTE PROCEDURE f_update_surgical_costs ();
+
+ALTER TRIGGER tr_my_trigger ON surgical_encounters
+RENAME TO tr_altered_trigger;
+
+UPDATE surgical_encounters
+SET
+  total_cost = total_cost + 1000
+WHERE
+  surgery_id = 14615;
+
+SELECT
+  *
+FROM
+  surgical_encounters
+WHERE
+  surgery_id = 14615;
+
+DROP TRIGGER tr_altered_trigger ON surgical_encounters;
