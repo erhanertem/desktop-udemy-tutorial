@@ -35,8 +35,7 @@ FROM
     FROM
       surgical_encounters
     WHERE
-      surgical_admission_date BETWEEN '2016-11-01'
-      AND '2016-11-30'
+      surgical_admission_date BETWEEN '2016-11-01' AND '2016-11-30'
   ) se
   INNER JOIN (
     SELECT
@@ -67,14 +66,15 @@ WHERE
   p.name ILIKE 'm%';
 
 -- REWORKED CTE VERSION OF THE ABOVE CODE
-WITH young_patients AS (
-  SELECT
-    *
-  FROM
-    patients
-  WHERE
-    date_of_birth >= '2000-01-01'
-)
+WITH
+  young_patients AS (
+    SELECT
+      *
+    FROM
+      patients
+    WHERE
+      date_of_birth >= '2000-01-01'
+  )
 SELECT
   *
 FROM
@@ -84,27 +84,28 @@ WHERE
 
 -- ->COMPLEX CTE
 -- ->MULTIPLE CTEs
-WITH top_counties AS (
-  -- SELECT COUNTIES WITH WITH PATIENT COUNTS OVER 1500 AND SELECT THE PATIENTS IN THOSE COUNTIES 
-  SELECT
-    county,
-    COUNT(*) AS num_patients
-  FROM
-    patients
-  GROUP BY
-    county
-  HAVING
-    COUNT(*) > 1500
-),
-county_patients AS (
-  -- AND FIND OUT THE NUMBER OF SURGERIES BASED ON THEIR COUNTY.  
-  SELECT
-    p.master_patient_id,
-    p.county
-  FROM
-    patients p
-    INNER JOIN top_counties t ON p.county = t.county
-)
+WITH
+  top_counties AS (
+    -- SELECT COUNTIES WITH WITH PATIENT COUNTS OVER 1500 AND SELECT THE PATIENTS IN THOSE COUNTIES 
+    SELECT
+      county,
+      COUNT(*) AS num_patients
+    FROM
+      patients
+    GROUP BY
+      county
+    HAVING
+      COUNT(*) > 1500
+  ),
+  county_patients AS (
+    -- AND FIND OUT THE NUMBER OF SURGERIES BASED ON THEIR COUNTY.  
+    SELECT
+      p.master_patient_id,
+      p.county
+    FROM
+      patients p
+      INNER JOIN top_counties t ON p.county = t.county
+  )
 SELECT
   p.county,
   COUNT(s.surgery_id) AS num_surgeries
@@ -115,15 +116,16 @@ GROUP BY
   p.county;
 
 -- --> CTEs COMPARISON SUBQUERIES
-WITH total_cost AS (
-  SELECT
-    surgery_id,
-    SUM(resource_cost) AS total_surgery_cost
-  FROM
-    surgical_costs
-  GROUP BY
-    surgery_id
-)
+WITH
+  total_cost AS (
+    SELECT
+      surgery_id,
+      SUM(resource_cost) AS total_surgery_cost
+    FROM
+      surgical_costs
+    GROUP BY
+      surgery_id
+  )
 SELECT
   *
 FROM
@@ -141,13 +143,13 @@ SELECT
 FROM
   "vitals"
 WHERE
-  bp_diastolic >(
+  bp_diastolic > (
     SELECT
       MIN(bp_diastolic)
     FROM
       "vitals"
   )
-  AND bp_systolic <(
+  AND bp_systolic < (
     SELECT
       MAX(bp_systolic)
     FROM
@@ -161,8 +163,8 @@ FROM
   "patients"
 WHERE
   master_patient_id IN (
-    SELECT
-      DISTINCT master_patient_id
+    SELECT DISTINCT
+      master_patient_id
     FROM
       "surgical_encounters"
   )
@@ -170,8 +172,8 @@ ORDER BY
   master_patient_id;
 
 --SIMILARLY, JOIN VERSION OF THE ABOVE CODE
-SELECT
-  DISTINCT p.master_patient_id
+SELECT DISTINCT
+  p.master_patient_id
 FROM
   "patients" p
   INNER JOIN "surgical_encounters" s ON p.master_patient_id = s.master_patient_id
@@ -195,8 +197,8 @@ FROM
   "patients"
 WHERE
   master_patient_id NOT IN (
-    SELECT
-      DISTINCT master_patient_id
+    SELECT DISTINCT
+      master_patient_id
     FROM
       "surgical_encounters"
   )
@@ -221,17 +223,13 @@ WHERE
 -- diagnosis in surgical encounters whose avg length of stay is less than or equal to the avg lenght of stay for all encounters by department
 SELECT
   diagnosis_description,
-  AVG(
-    surgical_discharge_date - surgical_admission_date
-  ) AS length_of_stay
+  AVG(surgical_discharge_date - surgical_admission_date) AS length_of_stay
 FROM
   surgical_encounters
 GROUP BY
   diagnosis_description
 HAVING
-  AVG(
-    surgical_discharge_date - surgical_admission_date
-  ) <= ALL (
+  AVG(surgical_discharge_date - surgical_admission_date) <= ALL (
     SELECT
       AVG(
         EXTRACT(
@@ -255,7 +253,7 @@ FROM
 GROUP BY
   unit_name
 HAVING
-  string_agg(DISTINCT surgical_type, ',') LIKE ALL(
+  string_agg(DISTINCT surgical_type, ',') LIKE ALL (
     SELECT
       string_agg(DISTINCT surgical_type, ',')
     FROM
@@ -268,7 +266,7 @@ SELECT
 FROM
   "encounters" e
 WHERE
-  EXISTS(
+  EXISTS (
     SELECT
       1
     FROM
@@ -293,20 +291,20 @@ WHERE
   );
 
 -- -->RECURSIVE CTEs
-WITH RECURSIVE fibonacci AS (
-  SELECT
-    -- base value
-    1 as a,
-    1 as b
-  UNION
-  ALL
-  SELECT
-    -- recursive operation
-    b,
-    a + b
-  FROM
-    fibonacci
-)
+WITH RECURSIVE
+  fibonacci AS (
+    SELECT
+      -- base value
+      1 as a,
+      1 as b
+    UNION ALL
+    SELECT
+      -- recursive operation
+      b,
+      a + b
+    FROM
+      fibonacci
+  )
 SELECT
   a,
   b
@@ -315,25 +313,25 @@ FROM
 LIMIT
   10;
 
-WITH RECURSIVE orders AS (
-  SELECT
-    order_procedure_id,
-    order_parent_order_id,
-    0 AS level
-  FROM
-    orders_procedures
-  WHERE
-    order_parent_order_id IS NULL
-  UNION
-  ALL
-  SELECT
-    op.order_procedure_id,
-    op.order_parent_order_id,
-    o.level + 1 AS level
-  FROM
-    orders_procedures op
-    INNER JOIN orders o ON op.order_parent_order_id = o.order_procedure_id
-)
+WITH RECURSIVE
+  orders AS (
+    SELECT
+      order_procedure_id,
+      order_parent_order_id,
+      0 AS level
+    FROM
+      orders_procedures
+    WHERE
+      order_parent_order_id IS NULL
+    UNION ALL
+    SELECT
+      op.order_procedure_id,
+      op.order_parent_order_id,
+      o.level + 1 AS level
+    FROM
+      orders_procedures op
+      INNER JOIN orders o ON op.order_parent_order_id = o.order_procedure_id
+  )
 SELECT
   *
 FROM
@@ -353,26 +351,27 @@ GROUP BY
   ordering_provider_id,
   patient_encounter_id;
 
-WITH provider_encounters AS (
-  SELECT
-    ordering_provider_id,
-    patient_encounter_id,
-    COUNT(order_procedure_id) AS num_procedures
-  FROM
-    orders_procedures
-  GROUP BY
-    ordering_provider_id,
-    patient_encounter_id
-),
-provider_orders AS (
-  SELECT
-    ordering_provider_id,
-    AVG(num_procedures) AS avg_num_procedures
-  FROM
-    provider_encounters
-  GROUP BY
-    ordering_provider_id
-)
+WITH
+  provider_encounters AS (
+    SELECT
+      ordering_provider_id,
+      patient_encounter_id,
+      COUNT(order_procedure_id) AS num_procedures
+    FROM
+      orders_procedures
+    GROUP BY
+      ordering_provider_id,
+      patient_encounter_id
+  ),
+  provider_orders AS (
+    SELECT
+      ordering_provider_id,
+      AVG(num_procedures) AS avg_num_procedures
+    FROM
+      provider_encounters
+    GROUP BY
+      ordering_provider_id
+  )
 SELECT
   p.full_name,
   o.avg_num_procedures
@@ -385,8 +384,8 @@ ORDER BY
   o.avg_num_procedures DESC;
 
 -- find encounters with any of the top 10 most common order codes
-SELECT
-  DISTINCT patient_encounter_id
+SELECT DISTINCT
+  patient_encounter_id
 FROM
   orders_procedures
 WHERE
@@ -411,7 +410,7 @@ FROM
   accounts a
 WHERE
   total_account_balance > 10000
-  AND EXISTS(
+  AND EXISTS (
     SELECT
       1
     FROM
@@ -422,33 +421,34 @@ WHERE
   );
 
 -- find encounters for patients born on or after 1995-01-01 whose length of stay is greater than or equal to the average surgical length of stay for patients 65 or older
-WITH old_los AS (
-  SELECT
-    EXTRACT(
-      YEAR
-      FROM
-        AGE(NOW(), p.date_of_birth)
-    ) AS age,
-    AVG(
-      s.surgical_discharge_date - s.surgical_admission_date
-    ) AS avg_los
-  FROM
-    patients p
-    INNER JOIN surgical_encounters s ON p.master_patient_id = s.master_patient_id
-  WHERE
-    p.date_of_birth IS NOT NULL
-    AND EXTRACT(
-      YEAR
-      FROM
-        AGE(NOW(), p.date_of_birth)
-    ) >= 65
-  GROUP BY
-    EXTRACT(
-      YEAR
-      FROM
-        AGE(NOW(), p.date_of_birth)
-    )
-)
+WITH
+  old_los AS (
+    SELECT
+      EXTRACT(
+        YEAR
+        FROM
+          AGE (NOW(), p.date_of_birth)
+      ) AS age,
+      AVG(
+        s.surgical_discharge_date - s.surgical_admission_date
+      ) AS avg_los
+    FROM
+      patients p
+      INNER JOIN surgical_encounters s ON p.master_patient_id = s.master_patient_id
+    WHERE
+      p.date_of_birth IS NOT NULL
+      AND EXTRACT(
+        YEAR
+        FROM
+          AGE (NOW(), p.date_of_birth)
+      ) >= 65
+    GROUP BY
+      EXTRACT(
+        YEAR
+        FROM
+          AGE (NOW(), p.date_of_birth)
+      )
+  )
 SELECT
   e.*
 FROM
@@ -462,7 +462,7 @@ WHERE
       (
         e.patient_discharge_datetime - e.patient_admission_datetime
       )
-  ) >= ALL(
+  ) >= ALL (
     SELECT
       avg_los
     FROM
@@ -472,18 +472,15 @@ WHERE
 -- LESSON 3 WINDOW FUNCTIONS
 -- ---> PERFORMING DYNAMIC CALCS ON DATA WITHIN GROUPS 
 -- --> WINDOW FUNCTIONS with CTEs
-WITH surgical_los AS (
-  SELECT
-    surgery_id,
-    (
-      surgical_discharge_date - surgical_admission_date
-    ) AS los,
-    AVG(
-      surgical_discharge_date - surgical_admission_date
-    ) OVER() AS avg_los
-  FROM
-    "surgical_encounters"
-)
+WITH
+  surgical_los AS (
+    SELECT
+      surgery_id,
+      (surgical_discharge_date - surgical_admission_date) AS los,
+      AVG(surgical_discharge_date - surgical_admission_date) OVER () AS avg_los
+    FROM
+      "surgical_encounters"
+  )
 SELECT
   *,
   ROUND(los - avg_los, 2)
@@ -495,8 +492,9 @@ SELECT
   account_id,
   primary_icd,
   total_account_balance,
-  RANK() OVER(
-    PARTITION BY primary_icd
+  RANK() OVER (
+    PARTITION BY
+      primary_icd
     ORDER BY
       total_account_balance DESC
   )
@@ -510,14 +508,16 @@ SELECT
   s.total_cost,
   diagnosis_description,
   total_profit,
-  RANK() OVER(
-    PARTITION BY surgeon_id
+  RANK() OVER (
+    PARTITION BY
+      surgeon_id
     ORDER BY
       total_cost ASC
   ) AS cost_rank,
-  ROW_NUMBER() OVER(
-    PARTITION BY surgeon_id,
-    diagnosis_description
+  ROW_NUMBER() OVER (
+    PARTITION BY
+      surgeon_id,
+      diagnosis_description
     ORDER BY
       total_profit DESC
   ) AS profit_row_number
@@ -537,8 +537,11 @@ SELECT
   LAG(patient_discharge_datetime) OVER w AS previous_discharge_datetime,
   LEAD(patient_admission_datetime) OVER w AS next_admission_date
 FROM
-  "encounters" WINDOW w AS (
-    PARTITION BY master_patient_id
+  "encounters"
+WINDOW
+  w AS (
+    PARTITION BY
+      master_patient_id
     ORDER BY
       patient_admission_datetime
   );
@@ -550,8 +553,14 @@ SELECT
   p.full_name,
   s.total_profit,
   s.total_cost,
-  AVG(total_profit) OVER(PARTITION BY s.surgeon_id) AS avg_total_profit,
-  SUM(total_cost) OVER(PARTITION BY s.surgeon_id) AS total_surgeon_cost
+  AVG(total_profit) OVER (
+    PARTITION BY
+      s.surgeon_id
+  ) AS avg_total_profit,
+  SUM(total_cost) OVER (
+    PARTITION BY
+      s.surgeon_id
+  ) AS total_surgeon_cost
 FROM
   "surgical_encounters" s
   LEFT OUTER JOIN "physicians" p ON s.surgeon_id = p.id;
@@ -566,59 +575,64 @@ SELECT
   SUM(total_cost) OVER w AS total_surgeon_cost
 FROM
   "surgical_encounters" s
-  LEFT OUTER JOIN "physicians" p ON s.surgeon_id = p.id WINDOW w AS (PARTITION BY s.surgeon_id);
+  LEFT OUTER JOIN "physicians" p ON s.surgeon_id = p.id
+WINDOW
+  w AS (
+    PARTITION BY
+      s.surgeon_id
+  );
 
 -- CODING CHALLENGE
 -- FIND SURGERIES THAT OCCURED WITHIN 30 DAYS OF A PREVIOUS SURGERY
-WITH prior_surgery AS (
-  SELECT
-    surgery_id,
-    master_patient_id,
-    surgical_admission_date,
-    surgical_discharge_date,
-    LAG(surgical_discharge_date) OVER(
-      PARTITION BY master_patient_id
-      ORDER BY
-        surgical_admission_date
-    ) AS previous_discharge_date
-  FROM
-    surgical_encounters
-)
+WITH
+  prior_surgery AS (
+    SELECT
+      surgery_id,
+      master_patient_id,
+      surgical_admission_date,
+      surgical_discharge_date,
+      LAG(surgical_discharge_date) OVER (
+        PARTITION BY
+          master_patient_id
+        ORDER BY
+          surgical_admission_date
+      ) AS previous_discharge_date
+    FROM
+      surgical_encounters
+  )
 SELECT
   *,
-  (
-    surgical_admission_date - previous_discharge_date
-  ) AS days_between_surgeries
+  (surgical_admission_date - previous_discharge_date) AS days_between_surgeries
 FROM
   prior_surgery
 WHERE
-  (
-    surgical_admission_date - previous_discharge_date
-  ) <= 30;
+  (surgical_admission_date - previous_discharge_date) <= 30;
 
 --FOR EACH DEPARTMENT, FIND THE 3 PHYSICIANS WITH THE MOST ADMISSIONS
-WITH provider_department AS (
-  SELECT
-    admitting_provider_id,
-    department_id,
-    COUNT(*) AS num_encounters
-  FROM
-    encounters
-  GROUP BY
-    admitting_provider_id,
-    department_id
-),
-pd_ranked AS (
-  SELECT
-    *,
-    ROW_NUMBER() OVER(
-      PARTITION BY department_id
-      ORDER BY
-        num_encounters DESC
-    ) AS encounter_rank
-  FROM
-    provider_department
-)
+WITH
+  provider_department AS (
+    SELECT
+      admitting_provider_id,
+      department_id,
+      COUNT(*) AS num_encounters
+    FROM
+      encounters
+    GROUP BY
+      admitting_provider_id,
+      department_id
+  ),
+  pd_ranked AS (
+    SELECT
+      *,
+      ROW_NUMBER() OVER (
+        PARTITION BY
+          department_id
+        ORDER BY
+          num_encounters DESC
+      ) AS encounter_rank
+    FROM
+      provider_department
+  )
 SELECT
   d.department_name,
   p.full_name AS physician_name,
@@ -634,15 +648,19 @@ ORDER BY
   encounter_rank DESC;
 
 -- FOR EACH SURGERY, FIND ANY RESOURCES THAT ACCOUNTED FOR MORE THAN 50% OF TOTAL SURGERY COST
-WITH total_cost AS (
-  SELECT
-    surgery_id,
-    resource_name,
-    resource_cost,
-    SUM(resource_cost) OVER(PARTITION BY surgery_id) AS total_surgery_cost
-  FROM
-    surgical_costs
-)
+WITH
+  total_cost AS (
+    SELECT
+      surgery_id,
+      resource_name,
+      resource_cost,
+      SUM(resource_cost) OVER (
+        PARTITION BY
+          surgery_id
+      ) AS total_surgery_cost
+    FROM
+      surgical_costs
+  )
 SELECT
   *,
   (resource_cost / total_surgery_cost) * 100 AS pct_total_cost
@@ -687,8 +705,8 @@ SELECT
   a.account_id,
   e.patient_encounter_id
 FROM
-  "accounts" a FULL
-  JOIN "encounters" e ON a.account_id = e.hospital_account_id
+  "accounts" a
+  FULL JOIN "encounters" e ON a.account_id = e.hospital_account_id
 WHERE
   a.account_id IS NULL
   OR e.patient_encounter_id IS NULL;
@@ -697,8 +715,8 @@ SELECT
   d.department_id,
   d.department_name
 FROM
-  "departments" d FULL
-  JOIN "hospitals" h ON d.hospital_id = h.hospital_id
+  "departments" d
+  FULL JOIN "hospitals" h ON d.hospital_id = h.hospital_id
 WHERE
   h.hospital_id IS NULL;
 
@@ -748,8 +766,8 @@ SELECT
   h.hospital_name,
   d.department_name
 FROM
-  departments d NATURAL
-  JOIN hospitals h;
+  departments d
+  NATURAL JOIN hospitals h;
 
 -- CODING CHALLENGE
 -- find all combinations of physicians and practices in the DATABASE
@@ -779,7 +797,7 @@ SELECT
   (AVG(v.bp_diastolic) + AVG(v.bp_systolic)) * 0.5 AS median_bp
 FROM
   vitals v
-  INNER JOIN encounters e USING(patient_encounter_id)
+  INNER JOIN encounters e USING (patient_encounter_id)
   LEFT OUTER JOIN physicians p ON e.admitting_provider_id = p.id
 GROUP BY
   p.full_name;
@@ -788,8 +806,8 @@ GROUP BY
 SELECT
   COUNT(DISTINCT sc.surgery_id)
 FROM
-  surgical_costs sc FULL
-  JOIN surgical_encounters se USING(surgery_id)
+  surgical_costs sc
+  FULL JOIN surgical_encounters se USING (surgery_id)
 WHERE
   se.surgery_id IS NULL;
 
@@ -813,8 +831,7 @@ SELECT
   surgery_id
 FROM
   surgical_encounters
-UNION
-ALL
+UNION ALL
 SELECT
   surgery_id
 FROM
@@ -836,17 +853,18 @@ ORDER BY
   surgery_id;
 
 -- Display names of patients that had both encounters and surgical encounters
-WITH all_patients AS (
-  SELECT
-    master_patient_id
-  FROM
-    encounters
-  INTERSECT
-  SELECT
-    master_patient_id
-  FROM
-    surgical_encounters
-)
+WITH
+  all_patients AS (
+    SELECT
+      master_patient_id
+    FROM
+      encounters
+    INTERSECT
+    SELECT
+      master_patient_id
+    FROM
+      surgical_encounters
+  )
 SELECT
   ap.master_patient_id,
   p.name
@@ -867,17 +885,18 @@ FROM
 ORDER BY
   surgery_id;
 
-WITH missing_departments AS (
-  SELECT
-    department_id
-  FROM
-    departments
-  EXCEPT
-  SELECT
-    department_id
-  FROM
-    encounters
-)
+WITH
+  missing_departments AS (
+    SELECT
+      department_id
+    FROM
+      departments
+    EXCEPT
+    SELECT
+      department_id
+    FROM
+      encounters
+  )
 SELECT
   m.department_id,
   d.department_name
@@ -887,27 +906,28 @@ FROM
 
 -- CODING CHALLENGE
 -- GENERATE A LIST OF ALL PHYSICIANS AND PHYSICIAN TYPES IN THE ENCOUNTERS TABLE INCLUDING THEIR NAMES
-WITH combined_physicians AS (
-  SELECT
-    admitting_provider_id AS provider_id,
-    'Admitting' AS provider_type
-  FROM
-    encounters
-  UNION
-  SELECT
-    discharging_provider_id,
-    -- NO NEED TO ALIAS THIS AS FIRST UNION IS ALIASED
-    'Discharging' -- NO NEED TO ALIAS THIS
-  FROM
-    encounters
-  UNION
-  SELECT
-    attending_provider_id,
-    -- NO NEED TO ALIAS THIS
-    'Attending' -- NO NEED TO ALIAS THIS
-  FROM
-    encounters
-)
+WITH
+  combined_physicians AS (
+    SELECT
+      admitting_provider_id AS provider_id,
+      'Admitting' AS provider_type
+    FROM
+      encounters
+    UNION
+    SELECT
+      discharging_provider_id,
+      -- NO NEED TO ALIAS THIS AS FIRST UNION IS ALIASED
+      'Discharging' -- NO NEED TO ALIAS THIS
+    FROM
+      encounters
+    UNION
+    SELECT
+      attending_provider_id,
+      -- NO NEED TO ALIAS THIS
+      'Attending' -- NO NEED TO ALIAS THIS
+    FROM
+      encounters
+  )
 SELECT
   cp.provider_id,
   p.full_name,
@@ -920,17 +940,18 @@ ORDER BY
   cp.provider_type;
 
 -- FIND ALL PRIMARY CARE PHYSICIANS WHO ALSO ADMITTING PROVIDERS
-WITH admitting_pcps AS (
-  SELECT
-    pcp_id
-  FROM
-    patients
-  INTERSECT
-  SELECT
-    admitting_provider_id
-  FROM
-    encounters
-)
+WITH
+  admitting_pcps AS (
+    SELECT
+      pcp_id
+    FROM
+      patients
+    INTERSECT
+    SELECT
+      admitting_provider_id
+    FROM
+      encounters
+  )
 SELECT
   a.pcp_id,
   p.full_name
@@ -958,7 +979,7 @@ SELECT
 FROM
   "patients"
 GROUP BY
-  GROUPING SETS ((state), (state, county),())
+  GROUPING SETS ((state), (state, county), ())
 ORDER BY
   state DESC,
   county;
@@ -1063,34 +1084,31 @@ GROUP BY
 SELECT
   warehouse,
   product,
-  SUM (quantity) qty
+  SUM(quantity) qty
 FROM
   inventory
 GROUP BY
   warehouse,
   product
-UNION
-ALL
+UNION ALL
 SELECT
   warehouse,
   null,
-  SUM (quantity) qty
+  SUM(quantity) qty
 FROM
   inventory
 GROUP BY
   warehouse
-UNION
-ALL
+UNION ALL
 SELECT
   null,
   product,
-  SUM (quantity) qty
+  SUM(quantity) qty
 FROM
   inventory
 GROUP BY
   product
-UNION
-ALL
+UNION ALL
 SELECT
   null,
   null,
@@ -1101,22 +1119,17 @@ FROM
 SELECT
   warehouse,
   product,
-  SUM (quantity) qty
+  SUM(quantity) qty
 FROM
   inventory
 GROUP BY
-  GROUPING SETS(
-    (warehouse, product),
-    (warehouse),
-    (product),
-    ()
-  );
+  GROUPING SETS ((warehouse, product), (warehouse), (product), ());
 
 -- postgre sql version
 SELECT
   warehouse,
   product,
-  SUM (quantity) qty
+  SUM(quantity) qty
 FROM
   inventory
 GROUP BY
@@ -1126,38 +1139,35 @@ GROUP BY
 SELECT
   warehouse,
   product,
-  SUM (quantity) qty
+  SUM(quantity) qty
 FROM
   inventory
 GROUP BY
   warehouse,
-  product WITH ROLLUP;
+  product
+WITH
+  ROLLUP;
 
 -- -->GROUP BY CUBE
 -- VIA GROUPING SETS
 SELECT
   warehouse,
   product,
-  SUM (quantity) qty
+  SUM(quantity) qty
 FROM
   inventory
 GROUP BY
-  GROUPING SETS(
-    (warehouse, product),
-    (warehouse),
-    (product),
-    ()
-  );
+  GROUPING SETS ((warehouse, product), (warehouse), (product), ());
 
 -- VIA CUBE
 SELECT
   warehouse,
   product,
-  SUM (quantity) qty
+  SUM(quantity) qty
 FROM
   inventory
 GROUP BY
-  CUBE(warehouse, product);
+  CUBE (warehouse, product);
 
 SELECT
   state,
@@ -1166,7 +1176,7 @@ SELECT
 FROM
   "patients"
 GROUP BY
-  CUBE(state, county)
+  CUBE (state, county)
 ORDER BY
   state DESC,
   county;
@@ -1181,7 +1191,7 @@ FROM
   "surgical_encounters" se
   LEFT JOIN physicians p ON se.surgeon_id = p.id
 GROUP BY
-  cube(
+  cube (
     p.full_name,
     se.admission_type,
     se.diagnosis_description
@@ -1213,7 +1223,7 @@ SELECT
     EXTRACT(
       YEAR
       FROM
-        AGE(NOW(), date_of_birth)
+        AGE (NOW(), date_of_birth)
     )
   ) AS avg_age
 FROM
@@ -1225,7 +1235,7 @@ HAVING
     EXTRACT(
       YEAR
       FROM
-        AGE(NOW(), date_of_birth)
+        AGE (NOW(), date_of_birth)
     )
   ) IS NOT NULL
 ORDER BY
@@ -1243,7 +1253,7 @@ SELECT
 FROM
   vitals
 GROUP BY
-  CUBE(weight, height)
+  CUBE (weight, height)
 ORDER BY
   height,
   weight;
@@ -1260,7 +1270,7 @@ SELECT
 FROM
   "surgical_encounters"
 GROUP BY
-  ROLLUP(1, 2, 3)
+  ROLLUP (1, 2, 3)
 ORDER BY
   1,
   2,
@@ -1321,7 +1331,7 @@ COMMENT ON SCHEMA general_hospital IS 'Hospital schema for Udemy Course';
 
 -- READING
 SELECT
-  obj_description('general_hospital' :: regnamespace);
+  obj_description('general_hospital'::regnamespace);
 
 -- ->TABLE
 -- COMMENTING 
@@ -1329,7 +1339,7 @@ COMMENT ON TABLE general_hospital.vitals IS 'Patient vital sign data taken at th
 
 -- READING
 SELECT
-  obj_description('general_hospital.vitals' :: regclass);
+  obj_description('general_hospital.vitals'::regclass);
 
 -- ->COLUMN
 -- COMMENTING
@@ -1346,13 +1356,11 @@ WHERE
 
 -- READING COLUMN primary_ic @ table accounts
 SELECT
-  col_description('general_hospital.accounts' :: regclass, 1);
+  col_description('general_hospital.accounts'::regclass, 1);
 
 -- -->ADDING DROPPING CONSTRAINTS
-ALTER TABLE
-  general_hospital.surgical_encounters
-ADD
-  CONSTRAINT check_positive_cost CHECK(total_cost > 0);
+ALTER TABLE general_hospital.surgical_encounters
+ADD CONSTRAINT check_positive_cost CHECK (total_cost > 0);
 
 SELECT
   *
@@ -1362,15 +1370,13 @@ WHERE
   table_schema = 'general_hospital'
   AND table_name = 'surgical_encounters';
 
-ALTER TABLE
-  general_hospital.surgical_encounters DROP CONSTRAINT check_positive_cost;
+ALTER TABLE general_hospital.surgical_encounters
+DROP CONSTRAINT check_positive_cost;
 
 -- -->ADDING DROPPING FOREIGN KEYS
 -- ADD FOREIGN KEY
-ALTER TABLE
-  general_hospital.encounters
-ADD
-  CONSTRAINT encounters_attending_provider_id_fk FOREIGN KEY(attending_provider_id) REFERENCES general_hospital.physicians(id);
+ALTER TABLE general_hospital.encounters
+ADD CONSTRAINT encounters_attending_provider_id_fk FOREIGN KEY (attending_provider_id) REFERENCES general_hospital.physicians (id);
 
 SELECT
   *
@@ -1382,42 +1388,36 @@ WHERE
   AND constraint_type = 'FOREIGN KEY';
 
 -- DROP FOREIGN KEY
-ALTER TABLE
-  general_hospital.encounters DROP CONSTRAINT encounters_attending_provider_id_fk;
+ALTER TABLE general_hospital.encounters
+DROP CONSTRAINT encounters_attending_provider_id_fk;
 
 -- CODING CHALLENGE
 --ADD A COMMENT FOR ADMITTING ICD AND VERIFY THAT IT WAS ADDED
 COMMENT ON COLUMN general_hospital.accounts.admit_icd IS 'Admitting diagnosis code from the Internation Classification of Dsieases (ICD)';
 
 SELECT
-  col_description('general_hospital.accounts' :: regclass, 2);
+  col_description('general_hospital.accounts'::regclass, 2);
 
 --ADD NOT NULL CONSTRAINT ON SURGICAL_ADMISSION_DATE FIELD
-ALTER TABLE
-  general_hospital.surgical_encounters
-ALTER COLUMN
-  surgical_admission_date
-SET
-  NOT NULL;
+ALTER TABLE general_hospital.surgical_encounters
+ALTER COLUMN surgical_admission_date
+SET NOT NULL;
 
-ALTER TABLE
-  general_hospital.surgical_encounters
-ALTER COLUMN
-  surgical_admission_date DROP NOT NULL;
+ALTER TABLE general_hospital.surgical_encounters
+ALTER COLUMN surgical_admission_date
+DROP NOT NULL;
 
 --ADD CONSTRAINT TO ENSURE THAT PATIENT_DISCHARGE_DATETIME IS AFTER PATIENT_ADMISSION_DATETIME OR EMPTY
-ALTER TABLE
-  general_hospital.encounters
-ADD
-  CONSTRAINT check_discharge_after_admission CHECK (
-    (
-      patient_admission_datetime < patient_discharge_datetime
-    )
-    OR (patient_discharge_datetime IS NULL)
-  );
+ALTER TABLE general_hospital.encounters
+ADD CONSTRAINT check_discharge_after_admission CHECK (
+  (
+    patient_admission_datetime < patient_discharge_datetime
+  )
+  OR (patient_discharge_datetime IS NULL)
+);
 
-ALTER TABLE
-  general_hospital.encounters DROP CONSTRAINT IF EXISTS check_discharge_after_admission;
+ALTER TABLE general_hospital.encounters
+DROP CONSTRAINT IF EXISTS check_discharge_after_admission;
 
 -- LESSON 8 TRANSACTIONS
 -- UPDATE DATA
@@ -1428,8 +1428,7 @@ FROM
 WHERE
   patient_encounter_id = 1854663;
 
-UPDATE
-  vitals
+UPDATE vitals
 SET
   bp_diastolic = 100
 WHERE
@@ -1442,8 +1441,7 @@ FROM
 WHERE
   account_id = 11417340;
 
-UPDATE
-  accounts
+UPDATE accounts
 SET
   total_account_balance = 0
 WHERE
@@ -1453,8 +1451,7 @@ WHERE
 -- -> COMMIT --------------TRANSACTION
 BEGIN TRANSACTION;
 
-UPDATE
-  physicians
+UPDATE physicians
 SET
   first_name = 'Bill',
   full_name = CONCAT(last_name, ', Bill')
@@ -1474,8 +1471,7 @@ WHERE
 -- -> ROLLBACK --------------TRANSACTION
 BEGIN TRANSACTION;
 
-UPDATE
-  physicians
+UPDATE physicians
 SET
   first_name = 'Gage',
   full_name = CONCAT(last_name, ', Gage')
@@ -1499,8 +1495,7 @@ FROM
 
 BEGIN;
 
-UPDATE
-  vitals
+UPDATE vitals
 SET
   bp_diastolic = 120
 WHERE
@@ -1508,8 +1503,7 @@ WHERE
 
 SAVEPOINT vitals_updated;
 
-UPDATE
-  accounts
+UPDATE accounts
 SET
   total_account_balance = 1000
 WHERE
@@ -1539,8 +1533,7 @@ BEGIN TRANSACTION;
 
 LOCK TABLE physicians;
 
-UPDATE
-  physicians
+UPDATE physicians
 SET
   first_name = 'Gage',
   full_name = CONCAT(last_name, ', Gage')
@@ -1571,8 +1564,7 @@ FROM
 -- --------------
 BEGIN TRANSACTION;
 
-UPDATE
-  accounts
+UPDATE accounts
 SET
   total_account_balance = 15077.90
 WHERE
@@ -1596,25 +1588,31 @@ WHERE
 -- LESSON 9 TABLE INHERITANCE AND PARTITIONING
 -- -->RANGE/HORIZONTAL PARTITIONING
 -- ->CREATE PARTITION TABLE
-CREATE TABLE surgical_encounters_partitioned (
-  surgery_id INT NOT NULL,
-  master_patient_id INT NOT NULL,
-  surgical_admission_date DATE NOT NULL,
-  surgical_discharge_date DATE
-) PARTITION BY RANGE(surgical_admission_date);
+CREATE TABLE
+  surgical_encounters_partitioned (
+    surgery_id INT NOT NULL,
+    master_patient_id INT NOT NULL,
+    surgical_admission_date DATE NOT NULL,
+    surgical_discharge_date DATE
+  )
+PARTITION BY
+  RANGE (surgical_admission_date);
 
 -- ->CREATE PARTITIONS FOR THE TABLE
-CREATE TABLE surgical_encounters_y2016 PARTITION OF surgical_encounters_partitioned FOR
+CREATE TABLE
+  surgical_encounters_y2016 PARTITION OF surgical_encounters_partitioned FOR
 VALUES
 FROM
   ('2016-01-01') TO ('2017-01-01');
 
-CREATE TABLE surgical_encounters_y2017 PARTITION OF surgical_encounters_partitioned FOR
+CREATE TABLE
+  surgical_encounters_y2017 PARTITION OF surgical_encounters_partitioned FOR
 VALUES
 FROM
   ('2017-01-01') TO ('2018-01-01');
 
-CREATE TABLE surgical_encounters_default PARTITION OF surgical_encounters_partitioned DEFAULT;
+CREATE TABLE
+  surgical_encounters_default PARTITION OF surgical_encounters_partitioned DEFAULT;
 
 -- ->COPY DATA OVER TO PARTIONED TABLE
 INSERT INTO
@@ -1658,14 +1656,15 @@ LIMIT
   10;
 
 -- ANOTHER EXAMPLE
-CREATE TABLE Sales (
-  cust_id INT NOT NULL,
-  name VARCHAR(40),
-  store_id VARCHAR(20) NOT NULL,
-  bill_no INT NOT NULL,
-  bill_date DATE PRIMARY KEY NOT NULL,
-  amount DECIMAL(8, 2) NOT NULL
-);
+CREATE TABLE
+  Sales (
+    cust_id INT NOT NULL,
+    name VARCHAR(40),
+    store_id VARCHAR(20) NOT NULL,
+    bill_no INT NOT NULL,
+    bill_date DATE PRIMARY KEY NOT NULL,
+    amount DECIMAL(8, 2) NOT NULL
+  );
 
 INSERT INTO
   Sales
@@ -1686,24 +1685,30 @@ FROM
   Sales;
 
 -- ->CREATE PARTITION TABLE
-CREATE TABLE Sales_partitioned (
-  cust_id INT NOT NULL,
-  name VARCHAR(40),
-  store_id VARCHAR(20) NOT NULL,
-  bill_no INT NOT NULL,
-  bill_date DATE NOT NULL,
-  amount DECIMAL(8, 2) NOT NULL
-) PARTITION BY RANGE(bill_date);
+CREATE TABLE
+  Sales_partitioned (
+    cust_id INT NOT NULL,
+    name VARCHAR(40),
+    store_id VARCHAR(20) NOT NULL,
+    bill_no INT NOT NULL,
+    bill_date DATE NOT NULL,
+    amount DECIMAL(8, 2) NOT NULL
+  )
+PARTITION BY
+  RANGE (bill_date);
 
 -- ->CREATE PARTITIONS FOR THE TABLE
-CREATE TABLE Sales_default PARTITION OF Sales_partitioned DEFAULT;
+CREATE TABLE
+  Sales_default PARTITION OF Sales_partitioned DEFAULT;
 
-CREATE TABLE Sales_y2017 PARTITION OF Sales_partitioned FOR
+CREATE TABLE
+  Sales_y2017 PARTITION OF Sales_partitioned FOR
 VALUES
 FROM
   ('2017-01-01') TO ('2018-01-01');
 
-CREATE TABLE Sales_y2018 PARTITION OF Sales_partitioned FOR
+CREATE TABLE
+  Sales_y2018 PARTITION OF Sales_partitioned FOR
 VALUES
 FROM
   ('2018-01-01') TO ('2019-01-01');
@@ -1736,28 +1741,34 @@ VALUES
 
 -- -->LIST/HORIZONTAL PARTITIONING
 -- ->CREATE PARTITION TABLE
-CREATE TABLE departments_partitioned (
-  hospital_id INT NOT NULL,
-  department_id INT NOT NULL,
-  department_name TEXT,
-  specialty_description TEXT
-) PARTITION BY LIST(hospital_id);
+CREATE TABLE
+  departments_partitioned (
+    hospital_id INT NOT NULL,
+    department_id INT NOT NULL,
+    department_name TEXT,
+    specialty_description TEXT
+  )
+PARTITION BY
+  LIST (hospital_id);
 
-SELECT
-  DISTINCT hospital_id
+SELECT DISTINCT
+  hospital_id
 FROM
   departments;
 
 -- ->CREATE PARTITIONS FOR THE TABLE
-CREATE TABLE departments_h111000 PARTITION OF departments_partitioned FOR
+CREATE TABLE
+  departments_h111000 PARTITION OF departments_partitioned FOR
 VALUES
   IN (111000);
 
-CREATE TABLE departments_h112000 PARTITION OF departments_partitioned FOR
+CREATE TABLE
+  departments_h112000 PARTITION OF departments_partitioned FOR
 VALUES
   IN (112000);
 
-CREATE TABLE departments_default PARTITION OF departments_partitioned DEFAULT;
+CREATE TABLE
+  departments_default PARTITION OF departments_partitioned DEFAULT;
 
 -- ->COPY DATA OVER TO PARTIONED TABLE
 INSERT INTO
@@ -1792,26 +1803,35 @@ GROUP BY
 
 -- -->HASH/HORIZONTAL PARTITIONING
 -- ->CREATE PARTITION TABLE
-CREATE TABLE orders_procedures_partitioned (
-  order_procedure_id INT NOT NULL,
-  patient_encounter_id INT NOT NULL,
-  ordering_provider_id INT REFERENCES physicians(id),
-  order_cd text,
-  order_procedure_description text
-) PARTITION BY HASH(order_procedure_id, patient_encounter_id);
+CREATE TABLE
+  orders_procedures_partitioned (
+    order_procedure_id INT NOT NULL,
+    patient_encounter_id INT NOT NULL,
+    ordering_provider_id INT REFERENCES physicians (id),
+    order_cd text,
+    order_procedure_description text
+  )
+PARTITION BY
+  HASH (order_procedure_id, patient_encounter_id);
 
 -- ->CREATE PARTITIONS FOR THE TABLE
-CREATE TABLE orders_procedures_hash0 PARTITION OF orders_procedures_partitioned FOR
+CREATE TABLE
+  orders_procedures_hash0 PARTITION OF orders_procedures_partitioned FOR
 VALUES
-  WITH (MODULUS 3, REMAINDER 0);
+WITH
+  (MODULUS 3, REMAINDER 0);
 
-CREATE TABLE orders_procedures_hash1 PARTITION OF orders_procedures_partitioned FOR
+CREATE TABLE
+  orders_procedures_hash1 PARTITION OF orders_procedures_partitioned FOR
 VALUES
-  WITH (MODULUS 3, REMAINDER 1);
+WITH
+  (MODULUS 3, REMAINDER 1);
 
-CREATE TABLE orders_procedures_hash2 PARTITION OF orders_procedures_partitioned FOR
+CREATE TABLE
+  orders_procedures_hash2 PARTITION OF orders_procedures_partitioned FOR
 VALUES
-  WITH (MODULUS 3, REMAINDER 2);
+WITH
+  (MODULUS 3, REMAINDER 2);
 
 -- ->COPY DATA OVER TO PARTIONED TABLE
 INSERT INTO
@@ -1846,32 +1866,27 @@ FROM
 
 -- -->TABLE INHERITANCE
 -- ->CREATE A PARENT BASE TABLE 
-CREATE TABLE visit (
-  id SERIAL NOT NULL PRIMARY KEY,
-  start_datetime TIMESTAMP,
-  end_datetime TIMESTAMP
-);
+CREATE TABLE
+  visit (
+    id SERIAL NOT NULL PRIMARY KEY,
+    start_datetime TIMESTAMP,
+    end_datetime TIMESTAMP
+  );
 
 -- ->CREATE A CHILD TABLE WITH PARENT RELATIONSHIP
-CREATE TABLE emergency_visit(
-  emergency_department_id INT NOT NULL,
-  triage_level INT,
-  triage_datetime TIMESTAMP
-) INHERITS (visit);
+CREATE TABLE
+  emergency_visit (
+    emergency_department_id INT NOT NULL,
+    triage_level INT,
+    triage_datetime TIMESTAMP
+  ) INHERITS (visit);
 
 -- ->TESTING
 -- REGISTER DATA TO CHILD TABLE
 INSERT INTO
   emergency_visit
 VALUES
-  (
-    default,
-    '2022-01-01 12:00:00',
-    null,
-    12,
-    3,
-    null
-  );
+  (default, '2022-01-01 12:00:00', null, 12, 3, null);
 
 -- IMPORTANT! Dublicate primary key and breaking data consistency across parent and child tables.
 INSERT INTO
@@ -1898,46 +1913,55 @@ VALUES
 
 -- CODING CHALLENGE
 -- CREATE AND POPULATE encounters table partitioned by hospital_id
-CREATE TABLE encounters_partitioned(
-  hospital_id INT NOT NULL,
-  patient_encounter_id INT NOT NULL,
-  master_patient_id INT NOT NULL,
-  admitting_provider_id INT REFERENCES physicians(id),
-  department_id INT REFERENCES departments(department_id),
-  patient_admission_datetime TIMESTAMP,
-  patient_discharge_datetime TIMESTAMP,
-  CONSTRAINT encounters_partitioned_pk PRIMARY KEY (hospital_id, patient_encounter_id)
-) PARTITION BY LIST(hospital_id);
+CREATE TABLE
+  encounters_partitioned (
+    hospital_id INT NOT NULL,
+    patient_encounter_id INT NOT NULL,
+    master_patient_id INT NOT NULL,
+    admitting_provider_id INT REFERENCES physicians (id),
+    department_id INT REFERENCES departments (department_id),
+    patient_admission_datetime TIMESTAMP,
+    patient_discharge_datetime TIMESTAMP,
+    CONSTRAINT encounters_partitioned_pk PRIMARY KEY (hospital_id, patient_encounter_id)
+  )
+PARTITION BY
+  LIST (hospital_id);
 
-SELECT
-  DISTINCT d.hospital_id
+SELECT DISTINCT
+  d.hospital_id
 FROM
   encounters e
   LEFT OUTER JOIN departments d ON e.department_id = d.department_id
 ORDER BY
   1;
 
-CREATE TABLE encounters_h111000 PARTITION OF encounters_partitioned FOR
+CREATE TABLE
+  encounters_h111000 PARTITION OF encounters_partitioned FOR
 VALUES
   IN (111000);
 
-CREATE TABLE encounters_h112000 PARTITION OF encounters_partitioned FOR
+CREATE TABLE
+  encounters_h112000 PARTITION OF encounters_partitioned FOR
 VALUES
   IN (112000);
 
-CREATE TABLE encounters_h114000 PARTITION OF encounters_partitioned FOR
+CREATE TABLE
+  encounters_h114000 PARTITION OF encounters_partitioned FOR
 VALUES
   IN (114000);
 
-CREATE TABLE encounters_h115000 PARTITION OF encounters_partitioned FOR
+CREATE TABLE
+  encounters_h115000 PARTITION OF encounters_partitioned FOR
 VALUES
   IN (115000);
 
-CREATE TABLE encounters_h9900006 PARTITION OF encounters_partitioned FOR
+CREATE TABLE
+  encounters_h9900006 PARTITION OF encounters_partitioned FOR
 VALUES
   IN (9900006);
 
-CREATE TABLE encounters_default PARTITION OF encounters_partitioned DEFAULT;
+CREATE TABLE
+  encounters_default PARTITION OF encounters_partitioned DEFAULT;
 
 INSERT INTO
   encounters_partitioned
@@ -1953,21 +1977,24 @@ FROM
   encounters e
   LEFT OUTER JOIN departments d ON e.department_id = d.department_id;
 
-CREATE INDEX ON encounters_partitioned(patient_encounter_id);
+CREATE INDEX ON encounters_partitioned (patient_encounter_id);
 
 -- CREATE A NEW vitals tablepartitioned by a datetime field
-CREATE TABLE vitals_partitioned (
-  patient_encounter_id INT NOT NULL REFERENCES encounters(patient_encounter_id),
-  patient_admission_datetime TIMESTAMP NOT NULL,
-  bp_diastolic INT,
-  bp_systolic INT,
-  bmi NUMERIC,
-  temperature NUMERIC,
-  weight INT
-) PARTITION BY RANGE (patient_admission_datetime);
+CREATE TABLE
+  vitals_partitioned (
+    patient_encounter_id INT NOT NULL REFERENCES encounters (patient_encounter_id),
+    patient_admission_datetime TIMESTAMP NOT NULL,
+    bp_diastolic INT,
+    bp_systolic INT,
+    bmi NUMERIC,
+    temperature NUMERIC,
+    weight INT
+  )
+PARTITION BY
+  RANGE (patient_admission_datetime);
 
-SELECT
-  DISTINCT EXTRACT(
+SELECT DISTINCT
+  EXTRACT(
     YEAR
     FROM
       patient_admission_datetime
@@ -1975,22 +2002,26 @@ SELECT
 FROM
   encounters;
 
-CREATE TABLE vitals_y2015 PARTITION OF vitals_partitioned FOR
+CREATE TABLE
+  vitals_y2015 PARTITION OF vitals_partitioned FOR
 VALUES
 FROM
   ('2015-01-01') TO ('2016-01-01');
 
-CREATE TABLE vitals_y2016 PARTITION OF vitals_partitioned FOR
+CREATE TABLE
+  vitals_y2016 PARTITION OF vitals_partitioned FOR
 VALUES
 FROM
   ('2016-01-01') TO ('2017-01-01');
 
-CREATE TABLE vitals_y2017 PARTITION OF vitals_partitioned FOR
+CREATE TABLE
+  vitals_y2017 PARTITION OF vitals_partitioned FOR
 VALUES
 FROM
   ('2017-01-01') TO ('2018-01-01');
 
-CREATE TABLE vitals_default PARTITION OF vitals_partitioned DEFAULT;
+CREATE TABLE
+  vitals_default PARTITION OF vitals_partitioned DEFAULT;
 
 INSERT INTO
   vitals_partitioned
@@ -2011,8 +2042,8 @@ SELECT
 FROM
   vitals_y2016;
 
-SELECT
-  DISTINCT EXTRACT(
+SELECT DISTINCT
+  EXTRACT(
     YEAR
     FROM
       patient_admission_datetime
@@ -2023,7 +2054,8 @@ FROM
 -- LESSON 10 VIEWS
 -- -->SIMPLE VIEWS
 -- ->CREATING SIMPLE VIEWS
-CREATE VIEW view_monthly_surgery_stats_by_department AS
+CREATE VIEW
+  view_monthly_surgery_stats_by_department AS
 SELECT
   to_char(surgical_admission_date, 'YYYY-MM'),
   unit_name,
@@ -2047,8 +2079,8 @@ WHERE
   table_schema = 'general_hospital';
 
 -- ->REPLACING SIMPLE REVIEWS
-CREATE
-OR REPLACE VIEW v_monthly_surgery_stats AS
+CREATE OR REPLACE VIEW
+  v_monthly_surgery_stats AS
 SELECT
   to_char(surgical_admission_date, 'YYYY-MM') AS year_month,
   COUNT(surgery_id) AS num_surgeries,
@@ -2062,14 +2094,16 @@ ORDER BY
   1;
 
 -- ->RENAMING SIMPLE REVIEWS
-ALTER VIEW v_monthly_surgery_stats RENAME TO view_monthly_surgery_stats;
+ALTER VIEW v_monthly_surgery_stats
+RENAME TO view_monthly_surgery_stats;
 
 -- ->DELETING SIMPLE REVIEWS
 DROP VIEW IF EXISTS view_monthly_surgery_stats_by_department;
 
 -- -->MATERIALIZED VIEWS
 -- ->CREATING A MATERIALIZED VIEW
-CREATE MATERIALIZED VIEW v_monthly_surgery_stats AS
+CREATE MATERIALIZED VIEW
+  v_monthly_surgery_stats AS
 SELECT
   to_char(surgical_admission_date, 'YYYY-MM') AS year_month,
   unit_name,
@@ -2083,47 +2117,53 @@ GROUP BY
   2
 ORDER BY
   2,
-  1 WITH NO DATA;
+  1
+WITH
+  NO DATA;
 
 -- ->UPDATE A MATERIALIZED VIEW
 REFRESH MATERIALIZED VIEW v_monthly_surgery_stats;
 
 -- ->RENAME A MATERIALIZED VIEW
-ALTER MATERIALIZED VIEW v_monthly_surgery_stats RENAME TO mview_monthly_surgery_stats;
+ALTER MATERIALIZED VIEW v_monthly_surgery_stats
+RENAME TO mview_monthly_surgery_stats;
 
 SELECT
   *
 FROM
   "v_monthly_surgery_stats";
 
-ALTER MATERIALIZED VIEW mview_monthly_surgery_stats RENAME COLUMN year_month TO year_month_ext;
+ALTER MATERIALIZED VIEW mview_monthly_surgery_stats
+RENAME COLUMN year_month TO year_month_ext;
 
 -- -->RECURSIVE VIEWS
 -- FIRST WAY OF WRITING RECURSIVE VIEW
-CREATE VIEW v_fibonacci AS WITH RECURSIVE fibonacci AS (
-  SELECT
-    1 AS a,
-    1 AS b
-  UNION
-  ALL
-  SELECT
-    b,
-    a + b
-  WHERE
-    b < 200
-)
+CREATE VIEW
+  v_fibonacci AS
+WITH RECURSIVE
+  fibonacci AS (
+    SELECT
+      1 AS a,
+      1 AS b
+    UNION ALL
+    SELECT
+      b,
+      a + b
+    WHERE
+      b < 200
+  )
 SELECT
   *
 FROM
   fibonacci;
 
 -- SECOND WAY OF WRITING RECURSIVE VIEW
-CREATE RECURSIVE VIEW v_fibonacci(a, b) AS
+CREATE RECURSIVE VIEW
+  v_fibonacci (a, b) AS
 SELECT
   1 AS a,
   1 AS b
-UNION
-ALL
+UNION ALL
 SELECT
   b,
   a + b
@@ -2146,7 +2186,8 @@ FROM
 LIMIT
   10;
 
-CREATE RECURSIVE VIEW v_orders(order_procedure_id, order_parent_order_id, level) AS
+CREATE RECURSIVE VIEW
+  v_orders (order_procedure_id, order_parent_order_id, level) AS
 SELECT
   order_procedure_id,
   order_parent_order_id,
@@ -2155,8 +2196,7 @@ FROM
   orders_procedures
 WHERE
   order_parent_order_id IS NULL
-UNION
-ALL
+UNION ALL
 SELECT
   op.order_procedure_id,
   op.order_parent_order_id,
@@ -2172,7 +2212,8 @@ FROM
 
 -- CODING CHALLENGE
 -- -------------
-CREATE VIEW v_patients_primary_care AS
+CREATE VIEW
+  v_patients_primary_care AS
 SELECT
   p.master_patient_id,
   p.name AS patient_name,
@@ -2193,7 +2234,8 @@ WHERE
   primary_language IS NOT NULL;
 
 -- -------------
-CREATE MATERIALIZED VIEW mv_hospital_encounters AS
+CREATE MATERIALIZED VIEW
+  mv_hospital_encounters AS
 SELECT
   h.hospital_id,
   h.hospital_name,
@@ -2210,7 +2252,9 @@ GROUP BY
   3
 ORDER BY
   1,
-  3 WITH NO DATA;
+  3
+WITH
+  NO DATA;
 
 REFRESH MATERIALIZED VIEW mv_hospital_encounters;
 
@@ -2219,10 +2263,12 @@ SELECT
 FROM
   mv_hospital_encounters;
 
-ALTER MATERIALIZED VIEW mv_hospital_encounters RENAME TO mv_hospital_encounters_statistics;
+ALTER MATERIALIZED VIEW mv_hospital_encounters
+RENAME TO mv_hospital_encounters_statistics;
 
 -- -------------
-CREATE VIEW v_patients_primary_maleham AS
+CREATE VIEW
+  v_patients_primary_maleham AS
 SELECT
   p.master_patient_id,
   p.name AS patient_name,
@@ -2233,15 +2279,16 @@ SELECT
 FROM
   patients p
 WHERE
-  p.pcp_id = 4121 WITH CHECK OPTION;
+  p.pcp_id = 4121
+WITH
+  CHECK OPTION;
 
 ALTER VIEW v_patients_primary_maleham
-ALTER COLUMN
-  pcp_id
-SET
-  DEFAULT 4121;
+ALTER COLUMN pcp_id
+SET DEFAULT 4121;
 
-ALTER VIEW v_patients_primary_maleham RENAME TO v_patients_primary_care_maleham;
+ALTER VIEW v_patients_primary_maleham
+RENAME TO v_patients_primary_care_maleham;
 
 INSERT INTO
   v_patients_primary_care_maleham
@@ -2268,3 +2315,111 @@ VALUES
   );
 
 -- LESSON 11 SQL FUNCTIONS
+-- -->CREATE FUNCTIONS
+-- ->CREATE FUNCTION WITH BASE SQL
+CREATE FUNCTION f_test_function (a INT, b INT) RETURNS INT LANGUAGE sql AS 'SELECT $1+$2';
+
+SELECT
+  f_test_function (1, 2);
+
+-- ->CREATE FUNCTION WITH PLPG SQL
+CREATE FUNCTION f_plpgsql_function (a INT, b INT) RETURNS INT AS $$ 
+BEGIN 
+RETURN a + b;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT
+  f_plpgsql_function (1, 2);
+
+SELECT
+  f_plpgsql_function (a => 1, b => 2);
+
+-- ->PGSQL WAY FUNCTION
+CREATE FUNCTION f_calculate_los (start_time TIMESTAMP, end_time TIMESTAMP) RETURNS NUMERIC LANGUAGE plpgsql AS $$ 
+BEGIN 
+RETURN ROUND((EXTRACT(EPOCH FROM (end_time-start_time))/3600)::NUMERIC, 2);
+END; 
+$$;
+
+-- subtracting time stamps from each other is problematic. Epoch changes them to seconds
+-- ->BASESQL WAY FUNCTION
+CREATE FUNCTION f_calculate_los (start_time TIMESTAMP, end_time TIMESTAMP) RETURNS NUMERIC LANGUAGE sql AS 'SELECT ROUND((EXTRACT(EPOCH FROM (end_time - start_time))/3600)::NUMERIC, 2)';
+
+SELECT
+  patient_admission_datetime,
+  patient_discharge_datetime,
+  f_calculate_los (
+    patient_admission_datetime,
+    patient_discharge_datetime
+  ) AS los
+FROM
+  encounters;
+
+-- ->LIST AVAILABLE FUNCTIONS
+SELECT
+  *
+FROM
+  information_schema.routines
+WHERE
+  routine_schema = 'general_hospital';
+
+-- -->RENAME FUNCTIONS
+ALTER FUNCTION f_calculate_los
+RENAME TO fm_f_calculate_los;
+
+-- -->MODIFY FUNCTIONS
+CREATE
+OR REPLACE FUNCTION fm_calculate_los (start_time TIMESTAMP, end_time TIMESTAMP) RETURNS NUMERIC LANGUAGE plpgsql AS $$
+BEGIN
+RETURN ROUND(
+  (EXTRACT (EPOCH FROM (end_time - start_time))/3600)::NUMERIC,4
+  );
+END;
+$$;
+
+SELECT
+  fm_calculate_los (
+    patient_admission_datetime,
+    patient_discharge_datetime
+  ) AS los
+FROM
+  encounters;
+
+-- -->DELETE FUNCTIONS
+DROP FUNCTION IF EXISTS fm_calculate_los;
+
+-- CODING CHALLENGE
+-- -------------
+CREATE
+OR REPLACE FUNCTION f_mask_field (field TEXT) RETURNS TEXT LANGUAGE plpgsql AS $$
+BEGIN
+RETURN md5(field);
+END;
+$$;
+
+SELECT
+  name,
+  f_mask_field (name) AS masked_name
+FROM
+  patients;
+
+-- -------------
+CREATE
+OR REPLACE FUNCTION f_mask_field (field TEXT) RETURNS TEXT LANGUAGE plpgsql AS $$
+BEGIN 
+IF FIELD IS NULL THEN RETURN NULL; 
+ELSE RETURN CONCAT('Patient', LEFT(md5(field),8)); END IF; END; $$;
+
+SELECT
+  name,
+  f_mask_field (name) AS masked_name
+FROM
+  patients;
+
+ALTER FUNCTION f_mask_field
+RENAME TO f_mask_patient_name;
+
+DROP FUNCTION IF EXISTS f_mask_patient_name;
+
+-- LESSON 12 STORED PROCEDURES
