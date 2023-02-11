@@ -5,7 +5,7 @@ SELECT
 FROM
   patients
 WHERE
-  date_of_birth >= '2000-01-01'
+  date_of_birth>='2000-01-01'
 ORDER BY
   master_patient_id;
 
@@ -18,7 +18,7 @@ FROM
     FROM
       patients
     WHERE
-      date_of_birth >= '2000-01-01'
+      date_of_birth>='2000-01-01'
     ORDER BY
       master_patient_id
   ) p
@@ -43,8 +43,8 @@ FROM
     FROM
       patients
     WHERE
-      date_of_birth >= '1990-01-01'
-  ) p ON se.master_patient_id = p.master_patient_id;
+      date_of_birth>='1990-01-01'
+  ) p ON se.master_patient_id=p.master_patient_id;
 
 -- -->COMMON TABLE EXPRESSIONS CTEs
 -- ->BASIC CTE
@@ -58,7 +58,7 @@ FROM
     FROM
       patients
     WHERE
-      date_of_birth >= '2000-01-01'
+      date_of_birth>='2000-01-01'
     ORDER BY
       master_patient_id
   ) p
@@ -73,7 +73,7 @@ WITH
     FROM
       patients
     WHERE
-      date_of_birth >= '2000-01-01'
+      date_of_birth>='2000-01-01'
   )
 SELECT
   *
@@ -95,7 +95,7 @@ WITH
     GROUP BY
       county
     HAVING
-      COUNT(*) > 1500
+      COUNT(*)>1500
   ),
   county_patients AS (
     -- AND FIND OUT THE NUMBER OF SURGERIES BASED ON THEIR COUNTY.  
@@ -104,14 +104,14 @@ WITH
       p.county
     FROM
       patients p
-      INNER JOIN top_counties t ON p.county = t.county
+      INNER JOIN top_counties t ON p.county=t.county
   )
 SELECT
   p.county,
   COUNT(s.surgery_id) AS num_surgeries
 FROM
   surgical_encounters s
-  INNER JOIN county_patients p ON s.master_patient_id = p.master_patient_id
+  INNER JOIN county_patients p ON s.master_patient_id=p.master_patient_id
 GROUP BY
   p.county;
 
@@ -131,7 +131,7 @@ SELECT
 FROM
   total_cost
 WHERE
-  total_surgery_cost > (
+  total_surgery_cost>(
     SELECT
       AVG(total_surgery_cost)
     FROM
@@ -143,13 +143,13 @@ SELECT
 FROM
   "vitals"
 WHERE
-  bp_diastolic > (
+  bp_diastolic>(
     SELECT
       MIN(bp_diastolic)
     FROM
       "vitals"
   )
-  AND bp_systolic < (
+  AND bp_systolic<(
     SELECT
       MAX(bp_systolic)
     FROM
@@ -176,7 +176,7 @@ SELECT DISTINCT
   p.master_patient_id
 FROM
   "patients" p
-  INNER JOIN "surgical_encounters" s ON p.master_patient_id = s.master_patient_id
+  INNER JOIN "surgical_encounters" s ON p.master_patient_id=s.master_patient_id
 ORDER BY
   p.master_patient_id;
 
@@ -184,7 +184,7 @@ SELECT
   p.master_patient_id
 FROM
   patients p
-  INNER JOIN surgical_encounters s ON p.master_patient_id = s.master_patient_id
+  INNER JOIN surgical_encounters s ON p.master_patient_id=s.master_patient_id
 GROUP BY
   p.master_patient_id
 ORDER BY
@@ -211,7 +211,7 @@ SELECT
 FROM
   "surgical_encounters"
 WHERE
-  total_profit > ALL (
+  total_profit>ALL (
     SELECT
       AVG(total_cost)
     FROM
@@ -223,19 +223,19 @@ WHERE
 -- diagnosis in surgical encounters whose avg length of stay is less than or equal to the avg lenght of stay for all encounters by department
 SELECT
   diagnosis_description,
-  AVG(surgical_discharge_date - surgical_admission_date) AS length_of_stay
+  AVG(surgical_discharge_date-surgical_admission_date) AS length_of_stay
 FROM
   surgical_encounters
 GROUP BY
   diagnosis_description
 HAVING
-  AVG(surgical_discharge_date - surgical_admission_date) <= ALL (
+  AVG(surgical_discharge_date-surgical_admission_date)<=ALL (
     SELECT
       AVG(
         EXTRACT(
           DAY
           FROM
-            patient_discharge_datetime - patient_admission_datetime
+            patient_discharge_datetime-patient_admission_datetime
         )
       )
     FROM
@@ -272,7 +272,7 @@ WHERE
     FROM
       "orders_procedures" o
     WHERE
-      e.patient_encounter_id = o.patient_encounter_id
+      e.patient_encounter_id=o.patient_encounter_id
   );
 
 -- get all patients who have not had any surgery
@@ -287,7 +287,7 @@ WHERE
     FROM
       "surgical_encounters" s
     WHERE
-      s.master_patient_id = p.master_patient_id
+      s.master_patient_id=p.master_patient_id
   );
 
 -- -->RECURSIVE CTEs
@@ -301,7 +301,7 @@ WITH RECURSIVE
     SELECT
       -- recursive operation
       b,
-      a + b
+      a+b
     FROM
       fibonacci
   )
@@ -327,17 +327,17 @@ WITH RECURSIVE
     SELECT
       op.order_procedure_id,
       op.order_parent_order_id,
-      o.level + 1 AS level
+      o.level+1 AS level
     FROM
       orders_procedures op
-      INNER JOIN orders o ON op.order_parent_order_id = o.order_procedure_id
+      INNER JOIN orders o ON op.order_parent_order_id=o.order_procedure_id
   )
 SELECT
   *
 FROM
   orders
 WHERE
-  level != 0;
+  level!=0;
 
 -- CODING CHALLENGE
 -- find the average number of orders per encounter by provider/physician
@@ -377,7 +377,7 @@ SELECT
   o.avg_num_procedures
 FROM
   physicians p
-  LEFT OUTER JOIN provider_orders o ON p.id = o.ordering_provider_id
+  LEFT OUTER JOIN provider_orders o ON p.id=o.ordering_provider_id
 WHERE
   o.avg_num_procedures IS NOT NULL
 ORDER BY
@@ -409,15 +409,15 @@ SELECT
 FROM
   accounts a
 WHERE
-  total_account_balance > 10000
+  total_account_balance>10000
   AND EXISTS (
     SELECT
       1
     FROM
       encounters e
     WHERE
-      e.hospital_account_id = a.account_id
-      AND patient_in_icu_flag = 'Yes'
+      e.hospital_account_id=a.account_id
+      AND patient_in_icu_flag='Yes'
   );
 
 -- find encounters for patients born on or after 1995-01-01 whose length of stay is greater than or equal to the average surgical length of stay for patients 65 or older
@@ -430,18 +430,18 @@ WITH
           AGE (NOW(), p.date_of_birth)
       ) AS age,
       AVG(
-        s.surgical_discharge_date - s.surgical_admission_date
+        s.surgical_discharge_date-s.surgical_admission_date
       ) AS avg_los
     FROM
       patients p
-      INNER JOIN surgical_encounters s ON p.master_patient_id = s.master_patient_id
+      INNER JOIN surgical_encounters s ON p.master_patient_id=s.master_patient_id
     WHERE
       p.date_of_birth IS NOT NULL
       AND EXTRACT(
         YEAR
         FROM
           AGE (NOW(), p.date_of_birth)
-      ) >= 65
+      )>=65
     GROUP BY
       EXTRACT(
         YEAR
@@ -453,16 +453,16 @@ SELECT
   e.*
 FROM
   encounters e
-  INNER JOIN patients p ON e.master_patient_id = p.master_patient_id
+  INNER JOIN patients p ON e.master_patient_id=p.master_patient_id
 WHERE
-  p.date_of_birth >= '1995-01-01'
+  p.date_of_birth>='1995-01-01'
   AND EXTRACT(
     DAYS
     FROM
       (
-        e.patient_discharge_datetime - e.patient_admission_datetime
+        e.patient_discharge_datetime-e.patient_admission_datetime
       )
-  ) >= ALL (
+  )>=ALL (
     SELECT
       avg_los
     FROM
@@ -476,14 +476,14 @@ WITH
   surgical_los AS (
     SELECT
       surgery_id,
-      (surgical_discharge_date - surgical_admission_date) AS los,
-      AVG(surgical_discharge_date - surgical_admission_date) OVER () AS avg_los
+      (surgical_discharge_date-surgical_admission_date) AS los,
+      AVG(surgical_discharge_date-surgical_admission_date) OVER () AS avg_los
     FROM
       "surgical_encounters"
   )
 SELECT
   *,
-  ROUND(los - avg_los, 2)
+  ROUND(los-avg_los, 2)
 FROM
   surgical_los;
 
@@ -523,7 +523,7 @@ SELECT
   ) AS profit_row_number
 FROM
   "surgical_encounters" s
-  LEFT OUTER JOIN "physicians" p ON s.surgeon_id = p.id
+  LEFT OUTER JOIN "physicians" p ON s.surgeon_id=p.id
 ORDER BY
   s.surgeon_id,
   s.diagnosis_description;
@@ -563,7 +563,7 @@ SELECT
   ) AS total_surgeon_cost
 FROM
   "surgical_encounters" s
-  LEFT OUTER JOIN "physicians" p ON s.surgeon_id = p.id;
+  LEFT OUTER JOIN "physicians" p ON s.surgeon_id=p.id;
 
 -- same code with reusable window function after from...
 SELECT
@@ -575,7 +575,7 @@ SELECT
   SUM(total_cost) OVER w AS total_surgeon_cost
 FROM
   "surgical_encounters" s
-  LEFT OUTER JOIN "physicians" p ON s.surgeon_id = p.id
+  LEFT OUTER JOIN "physicians" p ON s.surgeon_id=p.id
 WINDOW
   w AS (
     PARTITION BY
@@ -602,11 +602,11 @@ WITH
   )
 SELECT
   *,
-  (surgical_admission_date - previous_discharge_date) AS days_between_surgeries
+  (surgical_admission_date-previous_discharge_date) AS days_between_surgeries
 FROM
   prior_surgery
 WHERE
-  (surgical_admission_date - previous_discharge_date) <= 30;
+  (surgical_admission_date-previous_discharge_date)<=30;
 
 --FOR EACH DEPARTMENT, FIND THE 3 PHYSICIANS WITH THE MOST ADMISSIONS
 WITH
@@ -639,10 +639,10 @@ SELECT
   encounter_rank
 FROM
   pd_ranked pd
-  LEFT OUTER JOIN physicians p ON p.id = pd.admitting_provider_id
-  LEFT OUTER JOIN departments d ON d.department_id = pd.department_id
+  LEFT OUTER JOIN physicians p ON p.id=pd.admitting_provider_id
+  LEFT OUTER JOIN departments d ON d.department_id=pd.department_id
 WHERE
-  encounter_rank <= 3
+  encounter_rank<=3
 ORDER BY
   d.department_name,
   encounter_rank DESC;
@@ -663,29 +663,29 @@ WITH
   )
 SELECT
   *,
-  (resource_cost / total_surgery_cost) * 100 AS pct_total_cost
+  (resource_cost/total_surgery_cost)*100 AS pct_total_cost
 FROM
   total_cost
 WHERE
-  (resource_cost / total_surgery_cost) * 100 > 50;
+  (resource_cost/total_surgery_cost)*100>50;
 
 -- LESSON 4 ADVANCED JOIN OPERATIONS
 -- --->SELF JOIN
 SELECT
   se1.surgery_id AS surgery_id1,
   (
-    se1.surgical_discharge_date - se1.surgical_admission_date
+    se1.surgical_discharge_date-se1.surgical_admission_date
   ) AS los1,
   se2.surgery_id AS surgery_id2,
   (
-    se2.surgical_discharge_date - se2.surgical_admission_date
+    se2.surgical_discharge_date-se2.surgical_admission_date
   ) AS los2
 FROM
   "surgical_encounters" se1
   INNER JOIN "surgical_encounters" se2 ON (
-    se1.surgical_discharge_date - se1.surgical_admission_date
-  ) = (
-    se2.surgical_discharge_date - se2.surgical_admission_date
+    se1.surgical_discharge_date-se1.surgical_admission_date
+  )=(
+    se2.surgical_discharge_date-se2.surgical_admission_date
   )
 LIMIT
   1000;
@@ -697,7 +697,7 @@ SELECT
   o2.order_procedure_description
 FROM
   "orders_procedures" o1
-  INNER JOIN "orders_procedures" o2 ON o1.order_parent_order_id = o2.order_procedure_id;
+  INNER JOIN "orders_procedures" o2 ON o1.order_parent_order_id=o2.order_procedure_id;
 
 -- --->FULL JOIN
 -- SORT OUT NULL CASES
@@ -706,7 +706,7 @@ SELECT
   e.patient_encounter_id
 FROM
   "accounts" a
-  FULL JOIN "encounters" e ON a.account_id = e.hospital_account_id
+  FULL JOIN "encounters" e ON a.account_id=e.hospital_account_id
 WHERE
   a.account_id IS NULL
   OR e.patient_encounter_id IS NULL;
@@ -716,7 +716,7 @@ SELECT
   d.department_name
 FROM
   "departments" d
-  FULL JOIN "hospitals" h ON d.hospital_id = h.hospital_id
+  FULL JOIN "hospitals" h ON d.hospital_id=h.hospital_id
 WHERE
   h.hospital_id IS NULL;
 
@@ -743,7 +743,7 @@ FROM
   hospitals h
   CROSS JOIN departments d
 WHERE
-  d.hospital_id = h.hospital_id;
+  d.hospital_id=h.hospital_id;
 
 SELECT
   h.hospital_name,
@@ -752,7 +752,7 @@ FROM
   hospitals h,
   departments d
 WHERE
-  d.hospital_id = h.hospital_id;
+  d.hospital_id=h.hospital_id;
 
 -- --->NATURAL JOIN / INNER JOIN...USING()
 SELECT
@@ -794,11 +794,11 @@ SELECT
   p.full_name,
   AVG(v.bp_diastolic) AS avg_diastolic_bp,
   AVG(v.bp_systolic) AS avg_systolic_bp,
-  (AVG(v.bp_diastolic) + AVG(v.bp_systolic)) * 0.5 AS median_bp
+  (AVG(v.bp_diastolic)+AVG(v.bp_systolic))*0.5 AS median_bp
 FROM
   vitals v
   INNER JOIN encounters e USING (patient_encounter_id)
-  LEFT OUTER JOIN physicians p ON e.admitting_provider_id = p.id
+  LEFT OUTER JOIN physicians p ON e.admitting_provider_id=p.id
 GROUP BY
   p.full_name;
 
@@ -870,7 +870,7 @@ SELECT
   p.name
 FROM
   all_patients ap
-  INNER JOIN patients p ON ap.master_patient_id = p.master_patient_id;
+  INNER JOIN patients p ON ap.master_patient_id=p.master_patient_id;
 
 -- -->QUERY JOINING EXCEPT /EXCEPT ALL OPERATOR
 SELECT
@@ -902,7 +902,7 @@ SELECT
   d.department_name
 FROM
   missing_departments m
-  INNER JOIN departments d ON m.department_id = d.department_id;
+  INNER JOIN departments d ON m.department_id=d.department_id;
 
 -- CODING CHALLENGE
 -- GENERATE A LIST OF ALL PHYSICIANS AND PHYSICIAN TYPES IN THE ENCOUNTERS TABLE INCLUDING THEIR NAMES
@@ -934,7 +934,7 @@ SELECT
   cp.provider_type
 FROM
   combined_physicians cp
-  INNER JOIN physicians p ON p.id = cp.provider_id
+  INNER JOIN physicians p ON p.id=cp.provider_id
 ORDER BY
   p.full_name,
   cp.provider_type;
@@ -957,7 +957,7 @@ SELECT
   p.full_name
 FROM
   admitting_pcps a
-  INNER JOIN physicians p ON p.id = a.pcp_id;
+  INNER JOIN physicians p ON p.id=a.pcp_id;
 
 -- DETERMINE WHETHER THERE ARE ANY SURGEONS IN THE SURGICAL_ENCOUNTERS TABLE WHO ARE NOT IN THE PHYSICIANS TABLE
 SELECT
@@ -992,7 +992,7 @@ SELECT
   AVG(total_profit) AS avg_total_profit
 FROM
   "surgical_encounters" se
-  LEFT JOIN "physicians" p ON se.surgeon_id = p.id
+  LEFT JOIN "physicians" p ON se.surgeon_id=p.id
 GROUP BY
   GROUPING SETS (
     (p.full_name),
@@ -1189,7 +1189,7 @@ SELECT
   AVG(total_profit)
 FROM
   "surgical_encounters" se
-  LEFT JOIN physicians p ON se.surgeon_id = p.id
+  LEFT JOIN physicians p ON se.surgeon_id=p.id
 GROUP BY
   cube (
     p.full_name,
@@ -1205,8 +1205,8 @@ SELECT
   COUNT(e.patient_encounter_id) AS num_encounters
 FROM
   encounters e
-  LEFT JOIN departments d ON e.department_id = d.department_id
-  LEFT JOIN hospitals h ON d.hospital_id = h.hospital_id
+  LEFT JOIN departments d ON e.department_id=d.department_id
+  LEFT JOIN hospitals h ON d.hospital_id=h.hospital_id
 GROUP BY
   ROLLUP (h.state, h.hospital_name, d.department_name)
 ORDER BY
@@ -1300,7 +1300,7 @@ SELECT
 FROM
   information_schema.tables
 WHERE
-  table_schema = 'general_hospital'
+  table_schema='general_hospital'
 ORDER BY
   table_name;
 
@@ -1309,7 +1309,7 @@ SELECT
 FROM
   information_schema.columns
 WHERE
-  table_schema = 'general_hospital'
+  table_schema='general_hospital'
 ORDER BY
   table_name,
   ordinal_position;
@@ -1319,7 +1319,7 @@ SELECT
 FROM
   information_schema.columns
 WHERE
-  table_schema = 'general_hospital'
+  table_schema='general_hospital'
   AND column_name ILIKE '%id'
 ORDER BY
   table_name;
@@ -1351,8 +1351,8 @@ SELECT
 FROM
   information_schema.columns
 WHERE
-  table_schema = 'general_hospital'
-  AND table_name = 'accounts';
+  table_schema='general_hospital'
+  AND table_name='accounts';
 
 -- READING COLUMN primary_ic @ table accounts
 SELECT
@@ -1360,15 +1360,15 @@ SELECT
 
 -- -->ADDING DROPPING CONSTRAINTS
 ALTER TABLE general_hospital.surgical_encounters
-ADD CONSTRAINT check_positive_cost CHECK (total_cost > 0);
+ADD CONSTRAINT check_positive_cost CHECK (total_cost>0);
 
 SELECT
   *
 FROM
   information_schema.table_constraints
 WHERE
-  table_schema = 'general_hospital'
-  AND table_name = 'surgical_encounters';
+  table_schema='general_hospital'
+  AND table_name='surgical_encounters';
 
 ALTER TABLE general_hospital.surgical_encounters
 DROP CONSTRAINT check_positive_cost;
@@ -1383,9 +1383,9 @@ SELECT
 FROM
   information_schema.table_constraints
 WHERE
-  table_schema = 'general_hospital'
-  AND table_name = 'encounters'
-  AND constraint_type = 'FOREIGN KEY';
+  table_schema='general_hospital'
+  AND table_name='encounters'
+  AND constraint_type='FOREIGN KEY';
 
 -- DROP FOREIGN KEY
 ALTER TABLE general_hospital.encounters
@@ -1411,7 +1411,7 @@ DROP NOT NULL;
 ALTER TABLE general_hospital.encounters
 ADD CONSTRAINT check_discharge_after_admission CHECK (
   (
-    patient_admission_datetime < patient_discharge_datetime
+    patient_admission_datetime<patient_discharge_datetime
   )
   OR (patient_discharge_datetime IS NULL)
 );
@@ -1426,26 +1426,26 @@ SELECT
 FROM
   vitals
 WHERE
-  patient_encounter_id = 1854663;
+  patient_encounter_id=1854663;
 
 UPDATE vitals
 SET
-  bp_diastolic = 100
+  bp_diastolic=100
 WHERE
-  patient_encounter_id = 1854663;
+  patient_encounter_id=1854663;
 
 SELECT
   *
 FROM
   accounts
 WHERE
-  account_id = 11417340;
+  account_id=11417340;
 
 UPDATE accounts
 SET
-  total_account_balance = 0
+  total_account_balance=0
 WHERE
-  account_id = 11417340;
+  account_id=11417340;
 
 -- -->TRANSACTIONS BEGIN/END
 -- -> COMMIT --------------TRANSACTION
@@ -1453,10 +1453,10 @@ BEGIN TRANSACTION;
 
 UPDATE physicians
 SET
-  first_name = 'Bill',
-  full_name = CONCAT(last_name, ', Bill')
+  first_name='Bill',
+  full_name=CONCAT(last_name, ', Bill')
 WHERE
-  id = 1;
+  id=1;
 
 END TRANSACTION;
 
@@ -1466,17 +1466,17 @@ SELECT
 FROM
   physicians
 WHERE
-  id = 1;
+  id=1;
 
 -- -> ROLLBACK --------------TRANSACTION
 BEGIN TRANSACTION;
 
 UPDATE physicians
 SET
-  first_name = 'Gage',
-  full_name = CONCAT(last_name, ', Gage')
+  first_name='Gage',
+  full_name=CONCAT(last_name, ', Gage')
 WHERE
-  id = 1;
+  id=1;
 
 ROLLBACK TRANSACTION;
 
@@ -1485,7 +1485,7 @@ SELECT
 FROM
   physicians
 WHERE
-  id = 1;
+  id=1;
 
 -- -->SAVEPOINT TRANSACTION
 SELECT
@@ -1497,17 +1497,17 @@ BEGIN;
 
 UPDATE vitals
 SET
-  bp_diastolic = 120
+  bp_diastolic=120
 WHERE
-  patient_encounter_id = 2570046;
+  patient_encounter_id=2570046;
 
 SAVEPOINT vitals_updated;
 
 UPDATE accounts
 SET
-  total_account_balance = 1000
+  total_account_balance=1000
 WHERE
-  account_id = 11417340;
+  account_id=11417340;
 
 ROLLBACK TO vitals_updated;
 
@@ -1518,14 +1518,14 @@ SELECT
 FROM
   vitals
 WHERE
-  patient_encounter_id = 2570046;
+  patient_encounter_id=2570046;
 
 SELECT
   *
 FROM
   accounts
 WHERE
-  account_id = 11417340;
+  account_id=11417340;
 
 -- CODING CHALLENGE
 -- --------------
@@ -1535,10 +1535,10 @@ LOCK TABLE physicians;
 
 UPDATE physicians
 SET
-  first_name = 'Gage',
-  full_name = CONCAT(last_name, ', Gage')
+  first_name='Gage',
+  full_name=CONCAT(last_name, ', Gage')
 WHERE
-  id = 1;
+  id=1;
 
 COMMIT;
 
@@ -1547,7 +1547,7 @@ SELECT
 FROM
   physicians
 WHERE
-  id = 1;
+  id=1;
 
 -- --------------
 BEGIN TRANSACTION;
@@ -1566,9 +1566,9 @@ BEGIN TRANSACTION;
 
 UPDATE accounts
 SET
-  total_account_balance = 15077.90
+  total_account_balance=15077.90
 WHERE
-  account_id = 11417340;
+  account_id=11417340;
 
 SAVEPOINT account_updated;
 
@@ -1583,7 +1583,7 @@ SELECT
 FROM
   accounts
 WHERE
-  account_id = 11417340;
+  account_id=11417340;
 
 -- LESSON 9 TABLE INHERITANCE AND PARTITIONING
 -- -->RANGE/HORIZONTAL PARTITIONING
@@ -1931,7 +1931,7 @@ SELECT DISTINCT
   d.hospital_id
 FROM
   encounters e
-  LEFT OUTER JOIN departments d ON e.department_id = d.department_id
+  LEFT OUTER JOIN departments d ON e.department_id=d.department_id
 ORDER BY
   1;
 
@@ -1975,7 +1975,7 @@ SELECT
   e.patient_discharge_datetime
 FROM
   encounters e
-  LEFT OUTER JOIN departments d ON e.department_id = d.department_id;
+  LEFT OUTER JOIN departments d ON e.department_id=d.department_id;
 
 CREATE INDEX ON encounters_partitioned (patient_encounter_id);
 
@@ -2035,7 +2035,7 @@ SELECT
   v.weight
 FROM
   vitals v
-  LEFT OUTER JOIN encounters e ON v.patient_encounter_id = e.patient_encounter_id;
+  LEFT OUTER JOIN encounters e ON v.patient_encounter_id=e.patient_encounter_id;
 
 SELECT
   *
@@ -2076,7 +2076,7 @@ SELECT
 FROM
   information_schema.views
 WHERE
-  table_schema = 'general_hospital';
+  table_schema='general_hospital';
 
 -- ->REPLACING SIMPLE REVIEWS
 CREATE OR REPLACE VIEW
@@ -2148,9 +2148,9 @@ WITH RECURSIVE
     UNION ALL
     SELECT
       b,
-      a + b
+      a+b
     WHERE
-      b < 200
+      b<200
   )
 SELECT
   *
@@ -2166,11 +2166,11 @@ SELECT
 UNION ALL
 SELECT
   b,
-  a + b
+  a+b
 FROM
   v_fibonacci
 WHERE
-  b < 200;
+  b<200;
 
 -- TESTING RECURSIVE VIEW
 SELECT
@@ -2200,10 +2200,10 @@ UNION ALL
 SELECT
   op.order_procedure_id,
   op.order_parent_order_id,
-  o.level + 1 AS level
+  o.level+1 AS level
 FROM
   orders_procedures op
-  INNER JOIN v_orders o ON op.order_parent_order_id = o.order_procedure_id;
+  INNER JOIN v_orders o ON op.order_parent_order_id=o.order_procedure_id;
 
 SELECT
   *
@@ -2224,7 +2224,7 @@ SELECT
   ph.full_name AS pcp_name
 FROM
   patients p
-  INNER JOIN physicians ph ON p.pcp_id = ph.id;
+  INNER JOIN physicians ph ON p.pcp_id=ph.id;
 
 SELECT
   *
@@ -2244,8 +2244,8 @@ SELECT
   COUNT(NULLIF(patient_in_icu_flag, 'No')) AS num_icu_patterns
 FROM
   encounters e
-  LEFT JOIN departments d ON e.department_id = d.department_id
-  LEFT JOIN hospitals h ON d.hospital_id = h.hospital_id
+  LEFT JOIN departments d ON e.department_id=d.department_id
+  LEFT JOIN hospitals h ON d.hospital_id=h.hospital_id
 GROUP BY
   1,
   2,
@@ -2279,7 +2279,7 @@ SELECT
 FROM
   patients p
 WHERE
-  p.pcp_id = 4121
+  p.pcp_id=4121
 WITH
   CHECK OPTION;
 
@@ -2333,7 +2333,7 @@ SELECT
   f_plpgsql_function (1, 2);
 
 SELECT
-  f_plpgsql_function (a => 1, b => 2);
+  f_plpgsql_function (a=>1, b=>2);
 
 -- ->PGSQL WAY FUNCTION
 CREATE FUNCTION f_calculate_los (start_time TIMESTAMP, end_time TIMESTAMP) RETURNS NUMERIC LANGUAGE plpgsql AS $$ 
@@ -2362,7 +2362,7 @@ SELECT
 FROM
   information_schema.routines
 WHERE
-  routine_schema = 'general_hospital';
+  routine_schema='general_hospital';
 
 -- -->RENAME FUNCTIONS
 ALTER FUNCTION f_calculate_los
@@ -2445,8 +2445,8 @@ SELECT
 FROM
   information_schema.routines
 WHERE
-  routine_schema = 'general_hospital'
-  AND routine_type = 'PROCEDURE';
+  routine_schema='general_hospital'
+  AND routine_type='PROCEDURE';
 
 -- -->MODIFYING STORED PROCEDURES
 CREATE
@@ -2491,7 +2491,7 @@ SELECT
 FROM
   surgical_encounters
 WHERE
-  surgery_id = 6518;
+  surgery_id=6518;
 
 ALTER PROCEDURE sp_update_surgery_cost
 RENAME TO sp_update_surgical_cost;
@@ -2524,7 +2524,7 @@ SELECT
 FROM
   physicians
 WHERE
-  id = 12345;
+  id=12345;
 
 -- -->LIST TRIGGER
 SELECT
@@ -2535,7 +2535,7 @@ SELECT
 FROM
   information_schema.triggers
 WHERE
-  event_object_table = 'physicians';
+  event_object_table='physicians';
 
 -- -->ENABLE/DISABLE TRIGGER
 -- ->SELECTIVE ENABLE/DISABLE TRIGGER
@@ -2584,15 +2584,235 @@ RENAME TO tr_altered_trigger;
 
 UPDATE surgical_encounters
 SET
-  total_cost = total_cost + 1000
+  total_cost=total_cost+1000
 WHERE
-  surgery_id = 14615;
+  surgery_id=14615;
 
 SELECT
   *
 FROM
   surgical_encounters
 WHERE
-  surgery_id = 14615;
+  surgery_id=14615;
 
 DROP TRIGGER tr_altered_trigger ON surgical_encounters;
+
+-- LESSON 14 USEFUL METHODS AND TOOLS
+-- -->EXPLAIN, EXPLAIN (FORMAT...) & EXPLAIN ANALYZE
+-- IN ORDER TO PROTECT DATABASE FROM BEING OVERWRITTEN BY THESE QUERIES, WE WRAP THEM IN A SQL TRANSACTION AND END IT WITH ROLLBACK;
+-- ->EXPLAIN
+EXPLAIN
+WITH
+  surgical_los AS (
+    SELECT
+      surgery_id,
+      (surgical_discharge_date-surgical_admission_date) AS los,
+      AVG(surgical_discharge_date-surgical_admission_date) OVER () AS avg_los
+    FROM
+      surgical_encounters
+  )
+SELECT
+  *,
+  ROUND(los-avg_los, 2)
+FROM
+  surgical_los;
+
+-- ->EXPLAIN FORMAT()
+EXPLAIN (FORMAT json)
+WITH
+  surgical_los AS (
+    SELECT
+      surgery_id,
+      (surgical_discharge_date-surgical_admission_date) AS los,
+      AVG(surgical_discharge_date-surgical_admission_date) OVER () AS avg_los
+    FROM
+      surgical_encounters
+  )
+SELECT
+  *,
+  ROUND(los-avg_los, 2)
+FROM
+  surgical_los;
+
+-- ->EXPLAIN ANALYZE
+EXPLAIN
+ANALYZE
+WITH
+  surgical_los AS (
+    SELECT
+      surgery_id,
+      (surgical_discharge_date-surgical_admission_date) AS los,
+      AVG(surgical_discharge_date-surgical_admission_date) OVER () AS avg_los
+    FROM
+      surgical_encounters
+  )
+SELECT
+  *,
+  ROUND(los-avg_los, 2)
+FROM
+  surgical_los;
+
+-- -->DROP vs TRUNCATE
+-- ->DROP TABLE
+DROP TABLE Sales_y2017;
+
+-- ->TRUNCATE TABLE
+BEGIN TRANSACTION;
+
+TRUNCATE TABLE patients CASCADE;
+
+ROLLBACK TRANSACTION;
+
+-- --> EXPORT/IMPORT DATA WITH COPY
+-- ->COPY OUT
+COPY physicians TO 'C:\Users\Public\physicians.csv'
+WITH
+  DELIMITER ',' CSV HEADER;
+
+-- ->COPY IN
+CREATE TABLE
+  physicians_3 (
+    first_name TEXT,
+    last_name TEXT,
+    full_name TEXT,
+    id INT
+  );
+
+COPY physicians_3
+FROM
+  'C:\Users\Public\physicians.csv'
+WITH
+  DELIMITER ',' CSV HEADER;
+
+-- -->ARRAY AND ARRAY FUNCTIONS
+WITH
+  resources AS (
+    SELECT
+      surgery_id,
+      array_agg(
+        DISTINCT resource_name
+        ORDER BY
+          resource_name
+      ) AS resource_array
+    FROM
+      general_hospital.surgical_costs
+    GROUP BY
+      surgery_id
+  )
+SELECT
+  r1.surgery_id,
+  r2.surgery_id,
+  r1.resource_array
+FROM
+  resources r1
+  LEFT OUTER JOIN resources r2 ON r1.surgery_id!=r2.surgery_id
+  AND r1.resource_array=r2.resource_array
+WHERE
+  r1.resource_array@>ARRAY['Full Blood Count']::VARCHAR[];
+
+-- resource.array containing 'Full Blood Count' string in the array
+-- -->JSON AND JSON FUNCTIONS
+SELECT
+  '{"first_name": "Ben", "last_name": "Doe"}'::JSONB->>'first_name';
+
+SELECT
+  '[{"first_name": "Ben", "last_name": "Doe"}]'::JSONB->0;
+
+SELECT
+  '{"b":2}'::jsonb<@'{"a":1, "b":2}'::jsonb;
+
+SELECT
+  '{"a":1, "b":2}'::jsonb@>'{"b":3}'::jsonb;
+
+SELECT
+  '[{"a":1}, "b"]'::jsonb||'["c", "d"]'::jsonb;
+
+SELECT
+  jsonb_build_object(
+    'id',
+    id,
+    'fist_name',
+    first_name,
+    'last_name',
+    last_name
+  ) AS physician_json
+FROM
+  physicians;
+
+-- -->LISTING/LOADING POSTGRE EXTENSIONS
+SELECT
+  *
+FROM
+  pg_available_extensions;
+
+CREATE EXTENSION fuzzystrmatch SCHEMA general_hospital;
+
+SELECT
+  levenshtein ('bigelow', 'bigalo');
+
+CREATE EXTENSION earthdistance CASCADE SCHEMA general_hospital;
+
+SELECT
+  p.latitude,
+  p.longitude,
+  h.latitude,
+  h.longitude,
+  earth_distance (
+    ll_to_earth (p.latitude, p.longitude),
+    ll_to_earth (h.latitude, h.longitude)
+  )/1000 AS distance_km,
+  point(p.longitude, p.latitude)<@>point(h.longitude, h.latitude) AS distance_miles
+FROM
+  patients p
+  INNER JOIN hospitals h ON h.hospital_id=111000;
+
+SELECT
+  *
+FROM
+  information_schema.columns
+WHERE
+  table_schema='general_hospital'
+  AND table_name='hospitals';
+
+-- CODING CHALLENGE
+-- -------------
+-- ->LIST AVAILABLE EXTENSIONS
+SELECT
+  *
+FROM
+  pg_available_extensions
+ORDER BY
+  1;
+
+-- ->LOAD AN EXTENSION TO THE SCHEMA
+CREATE EXTENSION insert_username SCHEMA general_hospital;
+
+BEGIN TRANSACTION;
+
+EXPLAIN
+ANALYZE
+DELETE FROM general_hospital.vitals;
+
+ROLLBACK TRANSACTION;
+
+-- ->RETIREVE JSONB DATA FROM A TABLE 
+SELECT
+  *
+FROM
+  patients;
+
+SELECT
+  json_build_object(
+    'name',
+    name, -- value field from the table
+    'address',
+    address_full, -- value field from the table
+    'city',
+    city, -- value field from the table
+    'state',
+    state, -- value field from the table
+    'zip_cd',
+    zip_cd -- value field from the table
+  ) AS address_jsonb
+FROM
+  patients;
