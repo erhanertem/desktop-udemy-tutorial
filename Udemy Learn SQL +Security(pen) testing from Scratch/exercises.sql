@@ -56,3 +56,44 @@ FROM
 DROP TABLE employee_info;
 
 -- LESSON 4 ALTERING TABLE SCHEMA OPERATIONS
+-- -->ADD COLUMN TO TABLE
+ALTER TABLE employee_info ADD gender VARCHAR(10);
+
+DESC employee_info;
+
+-- -->MODIFY COLUMN 
+ALTER TABLE employee_info MODIFY gender VARCHAR(20);
+
+DESC employee_info;
+
+-- -->MODIFY COLUMN NAME + COLUMN DEFINITION
+ALTER TABLE employee_info CHANGE gender gender_name VARCHAR(30);
+
+DESC employee_info;
+
+-- -->DELETE COLUMN
+ALTER TABLE employee_info
+DROP gender;
+
+-- -->ADD COLUMN VALUES
+SELECT
+  *
+FROM
+  employee_info;
+
+UPDATE employee_info
+SET
+  gender='male'
+WHERE
+  id=1;
+
+UPDATE employee_info
+SET
+  gender='female'
+WHERE
+  gender IS NULL;
+
+-- -->DELETE TABLE ROW
+DELETE FROM employee_info
+WHERE
+  id=5;
