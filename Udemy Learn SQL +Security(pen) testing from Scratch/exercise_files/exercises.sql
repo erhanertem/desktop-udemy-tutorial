@@ -204,3 +204,61 @@ FROM
   employee_info
 WHERE
   id NOT BETWEEN 1 AND 3;
+
+-- LESSON 6 REGULAR EXPRESSIONS WITH SQL QUERIES
+-- ->Load world.sql dataset in the mysql server via mysql CLI
+-- SOURCE c:/world.sql;
+-- ->SWITCH DATABASE
+USE world;
+
+SELECT
+  *
+FROM
+  city;
+
+-- -->LIKE/ILIKE WITH REGEX WILDCARDS
+SELECT
+  name,
+  countrycode
+FROM
+  city
+WHERE
+  countrycode LIKE 'A%';
+
+SELECT
+  name,
+  countrycode
+FROM
+  city
+WHERE
+  countrycode LIKE '__T%';
+
+SELECT
+  name,
+  countrycode
+FROM
+  city
+WHERE
+  countrycode LIKE '_A%';
+
+-- ->SWITCH DATABASE
+USE qadbt;
+
+SELECT
+  *
+FROM
+  employee_info;
+
+SELECT
+  *
+FROM
+  employee_info
+ORDER BY
+  name DESC;
+
+SELECT
+  *
+FROM
+  employee_info
+ORDER BY
+  id;
