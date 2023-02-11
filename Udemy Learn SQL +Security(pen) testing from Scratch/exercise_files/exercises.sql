@@ -241,6 +241,7 @@ FROM
 WHERE
   countrycode LIKE '_A%';
 
+-- -->ORDER BY
 -- ->SWITCH DATABASE
 USE qadbt;
 
@@ -262,3 +263,165 @@ FROM
   employee_info
 ORDER BY
   id;
+
+-- LESSON 7 DEEPER UNDERSTANDING ON GROUP BY, AGGREGATE FUNCTIONS
+CREATE TABLE
+  transactions (
+    month VARCHAR(50),
+    day INT (50),
+    amount INT (50),
+    branch VARCHAR(50)
+  );
+
+INSERT INTO
+  transactions (month, day, amount, branch)
+VALUES
+  ('feb', 13, 124, 'bangalore'),
+  ('feb', 17, 20400, 'chicago'),
+  ('feb', 212, 320, 'sydney'),
+  ('mar', 22, 9600, 'bangalore'),
+  ('mar', 16, 5200, 'chicago'),
+  ('april', 12, 23, 'sydney'),
+  ('jan', 13, 666, 'bangalore'),
+  ('may', 2, 3111, 'sydney'),
+  ('may', 1, 99999, 'paris'),
+  ('jan', 12, 2000, 'paris');
+
+SELECT
+  *
+FROM
+  transactions;
+
+-- -->GROUP BY + SUM/MAX/MIN/AVG/COUNT + HAVING
+-- #1
+SELECT
+  month,
+  SUM(amount)
+FROM
+  transactions
+GROUP BY
+  month
+ORDER BY
+  SUM(amount) DESC;
+
+SELECT
+  branch,
+  SUM(amount)
+FROM
+  transactions
+GROUP BY
+  branch;
+
+-- #2
+SELECT
+  month,
+  MAX(amount)
+FROM
+  transactions
+GROUP BY
+  month
+ORDER BY
+  MAX(amount) DESC;
+
+-- #3
+SELECT
+  month,
+  MIN(amount)
+FROM
+  transactions
+GROUP BY
+  month
+ORDER BY
+  MIN(amount) DESC;
+
+SELECT
+  branch,
+  MIN(amount)
+FROM
+  transactions
+GROUP BY
+  branch
+ORDER BY
+  MIN(amount) DESC;
+
+-- #4
+SELECT
+  month,
+  AVG(amount)
+FROM
+  transactions
+GROUP BY
+  month
+ORDER BY
+  AVG(amount) DESC;
+
+-- #5
+SELECT
+  COUNT(*),
+  month
+FROM
+  transactions
+GROUP BY
+  month;
+
+-- #6
+SELECT
+  month,
+  COUNT(*)
+FROM
+  transactions
+GROUP BY
+  month
+HAVING
+  COUNT(*)<2;
+
+--#7
+SELECT
+  month,
+  SUM(amount)
+FROM
+  transactions
+WHERE
+  branch='bangalore'
+GROUP BY
+  month;
+
+--#8
+SELECT
+  month,
+  SUM(amount)
+FROM
+  transactions
+WHERE
+  branch='bangalore'
+GROUP BY
+  month
+HAVING
+  SUM(amount)<1000;
+
+SELECT
+  month,
+  SUM(amount)
+FROM
+  transactions
+WHERE
+  branch IN ('sydney', 'paris')
+GROUP BY
+  month
+HAVING
+  SUM(amount)<1000
+ORDER BY
+  SUM(amount) DESC;
+
+--#9
+SELECT
+  branch,
+  SUM(amount)
+FROM
+  transactions
+WHERE
+  month='feb'
+GROUP BY
+  branch
+HAVING
+  SUM(amount)>4000;
