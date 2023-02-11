@@ -425,3 +425,77 @@ GROUP BY
   branch
 HAVING
   SUM(amount)>4000;
+
+-- LESSON 8 BUILDING SQL SUBQUERIES
+CREATE TABLE
+  citizenloc (name VARCHAR(50), location VARCHAR(50));
+
+INSERT INTO
+  citizenloc (name, location)
+VALUES
+  ('rahul', 'california'),
+  ('george', 'california'),
+  ('flex', 'texas'),
+  ('steve', 'california'),
+  ('husain', 'chicago');
+
+CREATE TABLE
+  citizens (name VARCHAR(50), age INT (3), exp INT (3));
+
+INSERT INTO
+  citizens (name, age, exp)
+VALUES
+  ('rahul', 34, 6),
+  ('george', 34, 6),
+  ('flex', 23, 15),
+  ('steve', 24, 7),
+  ('husain', 10, 0);
+
+-- #1
+-- SINGLE OUTPUT SUBQUERY RESULTS
+SELECT
+  name,
+  age
+FROM
+  citizens
+WHERE
+  name=(
+    SELECT
+      name
+    FROM
+      citizenloc
+    WHERE
+      location='texas'
+  );
+
+-- #2
+-- MULTIPLE OUTPUT QUERY RESULTS
+SELECT
+  name,
+  age
+FROM
+  citizens
+WHERE
+  name IN (
+    SELECT
+      name
+    FROM
+      citizenloc
+    WHERE
+      location='california'
+  );
+
+SELECT
+  name,
+  location
+FROM
+  citizenloc
+WHERE
+  name IN (
+    SELECT
+      name
+    FROM
+      citizens
+    WHERE
+      age=34
+  );
