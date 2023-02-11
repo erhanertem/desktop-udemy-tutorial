@@ -97,3 +97,110 @@ WHERE
 DELETE FROM employee_info
 WHERE
   id=5;
+
+-- LESSON 5 SQL LOGICAL OPERATORS
+-- -->SELECT DISTINCT EXPRESSION
+SELECT
+  age,
+  gender
+FROM
+  employee_info;
+
+SELECT DISTINCT
+  gender
+FROM
+  employee_info;
+
+-- -->EQUALITY OPERATORS
+SELECT
+  name
+FROM
+  employee_info
+WHERE
+  location='newjersey';
+
+-- -->AND/OR/IN/BETWEEN/NOT LOGIC OPERATORS
+SELECT
+  name
+FROM
+  employee_info
+WHERE
+  location='newjersey'
+  AND age>23;
+
+SELECT
+  name
+FROM
+  employee_info
+WHERE
+  (
+    location='newjersey'
+    AND age>23
+  )
+  OR location='charlotte';
+
+SELECT
+  *
+FROM
+  employee_info
+WHERE
+  id=1
+  OR id=2;
+
+SELECT
+  *
+FROM
+  employee_info
+WHERE
+  id=1
+  OR location='charlotte';
+
+-- SELECT * FROM employee_info WHERE id %2=1;
+-- SELECT * FROM employee_info WHERE id %2=0;
+SELECT
+  *
+FROM
+  employee_info;
+
+SELECT
+  name
+FROM
+  employee_info
+WHERE
+  age IN (23, 24, 25);
+
+SELECT
+  *
+FROM
+  employee_info
+WHERE
+  age>=21
+  AND age<=99;
+
+SELECT
+  *
+FROM
+  employee_info
+WHERE
+  age BETWEEN 21 AND 99;
+
+SELECT
+  *
+FROM
+  employee_info
+WHERE
+  age<25;
+
+SELECT
+  *
+FROM
+  employee_info
+WHERE
+  age NOT BETWEEN 25 AND 1000;
+
+SELECT
+  *
+FROM
+  employee_info
+WHERE
+  id NOT BETWEEN 1 AND 3;
