@@ -499,3 +499,135 @@ WHERE
     WHERE
       age=34
   );
+
+-- LESSON 9 SQL TABLE RELATIONSHIPS
+SELECT
+  c.name,
+  cl.location,
+  c.age
+FROM
+  citizens c
+  INNER JOIN citizenloc cl ON c.name=cl.name
+WHERE
+  cl.location='california';
+
+CREATE TABLE
+  company (
+    name VARCHAR(50),
+    branch VARCHAR(20),
+    employees INT (10)
+  );
+
+INSERT INTO
+  company (name, branch, employees)
+VALUES
+  ('qaclickacademy', 'us', 20),
+  ('google', 'us', 500),
+  ('yahoo', 'canada', 250),
+  ('google', 'india', 400),
+  ('qaclickacademy', 'india', 75),
+  ('qaclickacademy', 'uk', 10),
+  ('qaclickacademy', 'canada', 30),
+  ('yahoo', 'us', 200),
+  ('yahoo', 'india', 150),
+  ('facebook', 'us', 50);
+
+CREATE TABLE
+  established (name VARCHAR(50), year INT (4));
+
+INSERT INTO
+  established (name, year)
+VALUES
+  ('qaclickacademy', 2010),
+  ('google', 1990),
+  ('yahoo', 1992),
+  ('facebook', 1992);
+
+SELECT
+  e.year,
+  c.name,
+  COUNT(*)
+FROM
+  company c
+  INNER JOIN established e ON e.name=c.name
+GROUP BY
+  c.name
+HAVING
+  e.year LIKE '19%';
+
+SELECT
+  e.year,
+  c.name,
+  SUM(c.employees)
+FROM
+  company c
+  INNER JOIN established e ON e.name=c.name
+GROUP BY
+  c.name
+HAVING
+  e.year LIKE '19%';
+
+SELECT
+  e.year,
+  c.name,
+  MIN(c.employees)
+FROM
+  company c
+  INNER JOIN established e ON e.name=c.name
+GROUP BY
+  c.name;
+
+-- -----------------
+CREATE TABLE
+  studentdetailsro (
+    name VARCHAR(50),
+    id INT (10),
+    age INT (10),
+    gender ENUM ("male", "female"),
+    location VARCHAR(10)
+  );
+
+INSERT INTO
+  studentdetailsro (name, id, age, gender, location)
+VALUES
+  ('sai', 1, 12, 'female', 'spain'),
+  ('baba', 2, 15, 'male', 'newyork'),
+  ('ram', 3, 15, 'male', 'spain'),
+  ('raghu', 4, 15, 'female', 'newyork'),
+  ('ajay', 5, 12, 'male', 'nijeria'),
+  ('marthru', 6, 12, 'male', 'spain');
+
+CREATE TABLE
+  grades (grade VARCHAR(2), id INT (10));
+
+INSERT INTO
+  grades (grade, id)
+VALUES
+  ('A', 2),
+  ('B', 3),
+  ('A', 4),
+  ('C', 5),
+  ('B', 7);
+
+-- #1 GET THE STUDENT DETAILS OF RO WITH RESULTS WHO PASSED IN EXAMS
+SELECT
+  *
+FROM
+  studentdetailsro s
+  INNER JOIN grades g ON g.id=s.id;
+
+-- #2 GET THE STUDENT DETAILS OF RO WITH RESULT WHO APPEARED IN EXAMS
+SELECT
+  *
+FROM
+  studentdetailsro s
+  LEFT JOIN grades g ON g.id=s.id;
+
+-- #3 GET THE ALL STUDENT DETAILS WITH RESULT WHO PASSED IN EXAM
+SELECT
+  *
+FROM
+  studentdetailsro s
+  RIGHT JOIN grades g ON g.id=s.id
+WHERE
+  name IS NOT NULL;
