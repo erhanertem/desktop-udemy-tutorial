@@ -631,3 +631,154 @@ FROM
   RIGHT JOIN grades g ON g.id=s.id
 WHERE
   name IS NOT NULL;
+
+-- LESSON 10 SQL STRING FUNCTIONS AND VIEWS
+-- -->VIEWS
+CREATE VIEW
+  google_info AS
+SELECT
+  *
+FROM
+  company
+WHERE
+  name='google';
+
+SELECT
+  *
+FROM
+  google_info;
+
+SELECT
+  *
+FROM
+  company;
+
+SELECT
+  AVG(employees)
+FROM
+  company;
+
+-- company names where employees are more than the avg count
+CREATE VIEW
+  avg_company AS
+SELECT
+  name,
+  AVG(employees)
+FROM
+  company
+WHERE
+  employees>(
+    SELECT
+      AVG(employees)
+    FROM
+      company
+  )
+GROUP BY
+  name;
+
+SELECT
+  *
+FROM
+  avg_company;
+
+SELECT DISTINCT
+  p.name
+FROM
+  (
+    SELECT
+      name,
+      employees
+    FROM
+      company
+    WHERE
+      employees>(
+        SELECT
+          AVG(employees)
+        FROM
+          company
+      )
+  ) p;
+
+CREATE VIEW
+  avg_company AS
+SELECT
+  name,
+  AVG(employees)
+FROM
+  company
+GROUP BY
+  name
+HAVING
+  AVG(employees)>(
+    SELECT
+      AVG(employees)
+    FROM
+      company
+  );
+
+-- -->STRING FUNCTIONS
+-- ->CONCAT()
+SELECT
+  CONCAT (name, branch) AS aggregate
+FROM
+  company;
+
+-- ->SUBSTRING()
+SELECT
+  SUBSTRING(name, 8)
+FROM
+  company
+WHERE
+  name='qaclickacademy';
+
+SELECT
+  SUBSTRING(name, 8, 5)
+FROM
+  company
+WHERE
+  name='qaclickacademy';
+
+-- ->REPLACE()
+SELECT
+  REPLACE (name, 'q', '11')
+FROM
+  company
+WHERE
+  name='qaclickacademy';
+
+UPDATE company
+SET
+  name=REPLACE (name, 'q', 'XXXX')
+WHERE
+  name='qaclickacademy';
+
+SELECT
+  *
+FROM
+  company;
+
+-- ->LENGTH()
+SELECT
+  name,
+  LENGTH (name)
+FROM
+  company;
+
+-- ->TRIM()
+SELECT
+  TRIM('king ');
+
+-- ->LIMIT()
+SELECT
+  *
+FROM
+  company
+LIMIT
+  2, 1;
+
+SELECT
+  *
+FROM
+  company;
+
+-- LESSON 11 MISC SQL KEYWORDS
