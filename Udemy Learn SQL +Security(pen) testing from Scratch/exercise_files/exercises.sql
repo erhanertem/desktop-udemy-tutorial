@@ -1116,3 +1116,13 @@ WHERE
 -- NEVER TAKE IN RAW INPUT FROM THE USER INPUTS. IF INPUT DIRECTLY USED ONE MAY INCLUDE a makeup id along with markypass OR 1=1 statement to retireve user list.
 -- https://owasp.org/www-project-top-ten/
 -- LESSON 20 SECURITY TESTING BASIC TERMINOLOGIES
+-- HTTP is stateless meaning each URL hit by the user is a one time deal from user-to-server vice versa. HTTP requests has no memory(stateless) and request based opened and closed connections. In order to persist the login information browser requires cookies which stores session information and used to inform the server.
+-- ->MAN THE MIDDLE ATTACK
+-- http requests could be hijacked/interrupted by a third party. So when exchanging confidential data between server and user, HTTPS connection is used. 
+-- HTTPS exchanges encrypted data with the server so middle man has no way securing the confidential data.
+-- -->HTTP METHODS
+-- ->GET METHOD
+-- requests data from the server - read search information. You can see the get request on the url. 
+-- ->POST METHOD
+-- sends data to the server - they are not part of the url and send concealed from the browser.
+-- LESSON 21 XSS VULNERABILITY
