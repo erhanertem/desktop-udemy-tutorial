@@ -782,3 +782,139 @@ FROM
   company;
 
 -- LESSON 11 MISC SQL KEYWORDS
+CREATE TABLE
+  college (id INT (50), name VARCHAR(50));
+
+INSERT INTO
+  college (id, name)
+VALUES
+  (53, 'tim'),
+  (223, 'tam'),
+  (574, 'sam'),
+  (422, 'ram'),
+  (983, 'joe'),
+  (5399, 'ten'),
+  (5399, 'ten'),
+  (574, null),
+  (5399, 'ten'),
+  (57545, 'sam'),
+  (98003, 'joepp'),
+  (643, 'ben');
+
+CREATE TABLE
+  results (id INT (50), name VARCHAR(50));
+
+INSERT INTO
+  results (id, name)
+VALUES
+  (9893, 'tina'),
+  (53, 'tim'),
+  (24, 'harsh'),
+  (223, 'tam'),
+  (575459, 'sam'),
+  (887, 'jack'),
+  (5444, 'ten'),
+  (98003, 'joepp');
+
+-- -->UNION()
+SELECT
+  *
+FROM
+  college;
+
+SELECT
+  *
+FROM
+  results;
+
+SELECT
+  *
+FROM
+  college
+UNION
+(
+  SELECT
+    *
+  FROM
+    results
+);
+
+-- -->UNION ALL()
+SELECT
+  *
+FROM
+  college
+UNION ALL
+(
+  SELECT
+    *
+  FROM
+    results
+);
+
+-- -->INTERSECT()
+SELECT
+  *
+FROM
+  college
+WHERE
+  id IN (
+    SELECT
+      id
+    FROM
+      results
+  );
+
+SELECT
+  *
+FROM
+  college
+INTERSECT
+(
+  SELECT
+    *
+  FROM
+    results
+);
+
+-- -->EXISTS()
+SELECT
+  *
+FROM
+  college
+WHERE
+  EXISTS (
+    SELECT
+      *
+    FROM
+      college
+    WHERE
+      name='qwRam'
+  );
+
+-- -->CASE()
+CREATE TABLE
+  marks (score INT (50), name VARCHAR(50));
+
+INSERT INTO
+  marks (score, name)
+VALUES
+  (45, 'tina'),
+  (23, 'tim'),
+  (64, 'harsh'),
+  (65, 'tam'),
+  (98, 'sam'),
+  (34, 'jack');
+
+SELECT
+  score,
+  CASE name
+    WHEN 'tim' THEN score*2
+    WHEN 'sam' THEN score -25
+    WHEN 'tina' THEN score*3
+    ELSE score
+  END AS new_score
+FROM
+  marks;
+
+-- LESSON 12 DATA CONSTRAINTS FOR DB VALIDATIONS
