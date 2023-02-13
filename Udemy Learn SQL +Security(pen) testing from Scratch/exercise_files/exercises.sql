@@ -897,7 +897,7 @@ CREATE TABLE
   marks (score INT (50), name VARCHAR(50));
 
 INSERT INTO
-  marks (score, name)
+  marks
 VALUES
   (45, 'tina'),
   (23, 'tim'),
@@ -918,3 +918,83 @@ FROM
   marks;
 
 -- LESSON 12 DATA CONSTRAINTS FOR DB VALIDATIONS
+-- -->NOT NULL
+CREATE TABLE
+  constab (flightname VARCHAR(20), flightid INT NOT NULL);
+
+CREATE TABLE
+  constab1 (flightname VARCHAR(20), flightid INT);
+
+DESC constab;
+
+INSERT INTO
+  constab
+VALUES
+  ('abcd', 12);
+
+INSERT INTO
+  constab
+VALUES
+  ('abcd', null);
+
+INSERT INTO
+  constab1
+VALUES
+  ('abcd', null);
+
+-- -->DEFAULT
+CREATE TABLE
+  constab2 (name VARCHAR(20), age INT DEFAULT 25);
+
+INSERT INTO
+  constab2 (name)
+VALUES
+  ('brian');
+
+-- -->UNIQUE
+CREATE TABLE
+  constab3 (name VARCHAR(20), id INT UNIQUE);
+
+INSERT INTO
+  constab3 (name, id)
+VALUES
+  ('jack', 21);
+
+INSERT INTO
+  constab3 (name, id)
+VALUES
+  ('mack', 21);
+
+INSERT INTO
+  constab3 (name, id)
+VALUES
+  ('mack', 22);
+
+-- -->CHECK
+CREATE TABLE
+  constab4 (name VARCHAR(20), id INT, CHECK (id<=500));
+
+INSERT INTO
+  constab4 (name, id)
+VALUES
+  ('jack', 501);
+
+INSERT INTO
+  constab4 (name, id)
+VALUES
+  ('jack', 401);
+
+-- -->PRIMARY KEY
+CREATE TABLE
+  empdb (
+    empid INT PRIMARY KEY,
+    name VARCHAR(20),
+    branch VARCHAR(20)
+  );
+
+CREATE TABLE
+  empdb1 (
+    empid INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20),
+    branch VARCHAR(20)
+  );
