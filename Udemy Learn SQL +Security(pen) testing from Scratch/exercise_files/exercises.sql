@@ -998,3 +998,54 @@ CREATE TABLE
     name VARCHAR(20),
     branch VARCHAR(20)
   );
+
+-- LESSON 13 FOREIGN KEY/PRIMARY KEY
+-- -->FOREIGN KEY
+CREATE TABLE
+  orders (
+    orderid INT AUTO_INCREMENT PRIMARY KEY,
+    customerid INT,
+    amount INT NOT NULL,
+    date TIMESTAMP DEFAULT NOW (),
+    FOREIGN KEY (customerid) REFERENCES cdetails (customerid)
+  );
+
+CREATE TABLE
+  cdetails (
+    customerid INT AUTO_INCREMENT PRIMARY KEY,
+    address VARCHAR(100),
+    zipcode INT (4)
+  );
+
+INSERT INTO
+  cdetails (address, zipcode)
+VALUES
+  ('MELBOURN', 9262),
+  ('TEXAS', 1234);
+
+INSERT INTO
+  orders (customerid, amount)
+VALUES
+  (1, 2000),
+  (2, 20),
+  (1, 120),
+  (3, 60);
+
+INSERT INTO
+  orders (customerid, amount)
+VALUES
+  (3, 60);
+
+-- -->ON DELETE CASCADE
+CREATE TABLE
+  orders (
+    orderid INT AUTO_INCREMENT PRIMARY KEY,
+    customerid INT,
+    amount INT NOT NULL,
+    date TIMESTAMP DEFAULT NOW (),
+    FOREIGN KEY (customerid) REFERENCES cdetails (customerid) ON DELETE CASCADE
+  );
+
+DELETE FROM cdetails
+WHERE
+  customerid=3;
