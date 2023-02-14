@@ -1143,3 +1143,30 @@ Types of XSS attacks:
 2. Persistence XSS: Gets embedded into body of html of the app code and if called from another client, it executes itself onto that client. For instance, one can submit a text to app with html body and js script inside. If anybody downloads that item for viewing in their browser executes that malicious js code as well. 
 
  */
+-- LESSON 22 COOKIES AND SITE SECURITY
+/*
+COOKIES - Cookies are small , often encrypted text files located in our local browser directory. 
+
+SESSION COOKIES - Session cookies are used by the server to store information about user page activities so that they may pick up where they left off on the server's webpage. Servers have no memory - stateless. Cookies tell the server what pages to show the user. 
+
+In authentication processes we use HTTPS. We would need authentication cookie or token to pass thru HTTPS requests. 
+
+In non-authenticastion processes like viewing an img etc, HTTP is enough. Passing an authentication cookie in HTTP connection is problem as they can be hijacked.  
+
+In order to manage this process automatically we got to look into cookie attributes and what they are:
+-->COOKIE ATTRIBUTES
+->SECURE ATTRIBUTE
+This cookie attribute allows to either pass or not the cookie on a HTTPS or not. If secure attribute flag is on, auth cookie is only sent thru https.
+->HTTPONLY ATTRIBUTE
+This should be set at all times. Not supported by every browser. The cookie is released only in the event of a HTTP request. Usefull in dealing with some SS attack exploitation vectors.
+->DOMAIN ATTRIBUTE
+Designates a specific server so that the sensitive cookie doesnt get misrouted. Session id etc sensitive cookies needs to have its fully qualified domain name printed such as 'wwww.facebook.com' , etc. If its a shared session domain, you may disclose a cripple version such as '.facebook.com' so that cookie is also available to 'admin.facebook.com' etc. 
+->PATH ATTRIBUTE
+The cookies can be assigned a limited validity based on certain paths on the server under a domain. 
+ * domain attribute 'www.eertemofis.com' path attribute '/' siginifies any folder under  www.eertemofis.com
+ * domain attribute 'www.eertemofis.com' path attribute '/db' siginifies 'www.eertemofis.com/db'
+->EXPIRES ATTRIBUTE
+Sets the expiration date for an issued cookie. Long exp data for cookies are not desirable.
+If the expires attribute is marked as 'session' then it expires as soon as the browser is closed. 
+ */
+-- LESSON 23 SESSION HIJACKING & CROSS SITE FORGERY ATTACKS
