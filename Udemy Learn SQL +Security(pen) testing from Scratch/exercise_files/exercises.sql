@@ -1169,4 +1169,15 @@ The cookies can be assigned a limited validity based on certain paths on the ser
 Sets the expiration date for an issued cookie. Long exp data for cookies are not desirable.
 If the expires attribute is marked as 'session' then it expires as soon as the browser is closed. 
  */
--- LESSON 23 SESSION HIJACKING & CROSS SITE FORGERY ATTACKS
+-- LESSON 23 SESSION HIJACKING & CSRF (CROSS SITE REQUEST FORGERY ATTACKS)
+/*
+click baits on client side that triggers certain HTTP REQUESTS on behalf of the client using the active session available at the time 
+
+In order to avoid CSRF, we provide an extra cryptographic hidden token value field in each form submission along with the auth cookie which lives out for the duration of the submission process. So the attacker can match only the name fields it sees along with the hijacked active session auth cookie but can not proceed further without form-specific extra token field value.  
+ * Confidential data should only reside in POST requests.
+ * Cryptographic hidden field must be set for each data submission.
+ * Change the cookie token and see if the request is accepted. It shouldn't accept.
+ * Open the site on another machine using the same token id and test. It shouldn't accept.  
+ * Test if both tokens (auth and submission cookies) on a submit form. It shouldnt work twice.
+ */
+-- LESSON 24 PARAMETER TEMPERING ATTACKS
