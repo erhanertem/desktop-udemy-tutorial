@@ -1126,3 +1126,20 @@ WHERE
 -- ->POST METHOD
 -- sends data to the server - they are not part of the url and send concealed from the browser.
 -- LESSON 21 XSS VULNERABILITY
+/*
+Cross Site Scripting also known as XSS , is one of the most common web appliction vulnerability that allows an attacker to run his own client side scripts(especially Javascript) into web pages viewed by other users.
+
+Attacker injects its html/js script by means of  
+1. manually editing url post , 
+2. thru form text submission, 
+3. server-side text rendering
+
+from front-end to back-end. 
+
+Accepting a malicious code is not really the whole problem. Allowing the execution of the code by the server is the other half of the problem. Not only filtering <i>Help</i> on the front end, but also server side you should eradicate the problem by re-encoding the text input of the user such as <i>Help</i>  --> &quot;&amp;lt;i&amp;gt;hello&amp;lt;/i&amp;gt;&quot; 
+
+Types of XSS attacks:
+1. Reflected XSS: Only available till browser is closed
+2. Persistence XSS: Gets embedded into body of html of the app code and if called from another client, it executes itself onto that client. For instance, one can submit a text to app with html body and js script inside. If anybody downloads that item for viewing in their browser executes that malicious js code as well. 
+
+ */
