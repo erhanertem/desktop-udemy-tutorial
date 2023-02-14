@@ -1129,6 +1129,12 @@ WHERE
 /*
 Cross Site Scripting also known as XSS , is one of the most common web appliction vulnerability that allows an attacker to run his own client side scripts(especially Javascript) into web pages viewed by other users.
 
+How does XSS work?
+A typical XSS attack has two stages:
+
+For running malicious JavaScript code in a victim’s browser, the attacker must find a way to inject the malicious code to a web page the victim visits.
+After injecting the malicious code, the victim needs to visit the webpage with that code. If the attack is directed at particular victims, social engineering and/or phishing can be used to send a malicious URL to the victim.
+
 Attacker injects its html/js script by means of  
 1. manually editing url post , 
 2. thru form text submission, 
@@ -1171,13 +1177,59 @@ If the expires attribute is marked as 'session' then it expires as soon as the b
  */
 -- LESSON 23 SESSION HIJACKING & CSRF (CROSS SITE REQUEST FORGERY ATTACKS)
 /*
+How does CSRF work?
+To conduct a successful CSRF attack, the attacker will typically use social engineering, such as an email or link that will trick a victim into sending a forger request to a server. As the user is already authenticated by their application at the time the attack is happening, it’s impossible for the application to differentiate a legitimate request from a forged one.
+
+For a CSRF attack to be possible and successful, these three key conditions must be in place:
+
+Relevant action: privileged action or any action on user-specific data
+Cookie-based session handling: the action performing involves issuing one or several HTTP requests, and the application relies only on session cookies to identify the user who made the request. No other mechanism is in place for validating user requests or tracking sessions.
+No unpredictable request parameters: the request doesn’t contain any parameters whose values cannot be guessed or determined by the attacker.
+
 click baits on client side that triggers certain HTTP REQUESTS on behalf of the client using the active session available at the time 
 
-In order to avoid CSRF, we provide an extra cryptographic hidden token value field in each form submission along with the auth cookie which lives out for the duration of the submission process. So the attacker can match only the name fields it sees along with the hijacked active session auth cookie but can not proceed further without form-specific extra token field value.  
+In order to avoid CSRF, we provide an extra cryptographic CRSF hidden token value field in each form submission along with the auth cookie which lives out for the duration of the submission process. So the attacker can match only the name fields it sees along with the hijacked active session auth cookie but can not proceed further without form-specific extra token field value.  
  * Confidential data should only reside in POST requests.
  * Cryptographic hidden field must be set for each data submission.
  * Change the cookie token and see if the request is accepted. It shouldn't accept.
  * Open the site on another machine using the same token id and test. It shouldn't accept.  
  * Test if both tokens (auth and submission cookies) on a submit form. It shouldnt work twice.
+
+How is CSRF different from XSS?
+The key difference between those two attacks is that a CSRF attack requires an authenticated session, while XSS attacks don’t. Some other differences are:
+
+Since it doesn’t require any user interaction, XSS is believed to be more dangerous
+CSRF is restricted to the actions victims can perform. XSS, on the other hand, works on the execution of malicious scripts enlarging the scope of actions the attacker can perform
+XSS requires only a vulnerability, while CSRF requires a user to access the malicious page or click a link
+CSRF works only one way – it can only send HTTP requests, but cannot view the response. XSS can send and receive  HTTP requests and responses in order to extract the required data.
  */
 -- LESSON 24 PARAMETER TEMPERING ATTACKS
+/*
+WEB-BASED ATTACKS THAT INVOLVES TAMPERING CERTAIN PARTS OF THE URL or a WEB PAGE FORM FIELD DATA ENTERED BY A USER WITHOUT USER AUTHORIZATION.
+THIS KIND OF ATTACKS ARE EXECUTED THRU: 
+ *COOKIES
+ *FORM FIELDS
+ *URL QUERY STRING MODS
+After issuing a user an authentication cookie, if we do not verify authentication details against the url input in every req, any person whom has secured sesssion auth cookie can access other people accounts without needing to know other people's pass info.  
+ *HTTP HEADERS
+On client side we may filter how many inputs could be made per each req via our fornt-end app code. However, for the back-end, we need to secure the server by deploying server-side validation for multiple input attack reqs from a proxy tool that shortcircuits our front-end app. So client-side and server-side restrictions should be applied in tandem.
+
+ */
+-- LESSON 25 ACCOUNT SECURITY
+/*
+source of password hacks are:
+ * man in the middle attach : HTTP type post requests
+ * password retrieval as a cookie with XSS: secure flagged cookie thru HTTPS
+ * account brute forced via http post
+ * admin facility comprimised : even admin should have limited access to user pass etc.
+ * sql database comprimised
+
+Best practices for acount security:
+ * Sending signup credentials to an email is not a good practice.
+ * Never display a repsonse message that x username is not present in our DB so that attacker does not gain any clue of his inquiry result.
+ * Password reset mail consequences: By clicking the reset password, old password should be still active till the new one is registered. Otherwise, the user will be left locked out. 
+ * Password storage pattern: passwords needs to be encoded/encrypted before being stored in the database
+ * Remember me checkbox: 90% password is a cookie if checkbox is checked. So make sure cookie is flagged secure.
+ * Reauthenticate user before any confidential data update: If a user changes pass/username user should be asked to reauth pass/username to complete the password change to deal with scripted execution of a credential update req.
+ * Bruteforce attack handling mechanism: Automation like selenium , one may conduct brute force password attack on a username based on a pool of passwords. For that, after 3-4 attempts, that account should be locked out. 
+ */
