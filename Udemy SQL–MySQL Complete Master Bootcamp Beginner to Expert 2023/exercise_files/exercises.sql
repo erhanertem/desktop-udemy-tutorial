@@ -432,3 +432,187 @@ ALTER TABLE OrdersZ
 DROP FOREIGN KEY ordersz_ibfk_1;
 
 -- LESSON 11 REVISIT SELECT STATEMENT
+SELECT
+  *
+FROM
+  customers;
+
+SELECT
+  customerID,
+  address
+FROM
+  customers;
+
+SELECT
+  companyname,
+  contactname,
+  address
+FROM
+  customers;
+
+-- LESSON 12 ALIAS - AS
+SELECT
+  companyname AS 'Customer Name'
+FROM
+  customers;
+
+SELECT
+  companyname AS CustomerName
+FROM
+  customers;
+
+SELECT
+  20+50+30 AS Addition;
+
+SELECT
+  20*100 AS 'Multiplication';
+
+SELECT
+  20/2 Division;
+
+-- SELECT
+--   5%2 'Modulus';
+-- LESSON 13 CONCAT() FUNCTION
+SELECT
+  CONCAT ('HELLO', ' ', 'WORLD') txt;
+
+SELECT
+  CONCAT (FirstName, ' ', LastName) fullname
+FROM
+  employees;
+
+-- LESSON 14 ORDER BY
+SELECT
+  CONCAT (FirstName, ' ', LastName) fullname
+FROM
+  employees
+ORDER BY
+  fullname;
+
+SELECT
+  CONCAT (FirstName, ' ', LastName) fullname
+FROM
+  employees
+ORDER BY
+  fullname DESC;
+
+SELECT
+  productname,
+  unitprice
+FROM
+  products
+ORDER BY
+  unitprice;
+
+SELECT
+  productname,
+  unitprice
+FROM
+  products
+ORDER BY
+  unitprice ASC;
+
+SELECT
+  CONCAT (firstname, ' ', lastname) employeename,
+  salary
+FROM
+  employees
+ORDER BY
+  salary DESC;
+
+SELECT
+  firstname,
+  lastname,
+  CONCAT ('$', FORMAT (salary, 2)),
+  salary
+FROM
+  employees
+ORDER BY
+  salary DESC;
+
+SELECT
+  firstname,
+  lastname,
+  TIMESTAMPDIFF (YEAR, birthdate, CURDATE ()) AS age
+FROM
+  employees
+ORDER BY
+  age DESC;
+
+-- LESSON 15 LIMIT CLAUSE
+-- FIRST 3 ELEMENTS
+SELECT
+  firstname,
+  lastname,
+  TIMESTAMPDIFF (YEAR, birthdate, CURDATE ()) AS age
+FROM
+  employees
+ORDER BY
+  age DESC
+LIMIT
+  3;
+
+-- 4TH
+SELECT
+  firstname,
+  lastname,
+  TIMESTAMPDIFF (YEAR, birthdate, CURDATE ()) AS age
+FROM
+  employees
+ORDER BY
+  age DESC
+LIMIT
+  3, 1;
+
+-- 4TH ONWARD 5 ELEMENTS
+SELECT
+  firstname,
+  lastname,
+  TIMESTAMPDIFF (YEAR, birthdate, CURDATE ()) AS age
+FROM
+  employees
+ORDER BY
+  age DESC
+LIMIT
+  3, 5;
+
+SELECT
+  *
+FROM
+  orders
+ORDER BY
+  orderdate DESC
+LIMIT
+  10;
+
+SELECT
+  firstname,
+  lastname,
+  salary
+FROM
+  employees
+ORDER BY
+  salary DESC
+LIMIT
+  1;
+
+-- LESSON 16 ORDER BY & RAND() FUNCTION
+SELECT
+  *
+FROM
+  employees
+ORDER BY
+  RAND ()
+LIMIT
+  2;
+
+-- LESSON 17 COMMENTS
+-- I AM A COMMENT
+-- SELECT * FROM employees;
+/*
+I AM A MULTI LINE
+COMMENT !
+I AM 
+COMMENT !
+ */
+-- LESSON 18 WHERE CLAUSE
