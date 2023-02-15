@@ -100,9 +100,158 @@ CREATE TABLE
     `companyname` VARCHAR(50)
   );
 
-CREATE TABLE
-  specialtitles (`deliminator's` INT, `ALTER` INT, `DELETE` INT);
-
+-- CREATE TABLE
+--   specialtitles (`deliminator's` INT, `ALTER` INT, `DELETE` INT);
 SHOW TABLES;
 
 DESC customer;
+
+-- LESSON 7 DATA TYPES
+CREATE TABLE
+  IF NOT EXISTS customer2 (`customerid` NUMERIC, `companyname` VARCHAR(50));
+
+INSERT INTO
+  customer2 (customerid)
+VALUES
+  (10);
+
+INSERT INTO
+  customer2 (customerid)
+VALUES
+  (10000000000000000000000);
+
+INSERT INTO
+  customer2 (customerid)
+VALUES
+  (10.2);
+
+INSERT INTO
+  customer2 (customerid)
+VALUES
+  (-10.2);
+
+CREATE TABLE
+  IF NOT EXISTS customer3 (
+    `customerid` NUMERIC(65, 2),
+    `companyname` VARCHAR(50)
+  );
+
+INSERT INTO
+  customer3 (customerid)
+VALUES
+  (10);
+
+INSERT INTO
+  customer3 (customerid)
+VALUES
+  (10000000000000000000000.22);
+
+INSERT INTO
+  customer3 (customerid)
+VALUES
+  (10.2);
+
+INSERT INTO
+  customer3 (customerid)
+VALUES
+  (-10.2);
+
+INSERT INTO
+  customer3 (customerid)
+VALUES
+  (-10.223);
+
+CREATE TABLE
+  IF NOT EXISTS grades (grade DECIMAL(5, 2), studentname VARCHAR(50));
+
+CREATE TABLE
+  test (field FLOAT (6, 3));
+
+INSERT INTO
+  test
+VALUES
+  (494);
+
+INSERT INTO
+  test
+VALUES
+  (49.494);
+
+CREATE TABLE
+  test1 (field REAL (4, 2));
+
+INSERT INTO
+  test1
+VALUES
+  (49.494);
+
+INSERT INTO
+  test1
+VALUES
+  (49494);
+
+INSERT INTO
+  test1
+VALUES
+  (49.4);
+
+CREATE TABLE
+  test2 (field REAL);
+
+INSERT INTO
+  test2
+VALUES
+  (49.494);
+
+INSERT INTO
+  test2
+VALUES
+  (49.4);
+
+INSERT INTO
+  test2
+VALUES
+  (12149.4);
+
+INSERT INTO
+  test2
+VALUES
+  (12149.41121);
+
+CREATE TABLE
+  shoes (
+    brand_name VARCHAR(40),
+    size ENUM ('40', '70', 'Small', 'Large')
+  );
+
+INSERT INTO
+  shoes
+VALUES
+  ('Terry Ma', '70'),
+  ('Zara', '40'),
+  ('Nike', '45');
+
+INSERT INTO
+  shoes
+VALUES
+  ('Terry Ma', '70'),
+  ('Zara', '40'),
+  ('Nike', 'Large');
+
+CREATE TABLE
+  competition (
+    participants
+    SET
+      ('ERIC', 'MIKE', 'JOHN', 'AISHA', 'TOMMY'),
+      team VARCHAR(50),
+      score INT
+  );
+
+INSERT INTO
+  competition (participants, team, score)
+VALUES
+  ('ERIC,AISHA', 'A', 10),
+  ('JOHN,TOMMY', 'C', 12),
+  ('MIKE', 'B', 22);
+
+-- LESSON 8 INSERT QUERY
