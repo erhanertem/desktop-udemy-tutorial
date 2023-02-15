@@ -616,3 +616,361 @@ I AM
 COMMENT !
  */
 -- LESSON 18 WHERE CLAUSE
+SELECT
+  *
+FROM
+  customers
+WHERE
+  city='London';
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  customerID LIKE 'GREAL%'
+  OR 'greal%';
+
+SELECT
+  productname,
+  unitprice
+FROM
+  products
+WHERE
+  unitprice=21.35;
+
+SELECT
+  firstname,
+  lastname
+FROM
+  employees
+WHERE
+  title LIKE 'Sales rep%';
+
+SELECT
+  companyname,
+  phone
+FROM
+  customers
+WHERE
+  country!='Spain';
+
+SELECT
+  companyname,
+  phone
+FROM
+  customers
+WHERE
+  country<>'Spain';
+
+SELECT
+  productname
+FROM
+  products
+WHERE
+  supplierid=12;
+
+SELECT
+  supplierid,
+  companyname
+FROM
+  suppliers
+WHERE
+  supplierid<>28;
+
+SELECT
+  supplierid,
+  companyname
+FROM
+  suppliers
+WHERE
+  NOT supplierid=28;
+
+SELECT
+  productname,
+  ROUND(unitprice, 2)
+FROM
+  products
+WHERE
+  unitprice>20
+ORDER BY
+  unitprice;
+
+SELECT
+  *
+FROM
+  products
+WHERE
+  unitprice<50
+ORDER BY
+  productid;
+
+SELECT
+  productname,
+  UnitsInStock
+FROM
+  products
+WHERE
+  UnitsInStock<10
+ORDER BY
+  UnitsInStock ASC;
+
+SELECT
+  firstname,
+  lastname,
+  salary
+FROM
+  employees
+WHERE
+  salary<2000
+ORDER BY
+  FirstName;
+
+SELECT
+  orderid,
+  (unitprice*quantity) AS linetotal
+FROM
+  orderdetails
+WHERE
+  (unitprice*quantity)>=10000;
+
+SELECT
+  productid,
+  productname,
+  unitsinstock,
+  reorderlevel
+FROM
+  products
+WHERE
+  UnitsInStock<ReorderLevel
+ORDER BY
+  UnitsInStock;
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  country='usa'
+  AND city='San Francisco';
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  country='Mexico'
+  AND contacttitle='Owner';
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  country NOT IN ('USA', 'UK');
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  country!='USA'
+  AND country!='UK';
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  NOT country='USA'
+  AND NOT country='UK';
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  country<>'USA'
+  AND country<>'UK';
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  country IN ('Brazil', 'Venezuela');
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  country='Brazil'
+  OR country='Venezuela';
+
+SELECT
+  *
+FROM
+  suppliers
+WHERE
+  SupplierID BETWEEN 20 AND 25;
+
+SELECT
+  *
+FROM
+  suppliers
+WHERE
+  SupplierID>22
+  OR SupplierID<10;
+
+SELECT
+  *
+FROM
+  suppliers
+WHERE
+  SupplierID BETWEEN 6 AND 9
+  OR SupplierID BETWEEN 18 AND 24;
+
+SELECT
+  *
+FROM
+  suppliers
+WHERE
+  SupplierID BETWEEN 6 AND 9
+UNION
+SELECT
+  *
+FROM
+  suppliers
+WHERE
+  SupplierID BETWEEN 18 AND 24;
+
+SELECT
+  *
+FROM
+  suppliers
+WHERE
+  SupplierID NOT BETWEEN 12 AND 20;
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  city IN ('Paris', 'Nantes')
+  AND country='France';
+
+SELECT
+  CONCAT ('$', FORMAT (unitprice, 2)) price
+FROM
+  products
+WHERE
+  UnitPrice BETWEEN 31 AND 70
+ORDER BY
+  UnitPrice;
+
+SELECT
+  *
+FROM
+  employees
+WHERE
+  region IS NULL;
+
+SELECT
+  *
+FROM
+  employees
+WHERE
+  ReportsTo=2
+  AND salary<=3000
+  AND region IS NOT NULL;
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  country IN (
+    'sweden',
+    'germany',
+    'belgium',
+    'spain',
+    'france',
+    'austria',
+    'italy',
+    'switzerland',
+    'norway',
+    'denmark',
+    'finland',
+    'poland'
+  );
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  country NOT IN ('germany', 'uk', 'france');
+
+-- LESSON 19 INDEX
+CREATE DATABASE people;
+
+USE people;
+
+CREATE TABLE
+  person (
+    PersonID int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255),
+    INDEX (LastName, FirstName)
+  );
+
+CREATE INDEX addresses_index ON person (address);
+
+SHOW INDEX
+FROM
+  orders;
+
+SELECT
+  orderid,
+  ShipVia,
+  ShipName
+FROM
+  orders
+WHERE
+  CustomerID="SEVES";
+
+EXPLAIN ANALYZE
+SELECT
+  orderid,
+  ShipVia,
+  ShipName
+FROM
+  orders
+WHERE
+  CustomerID="SEVES";
+
+CREATE INDEX CusIndex ON orders (CustomerID);
+
+EXPLAIN
+select
+  orderid,
+  ShipVia,
+  ShipName
+from
+  orders
+where
+  CustomerID="SEVES";
+
+SHOW INDEX
+FROM
+  orders;
+
+DROP INDEX CusIndex ON orders;
+
+ALTER TABLE orders
+DROP INDEX cusindex;
+
+-- LESSON 20 WILDCARDS
