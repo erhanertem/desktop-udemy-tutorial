@@ -974,3 +974,207 @@ ALTER TABLE orders
 DROP INDEX cusindex;
 
 -- LESSON 20 WILDCARDS
+SELECT
+  *
+FROM
+  orders
+WHERE
+  customerid LIKE 'T';
+
+SELECT
+  *
+FROM
+  orders
+WHERE
+  customerid LIKE 'T%';
+
+SELECT
+  *
+FROM
+  orders
+WHERE
+  customerid LIKE '%OR%';
+
+SELECT
+  *
+FROM
+  orders
+WHERE
+  customerid LIKE '%OR';
+
+SELECT
+  *
+FROM
+  orders
+WHERE
+  customerid LIKE 'T____';
+
+SELECT
+  *
+FROM
+  employees
+WHERE
+  Title LIKE BINARY '%Sales%';
+
+SELECT
+  *
+FROM
+  employees
+WHERE
+  Title LIKE '%sales%';
+
+SELECT
+  *
+FROM
+  employees
+WHERE
+  country IN ('UK', 'USA')
+  AND (
+    homephone LIKE '%44%'
+    OR extension LIKE '%44%'
+  );
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  CompanyName LIKE '%Restaura%';
+
+SELECT
+  *
+FROM
+  customers
+WHERE
+  ContactTitle NOT LIKE '%Representative%';
+
+-- LESSON 21 UPDATE STATEMENT & REPLACE() FUNCTION
+UPDATE cars
+SET
+  price=10920
+WHERE
+  carid=3;
+
+UPDATE cars
+SET
+  price=10920
+WHERE
+  manufacturerid=102
+  AND carname='civic';
+
+UPDATE cars
+SET
+  price=220,
+  carname='Honda CRV-Dragon X-men'
+WHERE
+  carid=7;
+
+UPDATE employees
+SET
+  photopath=REPLACE (photopath, 'webacc', 'accweb')
+WHERE
+  photopath LIKE 'http://webacc%';
+
+CREATE TABLE
+  person (
+    PersonID int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255),
+    INDEX (LastName, FirstName)
+  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- LESSON 22 SELECT DISTINCT() STATEMENT
+SELECT DISTINCT
+  (country)
+FROM
+  customers;
+
+SELECT DISTINCT
+  shipregion
+FROM
+  orders
+WHERE
+  ShipRegion IS NOT NULL;
+
+-- LESSON 23 FORMAT FUNCTION
+SELECT
+  FORMAT (8934343.943943, 0);
+
+SELECT
+  FORMAT (8934343.943943, 1);
+
+SELECT
+  FORMAT (8934343.943943, 2);
+
+SELECT
+  FORMAT (8934343.943943, 3);
+
+SELECT
+  ROUND(8934343.943943, 3);
+
+SELECT
+  unitprice,
+  FORMAT (unitprice, 2),
+  productname
+FROM
+  products;
+
+-- LESSON 24 GROUP BY STATEMENT
+SELECT
+  title,
+  CONCAT ('$', FORMAT (MIN(salary), 2)),
+  CONCAT ('$', FORMAT (MAX(salary), 2)),
+  CONCAT ('$', FORMAT (AVG(salary), 2)),
+  CONCAT ('$', FORMAT (SUM(salary), 2))
+FROM
+  employees
+GROUP BY
+  title;
+
+SELECT
+  shipregion,
+  COUNT(shipregion)
+FROM
+  orders
+GROUP BY
+  shipregion;
+
+SELECT
+  shipregion,
+  COUNT(*)
+FROM
+  orders
+GROUP BY
+  shipregion;
+
+SELECT
+  productid,
+  COUNT(*)
+FROM
+  orderdetails
+GROUP BY
+  productid;
+
+SELECT
+  productid,
+  SUM(quantity)
+FROM
+  orderdetails
+GROUP BY
+  productid;
+
+SELECT
+  employeeid,
+  COUNT(orderid) numberofordershandled
+FROM
+  orders
+GROUP BY
+  employeeid
+ORDER BY
+  numberofordershandled DESC
+LIMIT
+  1;
+
+-- LESSON 25 JOINS
