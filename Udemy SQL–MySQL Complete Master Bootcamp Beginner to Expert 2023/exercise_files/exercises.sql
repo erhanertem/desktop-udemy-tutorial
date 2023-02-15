@@ -255,3 +255,39 @@ VALUES
   ('MIKE', 'B', 22);
 
 -- LESSON 8 INSERT QUERY
+CREATE TABLE
+  customers_1 (
+    customerID INT NOT NULL,
+    customerName VARCHAR(50),
+    customerAddress VARCHAR(255),
+    PRIMARY KEY (customerID)
+  );
+
+INSERT INTO
+  customers_1 (customerID, customerName, customerAddress)
+VALUES
+  (12, 'Addas', 'Baba street');
+
+INSERT INTO
+  customers_1
+VALUES
+  (13, 'Zaddas', 'Baba street');
+
+INSERT INTO
+  customers_1
+VALUES
+  (14, 'Taddas', 'TBaba street'),
+  (15, 'STaddas', 'SBaba street'),
+  (16, 'DTaddas', 'DTBaba street');
+
+INSERT INTO
+  customers_1
+VALUES
+  (18, '', 'XTBaba street');
+
+INSERT INTO
+  customers_1 (customerID, customerAddress)
+VALUES
+  (17, 'ADTBaba street');
+
+-- LESSON 9 CANDIDATE, SURROGATE, PRIMARY, ALTERNATIVE & FOREIGN KEY
