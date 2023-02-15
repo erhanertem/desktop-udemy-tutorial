@@ -290,4 +290,145 @@ INSERT INTO
 VALUES
   (17, 'ADTBaba street');
 
--- LESSON 9 CANDIDATE, SURROGATE, PRIMARY, ALTERNATIVE & FOREIGN KEY
+-- LESSON 9 PRIMARY, ALTERNATIVE & FOREIGN KEY
+-- PRIMARY KEY
+CREATE TABLE
+  customers_2 (
+    customerID INT NOT NULL, -- PRIMARY KEY
+    customerCode VARCHAR(10) UNIQUE, -- ALTERNATIVE KEY
+    customerName VARCHAR(50),
+    customerAddress VARCHAR(255),
+    PRIMARY KEY (customerID)
+  );
+
+CREATE TABLE
+  customers_3 (
+    customerID INT AUTO_INCREMENT PRIMARY KEY,
+    customerCode VARCHAR(10) UNIQUE, -- ALTERNATIVE KEY
+    customerName VARCHAR(50),
+    customerAddress VARCHAR(255)
+  );
+
+-- LESSON 10 PRIMARY & FOREIGN KEY CONSTRAINTS
+-- -->PRIMARY KEY
+CREATE TABLE
+  users1 (
+    userID INT,
+    username VARCHAR(50),
+    password VARCHAR(255),
+    PRIMARY KEY (userID, username) -- multiple primary_keys
+  );
+
+DESC users1;
+
+CREATE TABLE
+  users2 (
+    userID INT PRIMARY KEY,
+    username VARCHAR(50),
+    password VARCHAR(255)
+  );
+
+DESC users2;
+
+ALTER TABLE users2
+DROP PRIMARY KEY;
+
+CREATE TABLE
+  persons (
+    personID INT NOT NULL,
+    personName VARCHAR(50),
+    Person_Address VARCHAR(255)
+  );
+
+DESC persons;
+
+ALTER TABLE persons ADD PRIMARY KEY (personID);
+
+-- -->FOREIGN KEY
+CREATE TABLE
+  customers (
+    customerID INT NOT NULL,
+    customerName VARCHAR(50),
+    customerAddress VARCHAR(255),
+    PRIMARY KEY (customerID)
+  );
+
+CREATE TABLE
+  Orders (
+    orderID INT NOT NULL,
+    orderNumber INT NOT NULL,
+    customerID INT,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (customerID) REFERENCES customers (customerID)
+  );
+
+INSERT INTO
+  customers
+VALUES
+  (10, 'Peter Dav', '23 Mall Street');
+
+INSERT INTO
+  orders (orderID, orderNumber, customerID)
+VALUES
+  (01, 14, 10),
+  (02, 15, 10);
+
+INSERT INTO
+  orders
+VALUES
+  (03, 14, 9);
+
+INSERT INTO
+  orders
+VALUES
+  (04, 14, 10);
+
+CREATE TABLE
+  Orders2 (
+    orderID INT NOT NULL,
+    orderNumber INT NOT NULL,
+    customerID INT,
+    PRIMARY KEY (OrderID),
+    CONSTRAINT fk_customerID FOREIGN KEY (customerID) REFERENCES customers (customerID)
+  );
+
+CREATE TABLE
+  Order2 (
+    orderID INT NOT NULL,
+    orderNumber INT NOT NULL,
+    customerID INT,
+    PRIMARY KEY (OrderID)
+  );
+
+ALTER TABLE Order2 ADD FOREIGN KEY (customerID) REFERENCES customers (customerID);
+
+ALTER TABLE persons ADD CHECK (personID>=100);
+
+CREATE TABLE
+  customersZ (
+    customerID INT NOT NULL,
+    customerName VARCHAR(50),
+    customerAddress VARCHAR(255),
+    PRIMARY KEY (customerID)
+  );
+
+CREATE TABLE
+  OrdersZ (
+    orderID INT NOT NULL,
+    orderNumber INT NOT NULL,
+    customerID INT,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (customerID) REFERENCES customersZ (customerID) ON DELETE CASCADE
+  );
+
+ALTER TABLE OrdersZ
+DROP COLUMN orderNumber;
+
+SHOW
+CREATE TABLE
+  OrdersZ;
+
+ALTER TABLE OrdersZ
+DROP FOREIGN KEY ordersz_ibfk_1;
+
+-- LESSON 11 REVISIT SELECT STATEMENT
