@@ -1469,3 +1469,69 @@ LIMIT
   4;
 
 -- LESSON 34 5 TABLE JOINS
+SELECT
+  o.OrderID,
+  c.CompanyName AS `Customer Name`,
+  CONCAT (
+    '$',
+    FORMAT (
+      ABS(
+        SUM(
+          ((od.UnitPrice-od.discount)-p.UnitPrice)*od.Quantity
+        )
+      ),
+      2
+    )
+  ) AS `Absolute Profit & Loss`,
+  CONCAT (e.FirstName, ' ', e.LastName) AS `Employee Name`
+FROM
+  orders o
+  JOIN customers c ON c.CustomerID=o.CustomerID
+  JOIN employees e ON e.EmployeeID=o.EmployeeID
+  JOIN orderdetails od ON od.OrderID=o.OrderID
+  JOIN products p ON p.ProductID=od.ProductID
+GROUP BY
+  o.OrderID
+ORDER BY
+  o.OrderID
+LIMIT
+  4;
+
+SELECT
+  o.OrderID,
+  c.CompanyName,
+  p.ProductName,
+  ca.CategoryName,
+  od.Quantity,
+  od.UnitPrice
+FROM
+  products p
+  JOIN orderdetails od ON od.ProductID=p.ProductID
+  JOIN orders o ON o.OrderID=od.OrderID
+  JOIN customers c ON c.CustomerID=o.CustomerID
+  JOIN categories ca ON ca.CategoryID=p.CategoryID
+  -- GROUP BY
+  --   o.OrderID
+ORDER BY
+  o.OrderID
+LIMIT
+  4;
+
+-- LESSON 35 6 TABLE JOINS
+SELECT
+  o.OrderID,
+  p.ProductName,
+  s.CompanyName,
+  c.CompanyName,
+  CONCAT (e.FirstName, ' ', e.LastName) AS `Handling Employee Name`
+FROM
+  employees e
+  JOIN orders o ON e.EmployeeID=o.EmployeeID
+  JOIN customers c ON c.CustomerID=o.CustomerID
+  JOIN orderdetails od ON od.OrderID=o.OrderID
+  JOIN products p ON p.ProductID=od.ProductID
+  JOIN suppliers s ON s.SupplierID=p.SupplierID
+ORDER BY
+  o.OrderID;
+
+-- LESSON 36 7 TABLE JOINS
