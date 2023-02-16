@@ -1177,4 +1177,295 @@ ORDER BY
 LIMIT
   1;
 
--- LESSON 25 JOINS
+-- LESSON 25~26 JOINS
+SELECT
+  a1,
+  b1
+FROM
+  tablea
+  INNER JOIN tableb ON b1=a1;
+
+SELECT
+  o.orderid,
+  o.shipvia,
+  s.CompanyName
+FROM
+  orders o
+  INNER JOIN shippers s ON s.ShipperID=o.ShipVia
+ORDER BY
+  o.OrderID;
+
+SELECT
+  a1,
+  b1
+FROM
+  tablea
+  LEFT JOIN tableb ON b1=a1;
+
+SELECT
+  a1,
+  b1
+FROM
+  tablea
+  RIGHT JOIN tableb ON b1=a1;
+
+SELECT
+  shipperid,
+  shipvia
+FROM
+  shippers
+  RIGHT JOIN orders ON ShipperID=shipvia;
+
+INSERT INTO
+  shippers
+VALUES
+  (4, 'USPS', '(949)626-0303');
+
+SELECT
+  shipperid,
+  shipvia
+FROM
+  shippers
+  LEFT JOIN orders ON ShipperID=shipvia;
+
+-- LESSON 27 JOINS ON vs WHERE ON vs USING
+SELECT
+  o.orderid,
+  o.shipvia,
+  s.CompanyName
+FROM
+  orders o
+  INNER JOIN shippers s ON s.ShipperID=o.ShipVia
+ORDER BY
+  o.OrderID
+LIMIT
+  3;
+
+SELECT
+  o.orderid,
+  o.shipvia,
+  s.CompanyName
+FROM
+  orders o
+  INNER JOIN shippers s
+WHERE
+  s.ShipperID=o.ShipVia
+ORDER BY
+  o.OrderID
+LIMIT
+  3;
+
+SELECT
+  o.orderid,
+  o.shipvia,
+  s.CompanyName
+FROM
+  orders o
+  INNER JOIN shippers s ON s.ShipperID=o.ShipVia
+WHERE
+  s.ShipperID=1
+ORDER BY
+  o.OrderID
+LIMIT
+  3;
+
+SELECT
+  o.orderid,
+  o.shipvia,
+  s.CompanyName
+FROM
+  orders o
+  INNER JOIN shippers s ON s.ShipperID=o.ShipVia
+  AND s.ShipperID=1
+ORDER BY
+  o.OrderID
+LIMIT
+  3;
+
+SELECT
+  o.orderid,
+  o.shipvia,
+  s.CompanyName
+FROM
+  orders o
+  INNER JOIN shippers s
+WHERE
+  s.ShipperID=o.ShipVia
+  AND s.ShipperID=1
+ORDER BY
+  o.OrderID
+LIMIT
+  3;
+
+SELECT
+  o.orderid,
+  o.shipvia,
+  s.CompanyName
+FROM
+  orders o
+  INNER JOIN shippers s USING s.ShipperID=o.ShipVia
+ORDER BY
+  o.OrderID
+LIMIT
+  3;
+
+SELECT
+  companyname,
+  productname
+FROM
+  products p
+  JOIN suppliers s ON s.SupplierID=p.SupplierID;
+
+SELECT
+  companyname,
+  productname
+FROM
+  products p
+  JOIN suppliers s USING (SupplierID);
+
+SELECT
+  companyname,
+  productname
+FROM
+  products p
+  NATURAL JOIN suppliers;
+
+-- LESSON 28 JOINS CHALLANGES
+SELECT
+  CONCAT (e.firstname, ' ', e.lastname) AS employeename,
+  o.orderid,
+  o.orderdate
+FROM
+  orders o
+  JOIN employees e USING (EmployeeID)
+GROUP BY
+  o.orderdate;
+
+SELECT
+  p.productid,
+  p.productname,
+  s.CompanyName AS `supplier name`
+FROM
+  products p
+  JOIN suppliers s USING (supplierID);
+
+SELECT
+  c.contactname,
+  o.shipvia
+FROM
+  customers c
+  JOIN orders o USING (customerid);
+
+USE northwind;
+
+SELECT
+  customers.CompanyName AS `customer name`,
+  shippers.CompanyName AS `shipper name`
+FROM
+  customers c
+  INNER JOIN orders o ON c.customerID=o.customerID
+  INNER JOIN shippers s ON o.shipvia=s.shipperid;
+
+-- LESSON 29~30 JOINS MULTIPLE TABLES
+SELECT
+  CONCAT (e.firstname, ' ', e.lastname, ', ', e.title) AS `Sales Department Employees`,
+  "Reports to" AS `Resports to`,
+  CONCAT (er.firstname, ' ', er.lastname, ', ', er.title) AS `Manager`
+FROM
+  employees e
+  JOIN employees er ON e.ReportsTo=er.EmployeeID
+ORDER BY
+  `Manager`;
+
+-- LESSON 31 TWO TABLE JOINS
+SELECT
+  p.productname,
+  p.unitprice,
+  c.CategoryName,
+  c.Description
+FROM
+  products p
+  JOIN categories c ON c.CategoryID=p.CategoryID;
+
+SELECT
+  p.productname,
+  s.CompanyName,
+  CONCAT (
+    s.Address,
+    ', ',
+    s.City,
+    ', ',
+    s.PostalCode,
+    ', ',
+    s.Country
+  ) AS Address
+FROM
+  products p
+  JOIN suppliers s ON s.SupplierID=p.SupplierID;
+
+SELECT
+  c.ContactName,
+  COUNT(*) AS order_count
+FROM
+  orders o
+  JOIN customers c ON c.CustomerID=o.CustomerID
+GROUP BY
+  c.ContactName
+ORDER BY
+  order_count DESC;
+
+SELECT
+  e.employeeId,
+  CONCAT (e.firstname, ' ', e.lastname) AS fullname,
+  COUNT(et.TerritoryID) AS visited_territory_count
+FROM
+  employees e
+  JOIN employeeterritories et ON et.EmployeeID=e.EmployeeID
+GROUP BY
+  e.EmployeeID;
+
+-- LESSON 32 3 TABLE JOINS
+SELECT
+  o.OrderID,
+  c.companyname,
+  CONCAT (e.firstname, ' ', e.LastName) AS employee_fullname
+FROM
+  orders o
+  JOIN customers c ON c.CustomerID=o.CustomerID
+  JOIN employees e ON e.EmployeeID=o.EmployeeID
+ORDER BY
+  o.OrderID;
+
+SELECT
+  p.ProductName,
+  c.CategoryName,
+  s.CompanyName
+FROM
+  products p
+  JOIN suppliers s ON p.SupplierID=s.SupplierID
+  JOIN categories c ON c.CategoryID=p.CategoryID
+ORDER BY
+  c.CategoryName;
+
+-- LESSON 33 4 TABLE JOINS
+SELECT
+  o.OrderID AS `Order ID`,
+  c.CompanyName AS `Customer Name`,
+  CONCAT (
+    '$',
+    FORMAT (SUM(((od.UnitPrice-od.discount)*od.Quantity)), 2)
+  ) AS `Grand Total`,
+  CONCAT (firstname, ' ', lastname) AS `Employee Name`
+FROM
+  orders o
+  JOIN customers c ON o.CustomerID=c.CustomerID
+  JOIN orderdetails od ON od.OrderID=o.OrderID
+  JOIN employees e ON e.EmployeeID=o.EmployeeID
+GROUP BY
+  o.OrderID
+ORDER BY
+  o.OrderID
+LIMIT
+  4;
+
+-- LESSON 34 5 TABLE JOINS
