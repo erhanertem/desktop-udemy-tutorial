@@ -1535,3 +1535,304 @@ ORDER BY
   o.OrderID;
 
 -- LESSON 36 7 TABLE JOINS
+SELECT
+  o.OrderID,
+  p.ProductName,
+  c.CategoryName,
+  s.CompanyName,
+  CONCAT (e.FirstName, ' ', e.LastName) AS `employee name`,
+  t.TerritoryID AS `employee's territory ID`,
+  t.TerritoryDescription AS `employee's territory`
+FROM
+  orders o
+  JOIN orderdetails od ON od.OrderID=o.OrderID
+  JOIN products p ON p.ProductID=od.ProductID
+  JOIN categories c ON c.CategoryID=p.CategoryID
+  JOIN suppliers s ON s.SupplierID=p.ProductID
+  JOIN employees e ON e.EmployeeID=o.EmployeeID
+  JOIN employeeterritories et ON et.EmployeeID=e.EmployeeID
+  JOIN territories t ON t.TerritoryID=et.TerritoryID
+WHERE
+  o.OrderID=10276
+  AND p.ProductName='Ikura'
+  AND t.TerritoryID=45839;
+
+-- LESSON 37 8 TABLE JOINS
+SELECT
+  et.TerritoryID,
+  e.FirstName,
+  cu.CompanyName,
+  p.ProductName,
+  ca.CategoryName,
+  s.CompanyName
+FROM
+  orders o
+  JOIN employees e ON e.EmployeeID=o.EmployeeID
+  JOIN employeeterritories et ON e.EmployeeID=et.EmployeeID
+  JOIN customers cu ON cu.CustomerID=o.CustomerID
+  JOIN orderdetails od ON od.OrderID=o.OrderID
+  JOIN products p ON p.ProductID=od.ProductID
+  JOIN categories ca ON ca.CategoryID=p.CategoryID
+  JOIN suppliers s ON s.SupplierID=p.SupplierID;
+
+-- LESSON 38 9 TABLE JOINS
+SELECT
+  o.OrderID,
+  e.FirstName,
+  et.TerritoryID,
+  e.ReportsTo,
+  cu.CompanyName,
+  p.ProductName,
+  ca.CategoryName,
+  s.CompanyName
+FROM
+  orders o
+  JOIN employees e ON e.EmployeeID=o.EmployeeID
+  JOIN employeeterritories et ON et.EmployeeID=e.EmployeeID
+  JOIN customers cu ON cu.CustomerID=o.CustomerID
+  JOIN orderdetails od ON od.OrderID=o.OrderID
+  JOIN products p ON p.ProductID=od.ProductID
+  JOIN categories ca ON ca.CategoryID=p.CategoryID
+  JOIN suppliers s ON s.SupplierID=p.SupplierID;
+
+-- LESSON 40 OFFSET & LIMIT
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e
+ORDER BY
+  salary;
+
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e
+ORDER BY
+  salary DESC
+LIMIT
+  5;
+
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e
+ORDER BY
+  salary DESC
+LIMIT
+  0, 5;
+
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e
+ORDER BY
+  salary DESC
+LIMIT
+  5
+OFFSET
+  0;
+
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e
+ORDER BY
+  salary DESC
+LIMIT
+  5, 2;
+
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e
+ORDER BY
+  salary DESC
+LIMIT
+  2
+OFFSET
+  5;
+
+SELECT
+  o.UnitPrice*o.Quantity purchase_amount
+FROM
+  orderdetails o
+ORDER BY
+  purchase_amount DESC
+LIMIT
+  15, 1;
+
+SELECT
+  o.UnitPrice*o.Quantity purchase_amount
+FROM
+  orderdetails o
+ORDER BY
+  purchase_amount DESC
+LIMIT
+  1
+OFFSET
+  15;
+
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e
+ORDER BY
+  salary DESC
+LIMIT
+  3, 1;
+
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e
+ORDER BY
+  e.Salary DESC;
+
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e
+  LEFT JOIN (
+    SELECT
+      FirstName,
+      Salary
+    FROM
+      employees
+    ORDER BY
+      salary DESC
+    LIMIT
+      4
+  ) top_earners ON e.FirstName=top_earners.FirstName
+ORDER BY
+  e.Salary DESC;
+
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e
+  LEFT JOIN (
+    SELECT
+      FirstName,
+      Salary
+    FROM
+      employees
+    ORDER BY
+      salary DESC
+    LIMIT
+      4
+  ) only ON only.FirstName=e.FirstName
+WHERE
+  only.FirstName IS NULL
+ORDER BY
+  salary DESC;
+
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e
+ORDER BY
+  salary DESC
+LIMIT
+  4, 9999999999999999999;
+
+SELECT
+  productID,
+  COUNT(*) number_ordered
+FROM
+  orderdetails
+GROUP BY
+  productID
+ORDER BY
+  number_ordered DESC
+LIMIT
+  4, 1;
+
+-- LESSON 41 CASE FUNCTION
+SELECT
+  orderid,
+  quantity,
+  CASE
+    WHEN quantity<20 THEN 'This is less than 20'
+    WHEN quantity=20 THEN 'This is equal to 20'
+    WHEN quantity>20 THEN 'This is greater than 20'
+    ELSE 'This is not a number'
+  END AS 'Comment'
+FROM
+  orderdetails;
+
+SELECT
+  *
+FROM
+  employees
+ORDER BY
+  (
+    CASE
+      WHEN region IS NULL THEN country
+      ELSE region
+    END
+  ) DESC;
+
+WITH
+  waitforus AS (
+    SELECT
+      customerid,
+      COUNT(*) AS number_of_orders
+    FROM
+      orders
+      JOIN customers USING (customerid)
+    GROUP BY
+      customerid
+  )
+SELECT
+  customerid,
+  number_of_orders,
+  CASE number_of_orders
+    WHEN 1 THEN 'Has done business with us once'
+    WHEN 2 THEN 'Has done business with us twice'
+    WHEN 3 THEN 'Has done business with us thrice'
+    ELSE 'Dedicated customer'
+  END kind_of_customer
+FROM
+  waitforus
+ORDER BY
+  number_of_orders;
+
+-- LESSON 42 CAST FUNCTION
+SELECT
+  CAST('2023-01-10' AS DATE);
+
+SELECT
+  CAST(20 AS CHAR);
+
+SELECT
+  CAST('2009-07-04 10:01:01' AS DATE),
+  CAST('2009-07-04 10:01:01' AS TIME);
+
+SELECT
+  CAST('12:08:11' AS TIME);
+
+SELECT
+  o.OrderID,
+  o.CustomerID,
+  CAST(o.OrderDate AS DATE) orderDate
+FROM
+  orders o;
+
+SELECT
+  *,
+  CAST('2012-03-24' AS DATETIME) datetime
+FROM
+  orders;
+
+-- LESSON 43 NESTED & CORRELATED SUBQUERIES
