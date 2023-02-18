@@ -1836,3 +1836,526 @@ FROM
   orders;
 
 -- LESSON 43 NESTED & CORRELATED SUBQUERIES
+SELECT
+  productname
+FROM
+  (
+    SELECT
+      productid,
+      productname,
+      supplierid
+    FROM
+      (
+        SELECT
+          *
+        FROM
+          products
+      ) subquery1
+  ) subquery2;
+
+SELECT
+  SUM(unitprice)
+FROM
+  (
+    SELECT
+      *
+    FROM
+      orderdetails
+    WHERE
+      orderid=10248
+  ) subquery1;
+
+SELECT
+  *
+FROM
+  orders
+WHERE
+  EmployeeID IN (
+    SELECT
+      EmployeeID
+    FROM
+      employees
+    WHERE
+      Salary>2500
+  );
+
+SELECT
+  *
+FROM
+  (
+    SELECT
+      o.CustomerID,
+      SUM(od.UnitPrice*od.Quantity) `total transactions with Northwind`
+    FROM
+      orders o
+      JOIN orderdetails od ON od.OrderID=o.OrderID
+    GROUP BY
+      CustomerID
+    ORDER BY
+      SUM(od.UnitPrice*od.Quantity) DESC
+  ) list
+LIMIT
+  1;
+
+SELECT
+  *
+FROM
+  orders
+WHERE
+  OrderID=(
+    SELECT
+      OrderID
+    FROM
+      orderdetails
+    GROUP BY
+      OrderID
+    ORDER BY
+      SUM(unitprice*quantity) DESC
+    LIMIT
+      1
+  );
+
+-- LESSON 44 SUBQUERIES & EXISTS OPERATOR
+SELECT
+  EXISTS (
+    SELECT
+      *
+    FROM
+      categories
+  );
+
+SELECT
+  EXISTS (
+    SELECT
+      1
+    FROM
+      employees
+    WHERE
+      EmployeeID=30
+  );
+
+SELECT
+  companyname
+FROM
+  suppliers
+WHERE
+  SupplierID IN (
+    SELECT
+      SupplierID
+    FROM
+      products
+    WHERE
+      UnitPrice>100
+    GROUP BY
+      SupplierID
+  );
+
+SELECT
+  companyname
+FROM
+  suppliers
+WHERE
+  EXISTS (
+    SELECT
+      1
+    FROM
+      products
+    WHERE
+      products.SupplierID=suppliers.SupplierID
+      AND unitprice>100
+  );
+
+-- WE WANT TO KNOW THE EMPLOYEES WHO HAVE MANAGED TO PROCESS >100 ORDERS
+-- correlated subquery example:
+SELECT
+  e.FirstName,
+  e.LastName
+FROM
+  employees e
+WHERE
+  EXISTS (
+    SELECT
+      1
+    FROM
+      (
+        SELECT
+          o.EmployeeID,
+          COUNT(*) AS order_count
+        FROM
+          orders o
+        WHERE
+          e.EmployeeID=o.EmployeeID
+        GROUP BY
+          o.EmployeeID
+      ) subquery
+    WHERE
+      order_count>100
+  );
+
+-- LESSON 46 STRING FUNCTIONS
+SELECT
+  CONCAT ('start', SPACE (15), 'end');
+
+SELECT
+  CONCAT (e.FirstName, SPACE (1), e.LastName)
+FROM
+  employees e;
+
+SELECT
+  REPEAT ('Intelegent Developer ', 2);
+
+SELECT
+  c.CustomerID,
+  c.CompanyName,
+  REPEAT ('GOOD CUSTOMER!!', 2)
+FROM
+  customers c;
+
+SELECT
+  REPLACE (83432323, 3, 'A');
+
+SELECT
+  REPLACE ('root_mean_square', 'root', 'random');
+
+SELECT
+  e.EmployeeID,
+  e.FirstName,
+  e.LastName,
+  REPLACE (e.HireDate, '00:00:00', 'Time is missing')
+FROM
+  employees e;
+
+SELECT
+  REVERSE ('EVIL'),
+  REVERSE ('LIVED');
+
+SELECT
+  REVERSE (e.FirstName)
+FROM
+  employees e;
+
+SELECT
+  LEFT ('Donatus', 3);
+
+SELECT
+  LEFT (e.LastName, 3)
+FROM
+  employees e;
+
+SELECT
+  RIGHT ('Canada', 4);
+
+SELECT
+  e.FirstName,
+  e.LastName,
+  RIGHT (e.HomePhone, 8)
+FROM
+  employees e;
+
+SELECT
+  RPAD ('9', 3, '11');
+
+SELECT
+  e.FirstName,
+  e.LastName,
+  RPAD (e.Salary, 11, ' USD')
+FROM
+  employees e;
+
+SELECT
+  e.FirstName,
+  e.LastName,
+  RPAD (e.Salary, LENGTH (e.Salary)+4, ' USD')
+FROM
+  employees e;
+
+SELECT
+  LPAD (567890, 10, 1234);
+
+SELECT
+  LPAD ('UY', 3, 'B');
+
+SELECT
+  LPAD (
+    c.CompanyName,
+    LENGTH (c.CompanyName)+LENGTH ('Customer '),
+    'Customer '
+  )
+FROM
+  customers c;
+
+SELECT
+  LOCATE ('c', 'America');
+
+SELECT
+  POSITION('c' IN 'America');
+
+SELECT
+  POSITION('C' IN 'America');
+
+SELECT
+  e.LastName,
+  POSITION('a' IN e.LastName)
+FROM
+  employees e;
+
+SELECT
+  e.LastName,
+  LOCATE ('a', e.LastName)
+FROM
+  employees e;
+
+SELECT
+  SUBSTRING('foregone', 5);
+
+SELECT
+  SUBSTR ('foregone', 5);
+
+SELECT
+  SUBSTR ('foregone', -4);
+
+SELECT
+  o.OrderID,
+  o.CustomerID,
+  SUBSTR (o.RequiredDate, 1, 10)
+FROM
+  orders o;
+
+SELECT
+  SUBSTR (p.ProductName, 3)
+FROM
+  products p;
+
+SELECT
+  SUBSTR ('FOREGONE', 2);
+
+SELECT
+  SUBSTRING_INDEX ('movement-of-the-people', '-', 1),
+  SUBSTRING_INDEX ('movement-of-the-people', '-', 2),
+  SUBSTRING_INDEX ('movement-of-the-people', '-', 3),
+  SUBSTRING_INDEX ('movement-of-the-people', '-', 4);
+
+SELECT
+  SUBSTRING_INDEX ('www.exams.com', '.', -2);
+
+SELECT
+  SUBSTRING_INDEX ('https://www.exams.com', '.', 1);
+
+SELECT
+  SUBSTRING_INDEX ('https://www.exams.com', '/', 1);
+
+SELECT
+  s.Phone,
+  TRIM(SUBSTRING_INDEX (s.Phone, ')', -1))
+FROM
+  shippers s;
+
+SELECT
+  MID ('forever111', 4);
+
+SELECT
+  SUBSTR ('forever111', 4);
+
+SELECT
+  INSERT ('mysql.sql', 1, 5, 'oracle'),
+  INSERT ('mysql.sql', 7, 3, 'php'),
+  INSERT ('22people', 1, 2, ''),
+  INSERT ('23students', 2, LENGTH ('23students') -1, 'boys');
+
+SELECT
+  o.OrderID,
+  o.UnitPrice,
+  o.Quantity,
+  INSERT (o.Discount, 1, 1, '20%')
+FROM
+  orderdetails o;
+
+SELECT
+  INSTR ('graduatue', 'u');
+
+SELECT
+  e.FirstName,
+  INSTR (e.FirstName, 't')
+FROM
+  employees e;
+
+SELECT
+  LOWER('Miss World');
+
+SELECT
+  LCASE ('Miss World');
+
+SELECT
+  UPPER('Miss World');
+
+SELECT
+  UCASE ('Miss World');
+
+SELECT
+  LENGTH ('Hello World');
+
+SELECT
+  LTRIM (' Programmer'),
+  LTRIM ('   School');
+
+SELECT
+  CHAR_LENGTH(LTRIM (' Programmer')),
+  CHAR_LENGTH(LTRIM ('   Programmer'));
+
+SELECT
+  CHAR_LENGTH(RTRIM ('Programmer ')),
+  CHAR_LENGTH(RTRIM ('Programmer    '));
+
+SELECT
+  RTRIM (c.CompanyName)
+FROM
+  customers c;
+
+SELECT
+  LENGTH (TRIM('   Mysql   '));
+
+SELECT
+  TRIM(p.ProductName)
+FROM
+  products p;
+
+-- LESSON 47 SESSION
+SHOW FULL PROCESSLIST;
+
+KILL 13;
+
+-- LESSON 48 TABLE LOCKING
+CREATE TABLE
+  comment (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    comment VARCHAR(255) NOT NULL
+  );
+
+INSERT INTO
+  comment (comment)
+VALUES
+  ('After lock, can you go');
+
+SELECT
+  *
+FROM
+  comment;
+
+LOCK TABLE comment READ;
+
+INSERT INTO
+  comment (comment)
+VALUES
+  ('After lock, can you go for 21');
+
+UNLOCK TABLES;
+
+SELECT
+  connection_id ();
+
+KILL 14;
+
+-- ----------------------
+CREATE TABLE
+  messages (
+    id INT NOT NULL AUTO_INCREMENT,
+    message VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
+  );
+
+INSERT INTO
+  messages (message)
+VALUES
+  ('Hello2');
+
+SELECT
+  *
+FROM
+  messages;
+
+LOCK TABLE messages READ;
+
+LOCK TABLE messages WRITE;
+
+UNLOCK TABLES;
+
+-- LESSON 49 TRANSACTIONS
+-- START TRANSACTION;
+START TRANSACTION;
+
+INSERT INTO
+  `Orders` (
+    `OrderID`,
+    `CustomerID`,
+    `EmployeeID`,
+    `OrderDate`,
+    `RequiredDate`,
+    `ShippedDate`,
+    `ShipVia`,
+    `Freight`,
+    `ShipName`,
+    `ShipAddress`,
+    `ShipCity`,
+    `ShipRegion`,
+    `ShipPostalCode`,
+    `ShipCountry`
+  )
+VALUES
+  (
+    89999,
+    'VINET',
+    5,
+    '1996-07-04 00:00:00',
+    '1996-08-01 00:00:00',
+    '1996-07-16 00:00:00',
+    3,
+    '32.3800',
+    'Vins et alcools Chevalier',
+    '59 rue de l-Abbaye',
+    'Reims',
+    NULL,
+    '51100',
+    'France'
+  );
+
+INSERT INTO
+  `OrderDetails` (
+    `OrderID`,
+    `ProductID`,
+    `UnitPrice`,
+    `Quantity`,
+    `Discount`
+  )
+VALUES
+  (89999, 11, '14.0000', 12, 0);
+
+COMMIT;
+
+select
+  *
+from
+  orders
+where
+  orderid=88889;
+
+select
+  *
+from
+  orderdetails
+where
+  orderid=88889;
+
+START TRANSACTION;
+
+DELETE FROM orderdetails;
+
+select
+  *
+from
+  orderdetails;
+
+SHOW PROCESSLIST;
+
+KILL 15;
+
+-- LESSON 50 VIEWS
