@@ -2359,3 +2359,136 @@ SHOW PROCESSLIST;
 KILL 15;
 
 -- LESSON 50 VIEWS
+CREATE VIEW
+  sample_view AS
+SELECT
+  s.CompanyName AS Supplier,
+  COUNT(p.supplierID) AS 'Number Of Products'
+FROM
+  Suppliers s
+  INNER JOIN Products p ON s.SupplierID=p.SupplierID
+GROUP BY
+  s.CompanyName
+ORDER By
+  COUNT(p.supplierID) DESC;
+
+SHOW TABLES;
+
+SELECT
+  *
+FROM
+  sample_view;
+
+DESC sample_view;
+
+CREATE VIEW
+  ch1 AS
+SELECT
+  e.FirstName,
+  e.Salary
+FROM
+  employees e;
+
+SELECT
+  *
+FROM
+  ch1;
+
+CREATE VIEW
+  ch2 AS
+SELECT
+  *
+FROM
+  employees e
+WHERE
+  YEAR (e.HireDate)=1994;
+
+SELECT
+  *
+FROM
+  ch2;
+
+CREATE
+OR REPLACE VIEW ch2 AS
+SELECT
+  e.EmployeeId,
+  e.FirstName,
+  e.LastName,
+  e.HireDate
+FROM
+  employees e
+WHERE
+  YEAR (e.HireDate)=1994;
+
+ALTER VIEW ch2 AS
+SELECT
+  e.LastName,
+  e.HireDate
+FROM
+  employees e
+WHERE
+  YEAR (e.HireDate)=1994;
+
+SELECT
+  *
+FROM
+  ch2;
+
+SHOW TABLES;
+
+RENAME TABLE ch_2 TO ch_22;
+
+ALTER TABLE employeez
+RENAME TO employees;
+
+SHOW FULL TABLES;
+
+DROP VIEW IF EXISTS ch1;
+
+CREATE
+OR REPLACE VIEW Japan_suppliers AS
+SELECT
+  s.supplierID,
+  s.CompanyName
+FROM
+  suppliers s
+WHERE
+  country='Japan';
+
+SELECT
+  s.SupplierID,
+  s.CompanyName,
+  s.ContactName,
+  s.Address,
+  s.Phone
+FROM
+  suppliers s
+WHERE
+  s.SupplierID IN (
+    SELECT
+      supplierid
+    FROM
+      japan_suppliers
+  );
+
+SELECT
+  s.SupplierID,
+  s.CompanyName,
+  s.ContactName,
+  s.Address,
+  s.Phone
+FROM
+  suppliers s,
+  japan_suppliers j
+WHERE
+  s.SupplierID=j.SupplierID;
+
+SELECT
+  s.SupplierID,
+  s.CompanyName,
+  s.ContactName,
+  s.Address,
+  s.Phone
+FROM
+  suppliers s
+  INNER JOIN japan_suppliers j ON j.supplierID=s.SupplierID;
