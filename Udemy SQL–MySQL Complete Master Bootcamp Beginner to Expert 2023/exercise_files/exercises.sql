@@ -294,8 +294,10 @@ VALUES
 -- PRIMARY KEY
 CREATE TABLE
   customers_2 (
-    customerID INT NOT NULL, -- PRIMARY KEY
-    customerCode VARCHAR(10) UNIQUE, -- ALTERNATIVE KEY
+    customerID INT NOT NULL,
+    -- PRIMARY KEY
+    customerCode VARCHAR(10) UNIQUE,
+    -- ALTERNATIVE KEY
     customerName VARCHAR(50),
     customerAddress VARCHAR(255),
     PRIMARY KEY (customerID)
@@ -304,7 +306,8 @@ CREATE TABLE
 CREATE TABLE
   customers_3 (
     customerID INT AUTO_INCREMENT PRIMARY KEY,
-    customerCode VARCHAR(10) UNIQUE, -- ALTERNATIVE KEY
+    customerCode VARCHAR(10) UNIQUE,
+    -- ALTERNATIVE KEY
     customerName VARCHAR(50),
     customerAddress VARCHAR(255)
   );
@@ -1509,8 +1512,7 @@ FROM
   JOIN orderdetails od ON od.ProductID=p.ProductID
   JOIN orders o ON o.OrderID=od.OrderID
   JOIN customers c ON c.CustomerID=o.CustomerID
-  JOIN categories ca ON ca.CategoryID=p.CategoryID
-  -- GROUP BY
+  JOIN categories ca ON ca.CategoryID=p.CategoryID -- GROUP BY
   --   o.OrderID
 ORDER BY
   o.OrderID
@@ -2492,3 +2494,125 @@ SELECT
 FROM
   suppliers s
   INNER JOIN japan_suppliers j ON j.supplierID=s.SupplierID;
+
+-- LESSON 51 STORED PROCEDURES/ROUTINES
+-- SELECT
+--   3.141593;
+-- SELECT
+--   PI ();
+-- USE carshop;
+-- DELIMITER $$ 
+-- CREATE PROCEDURE CambodianPriceList() 
+-- BEGIN
+-- SELECT
+--   ManufacturerName,
+--   CarName,
+--   concat('KHR', format((Price * 4101.29), 2)) as 'Price in KHR'
+-- FROM
+--   Cars
+--   INNER JOIN Manufacturers ON Cars.ManufacturerID = Manufacturers.ManufacturerID
+-- ORDER BY
+--   ManufacturerName ASC;
+-- END$$ 
+-- DELIMITER ;
+-- CALL CambodianPriceList ();
+-- DROP PROCEDURE IF EXISTS CambodianPriceList;
+-- DROP PROCEDURE IF EXISTS selectAllCar9;
+-- DELIMITER $$
+-- CREATE PROCEDURE selectAllCar9()
+-- BEGIN
+-- SELECT
+--   *
+-- FROM
+--   cars
+--   INNER JOIN manufacturers ON cars.manufacturerID=manufacturers.manufacturerID
+-- WHERE
+--   manufacturername='Tesla';
+-- END$$
+-- DELIMITER ;
+-- SHOW PROCEDURE STATUS;
+-- SHOW PROCEDURE STATUS WHERE db=database();
+-- SHOW PROCEDURE STATUS WHERE db='carshop';
+-- -----------------
+-- DELIMITER $$ 
+-- CREATE PROCEDURE number_of_product_of_supplierID(this_supplier INT) 
+-- BEGIN
+-- SELECT
+--   s.companyname,
+--   s.SupplierID,
+--   COUNT(*)
+-- FROM
+--   products p
+--   INNER JOIN suppliers s ON s.SupplierID=p.SupplierID
+-- GROUP BY
+--   s.SupplierID HAVING
+--   s.SupplierID= this_supplier;
+-- END $$
+-- DELIMITER ;
+-- CALL  number_of_product_of_supplierID (7);
+-- USE carshop;
+-- DELIMITER $$
+-- CREATE PROCEDURE exp_cars_byID (inquiry INT)
+-- SELECT
+--   m.ManufacturerName,
+--   c.ManufacturerID,
+--   c.CarName,
+--   MAX(c.Price) maxi_price
+-- FROM
+--   cars c
+--   INNER JOIN manufacturers m ON m.ManufacturerID=c.ManufacturerID
+-- GROUP BY
+--   m.ManufacturerName HAVING c.ManufacturerID=inquiry;
+-- END $$
+-- DELIMITER ;
+-- CALL exp_cars_byID (102)
+-- --------------------------
+-- USE northwind;
+-- DELIMITER $$
+-- CREATE PROCEDURE insert_northwind_shippers(shipperid INT, companyname VARCHAR(40), phone VARCHAR(10))
+-- INSERT INTO
+--   shippers (ShipperID,CompanyName, Phone) VALUE (shipperid, companyname,  CONCAT('(', LEFT(phone, 3) , ') ', SUBSTR(phone,4,3), '-', RIGHT(phone,4)));
+-- END $$
+-- DELIMITER ;
+-- CALL insert_northwind_shippers(7,'AART', 9495559843);
+-- DROP PROCEDURE IF EXISTS insert_northwind_shippers;
+-- LESSON 52 USER-DEFIEND FUNCTIONS (STORED ROUTINES)
+-- DELIMITER $$
+-- CREATE FUNCTION addition(a REAL, B REAL) RETURNS DECIMAL(9,2)
+-- DETERMINISTIC
+-- BEGIN
+-- DECLARE c DECIMAL(9,2);
+-- SET c=a+b;
+-- RETURN C;
+-- END$$
+-- DELIMITER;
+-- SELECT addition(9998998.12,10.12);
+-- SHOW FUNCTION STATUS;
+-- SHOW FUNCTION STATUS WHERE DB=DATABASE();
+-- SHOW FUNCTION STATUS WHERE DB='northwind';
+-- DROP FUNCTION IF EXISTS pisagor;
+-- DELIMITER$$
+-- CREATE FUNCTION pisagor(a REAL, b REAL) RETURNS REAL
+-- DETERMINISTIC
+-- BEGIN
+-- DECLARE c REAL;
+-- SET c=SQRT(POWER(a,2)+POWER(b,2));
+-- RETURN c;
+-- END$$
+-- DELIMITER;
+-- SELECT pisagor(4,4);
+-- DELIMITER$$
+-- CREATE FUNCTION linetotal(unitprice REAL, quantity INT) RETURNS DECIMAL(9,2)
+-- DETERMINISTIC
+-- BEGIN
+-- DECLARE output DECIMAL(9,2);
+-- SET output=unitprice*quantity;
+-- RETURN output;
+-- END$$
+-- DELIMITER;
+-- SELECT *,CONCAT('$', FORMAT(linetotal(o.UnitPrice,o.Quantity),2)) LineTotal FROM orderdetails o;
+-- SHOW FUNCTION STATUS;
+-- DROP FUNCTION IF EXISTS linetotal;
+-- DROP FUNCTION IF EXISTS pisagor;
+-- DROP FUNCTION IF EXISTS addition;
+-- LESSON 53 TRIGGERS
