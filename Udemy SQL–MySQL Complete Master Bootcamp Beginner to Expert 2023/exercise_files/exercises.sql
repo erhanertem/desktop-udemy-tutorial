@@ -2616,3 +2616,499 @@ FROM
 -- DROP FUNCTION IF EXISTS pisagor;
 -- DROP FUNCTION IF EXISTS addition;
 -- LESSON 53 TRIGGERS
+SHOW TRIGGERS;
+
+CREATE TABLE
+  shipperupdatelog (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    shippername VARCHAR(255) DEFAULT NULL,
+    shippernumber INT NOT NULL,
+    updatedate DATETIME DEFAULT NULL,
+    typeofaction VARCHAR(255) DEFAULT NULL
+  );
+
+CREATE TRIGGER aftershipperupdate AFTER
+UPDATE ON shippers FOR EACH ROW
+INSERT INTO
+  shipperupdatelog
+SET
+  shippername=NEW.CompanyName,
+  shippernumber=NEW.Phone,
+  updatedate=NOW (),
+  typeofaction='Update';
+
+CREATE TRIGGER aftershipperupdate AFTER
+UPDATE ON shippers FOR EACH ROW
+INSERT INTO
+  shipperupdatelog (
+    shippername,
+    shippernumber,
+    updatedate,
+    typeofaction
+  )
+VALUES
+  (NEW.CompanyName, NEW.Phone, NOW (), 'Update');
+
+-- DELIMITER$$ 
+-- CREATE TRIGGER aftershipperupdate AFTER
+-- UPDATE ON shippers FOR EACH ROW 
+-- BEGIN
+-- IF OLD.CompanyName<>NEW.CompanyName THEN
+-- INSERT INTO
+--   shipperupdatelog (
+--     shippername,
+--     shippernumber,
+--     updatedate,
+--     typeofaction
+--   )
+-- VALUES
+--   (NEW.CompanyName, NEW.Phone, NOW (), 'Update');
+-- END IF;
+-- END$$
+-- DELIMITER ;
+SELECT
+  *
+FROM
+  shippers;
+
+SELECT
+  *
+FROM
+  shipperupdatelog;
+
+UPDATE shippers s
+SET
+  s.CompanyName='Love Express',
+  s.Phone='50388222'
+WHERE
+  s.ShipperID=1;
+
+UPDATE shippers s
+SET
+  s.CompanyName='CCCCCLove Express',
+  s.Phone='501138821111122'
+WHERE
+  s.ShipperID=2;
+
+DROP TRIGGER IF EXISTS aftershipperupdate;
+
+CREATE TABLE
+  orderlog (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    orderid INT NOT NULL,
+    linetotal REAL NOT NULL,
+    logtime DATETIME DEFAULT NOW (),
+    typeofevent ENUM ('Insert', 'Update', 'Delete')
+  );
+
+--   DELIMITER $$
+--   CREATE TRIGGER orderlog_tr 
+--   AFTER INSERT ON orderdetails 
+--   FOR EACH ROW
+--   BEGIN
+--     IF (NEW.unitprice * NEW.quantity) >5000 THEN
+--     INSERT INTO orderlog 
+--     SET
+--     orderid = NEW.orderid,
+--     linetotal=(NEW.unitprice * NEW.quantity),
+--     typeofevent='Insert'; 
+--     END IF;
+-- END $$
+-- DELIMITER;
+INSERT INTO
+  `Orders` (
+    `OrderID`,
+    `CustomerID`,
+    `EmployeeID`,
+    `OrderDate`,
+    `RequiredDate`,
+    `ShippedDate`,
+    `ShipVia`,
+    `Freight`,
+    `ShipName`,
+    `ShipAddress`,
+    `ShipCity`,
+    `ShipRegion`,
+    `ShipPostalCode`,
+    `ShipCountry`
+  )
+VALUES
+  (
+    80989,
+    'VINET',
+    5,
+    '1996-09-04 00:00:00',
+    '1996-10-01 00:00:00',
+    '1996-07-16 00:00:00',
+    3,
+    '32.3800',
+    'Vins et alcools Chevalier',
+    '59 rue de l-Abbaye',
+    'Reims',
+    NULL,
+    '51100',
+    'France'
+  );
+
+INSERT INTO
+  `Orders` (
+    `OrderID`,
+    `CustomerID`,
+    `EmployeeID`,
+    `OrderDate`,
+    `RequiredDate`,
+    `ShippedDate`,
+    `ShipVia`,
+    `Freight`,
+    `ShipName`,
+    `ShipAddress`,
+    `ShipCity`,
+    `ShipRegion`,
+    `ShipPostalCode`,
+    `ShipCountry`
+  )
+VALUES
+  (
+    80979,
+    'VINET',
+    5,
+    '1996-09-04 00:00:00',
+    '1996-10-01 00:00:00',
+    '1996-07-16 00:00:00',
+    3,
+    '32.3800',
+    'Vins et alcools Chevalier',
+    '59 rue de l-Abbaye',
+    'Reims',
+    NULL,
+    '51100',
+    'France'
+  );
+
+INSERT INTO
+  `Orders` (
+    `OrderID`,
+    `CustomerID`,
+    `EmployeeID`,
+    `OrderDate`,
+    `RequiredDate`,
+    `ShippedDate`,
+    `ShipVia`,
+    `Freight`,
+    `ShipName`,
+    `ShipAddress`,
+    `ShipCity`,
+    `ShipRegion`,
+    `ShipPostalCode`,
+    `ShipCountry`
+  )
+VALUES
+  (
+    80888,
+    'TOMSP',
+    6,
+    '1996-09-05 00:00:00',
+    '1996-10-16 00:00:00',
+    '1996-07-10 00:00:00',
+    1,
+    '11.6100',
+    'Toms Spezialitten',
+    'Luisenstr. 48',
+    'Mnster',
+    NULL,
+    '44087',
+    'Germany'
+  );
+
+INSERT INTO
+  `OrderDetails` (
+    `OrderID`,
+    `ProductID`,
+    `UnitPrice`,
+    `Quantity`,
+    `Discount`
+  )
+VALUES
+  (80989, 64, 33.2500, 100, 0);
+
+INSERT INTO
+  `OrderDetails` (
+    `OrderID`,
+    `ProductID`,
+    `UnitPrice`,
+    `Quantity`,
+    `Discount`
+  )
+VALUES
+  (80888, 30, 25.8900, 1000, 0);
+
+INSERT INTO
+  `OrderDetails` (
+    `OrderID`,
+    `ProductID`,
+    `UnitPrice`,
+    `Quantity`,
+    `Discount`
+  )
+VALUES
+  (80979, 30, 25.8900, 800, 0);
+
+DROP table orderlog;
+
+DROP TRIGGER orderlog_tr;
+
+CREATE TABLE
+  orderlog (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    orderid INT NOT NULL,
+    errormessage VARCHAR(255) NOT NULL
+  );
+
+--   DELIMITER $$
+--   CREATE TRIGGER orderlog_tr 
+--   AFTER INSERT ON orderdetails 
+--   FOR EACH ROW
+--   BEGIN
+--     IF (NEW.unitprice * NEW.quantity) <=0 THEN
+--     INSERT INTO orderlog 
+--     SET
+--     orderid = NEW.orderid,
+--     errormessage = CONCAT('There is a mistake in this order: ',NEW.orderid,'. Please check as line total cannot be less than zero.'); 
+--     END IF;
+-- END $$
+-- DELIMITER;
+INSERT INTO
+  `Orders` (
+    `OrderID`,
+    `CustomerID`,
+    `EmployeeID`,
+    `OrderDate`,
+    `RequiredDate`,
+    `ShippedDate`,
+    `ShipVia`,
+    `Freight`,
+    `ShipName`,
+    `ShipAddress`,
+    `ShipCity`,
+    `ShipRegion`,
+    `ShipPostalCode`,
+    `ShipCountry`
+  )
+VALUES
+  (
+    80114,
+    'VINET',
+    5,
+    '1996-09-04 00:00:00',
+    '1996-10-01 00:00:00',
+    '1996-07-16 00:00:00',
+    3,
+    '32.3800',
+    'Vins et alcools Chevalier',
+    '59 rue de l-Abbaye',
+    'Reims',
+    NULL,
+    '51100',
+    'France'
+  );
+
+INSERT INTO
+  `Orders` (
+    `OrderID`,
+    `CustomerID`,
+    `EmployeeID`,
+    `OrderDate`,
+    `RequiredDate`,
+    `ShippedDate`,
+    `ShipVia`,
+    `Freight`,
+    `ShipName`,
+    `ShipAddress`,
+    `ShipCity`,
+    `ShipRegion`,
+    `ShipPostalCode`,
+    `ShipCountry`
+  )
+VALUES
+  (
+    80337,
+    'TOMSP',
+    6,
+    '1996-09-05 00:00:00',
+    '1996-10-16 00:00:00',
+    '1996-07-10 00:00:00',
+    1,
+    '11.6100',
+    'Toms Spezialitten',
+    'Luisenstr. 48',
+    'Mnster',
+    NULL,
+    '44087',
+    'Germany'
+  );
+
+INSERT INTO
+  `OrderDetails` (
+    `OrderID`,
+    `ProductID`,
+    `UnitPrice`,
+    `Quantity`,
+    `Discount`
+  )
+VALUES
+  (80114, 64, 33.2500, 100, 0);
+
+INSERT INTO
+  `OrderDetails` (
+    `OrderID`,
+    `ProductID`,
+    `UnitPrice`,
+    `Quantity`,
+    `Discount`
+  )
+VALUES
+  (80337, 30, 25.8900, -10, 0);
+
+--   DELIMITER $$
+--   CREATE TRIGGER nullerr_tr 
+--   AFTER INSERT ON orderdetails 
+--   FOR EACH ROW
+--   BEGIN
+--     IF (NEW.unitprice * NEW.quantity) IS NULL THEN
+--     SIGNAL SQLSTATE '45000'
+--       SET MESSAGE_TEXT='Gooshh....problem there my friend!!';
+--     END IF;
+-- END $$
+-- DELIMITER;
+-- SHOW TRIGGERS;
+INSERT INTO
+  `Orders` (
+    `OrderID`,
+    `CustomerID`,
+    `EmployeeID`,
+    `OrderDate`,
+    `RequiredDate`,
+    `ShippedDate`,
+    `ShipVia`,
+    `Freight`,
+    `ShipName`,
+    `ShipAddress`,
+    `ShipCity`,
+    `ShipRegion`,
+    `ShipPostalCode`,
+    `ShipCountry`
+  )
+VALUES
+  (
+    80443,
+    'TOMSP',
+    6,
+    '1996-09-05 00:00:00',
+    '1996-10-16 00:00:00',
+    '1996-07-10 00:00:00',
+    1,
+    '11.6100',
+    'Toms Spezialitten',
+    'Luisenstr. 48',
+    'Mnster',
+    NULL,
+    '44087',
+    'Germany'
+  );
+
+INSERT INTO
+  `OrderDetails` (
+    `OrderID`,
+    `ProductID`,
+    `UnitPrice`,
+    `Quantity`,
+    `Discount`
+  )
+VALUES
+  (80443, 30, 25.8900, null, 0);
+
+ALTER TABLE orderdetails MODIFY Quantity SMALLINT DEFAULT 1;
+
+ALTER TABLE orderdetails MODIFY Quantity SMALLINT NOT NULL DEFAULT 1;
+
+-- DELIMITER $$
+-- CREATE TRIGGER dbl_chkr
+-- AFTER UPDATE ON orderdetails
+-- FOR EACH ROW
+-- BEGIN
+--   DECLARE errmsg VARCHAR(300);
+--   SET errmsg = CONCAT('You surpassed the ', OLD.unitprice*2 , ' limit. Revisit the ', NEW.unitprice , ' submitted!');
+--   IF NEW.unitprice >= OLD.unitprice*2 THEN
+--     SIGNAL SQLSTATE '45000'
+--     SET MESSAGE_TEXT = errmsg;
+--   END IF;
+-- END $$
+-- DELIMITER ;
+UPDATE orderdetails
+SET
+  unitPrice=99.00
+WHERE
+  ProductID=11;
+
+UPDATE orderdetails
+SET
+  unitPrice=20.00
+WHERE
+  ProductID=11;
+
+SHOW TRIGGERS;
+
+DROP TRIGGER dlt_chkr;
+
+CREATE TABLE
+  orders_delete_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    orderid INT NOT NULL,
+    timedeleted TIMESTAMP DEFAULT NOW ()
+  );
+
+CREATE TRIGGER dlt_chkr AFTER DELETE ON orders FOR EACH ROW
+INSERT INTO
+  orders_delete_log
+SET
+  orderid=OLD.orderid;
+
+SELECT
+  *
+FROM
+  orders
+order by
+  ORDERID BETWEEN 8000 AND 8100;
+
+DELETE FROM orders
+WHERE
+  orderid=10271;
+
+CREATE TABLE
+  orderMonitor (
+    comments VARCHAR(255) DEFAULT NULL,
+    DeletedDateTime DATETIME
+  );
+
+CREATE TRIGGER AfterDeleteOrder AFTER DELETE ON orders FOR EACH ROW
+INSERT INTO
+  orderMonitor (Comments, DeletedDateTime)
+VALUES
+  (
+    CONCAT (
+      'Order Number: ',
+      OLD.orderId,
+      ' was deleted from orders table'
+    ),
+    NOW ()
+  );
+
+DELETE FROM orderdetails
+WHERE
+  orderid=10271;
+
+DELETE FROM orders
+WHERE
+  orderid=10271;
+
+-- LESSON 54 EXERCISE
