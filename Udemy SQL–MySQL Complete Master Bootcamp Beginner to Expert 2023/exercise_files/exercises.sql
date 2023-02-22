@@ -4205,3 +4205,10 @@ WHERE
 -- LESSON 79 COMBINING SQL AND PYTHON
 -- https://www.mysql.com/products/connector/
 -- F1>Create: New Jupyter Notebook OR Ctrl+Shift+P
+SELECT
+  firstname,
+  title
+FROM
+  employees
+WHERE
+  title LIKE '%rep%';
