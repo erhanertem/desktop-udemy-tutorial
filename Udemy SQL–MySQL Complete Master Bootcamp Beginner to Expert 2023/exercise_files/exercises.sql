@@ -4201,3 +4201,7 @@ FROM
 WHERE
   e1.EmployeeID<e2.EmployeeID
   AND DATE_FORMAT (e1.HireDate, '%M%W')=DATE_FORMAT (e2.HireDate, '%M%W');
+
+-- LESSON 79 COMBINING SQL AND PYTHON
+-- https://www.mysql.com/products/connector/
+-- F1>Create: New Jupyter Notebook OR Ctrl+Shift+P
