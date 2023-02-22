@@ -3112,3 +3112,1092 @@ WHERE
   orderid=10271;
 
 -- LESSON 54 EXERCISE
+USE research;
+
+SELECT
+  p.FirstName,
+  p.LastName,
+  r.Budget
+FROM
+  professors p
+  INNER JOIN researchworks r ON r.ResearchID=p.ResearchWork
+WHERE
+  r.Budget<1000000;
+
+SELECT
+  p.FirstName,
+  p.LastName
+FROM
+  professors p
+WHERE
+  p.ResearchWork IN (
+    SELECT
+      r.ResearchID
+    FROM
+      researchworks r
+    WHERE
+      r.Budget<1000000
+  );
+
+SELECT
+  *
+FROM
+  researchworks
+WHERE
+  Budget>(
+    SELECT
+      AVG(Budget)
+    FROM
+      researchworks
+  );
+
+SELECT
+  p.FirstName,
+  p.LastName
+FROM
+  professors p
+WHERE
+  p.ResearchWork IN (
+    SELECT
+      sub.researchid
+    FROM
+      (
+        SELECT
+          *
+        FROM
+          researchworks
+        ORDER BY
+          Budget DESC
+        LIMIT
+          1, 99999999
+      ) sub
+  );
+
+SELECT
+  p.FirstName,
+  p.LastName
+FROM
+  professors p
+WHERE
+  p.ResearchWork IN (
+    SELECT
+      sub.researchid
+    FROM
+      (
+        SELECT
+          *
+        FROM
+          researchworks
+        ORDER BY
+          Budget
+        LIMIT
+          1
+        OFFSET
+          1
+      ) sub
+  );
+
+SELECT
+  r.ResearchTitle,
+  COUNT(*)
+FROM
+  researchworks r
+  INNER JOIN professors p ON p.ResearchWork=r.ResearchID;
+
+SELECT
+  r.ResearchTitle
+FROM
+  researchworks r
+WHERE
+  r.ResearchID IN (
+    SELECT
+      ResearchWork
+    FROM
+      professors
+    GROUP BY
+      ResearchWork
+    HAVING
+      COUNT(professorID)>4
+  );
+
+SELECT
+  *
+FROM
+  researchworks r
+  INNER JOIN professors p ON p.ResearchWork=r.ResearchID
+GROUP BY
+  r.ResearchTitle
+HAVING
+  COUNT(*)>4;
+
+-- LESSON 55 EXERCISE
+USE carshop;
+
+SELECT
+  c.CarName
+FROM
+  cars c;
+
+SELECT
+  c.CarName,
+  c.Price
+FROM
+  cars c;
+
+SELECT
+  *
+FROM
+  cars c
+WHERE
+  c.Price=25000;
+
+SELECT
+  *
+FROM
+  cars c
+WHERE
+  c.Price BETWEEN 14000 AND 30000;
+
+SELECT
+  COUNT(*)
+FROM
+  cars c
+WHERE
+  c.Price>=30000;
+
+SELECT
+  c.CarName,
+  CONCAT ('INR ', FORMAT (c.Price*70, 2)) AS `Price Ruppee`
+FROM
+  cars c;
+
+SELECT
+  c.CarName,
+  m.ManufacturerName,
+  CONCAT ('KHR ', FORMAT (c.Price*4101.29, 2)) AS `Price KHR`
+FROM
+  cars c
+  INNER JOIN manufacturers m ON m.ManufacturerID=c.ManufacturerID;
+
+SELECT
+  FORMAT (AVG(c.Price), 2)
+FROM
+  cars c;
+
+SELECT
+  c.CarName,
+  c.Price
+FROM
+  cars c
+ORDER BY
+  c.Price DESC
+LIMIT
+  1;
+
+SELECT
+  c.Price,
+  c.CarName,
+  m.ManufacturerName
+FROM
+  cars c
+  INNER JOIN manufacturers m ON m.ManufacturerID=c.ManufacturerID
+ORDER BY
+  c.Price DESC
+LIMIT
+  1;
+
+SELECT
+  c.CarName,
+  c.Price,
+  m.ManufacturerName
+FROM
+  cars c
+  INNER JOIN manufacturers m ON m.ManufacturerID=c.ManufacturerID
+WHERE
+  m.ManufacturerName IN ('Honda', 'Toyota');
+
+SELECT
+  *
+FROM
+  cars c
+  INNER JOIN manufacturers m ON m.ManufacturerID=c.ManufacturerID;
+
+SELECT
+  c.CarName,
+  c.Price,
+  m.ManufacturerName
+FROM
+  cars c
+  INNER JOIN manufacturers m ON m.ManufacturerID=c.ManufacturerID;
+
+SELECT
+  m.ManufacturerName,
+  COUNT(*)
+FROM
+  cars c
+  INNER JOIN manufacturers m ON m.ManufacturerID=c.ManufacturerID
+GROUP BY
+  c.ManufacturerID;
+
+SELECT
+  m.ManufacturerName,
+  FORMAT (AVG(c.Price), 2)
+FROM
+  cars c
+  INNER JOIN manufacturers m ON m.ManufacturerID=c.ManufacturerID
+GROUP BY
+  c.ManufacturerID;
+
+SELECT
+  m.ManufacturerName,
+  FORMAT (AVG(c.Price), 2)
+FROM
+  cars c
+  INNER JOIN manufacturers m ON m.ManufacturerID=c.ManufacturerID
+GROUP BY
+  c.ManufacturerID
+HAVING
+  AVG(c.Price)>=35000;
+
+SELECT
+  c.CarName,
+  c.Price
+FROM
+  cars c
+ORDER BY
+  c.Price
+LIMIT
+  1;
+
+SELECT
+  c.CarName,
+  c.Price
+FROM
+  cars c
+WHERE
+  c.Price=(
+    SELECT
+      MIN(c.Price)
+    FROM
+      cars c
+  );
+
+SELECT
+  c.CarName,
+  M.ManufacturerName,
+  MAX(c.Price) AS price
+FROM
+  cars c
+  INNER JOIN manufacturers m ON m.ManufacturerID=c.ManufacturerID
+GROUP BY
+  c.ManufacturerID
+ORDER BY
+  MAX(c.Price) DESC;
+
+SELECT
+  c.CarName,
+  m.manufacturername,
+  c.Price
+FROM
+  cars c,
+  manufacturers m
+WHERE
+  c.ManufacturerID=m.ManufacturerID
+  AND price=(
+    SELECT
+      MAX(price)
+    FROM
+      cars c
+    WHERE
+      c.ManufacturerID=m.ManufacturerID
+  )
+ORDER BY
+  c.Price DESC;
+
+INSERT INTO
+  cars (carid, carname, price, manufacturerid) VALUE (11, 'Land Cruiser', 45000, 101);
+
+UPDATE cars
+SET
+  carname='Cyber Truck'
+WHERE
+  carid=4;
+
+UPDATE cars
+SET
+  price=price*0.78;
+
+UPDATE cars
+SET
+  price=price*0.88
+WHERE
+  price>=35000;
+
+SELECT
+  *
+FROM
+  cars;
+
+SELECT
+  c.CarID,
+  c.CarName,
+  CONCAT ('$ ', FORMAT (c.Price, 2)) AS `Price In Dollars`,
+  CONCAT ('EUR ', FORMAT (c.Price*0.85, 2)) AS `Price In Euros`,
+  CONCAT ('STR ', FORMAT (c.Price*0.77, 2)) AS `Price In British Pounds`,
+  CONCAT ('YUA ', FORMAT (c.Price*6.84, 2)) AS `Price In Yuan`,
+  m.ManufacturerName
+FROM
+  cars c
+  INNER JOIN manufacturers m ON m.ManufacturerID=c.ManufacturerID;
+
+-- LESSON 56 EXERCISE
+USE supplymanagement;
+
+SHOW DATABASES;
+
+SELECT
+  DATABASE ();
+
+SHOW TABLES;
+
+DESC items;
+
+SELECT
+  itemname
+FROM
+  items;
+
+SELECT
+  i.ItemName AS `ITEM NAME`
+FROM
+  items i;
+
+SELECT
+  su.SupplierName,
+  i.ItemName,
+  s.UnitPrice
+FROM
+  items i
+  INNER JOIN supplies s ON s.Item=i.ItemID
+  INNER JOIN suppliers su ON su.SupplierID=s.Supplier
+ORDER BY
+  su.SupplierName;
+
+SELECT
+  SUM(s.UnitPrice),
+  COUNT(*),
+  AVG(s.UnitPrice),
+  MIN(s.UnitPrice),
+  MAX(s.UnitPrice)
+FROM
+  supplies s;
+
+SELECT
+  s.SupplierName,
+  su.Supplier,
+  FORMAT (AVG(su.UnitPrice), 2)
+FROM
+  suppliers s
+  INNER JOIN supplies su ON su.Supplier=s.SupplierID
+GROUP BY
+  s.SupplierID;
+
+SELECT
+  s.Supplier,
+  su.SupplierName,
+  MIN(s.UnitPrice),
+  MAX(s.UnitPrice),
+  SUM(s.UnitPrice)
+FROM
+  supplies s
+  INNER JOIN suppliers su ON s.Supplier=su.SupplierID
+GROUP BY
+  su.SupplierName;
+
+SELECT
+  su.SupplierName,
+  i.ItemName,
+  s.UnitPrice
+FROM
+  items i
+  INNER JOIN supplies s ON s.Item=i.ItemID
+  INNER JOIN suppliers su ON su.SupplierID=s.Supplier
+ORDER BY
+  su.SupplierName;
+
+SELECT
+  i.ItemName
+FROM
+  items i
+  INNER JOIN supplies s ON i.ItemID=s.Item
+WHERE
+  s.Supplier='MDI';
+
+SELECT
+  i.ItemName
+FROM
+  items i
+  INNER JOIN supplies s ON i.ItemID=s.Item
+  AND s.Supplier='MDI';
+
+SELECT
+  i.ItemName
+FROM
+  items i
+WHERE
+  i.ItemID IN (
+    SELECT
+      s.Item
+    FROM
+      supplies s
+    WHERE
+      s.Supplier='MDI'
+  );
+
+SELECT
+  i.ItemName
+FROM
+  items i
+WHERE
+  EXISTS (
+    SELECT
+      s.Item
+    FROM
+      supplies s
+    WHERE
+      s.Supplier='MDI'
+      AND s.Item=i.ItemID
+  );
+
+UPDATE supplies s
+SET
+  s.UnitPrice=s.UnitPrice*1.05;
+
+-- 
+SELECT
+  itemname,
+  suppliername,
+  unitprice
+FROM
+  supplies
+  INNER JOIN suppliers ON Supplier=SupplierID
+  INNER JOIN items ON ItemID=Item
+WHERE
+  unitprice=(
+    SELECT
+      MAX(unitprice)
+    FROM
+      SUPPLIES
+    WHERE
+      itemid=item
+  )
+ORDER BY
+  UnitPrice DESC;
+
+-- 
+SELECT
+  itemname,
+  suppliername,
+  unitprice
+FROM
+  supplies
+  INNER JOIN suppliers ON Supplier=SupplierID
+  INNER JOIN items ON ItemID=Item
+WHERE
+  unitprice=(
+    SELECT
+      MIN(unitprice)
+    FROM
+      SUPPLIES
+    WHERE
+      itemid=item
+  )
+ORDER BY
+  UnitPrice;
+
+--
+SELECT
+  suppliername,
+  itemname,
+  unitprice
+FROM
+  supplies
+  INNER JOIN suppliers ON Supplier=SupplierID
+  INNER JOIN items ON ItemID=Item
+WHERE
+  unitprice=(
+    SELECT
+      MAX(unitprice)
+    FROM
+      SUPPLIES
+    WHERE
+      Supplier=SupplierID
+  )
+ORDER BY
+  UnitPrice;
+
+--
+SELECT
+  suppliername,
+  itemname,
+  unitprice
+FROM
+  supplies
+  INNER JOIN suppliers ON Supplier=SupplierID
+  INNER JOIN items ON ItemID=Item
+WHERE
+  unitprice=(
+    SELECT
+      MIN(unitprice)
+    FROM
+      SUPPLIES
+    WHERE
+      Supplier=SupplierID
+  )
+ORDER BY
+  UnitPrice;
+
+SELECT
+  s.SupplierID,
+  s.SupplierName
+FROM
+  suppliers s
+  INNER JOIN supplies su ON su.Supplier=s.SupplierID
+WHERE
+  su.Item=1;
+
+SELECT
+  s.SupplierID,
+  s.SupplierName
+FROM
+  supplies su
+  INNER JOIN suppliers s ON s.SupplierID=su.Supplier
+  INNER JOIN items i ON i.ItemID=su.Item
+  AND i.ItemName='Canon Camera';
+
+-- 
+SELECT
+  *
+FROM
+  supplies
+ORDER BY
+  unitprice DESC
+LIMIT
+  1, 1;
+
+SELECT
+  *
+FROM
+  supplies
+ORDER BY
+  unitprice DESC
+LIMIT
+  1
+OFFSET
+  1;
+
+--
+SELECT
+  UPPER(itemname)
+FROM
+  items;
+
+SELECT
+  *
+FROM
+  supplies;
+
+ALTER TABLE supplies
+RENAME COLUMN UP TO UnitPrice;
+
+-- LESSON 58 EXERCISE
+USE northwind;
+
+SELECT
+  GROUP_CONCAT (CONCAT (e.FirstName, ' ', e.LastName)),
+  GROUP_CONCAT (e.EmployeeID),
+  e.Salary
+FROM
+  employees e
+GROUP BY
+  e.Salary;
+
+SELECT DISTINCT
+  e2.employeeid,
+  CONCAT (e2.FirstName, ' ', e2.LastName),
+  e2.salary
+FROM
+  employees e2,
+  employees e1
+WHERE
+  e2.Salary=e1.Salary
+  AND e2.employeeid!=e1.employeeid;
+
+INSERT INTO
+  `Employees` (
+    `EmployeeID`,
+    `LastName`,
+    `FirstName`,
+    `Title`,
+    `TitleOfCourtesy`,
+    `BirthDate`,
+    `HireDate`,
+    `Address`,
+    `City`,
+    `Region`,
+    `PostalCode`,
+    `Country`,
+    `HomePhone`,
+    `Extension`,
+    `Notes`,
+    `ReportsTo`,
+    `PhotoPath`,
+    `Salary`
+  )
+VALUES
+  (
+    10,
+    'Peter',
+    'Doze',
+    'Sales Representative',
+    'Mr.',
+    '1966-01-27 00:00:00',
+    '1994-11-15 00:00:00',
+    '10 Houndstooth Rd.',
+    'London',
+    NULL,
+    'WG2 7LT',
+    'UK',
+    '(71) 555-4444',
+    '459',
+    'Peter is good',
+    5,
+    'http://accweb/emmployees/davolio.bmp',
+    2333.33
+  );
+
+-- LESSON 59 EXERCISE
+SELECT
+  e.Title,
+  COUNT(*)
+FROM
+  employees e
+GROUP BY
+  title
+HAVING
+  COUNT(*)>1;
+
+-- LESSON 60 EXERCISE
+SELECT
+  *
+FROM
+  employees e
+WHERE
+  e.Title NOT IN ('Sales Representative', 'Vice President Sales');
+
+-- LESSON 61 EXERCISE
+SELECT
+  *
+FROM
+  employees e
+WHERE
+  CHAR_LENGTH(e.LastName)=8
+  AND e.LastName LIKE '%n';
+
+-- LESSON 62 EXERCISE
+SELECT
+  *
+FROM
+  employees e
+WHERE
+  MOD(e.EmployeeID, 2)=0;
+
+-- LESSON 63 EXERCISE
+SELECT
+  *
+FROM
+  employees e
+WHERE
+  MOD(e.EmployeeID, 2)=1;
+
+-- LESSON 64 EXERCISE
+SELECT
+  e.LastName,
+  SUBSTRING(e.LastName, 2, 4)
+FROM
+  employees e;
+
+-- LESSON 65 EXERCISE
+SELECT
+  COUNT(e.Title)
+FROM
+  employees e
+WHERE
+  e.Title LIKE '%sales%';
+
+-- LESSON 66 EXERCISE
+SELECT
+  MAX(e.Salary)
+FROM
+  employees e
+WHERE
+  e.Salary NOT IN (
+    SELECT
+      MAX(e.Salary)
+    FROM
+      employees e
+  );
+
+-- LESSON 67 EXERCISE
+SELECT DISTINCT
+  e.Salary
+FROM
+  employees e;
+
+SELECT
+  e.Salary
+FROM
+  employees e
+GROUP BY
+  e.Salary;
+
+-- LESSON 68 EXERCISE
+SELECT
+  c.Country,
+  c.city,
+  COUNT(*)
+FROM
+  customers c
+GROUP BY
+  c.City
+ORDER BY
+  c.country,
+  COUNT(*) DESC,
+  c.City;
+
+SELECT
+  c.Country,
+  c.city,
+  COUNT(*)
+FROM
+  customers c
+GROUP BY
+  c.City,
+  c.country
+ORDER BY
+  c.country,
+  COUNT(*) DESC,
+  c.City;
+
+-- LESSON 69 EXERCISE
+SELECT
+  c.CustomerID,
+  c.CompanyName
+FROM
+  customers c
+WHERE
+  c.CustomerID NOT IN (
+    SELECT DISTINCT
+      o.CustomerID
+    FROM
+      orders o
+  );
+
+SELECT
+  c.CustomerID,
+  c.CompanyName
+FROM
+  customers c
+  LEFT JOIN orders o ON o.CustomerID=c.CustomerID
+WHERE
+  o.CustomerID IS NULL;
+
+SELECT
+  c.CustomerID,
+  c.CompanyName
+FROM
+  customers c
+WHERE
+  NOT EXISTS (
+    SELECT
+      o.CustomerID
+    FROM
+      orders o
+    WHERE
+      o.CustomerID=c.CustomerID
+  );
+
+-- LESSON 70 EXERCISE
+SELECT
+  o.OrderID,
+  c.CompanyName,
+  DATEDIFF (o.ShippedDate, o.RequiredDate) late
+FROM
+  orders o
+  INNER JOIN customers c ON c.CustomerID=o.CustomerID
+WHERE
+  DATEDIFF (o.ShippedDate, o.RequiredDate)>0
+ORDER BY
+  late DESC;
+
+-- LESSON 71 EXERCISE
+SELECT
+  cu.CompanyName,
+  p.ProductName,
+  SUM(od.Quantity),
+  YEAR (o.OrderDate) order_year
+FROM
+  orders o
+  INNER JOIN orderdetails od ON od.OrderID=o.OrderID
+  INNER JOIN customers cu ON cu.CustomerID=o.CustomerID
+  INNER JOIN products p ON p.ProductID=od.ProductID
+GROUP BY
+  od.ProductID,
+  cu.CustomerID
+HAVING
+  order_year=1996
+ORDER BY
+  cu.CompanyName;
+
+SELECT
+  cu.CompanyName,
+  p.ProductName,
+  SUM(od.Quantity),
+  EXTRACT(
+    YEAR
+    FROM
+      o.OrderDate
+  ) order_year
+FROM
+  orders o
+  INNER JOIN orderdetails od ON od.OrderID=o.OrderID
+  INNER JOIN customers cu ON cu.CustomerID=o.CustomerID
+  INNER JOIN products p ON p.ProductID=od.ProductID
+GROUP BY
+  od.ProductID,
+  cu.CustomerID
+HAVING
+  order_year=1996
+ORDER BY
+  cu.CompanyName;
+
+-- LESSON 72 EXERCISE
+SELECT
+  o.OrderID,
+  A.CompanyName
+FROM
+  (
+    SELECT
+      c.CustomerID,
+      c.CompanyName
+    FROM
+      customers c
+  ) A
+  INNER JOIN orders o ON A.CustomerID=o.CustomerID;
+
+-- SINGLE CTEs
+WITH
+  A AS (
+    SELECT
+      c.CustomerID,
+      c.CompanyName
+    FROM
+      customers c
+  )
+SELECT
+  o.OrderID,
+  A.CompanyName
+FROM
+  A
+  INNER JOIN orders o ON A.CustomerID=o.CustomerID;
+
+-- ----------------------------
+SELECT
+  B.OrderID,
+  A.CompanyName
+FROM
+  (
+    SELECT
+      c.CustomerID,
+      c.CompanyName
+    FROM
+      customers c
+  ) A
+  INNER JOIN (
+    SELECT
+      o.CustomerID,
+      o.OrderID
+    FROM
+      orders o
+  ) B ON A.CustomerID=B.CustomerID;
+
+-- MULTIPLE CTEs
+WITH
+  A AS (
+    SELECT
+      c.CustomerID,
+      c.CompanyName
+    FROM
+      customers c
+  ),
+  B AS (
+    SELECT
+      o.CustomerID,
+      o.OrderID
+    FROM
+      orders o
+  )
+SELECT
+  B.OrderID,
+  A.CompanyName
+FROM
+  A
+  INNER JOIN B ON A.CustomerID=B.CustomerID;
+
+-- LESSON 73 EXERCISE
+-- WITH
+--   A AS (
+--     SELECT
+--       o.CustomerID,
+--       YEAR (o.OrderDate) f_year,
+--       CONCAT('$', FORMAT(SUM(od.UnitPrice*od.Quantity),2)) total_order
+--     FROM
+--       orders o
+--       INNER JOIN orderdetails od ON od.OrderID=o.OrderID
+--     GROUP BY
+--       o.CustomerID
+--     HAVING
+--       f_year=1996
+--   )
+-- SELECT
+--   c.CompanyName,
+--   A.total_order,
+--   CASE 
+--     WHEN A.total_order<1000 THEN 'Very Low Order'
+--     WHEN A.total_order BETWEEN 1000 AND 5000 THEN 'Low Order'
+--     WHEN A.total_order BETWEEN 5001 AND 10000 THEN 'Medium Order'
+--     WHEN A.total_order BETWEEN 10001 AND 15000 THEN 'High Order'
+--     ELSE 'Very High Order'
+--   END AS order_assessment 
+-- FROM
+--   customers c
+--   INNER JOIN A ON A.CustomerID=c.CustomerID;
+-- LESSON 74 EXERCISE
+-- SELECT DISTINCT
+--   A.Country
+-- FROM
+--   (
+--     (
+--       SELECT
+--         e.Country
+--       FROM
+--         employees e
+--     )
+--     UNION
+--     (
+--       SELECT
+--         c.Country
+--       FROM
+--         customers c
+--     )
+--     UNION
+--     (
+--       SELECT
+--         s.Country
+--       FROM
+--         suppliers s
+--     )
+--   ) A
+-- WHERE
+--   A.Country IS NOT NULL;
+-- LESSON 75 EXERCISE
+-- WITH
+--   totalNumOrdersPerEmployee AS (
+--     SELECT
+--       o.EmployeeID,
+--       COUNT(*) totalNumOrders
+--     FROM
+--       orders o
+--     GROUP BY
+--       O.EmployeeID
+--   ),
+--   totalNumLateOrdersPerEmployee AS (
+--     SELECT
+--       o.EmployeeID,
+--       COUNT(*) lateOrdersCount
+--     FROM
+--       orders o
+--     WHERE
+--       o.RequiredDate<=o.ShippedDate
+--     GROUP BY
+--       o.EmployeeID
+--   )
+-- SELECT
+-- CONCAT (e.FirstName, ' ', e.LastName) `Employee Name`,
+-- tno.totalNumOrders `Total Number of Orders Processed`,
+-- tlo.lateOrdersCount `Total Late Orders Processed`,
+-- CONCAT(FORMAT((tlo.lateOrdersCount/tno.totalNumOrders*100),2),'%') `tlo/tno %`
+-- FROM 
+-- employees e 
+-- INNER JOIN totalNumOrdersPerEmployee tno ON tno.EmployeeID=e.EmployeeID
+-- INNER JOIN totalNumLateOrdersPerEmployee tlo ON tlo.EmployeeID=e.EmployeeID 
+-- WHERE (tlo.lateOrdersCount/tno.totalNumOrders) >0.05
+-- ORDER BY `Employee Name`;
+-- LESSON 76 EXERCISE
+SELECT
+  DATE_FORMAT ('1196-12-01 12:01:22', '%M %m');
+
+SELECT
+  DATE_FORMAT ('1196-12-01 12:01:22', '%M %m');
+
+SELECT
+  DATE_FORMAT ('1196-12-01 12:01:22', '%Y %M %S');
+
+SELECT
+  DATE_FORMAT ('1196-12-01 12:01:22', '%W');
+
+SELECT
+  DATE_FORMAT ('1196-12-01 12:01:22', '%d %D %e %j %U');
+
+SELECT
+  DATE_FORMAT ('1196-12-01 12:01:22', '%i %I %f');
+
+SELECT
+  DAYOFWEEK (NOW ());
+
+SELECT
+  CURDATE ();
+
+SELECT
+  CURTIME ();
+
+SELECT
+  YEAR (CURDATE ());
+
+SELECT
+  NOW ();
+
+SELECT
+  CAST(25.65 AS CHAR(10));
+
+SELECT
+  CAST('2023-01-10' AS DATETIME);
+
+SELECT
+  CAST('2023-01-10' AS DATE);
+
+-- LESSON 77 EXERCISE
+SELECT
+  CONCAT (
+    e1.firstname,
+    ' and ',
+    e2.firstname,
+    ' ',
+    'were hired the same month and weekday'
+  ) SamePeriod
+FROM
+  employees e1,
+  employees e2
+WHERE
+  e1.EmployeeID<e2.EmployeeID
+  AND DATE_FORMAT (e1.HireDate, '%M%W')=DATE_FORMAT (e2.HireDate, '%M%W');
