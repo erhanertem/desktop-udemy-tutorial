@@ -1,0 +1,13 @@
+// LESSON 1 INTRODUCTION
+
+show dbs;
+use shop
+show collections
+db.products.insertOne({name: "AAAAA Book",price: 13.99})
+db.products.insertOne({name: "Another dummy Book",descp: "Wiizard OZ's memoirs", price: 52.99});
+db.products.find()
+db.products.find().pretty();
+db.products.insertOne({name: "A T-shirt",descp: "This is an expensive wizzard shirt", price: 13.99});
+db.products.insertOne({name: "A Computer",descp: "A very fast computer with RTX 4090ti", price: 1213.99, details: {cpu: "Intel i7xxx", ram: "100GB"}})
+
+// LESSON 2 BASICS & CRUD OPERATIONS
