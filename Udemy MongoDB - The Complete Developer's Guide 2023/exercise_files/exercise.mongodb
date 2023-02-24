@@ -1,13 +1,207 @@
 // LESSON 1 INTRODUCTION
 
-show dbs;
+show dbs
 use shop
 show collections
 db.products.insertOne({name: "AAAAA Book",price: 13.99})
-db.products.insertOne({name: "Another dummy Book",descp: "Wiizard OZ's memoirs", price: 52.99});
+db.products.insertOne({name: "Another dummy Book",descp: "Wiizard OZ's memoirs", price: 52.99})
 db.products.find()
-db.products.find().pretty();
-db.products.insertOne({name: "A T-shirt",descp: "This is an expensive wizzard shirt", price: 13.99});
+db.products.find().pretty()
+db.products.insertOne({name: "A T-shirt",descp: "This is an expensive wizzard shirt", price: 13.99})
 db.products.insertOne({name: "A Computer",descp: "A very fast computer with RTX 4090ti", price: 1213.99, details: {cpu: "Intel i7xxx", ram: "100GB"}})
 
 // LESSON 2 BASICS & CRUD OPERATIONS
+
+show dbs
+// CREATE DB
+use flights
+// CREATE COLLECTION
+// IMPORTANT! if keys do not have any spacing between the key names, no quatations are needed.
+db.flightData.insertOne(
+  {
+    departureAirport: "MUC",
+    arrivalAirport: "SFO",
+    aircraft: "Airbus A380",
+    distance: 12000,
+    intercontinental: true
+  }
+)
+db.flightData.insertOne(
+   {
+    "departureAirport": "LHR",
+    "arrivalAirport": "TXL",
+    "aircraft": "Airbus A320",
+    "distance": 950,
+    "intercontinental": false
+  }
+)
+db.flightData.insertMany([
+  {
+    departureAirport: "MUC",
+    arrivalAirport: "SFO",
+    aircraft: "Airbus A380",
+    distance: 12000,
+    intercontinental: true
+  }, 
+  {
+    departureAirport: "LHR",
+    arrivalAirport: "TXL",
+    aircraft: "Airbus A320",
+    distance: 950,
+    intercontinental: false
+  }]
+)
+
+//Search all documents
+db.flightData.find()
+// Search all matching documents
+db.flightData.find({distance: 12000})
+db.flightData.find({distance: {$gt: 900}})
+db.flightData.find({intercontinental: true})
+//Search a single matching document
+db.flightData.findOne({distance: {$gt: 900}})
+// Delete a specific document in the collection
+db.flightData.deleteOne({_id:ObjectId("63f86936760367c4a39eb999")})
+// Delete multiple specific documents in the collection
+db.flightData.updateMany({distance: 12000}, {$set: {marker: "delete"}})
+db.flightData.updateMany({}, {$set: {marker: "toDelete"}})
+db.flightData.deleteMany({marker: "toDelete"})
+// Delete all documents in the collection
+db.flightData.deleteMany({})
+//Update a single document
+db.flightData.updateOne({_id:ObjectId("63f86d787301421e8f4c8c4d")}, {$set: {delayed: true}})
+//Update many document
+db.flightData.updateMany({departureAirport: 'LHR'}, {$set: {delayed: true}})
+//Replace a document entirely
+db.flightData.replaceOne({_id:ObjectId("63f8733ea42f489e8918f0ad")}, { 
+    "departureAirport": "MUC",
+    "arrivalAirport": "SFO",
+    "aircraft": "Airbus A380",
+    "distance": 12000,
+    "intercontinental": true
+  })
+
+
+db.passangers.insertMany([
+  {
+    "name": "Max Schwarzmueller",
+    "age": 29
+  },
+  {
+    "name": "Manu Lorenz",
+    "age": 30
+  },
+  {
+    "name": "Chris Hayton",
+    "age": 35
+  },
+  {
+    "name": "Sandeep Kumar",
+    "age": 28
+  },
+  {
+    "name": "Maria Jones",
+    "age": 30
+  },
+  {
+    "name": "Alexandra Maier",
+    "age": 27
+  },
+  {
+    "name": "Dr. Phil Evans",
+    "age": 47
+  },
+  {
+    "name": "Sandra Brugge",
+    "age": 33
+  },
+  {
+    "name": "Elisabeth Mayr",
+    "age": 29
+  },
+  {
+    "name": "Frank Cube",
+    "age": 41
+  },
+  {
+    "name": "Karandeep Alun",
+    "age": 48
+  },
+  {
+    "name": "Michaela Drayer",
+    "age": 39
+  },
+  {
+    "name": "Bernd Hoftstadt",
+    "age": 22
+  },
+  {
+    "name": "Scott Tolib",
+    "age": 44
+  },
+  {
+    "name": "Freddy Melver",
+    "age": 41
+  },
+  {
+    "name": "Alexis Bohed",
+    "age": 35
+  },
+  {
+    "name": "Melanie Palace",
+    "age": 27
+  },
+  {
+    "name": "Armin Glutch",
+    "age": 35
+  },
+  {
+    "name": "Klaus Arber",
+    "age": 53
+  },
+  {
+    "name": "Albert Twostone",
+    "age": 68
+  },
+  {
+    "name": "Gordon Black",
+    "age": 38
+  }
+]
+)
+//List all with stop cursor
+db.flightData.find()
+db.passangers.find()
+db.passangers.find().pretty()
+//List all without stop
+db.passangers.find().toArray()
+//only works in shell
+db.passangers.find().forEach((passangerData)=>{printjson(passangerData)})
+//List all with projection
+db.passangers.find({},{name:1})
+
+
+db.flightData.updateMany({}, {$set: {status: {description: "on-time", lastUpdated: "1 hour ago", details: {responsible: "Erhan ERTEM"}}}})
+
+db.passangers.updateOne({name: "Albert Twostone"},{$set: {hobbies: ["sports", "cooking"]}})
+
+//List a specific document and its sub key
+db.passangers.findOne({name: "Albert Twostone"})
+db.passangers.findOne({name: "Albert Twostone"}).hobbies
+db.passangers.findOne({hobbies: "sports"})
+db.passangers.findOne({hobbies: "sports"}, {hobbies:1})
+
+db.flightData.find({"status.description": "on-time"})
+
+
+db.patients.insertMany([
+  {firstName: "Max", lastName: "Schwarzmueller", age: 29, history: [{disease: "cold", treatment: "heart surgery"}]}, 
+  {firstName: "Erhan", lastName: "Ertem", age: 43, history: [{disease: "fever", treatment: "cold drugs"}]}, 
+  {firstName: "Tim", lastName: "Tenour", age: 12, history: [{disease: "alergy", treatment: "alergy drug"}]}
+])
+
+db.patients.updateOne({firstName: "Max", lastName: "Schwarzmueller"}, {$set:{firstName: "Maxi", lastName: "Schwarz", age: 30, history: [{disease: "cold", treatment: "fever pills"}]}})
+
+db.patients.find({age: {$gt: 30}})
+
+db.patients.deleteMany({"history.disease": "cold"})
