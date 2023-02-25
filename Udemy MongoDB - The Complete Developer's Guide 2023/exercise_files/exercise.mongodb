@@ -205,3 +205,210 @@ db.patients.updateOne({firstName: "Max", lastName: "Schwarzmueller"}, {$set:{fir
 db.patients.find({age: {$gt: 30}})
 
 db.patients.deleteMany({"history.disease": "cold"})
+
+db.patients.drop()
+// LESSON 3 SCHEMAS & RELATIONS: HOW TO STRUCTURE DOCUMENTS
+db.products.drop()
+db.products.insertOne({name: "A horrible book", price: 12.99})
+db.products.insertOne({name: "T-Shirt", seller: {name: "Max Payne", age: 29}})
+db.products.insertOne({name: "A Super PC", price: 1300, details: {cpu: "Xeon 8770x", ram: "32gb jigsaw ECC"}, seller: {name: "Terry White", age: 32}})
+db.products.find()
+db.products.deleteMany({})
+db.products.insertOne({name: "A horrible book", price: 12.99, details: null})
+db.products.insertOne({name: "A computer", price: 12.99, details: {cpu: "Intel i7"}})
+
+db.companies.drop()
+db.companies.insertOne({name: "Fresh Apples Inc", isStartup: true, employees: 33, funding: 1234567890123456789, details: {ceo: "Mark Zuckerzuck"}, tags: [{title: "super"}, {title: "perfect"}], foundingDate: new Date(), insertedAt: new Timestamp()})
+db.companies.find()
+db.stats()
+
+// SCHEMA RELATIONS
+// 1-1 relationship
+db.patients.drop()
+db.diseaseSummaries.drop()
+db.patients.insertOne({name: "Max", age: 29, dieseaseSummary: "summary-max-1"})
+db.patients.findOne()
+db.diseaseSummaries.insertOne({_id: "summary-max-1", diseases: ["cold", "broken leg"]})
+db.diseaseSummaries.findOne()
+
+db.patients.insertOne({name: "Max", age: 29, dieseaseSummary:  { diseases: ["cold", "broken leg"]}})
+db.patients.find()
+
+// 1-MANY relationship
+db.questionThreads.insertOne({creator: "Max", question: "How does that all work?", answers: ["q1a1", "q1a2"]})
+db.questionThreads.findOne()
+db.answers.insertMany([
+  {_id: "q1a1", text: "It works like that"},
+  {_id: "q1a2", text: "Thanks! "}
+])
+
+db.cities.insertOne({name: "New York City", coordinates: {lat: 21, lng: 55}})
+db.cities.find()
+db.citizens.insertMany([{name: "Max Payne", cityId: ObjectId("63f8dbd8c0c175430afff786")}, {name: "Mix Wyne", cityId: ObjectId("63f8dbd8c0c175430afff786")}])
+db.citizens.find()
+
+// MANY-MANY relationship
+//Referencing
+use test
+db.products.insertOne({title: "A Book", price: 12.99})
+db.customers.insertOne({name: "Max", age: 29})
+db.orders.insertOne({productId: ObjectId("63f9b9a2db54c3c421e30205"), customerId: ObjectId("63f9b96a1c7418c0afa69910")})
+db.customers.find()
+db.products.find()
+db.orders.drop()
+db.customers.updateOne({}, {$set: {orders: [{productId: ObjectId("63f9b9a2db54c3c421e30205"), quantity: 2}]}})
+
+db.books.insertOne({}, {name: "My favorite Book", authors: [{name: "Max Schwarz", age: 29}, {name: "Manuel Lordsa", age: 23}]})
+db.authors.insertMany([{name: "Max Schwarz", age: 29, address:{street: "Main"}}, {name: "Manuel Lordsa", age: 23, address: {street: "Tree"}}])
+db.authors.find()
+db.books.drop()
+db.books.insertOne({name: "My favorite Book", authors: [ObjectId("63f9bdf01c73cd94facbfb9e"), ObjectId("63f9bdf01c73cd94facbfb9f")]})
+db.books.find()
+//Embedding
+db.customers.updateOne({}, {$set: {orders: [{title: "A Book", price: 12.99, quantity: 2}]}})
+//Aggregate
+db.books.aggregate([{/**
+ * from: The target collection.
+ * localField: The local join field.
+ * foreignField: The target join field.
+ * as: The name for the results.
+ * pipeline: Optional pipeline to run on the foreign collection.
+ * let: Optional variables to use in the pipeline field stages.
+ */
+$lookup: {
+  from: "authors",
+  localField: "authors",
+  foreignField: "_id",
+  as: "creators"
+}}])
+
+// Implementing an example exercise
+db.dropDatabase()
+db.users.insertMany([
+  {name: "Max Ertem", age: 29, email: "max@test.com"},
+  {name: "Manuel Lorenz", age: 30, email: "manu@test.com"}
+])
+db.posts.insertOne({title: "My first post!", text: "This is my first post, I hope you will like it!", tags:["new", "tech"], creator: ObjectId("63f9d8f8d8e75cfb047657de"), comments: [{text: "I like this post!", author: ObjectId("63f9d8f8d8e75cfb047657dd")}]})
+db.posts.find()
+db.posts.drop()
+db.posts.findOne()
+
+//Enforced Schema Creation
+db.posts.drop()
+db.createCollection('posts', {
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['title', 'text', 'creator', 'comments'],
+      properties: {
+        title: {
+          bsonType: 'string',
+          description: 'must be a string and is required',
+        },
+        text: {
+          bsonType: 'string',
+          description: 'must be a string and is required',
+        },
+        creator: {
+          bsonType: 'objectId',
+          description: 'must be an objectid and is required',
+        },
+        comments: {
+          bsonType: 'array',
+          description: 'must be an array and is required',
+          items: {
+            bsonType: 'object',
+            required: ['text', 'author'],
+            properties: {
+              text: {
+                bsonType: 'string',
+                description: 'must be a string and is required',
+              },
+              author: {
+                bsonType: 'objectId',
+                description: 'must be an objectid and is required',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+});
+
+db.posts.insertOne({
+  title: 'My first post!',
+  text: 'This is my first post, I hope you will like it!',
+  tags: ['new', 'tech'],
+  creator: ObjectId('63f9d8f8d8e75cfb047657de'),
+  comments: [
+    { text: 'I like this post!', author: ObjectId('63f9d8f8d8e75cfb047657dd') }
+  ]
+});
+db.posts.insertOne({
+  title: 'My first post!',
+  text: 'This is my first post, I hope you will like it!',
+  tags: ['new', 'tech'],
+  creator: ObjectId('63f9d8f8d8e75cfb047657de'),
+  comments: [
+    { text: 'I like this post!', author: ObjectId('12') }
+  ]
+});
+
+db.posts.find();
+
+//Modify enforced schema design
+db.runCommand({
+  collMod: 'posts',
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['title', 'text', 'creator', 'comments'],
+      properties: {
+        title: {
+          bsonType: 'string',
+          description: 'must be a string and is required'
+        },
+        text: {
+          bsonType: 'string',
+          description: 'must be a string and is required'
+        },
+        creator: {
+          bsonType: 'objectId',
+          description: 'must be an objectid and is required'
+        },
+        comments: {
+          bsonType: 'array',
+          description: 'must be an array and is required',
+          items: {
+            bsonType: 'object',
+            required: ['text', 'author'],
+            properties: {
+              text: {
+                bsonType: 'string',
+                description: 'must be a string and is required'
+              },
+              author: {
+                bsonType: 'objectId',
+                description: 'must be an objectid and is required'
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  validationAction: 'warn'
+  //by default  validationAction: 'error'
+});
+db.posts.insertOne({
+  title: 'My first post!',
+  text: 'This is my first post, I hope you will like it!',
+  tags: ['new', 'tech'],
+  creator: ObjectId('63f9d8f8d8e75cfb047657de'),
+  comments: [
+    { text: 'I like this post!', author: 12 }
+  ]
+});
+
+// LESSON 4 EXPLORING THE SHELL & THE SERVER
