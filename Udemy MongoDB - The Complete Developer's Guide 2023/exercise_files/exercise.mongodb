@@ -412,3 +412,57 @@ db.posts.insertOne({
 });
 
 // LESSON 4 EXPLORING THE SHELL & THE SERVER
+// LESSON 5 USING MONGODB COMPASS TO EXPLORE DATAT VISUALLY
+// LESSON 6 DIVING INTO CREATE OPERATIONS
+use test;
+db.dropDatabase();
+db.persons.insertOne({ name: "Max", age: 30, hobbies: ["Sports", "Cooking"] });
+db.persons.insertOne({ name: "Manuel", age: 31, hobbies: ["Cars", "Cooking"] });
+db.persons.insertMany([{ name: "Anna", age: 29, hobbies: ["Sports", "Yoga"] }]);
+db.persons.insertMany([
+  { name: "Maria", age: 31 },
+  { name: "Chris", age: 25 }
+]);
+db.persons.find();
+
+// Errornous operations example
+db.hobbies.insertMany([
+  {_id:"Sports", name:"Sports"},
+  {_id:"Cooking", name:"Cooking"},
+  {_id:"Cars", name:"Cars"}
+  ])
+db.hobbies.insertMany([
+  {_id:"Yoga", name:"Yoga"},
+  {_id:"Cooking", name:"Cooking"},
+  {_id:"Hiking", name:"Hiking"}
+  ], {ordered: true})
+db.hobbies.insertMany([
+  {_id:"Yoga", name:"Yoga"},
+  {_id:"Cooking", name:"Cooking"},
+  {_id:"Hiking", name:"Hiking"}
+  ], {ordered: false})
+
+db.hobbies.find();
+db.persons.insertOne({name:"Chrissy", age: 41},{writeConcern: {w: 0}});
+db.persons.insertOne({name:"Marty", age: 31},{writeConcern: {w: 1, j: false}});
+db.persons.insertOne({name:"Marty", age: 31},{writeConcern: {w: 1, j: true}});
+db.persons.insertOne({name:"Marty", age: 31},{writeConcern: {w: 1, j: true, wtimeout: 200}});
+db.persons.find();
+
+db.companies.insertOne({_id:"Bosch", name:"Bosch", industry:"Circuitry"})
+db.companies.insertMany([
+  {_id:"Vestel", name:"Vestel", industry: "Domestic electronics"},
+  {_id:"Ugur", name:"Ugur", industry: "Industrial Refrigeration"},
+  {_id:"Bosch", name:"Bosch", industry: "Circuitry"},
+  {_id: "Samsung", name:"Samsung", industry: "OLED screens"}
+],  {ordered: false})
+db.companies.insertOne({_id:"Apple", name:"Apple", industry:"Phones"}, {writeConcern: {j:false}})
+db.companies.insertOne({_id:"Apple", name:"Apple", industry:"Phones"}, {writeConcern: {j:true}})
+
+db.companies.find();
+db.companies.drop();
+
+// MongoDB CLI Import Command 
+// mongoimport tv-shows.json -d movieData -c movies --jsonArray --drop
+
+// LESSON 7 READ OPERATIONS
