@@ -466,3 +466,147 @@ db.companies.drop();
 // mongoimport tv-shows.json -d movieData -c movies --jsonArray --drop
 
 // LESSON 7 READ OPERATIONS
+
+//Brings the first document in the collection
+use test
+db.movies.findOne()
+db.movies.findOne({})
+//Brings all documents in the collection
+db.movies.find().pretty()
+db.movies.find({})
+db.movies.find()
+
+db.movies.find({name: "The Last Ship"})
+db.movies.find({runtime: 60})
+db.movies.findOne({runtime: 60})
+db.movies.find({runtime: {$eq: 60}})
+db.movies.find({runtime: {$ne: 60}})
+db.movies.find({runtime: {$gte: 60}})
+db.movies.find({runtime: {$gt: 60}})
+db.movies.find({runtime: {$lte: 60}})
+db.movies.find({runtime: {$lt: 60}})
+
+db.movies.find({"rating.average": {$gt: 9.3}})
+//Find genres that has drama inside
+db.movies.find({genres: "Drama"})
+// Find genres that strictly include only drama
+db.movies.find({genres: ["Drama"]})
+
+db.movies.find({runtime: {$in: [30,42]}})
+db.movies.find({runtime: {$nin: [30,42]}})
+
+//Multiple condition logical operators
+db.movies.find({"rating.average": {$lt: 5}}).count()
+db.movies.find({"rating.average": {$gt: 9.3}}).count()
+
+db.movies.find({$or: [{"rating.average": {$lt: 5}}, {"rating.average": {$gt: 9.3}}]}).count()
+db.movies.find({$nor: [{"rating.average": {$lt: 5}}, {"rating.average": {$gt: 9.3}}]}).count()
+db.movies.find().count()
+
+
+db.movies.find({
+  $and: [{ 'rating.average': { $gt: 9 } }, { genres: 'Drama' }],
+}).count();
+// as long as both key names are not same mongoDB concatenation style could be used in place of $and operator.
+db.movies.find({
+  'rating.average': { $gt: 9 }, genres: 'Drama' }
+).count();
+
+db.users.insertMany([{name: "Max", hobbies: [{title: "Sports", frequency: 3}, {title: "Cooking", frequency: 6}], phone: 02322461767 }, {name: "Manuel", hobbies: [{title: "Cooking", frequency: 5}, {title: "Cars", frequency: 2}], phone: "02122461767", age: 30}])
+db.users.insertOne({name: "Anna", hobbies: [{title: "Sports", frequency: 2}, {title: "Yoga", frequency: 3}], phone: "90914545454", age: null})
+db.users.find({age: {$exists: true}})
+db.users.find({age: {$exists: false}})
+db.users.find({age: {$exists: true, $eq: 30}})
+db.users.find({age: {$exists: true, $ne: null}})
+db.users.find({phone: {$type: "number"}})
+db.users.find({phone: {$type: "double"}})
+db.users.find({phone: {$type: "int"}})
+db.users.find({phone: {$type: ["number", "string"]}})
+
+db.movies.find({summary: "musical"})
+db.movies.find({summary: {$regex: /musical/}})
+db.sales.insertMany([
+  {volume: 100, target:120},
+  {volume: 89, target:80},
+  {volume: 200, target:177}
+])
+db.sales.find({$expr: {$gt: ["$volume", "$target"]}})
+db.sales.find({$expr: {$gt: [
+      {$cond: {if:{$gte:['$volume', 190]}, then:{$subtract:['$volume',30]},else:'$volume'}},
+      '$target'
+      ]}});
+      
+//Assignment
+db.movieStarts.find()
+// mongoimport boxoffice.json -d test -c movieStarts --jsonArray --drop
+db.movieStarts.find({'meta.rating': {$gt: 9.2}, 'meta.runtime': {$lt: 100}})
+db.movieStarts.find({genre: {$in: ['drama', 'action']}})
+db.movieStarts.find({$or: [{genre: 'drama'}, {genre:'action'}]})
+db.movieStarts.find({$expr: {$gt:['$visitors' , '$expectedVisitors'] }})
+
+db.users.find()
+db.users.find({},{name: 1, age: 1, _id:0})
+db.users.find({'hobbies.frequency': {$mod:[2,0]}})
+db.users.find({'hobbies.title': "Sports"})
+db.users.insertOne({name: "Chris", hobbies: ["Sports", "Cooking", "Hiking"]})
+db.users.find({hobbies: {$size: 3}})
+
+db.movieStarts.find()
+db.movieStarts.find({genre: ['action', 'thriller']})
+db.movieStarts.find({genre: {$all: ['action', 'thriller']}})
+
+db.users.find()
+db.users.find({$and: [{"hobbies.title": "Sports"},{"hobbies.frequency": {$gte: 2}}]})
+db.users.find({$and: [{"hobbies.title": "Sports"},{"hobbies.frequency": {$gte: 3}}]})
+db.users.find({hobbies: {$elemMatch: {title: "Sports", frequency: {$gte: 3}}}})
+
+//Assigment
+db.exmovieStarts.find()
+// mongoimport boxoffice-extended.json -d test -c exmovieStarts --jsonArray --drop
+db.exmovieStarts.find({genre: {$size: 2}})
+db.exmovieStarts.find({'meta.aired': 2018})
+db.exmovieStarts.find({$and: [{'meta.rating': {$gt: 8}}, {'meta.rating': {$lt: 10}}]})
+db.exmovieStarts.find({'meta.rating': {$gt:8, $lt:10}})
+db.exmovieStarts.find({ratings: {$elemMatch: {$gt:8, $lt:10}}})
+
+db.movies.find()
+db.movies.find().count()
+db.movies.find().sort({'rating.average':1, runtime: -1})
+db.movies.find().sort({'rating.average':1}).sort({runtime: -1})
+db.movies.find().sort({runtime: -1}).skip(100).limit(1)
+
+db.movies.find({}, {name:1, genres:1, runtime:1, 'schedule.time':1, _id:0})
+db.movies.find({genres: "Drama"}, {genres:1})
+db.movies.find({genres: "Drama"}, {'genres.$':1})
+db.movies.find({genres: "Drama"}, {'genres.$':1}).count()
+db.movies.find({genres: "Drama"}).count()
+db.movies.find({genres: "Drama"}, {genres: {$elemMatch: {$eq: "Horror"}}})
+db.movies.find({$and:[{'rating.average': {$gt:9}}, {genres: {$elemMatch: {$eq: "Horror"}}}]})
+db.movies.find({'rating.average': {$gt:9}}, {genres: {$elemMatch: {$eq: "Horror"}}})
+db.movies.find({'rating.average': {$gt:9}}, {genres: {$elemMatch: {$eq: "Horror2"}}})
+db.movies.find({'rating.average': {$gt:9}})
+db.movies.find({'rating.average': {$gt:9}}, {genres: {$slice: 2}, name:1, type:1})
+db.movies.find({'rating.average': {$gt:9}}, {genres: {$slice: [1,2]}, name:1, type:1})
+
+db.players.insertOne( {
+   name: "player1",
+   games: [ { game: "abc", score: 8 }, { game: "xyz", score: 5 } ],
+   joined: new Date("2020-01-01"),
+   lastLogin: new Date("2020-05-01")
+} )
+db.players.insertOne( {
+   name: "player2",
+   games: [ { game: "abc", score: 5.5 }, { game: "xyz", score: 5 } ],
+   joined: new Date("2020-01-01"),
+   lastLogin: new Date("2020-05-01")
+} )
+db.players.insertOne( {
+   name: "player3",
+   games: [ { game: "abc", score: 6 }, { game: "xyz", score: 5 } ],
+   joined: new Date("2020-01-01"),
+   lastLogin: new Date("2020-05-01")
+} )
+db.players.find( {}, { games: { $elemMatch: { score: { $gt: 5} } }, joined: 1, lastLogin: 1 } )
+
+
+// LESSON 8 UPDATE OPERATIONS
