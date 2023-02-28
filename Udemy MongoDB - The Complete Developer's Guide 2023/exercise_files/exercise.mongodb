@@ -610,3 +610,91 @@ db.players.find( {}, { games: { $elemMatch: { score: { $gt: 5} } }, joined: 1, l
 
 
 // LESSON 8 UPDATE OPERATIONS
+db.users.find()
+db.users.updateOne({_id: ObjectId("63fc702a514c460d79e159af")}, {$set: {hobbies: [{title: "Sports", frequency: 5}, {title: "Cooking", frequency: 3}, {title: "Hiking", frequency: 1}]}})
+db.users.updateOne({_id: ObjectId("63fc702a514c460d79e159af")}, {$set: {hobbies: ["Hiking", "Sports", "Cooking"]}})
+db.users.updateOne({_id: ObjectId("63fc702a514c460d79e159af")}, {$set: {hobbies: "Hiking"}})
+db.users.updateMany({'hobbies.title': 'Sports'}, {$set: {isSporty: true}})
+db.users.updateMany({'hobbies.title': 'Sports'}, {$set: {isHandy: false, isFeasible: true}})
+db.users.updateOne({_id: ObjectId("63fc702a514c460d79e159af")}, {$set: {age: 40, phone: 37463763}})
+
+db.users.updateOne({name: "Manuel"}, {$inc: {age: 1}, $set: {isSporty: false}})
+db.users.updateOne({name: "Manuel"}, {$inc: {age: 1}, $set: {age: 30}})
+db.users.updateOne({name: "Manuel"}, {$inc: {age: -1}})
+
+db.users.updateOne({name: "Chris"}, {$min: {age:35}})
+db.users.updateOne({name: "Chris"}, {$min: {age:38}})
+db.users.updateOne({name: "Chris"}, {$max: {age:34}})
+db.users.updateOne({name: "Chris"}, {$mul: {age:1.1}})
+
+db.users.updateMany({isSporty: true}, {$set: {phone: null}})
+db.users.updateMany({isSporty: true}, {$unset: {phone: ""}})
+
+db.users.updateMany({}, {$rename: {age: "totalage"}})
+
+db.users.updateOne({name: "Maria"}, {$set: {age:29, hobbies: [{title: "Good Food", frequency: 3}], isSporty: true}}, {upsert: true})
+
+// Assigment
+db.sports.find()
+db.sports.updateOne({title: "Reds"}, {$set: {title: "Reds", requiresTeam: true}}, {upsert: true})
+db.sports.updateOne({title: "Blues"}, {$set: {title: "Blues", requiresTeam: false}}, {upsert: true})
+db.sports.updateOne({requiresTeam: true}, {$set: {minPlayersRequired: 4}})
+db.sports.updateOne({requiresTeam: true}, {$inc: {minPlayersRequired: 10}})
+
+db.users.find()
+db.users.find({$and: [{"hobbies.title": "Sports"}, {"hobbies.frequency": {$gte: 3}}]})
+db.users.find({hobbies: {$elemMatch: {title: "Sports", frequency: {$gte: 3}}}})
+db.users.updateMany({hobbies: {$elemMatch: {title: "Sports", frequency: {$gte: 3}}}}, {$set: {"hobbies.$.highFrequency": true}})
+
+db.users.find({'hobbies.frequency': {$gt: 2}})
+db.users.updateMany({'hobbies.frequency': {$gt: 2}}, {$set: {'hobbies.$.goodFrequency': true}})
+db.users.updateMany({'hobbies.frequency': {$gt: 2}}, {$set: {'hobbies.$[].goodFrequency': true}})
+
+db.users.find({totalage: {$gt:30}})
+db.users.updateMany({totalage: {$gt:30}}, {$inc: {'hobbies.$[].frequency': -10}})
+
+db.users.find()
+db.users.find({'hobbies.frequency': {$gt:2}})
+db.users.updateMany({'hobbies.frequency': {$gt:2}}, {$set: {'hobbies.$[].goodFrequency': true}})
+db.users.updateMany({'hobbies.frequency': {$gt:2}}, {$set: {'hobbies.$[el].goodFrequency': false}}, {arrayFilters: [{'el.frequency': {$gt:2}}]})
+
+db.users.updateOne({name: 'Maria'}, {$push: {hobbies: {title: 'Sports', frequency: 2}}})
+db.users.updateOne({name: 'Maria'}, {$push: {hobbies: {$each: [{title: 'Sports', frequency: 2}, {title:'Yogaa', frequency: 10}]}}})
+db.users.updateOne({name: 'Maria'}, {$push: {hobbies: {$each: [{title: 'ZSports', frequency: 2}, {title:'Zogaa', frequency: 10}], $sort:{frequency: -1}, $slice:1}}})
+db.users.updateOne({name: 'Maria'}, {$addToSet: {hobbies: {$each: [{title: 'Sports', frequency: 2}, {title:'Yogaa', frequency: 10}]}}})
+db.users.updateOne({name: 'Maria'}, {$addToSet: {hobbies: {$each: [{title: 'ASports', frequency: 2}, {title:'AYogaa', frequency: 10}]}}})
+db.users.updateOne({name: 'Maria'}, {$pull: {hobbies: {title: 'ASports'}}})
+
+
+
+db.users.updateOne({name: 'Chris'}, {$pull: {hobbies: {goodFrequency: true}}})
+db.users.updateOne({name: 'Maria'}, {$pop: {hobbies: 1}})
+db.users.updateOne({name: 'Maria'}, {$pop: {hobbies: -1}})
+
+db.survey.insertOne( { _id: 1, scores: [ 0, 2, 5, 5, 1, 0 ] } )
+db.survey.find()
+db.survey.updateOne( { _id: 1 }, { $pull: { scores: 0 } } )
+db.survey.updateOne( { _id: 1 }, { $pullAll: { scores: [ 0, 5 ] } } )
+
+db.test.insertOne({
+  name: 'Manuel',
+  hobbies: [
+    {
+      title: 'Cooking',
+      frequency: 4,
+      goodFrequency: true,
+    },
+    {
+      title: 'Cars',
+      frequency: 1,
+      goodFrequency: true,
+    },
+  ],
+  phone: '02122461767',
+  isSporty: false,
+  totalage: 32,
+})
+db.test.updateOne({name: 'Manuel'}, {$pull: {hobbies: {title: {$in: ['Cars', 'Cooking']}}}})
+db.test.find()
+
+// LESSON 9 DELETE OPERATIONS
