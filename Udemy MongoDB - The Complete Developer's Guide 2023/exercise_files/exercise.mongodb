@@ -698,3 +698,9 @@ db.test.updateOne({name: 'Manuel'}, {$pull: {hobbies: {title: {$in: ['Cars', 'Co
 db.test.find()
 
 // LESSON 9 DELETE OPERATIONS
+db.users.find()
+db.users.deleteOne({name: "Chris"})
+db.users.deleteMany({age: {$gt:30}, isSporty:true})
+db.users.deleteMany({$or: [{age: {$gt:30}}, {isSporty:true}]})
+db.users.deleteMany({})
+db.users.drop()
