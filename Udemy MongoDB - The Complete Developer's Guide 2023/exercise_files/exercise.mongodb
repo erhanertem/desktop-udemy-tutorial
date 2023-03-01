@@ -704,3 +704,97 @@ db.users.deleteMany({age: {$gt:30}, isSporty:true})
 db.users.deleteMany({$or: [{age: {$gt:30}}, {isSporty:true}]})
 db.users.deleteMany({})
 db.users.drop()
+
+// LESSON 10 WORKING WITH INDEXES
+// @CLI
+// mongoimport persons.json -d test -c contacts -- jsonArray --drop
+
+db.contacts.find().count()
+db.contacts.findOne()
+db.contacts.find({"dob.age": {$gt: 60}})
+db.contacts.explain().find({"dob.age": {$gt: 60}})
+db.contacts.explain('executionStats').find({"dob.age": {$gt: 60}})
+
+db.contacts.createIndex({'dob.age': -1})
+db.contacts.createIndex({'dob.age': 1})
+db.contacts.createIndex({gender: 1})
+db.contacts.dropIndex({'dob.age': 1})
+db.contacts.dropIndex({gender: 1})
+
+db.contacts.createIndex({'dob.age':1, gender:1})
+db.contacts.explain("executionStats").find({'dob.age':35, gender: 'male'})
+
+db.contacts.explain().find({'dob.age': 35}).sort({gender: 1})
+
+db.contacts.getIndexes()
+
+db.contacts.createIndex({email: 1}, {unique: true})
+
+db.contacts.dropIndex({'dob.age': 1})
+db.contacts.dropIndex({
+      "dob.age": 1,
+      "gender": 1
+    })
+
+db.contacts.createIndex({'dob.age': 1}, {partialFilterExpression: {gender: 'male'}})
+db.contacts.explain().find({'dob.age': {$gt: 60}})
+db.contacts.explain().find({'dob.age': {$gt: 60}, gender: 'male' })
+db.contacts.dropIndex({'dob.age': 1})
+db.contacts.createIndex({'dob.age': 1}, {partialFilterExpression: {'dob.age': {$gt:60}}})
+db.contacts.explain().find({'dob.age': {$gt: 60}})
+
+db.users.insertMany([{name: 'Max', email: 'max@test.com'}, {name: 'Manu'}])
+db.users.createIndex({email: 1})
+db.users.dropIndex({email: 1})
+db.users.createIndex({email: 1}, {unique: true})
+db.users.dropIndex({email: 1})
+db.users.createIndex({email: 1}, {unique: true, partialFilterExpression: {email: {$exists: true}}})
+db.users.insertOne({name: 'Anna'})
+
+db.sessions.insertOne({data: '111111111', createdAt: new Date()})
+db.sessions.find()
+db.sessions.createIndex({createdAt: 1}, {expireAfterSeconds: 10})
+db.sessions.insertOne({data: '4', createdAt: new Date()})
+db.sessions.getIndexes()
+db.sessions.dropIndex({createdAt: 1})
+
+db.customers.insertMany([{name: 'Max', age: 29, salary: 3000}, {name: 'Manu', age: 30, salary:4000}])
+db.customers.createIndex({name: 1})
+db.customers.explain('executionStats').find({name: 'Max'})
+db.customers.explain('executionStats').find({name: 'Max'}, {_id:0, name:1})
+db.customers.createIndex({age:1, name:1})
+db.customers.getIndexes()
+db.customers.explain().find({name: 'Max', age: 30})
+
+db.contacts.insertOne({
+  name: 'Max',
+  hobbies: ['Cooking', 'Sports'],
+  addresses: [{ street: 'Main Street' }, { street: 'Second Street' }],
+});
+db.contacts.createIndex({hobbies: 1})
+db.contacts.explain('executionStats').find({hobbies: 'Sports'})
+db.contacts.explain('executionStats').find({'addresses.street': 'Main Street'})
+db.contacts.createIndex({'addresses.street': 1})
+db.contacts.explain('executionStats').find({'addresses.street': 'Main Street'})
+
+db.products.createIndex({description:'text'}) 
+db.products.find({$text: {$search: 'cpu'}})
+db.products.find({$text: {$search: '\"help me\"'}})
+db.products.find({$text: {$search: 'awesome t-shirt'}})
+db.products.find({$text: {$search: 'awesome -t-shirt'}})
+db.products.find({$text: {$search: 'awesome t-shirt', {score: {$meta: 'textScore'}}}})
+
+db.products.createIndex({title: 'text', description: 'text'}, {default_language: 'turkish'})
+db.products.find({$text: {$search: 'nike', $caseSensitive: true}})
+
+show dbs
+show collections
+db.ratings.countDocuments()
+db.ratings.createIndex({age: 1})
+db.ratings.explain('executionStats').find({age: {$gt: 80}})
+db.ratings.dropIndex({age: 1})
+db.ratings.explain('executionStats').find({age: {$gt: 80}})
+
+db.ratings.createIndex({age: 1}, {background: true})
+
+// LESSON 11 WORKING WITH GEOJSON DATA
