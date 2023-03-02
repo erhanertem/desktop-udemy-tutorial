@@ -798,3 +798,186 @@ db.ratings.explain('executionStats').find({age: {$gt: 80}})
 db.ratings.createIndex({age: 1}, {background: true})
 
 // LESSON 11 WORKING WITH GEOJSON DATA
+db.places.insertOne({
+  name: 'California Academy of Sciences',
+  location: { type: 'Point', coordinates: [-122.4724356, 37.7672544] },
+});
+
+db.places.find({location: {$near: {$geometry: {type: 'Point', coordinates: [-122.471114, 37.771104]}}}})
+
+db.places.createIndex({location: '2dsphere'})
+db.places.find({
+  location: {
+    $near: {
+      $geometry: { type: 'Point', coordinates: [-122.471114, 37.771104] },
+      $maxDistance: 400,
+      $minDistance: 10,
+    },
+  },
+});
+db.places.find({
+  location: {
+    $near: {
+      $geometry: { type: 'Point', coordinates: [-122.471114, 37.771104] },
+      $maxDistance: 500,
+      $minDistance: 10,
+    },
+  },
+});
+
+db.places.insertOne({
+  name: 'Conservatory of Flowers',
+  location: { type: 'Point', coordinates: [-122.4615748, 37.7701756] },
+});
+db.places.insertOne({
+  name: 'Golden Gate Tennis Court',
+  location: { type: 'Point', coordinates: [-122.4593702, 37.7705046] },
+});
+db.places.insertOne({
+  name: 'Nopa',
+  location: { type: 'Point', coordinates: [-122.4389058, 37.7747415] },
+});
+db.places.find()
+p1=[-122.4547,37.77473]
+p2=[-122.45303,37.76641]
+p3=[-122.51026,37.76411]
+p3=[-122.51088,37.77131]
+db.places.find({
+  location: {
+    $geoWithin: {
+      $geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [-122.4547, 37.77473],
+            [-122.45303, 37.76641],
+            [-122.51026, 37.76411],
+            [-122.51088, 37.77131],
+            [-122.4547, 37.77473],
+          ],
+        ],
+      },
+    },
+  },
+});
+
+
+db.areas.insertOne({
+  name: 'Golden Gate Park',
+  area: {
+    type: 'Polygon',
+    coordinates: [
+      [
+        [-122.4547, 37.77473],
+        [-122.45303, 37.76641],
+        [-122.51026, 37.76411],
+        [-122.51088, 37.77131],
+        [-122.4547, 37.77473],
+      ],
+    ],
+  },
+});
+db.areas.createIndex({area: "2dsphere"})
+db.areas.find()
+db.areas.find({
+  area: {
+    $geoIntersects: {
+      $geometry: { type: 'Point', coordinates: [-122.49089, 37.76992] },
+    },
+  },
+});
+db.places.find({
+  location: {
+    $geoWithin: { $centerSphere: [[-122.46203, 37.77286], 1 / 6378.1] },
+  },
+});
+
+// Assignment
+db.myloc.insertMany([
+  {
+    name: 'First Pin',
+    location: { type: 'Point', coordinates: [26.927827, 38.37963] },
+  },
+  {
+    name: 'Second Pin',
+    location: { type: 'Point', coordinates: [26.927685, 38.380235] },
+  },
+  {
+    name: 'Third Pin',
+    location: { type: 'Point', coordinates: [26.929152, 38.379871] },
+  },
+]);
+
+db.myloc.createIndex({ location: '2dsphere' });
+
+db.myloc.find({
+  location: {
+    $near: {
+      $geometry: { type: 'Point', coordinates: [26.928425, 38.379989] },
+      $maxDistance: 70,
+      $minDistance: 10,
+    },
+  },
+});
+
+db.myloc.find({
+  location: {
+    $geoWithin: {
+      $geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [26.92769, 38.38003],
+            [26.92904, 38.380633],
+            [26.929344, 38.379856],
+            [26.927829, 38.379393],
+            [26.92769, 38.38003],
+          ],
+        ],
+      },
+    },
+  },
+});
+
+db.myareas.insertMany([
+  {
+    name: 'My Perimeter 1',
+    area: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [26.92769, 38.38003],
+          [26.92904, 38.380633],
+          [26.929344, 38.379856],
+          [26.927829, 38.379393],
+          [26.92769, 38.38003],
+        ],
+      ],
+    },
+  },
+  {
+    name: 'My Perimeter 2',
+    area: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [26.928535, 38.379413],
+          [26.928135, 38.379979],
+          [26.928472, 38.380457],
+          [26.929395, 38.380277],
+          [26.928535, 38.379413],
+        ],
+      ],
+    },
+  },
+]);
+
+db.myareas.createIndex({ area: '2dsphere' });
+
+db.myareas.find({
+  area: {
+    $geoIntersects: {
+      $geometry: { type: 'Point', coordinates: [26.928425, 38.379989] },
+    },
+  },
+});
