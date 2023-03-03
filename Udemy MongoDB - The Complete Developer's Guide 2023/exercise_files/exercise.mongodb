@@ -1359,3 +1359,42 @@ db.transformedPersons.aggregate([
     },
     {$limit: 2}
   ])
+
+  // LESSON 13 WORKING WITH NUMERIC DATA
+db.persons.insertOne({name: 'Max', age: 29})
+db.persons.find()
+db.persons.stats()
+db.persons.deleteMany({})
+db.persons.insertOne({age: 29})
+db.persons.insertOne({age: NumberInt(29)})
+db.persons.insertOne({age: NumberInt('29')})
+
+db.companies.insertOne({valuation: NumberInt('5000000000')})
+db.companies.find()
+db.companies.insertOne({valuation: 5000000000})
+db.companies.find()
+db.companies.insertOne({valuation: NumberLong('15000000000')})
+db.companies.find()
+db.companies.insertOne({valuation: NumberLong('9999999999999999998')})
+db.companies.find()
+
+db.accounts.insertOne({name: 'Max', amount: '121281263645664636367237272772887282'})
+db.accounts.find()
+db.accounts.deleteMany({})
+db.accounts.insertOne({name: 'Max', amount: NumberInt('10')})
+
+db.companies.drop({})
+db.companies.insertOne({valuation: NumberLong('12345678912345678')})
+db.companies.insertOne({valuation: 12345678912345678})
+db.companies.insertOne({valuation: NumberLong('15000000000')})
+db.companies.find()
+db.companies.updateMany({}, {$inc: {valuation: NumberLong('1')}})
+db.companies.updateMany({}, {$inc: {valuation: 1}})
+
+db.sciences.insertOne({a:0.3, b:0.1})
+db.sciences.find()
+db.sciences.aggregate([{$project: {result: {$subtract:['$a', '$b']}}}])
+
+db.sciences.drop({})
+db.sciences.insertOne({a:NumberDecimal('0.3'), b:NumberDecimal('0.1')})
+db.sciences.aggregate([{$project: {result: {$subtract:['$a', '$b']}}}])
