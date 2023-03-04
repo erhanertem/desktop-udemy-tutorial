@@ -1483,3 +1483,5 @@ usersCol.deleteOne({_id: ObjectId('6403755af99e98c4705ab5aa')})
 postsCol.deleteMany({userId: ObjectId('6403755af99e98c4705ab5aa')})
 session.commitTransaction()
 session.abortTransaction()
+
+// LESSON 17 FROM SHELL TO DRIVER
