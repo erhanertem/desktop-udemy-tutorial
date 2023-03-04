@@ -1453,3 +1453,14 @@ db.getUsers()
 
 //--->ENCRYPTION AT REST
 
+// LESSON 15 PERFORMANCE, FAULT TOLERANCE & DEPLOYMENT
+// Capped collections
+db.createCollection('capped', {capped: true, size: 10000, max: 3})
+db.capped.insertOne({name: 'Max'})
+db.capped.insertOne({name: 'Menu'})
+db.capped.insertOne({name: 'Mad'})
+db.capped.insertOne({name: 'Anna'})
+db.capped.find()
+db.capped.find().sort({$natural: -1})
+
+// LESSON 16 TRANSACTIONS
