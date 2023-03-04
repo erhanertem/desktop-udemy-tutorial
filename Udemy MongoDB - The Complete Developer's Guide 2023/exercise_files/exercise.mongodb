@@ -1464,3 +1464,22 @@ db.capped.find()
 db.capped.find().sort({$natural: -1})
 
 // LESSON 16 TRANSACTIONS
+use temp
+db.users.insertOne({name: 'Max'})
+db.users.find()
+db.posts.insertMany([{title: 'First Post', userId: ObjectId('6403755af99e98c4705ab5aa')}, {title: 'Second Post', userId:ObjectId('6403755af99e98c4705ab5aa')}])
+
+// Manually remove related docs on distinct collections 
+db.users.deleteOne({_id: ObjectId('6403755af99e98c4705ab5aa')})
+db.posts.deleteMany({userId: ObjectId('6403755af99e98c4705ab5aa')})
+
+//Remove all related docs in a transaction session 
+const session = db.getMongo().startSession()
+session.startTransaction()
+const usersCol = session.getDatabase('test').users
+const postsCol = session.getDatabase('test').posts
+db.users.find()
+usersCol.deleteOne({_id: ObjectId('6403755af99e98c4705ab5aa')})
+postsCol.deleteMany({userId: ObjectId('6403755af99e98c4705ab5aa')})
+session.commitTransaction()
+session.abortTransaction()
