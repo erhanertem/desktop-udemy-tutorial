@@ -1360,7 +1360,7 @@ db.transformedPersons.aggregate([
     {$limit: 2}
   ])
 
-  // LESSON 13 WORKING WITH NUMERIC DATA
+// LESSON 13 WORKING WITH NUMERIC DATA
 db.persons.insertOne({name: 'Max', age: 29})
 db.persons.find()
 db.persons.stats()
@@ -1398,3 +1398,58 @@ db.sciences.aggregate([{$project: {result: {$subtract:['$a', '$b']}}}])
 db.sciences.drop({})
 db.sciences.insertOne({a:NumberDecimal('0.3'), b:NumberDecimal('0.1')})
 db.sciences.aggregate([{$project: {result: {$subtract:['$a', '$b']}}}])
+
+// LESSON 14 MONGODB & SECURITY
+use admin
+db.createUser({user: 'erhanertem', pwd: 'password', roles: ['userAdminAnyDatabase']})
+db.auth('erhanertem', 'password')
+db.getUser('erhanertem')
+db.updateUser('erhanertem', {
+  pwd: 'pass',
+  roles: ['readWrite', { role: 'readWrite', db: 'movies' }],
+});
+
+use sales
+db.createUser({user: 'dbadmin', pwd: 'password', roles: ['dbAdmin']})
+db.createUser({user: 'useradmin', pwd: 'password', roles: ['userAdmin']})
+db.createUser({user: 'dev', pwd: 'password', roles: ['readWrite', {role: 'readWrite', db: 'customers'}]})
+db.getUsers()
+
+// --->SSL TRANSPORT ENCRYPTION
+//-->#1.Create SSL certificates
+// openssl req -newkey rsa:2048 -new -x509 -days 365 -nodes -out mongodb-cert.crt -keyout mongodb-cert.key
+//-->#2.Create pem file from SSL certs
+// cat mongodb-cert.key mongodb-cert.crt > mongodb.pem
+//-->#3.Set mondgoDB driver to use sslCert
+// mongod --sslMode requireSSL --sslPEMKeyFile " C:\Data\db\mongodb.pem" --sslCAFile "C:\Data\db\caToValidateClientCertificates.pem" --dbpath "C:\Data\db"
+//-->#4.Execute mongoshell in ssl mode
+// mongosh --tls --tlsCAFile mongodb.pem --host localhost 
+// -->#5.OR ALTERNATELY create a mongodb.cfg file
+// # mongod.conf
+ 
+// # for documentation of all options, see:
+// #   http://docs.mongodb.org/manual/reference/configuration-options/
+ 
+// # Where and how to store data.
+// storage:
+//   dbPath: C:\Data\db
+//   journal:
+//     enabled: true
+// # where to write logging data.
+// systemLog:
+//   destination: file
+//   logAppend: true
+//   path:  C:\Program Files\MongoDB\Server\6.0\log\mongod.log
+ 
+// # network interfaces
+// net:
+//   bindIp: localhost
+//   port: 27017
+//   tls:
+//     mode: requireTLS
+//     disabledProtocols: TLS1_0,TLS1_1
+//     certificateKeyFile: C:\Data\db\mongodb.pem
+//     # CAFile: C:\Data\db\caToValidateClientCertificates.pem
+
+//--->ENCRYPTION AT REST
+
