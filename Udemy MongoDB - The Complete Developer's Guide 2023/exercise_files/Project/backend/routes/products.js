@@ -21,6 +21,7 @@ router.get('/', (req, res, next) => {
   // }
   const products = [];
   db.getDb()
+    .db()
     .collection('products')
     .find()
     .forEach(productDoc => {
@@ -51,6 +52,7 @@ router.post('', (req, res, next) => {
     image: req.body.image,
   };
   db.getDb()
+    .db()
     .collection('products')
     .insertOne(newProduct)
     .then(result => {
