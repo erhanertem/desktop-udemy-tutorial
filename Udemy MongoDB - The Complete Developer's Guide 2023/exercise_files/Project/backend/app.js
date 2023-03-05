@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const mongodb = require('mongodb').MongoClient;
+// const mongodb = require('mongodb').MongoClient;
 
 const productRoutes = require('./routes/products');
 const authRoutes = require('./routes/auth');
@@ -27,17 +27,16 @@ app.use((req, res, next) => {
 app.use('/products', productRoutes);
 app.use('/', authRoutes);
 
-mongodb
-  .connect(
-    'mongodb+srv://tempuser:bk6StPv7Oz9MOqHS@cluster0.rrttevo.mongodb.net/?retryWrites=true&w=majority'
-  )
-  .then(client => {
-    console.log('Connected!');
-    client.db().collection('products').insertOne(newProduct);
-    client.close();
-  })
-  .catch(err => {
-    console.log(err.message);
-  });
+// mongodb
+//   .connect(
+//     'mongodb+srv://tempuser:bk6StPv7Oz9MOqHS@cluster0.rrttevo.mongodb.net/?retryWrites=true&w=majority'
+//   )
+//   .then(client => {
+//     console.log('Connected!');
+//     client.close();
+//   })
+//   .catch(err => {
+//     console.log(err.message);
+//   });
 
 app.listen(3100);
