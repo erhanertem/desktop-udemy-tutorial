@@ -9,16 +9,16 @@ const initDb = callback => {
   if (_db) {
     console.log('Database is already initialized!');
     return callback(null, _db);
-  } else
-    MongoClient.connect(mongoDbURL)
-      .then(client => {
-        console.log('Database initialized');
-        _db = client.db();
-        callback(null, _db);
-      })
-      .catch(err => {
-        callback(err);
-      });
+  }
+  MongoClient.connect(mongoDbURL)
+    .then(client => {
+      console.log('Database initialized');
+      _db = client.db();
+      callback(null, _db);
+    })
+    .catch(err => {
+      callback(err);
+    });
 };
 
 //Get access to existing connection
