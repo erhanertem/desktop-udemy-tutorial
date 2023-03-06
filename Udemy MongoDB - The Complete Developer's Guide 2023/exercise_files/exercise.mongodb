@@ -1485,3 +1485,5 @@ session.commitTransaction()
 session.abortTransaction()
 
 // LESSON 17 FROM SHELL TO DRIVER
+db.products.createIndex({price: 1})
+db.users.createIndex({email: 1}, {unique: true})
