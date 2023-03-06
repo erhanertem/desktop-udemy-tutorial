@@ -18,6 +18,12 @@ router.get('/', (req, res, next) => {
     .collection('products')
     .find()
     // .sort({ price: -1 })
+    /*
+    IMPORTANT!
+    Its a good idea to provide index on pricing if we are frequentyl sorting products. This is not done thru node.js app but thru server admin.
+    db.products.createIndex({price: 1})
+    Direction of index do not matter. From node.js even if its -1, index is traversed automatically in mongoDB.
+    */
     // .skip((queryPage - 1) * pageSize)
     // .limit(pageSize)
     .forEach(productDoc => {
