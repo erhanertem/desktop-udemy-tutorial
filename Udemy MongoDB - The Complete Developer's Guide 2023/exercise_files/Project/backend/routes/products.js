@@ -9,17 +9,6 @@ const router = Router();
 
 // Get list of products products
 router.get('/', (req, res, next) => {
-  // // Return a list of dummy products
-  // // Later, this data will be fetched from MongoDB
-  // const queryPage = req.query.page;
-  // const pageSize = 5;
-  // let resultProducts = [...products];
-  // if (queryPage) {
-  //   resultProducts = products.slice(
-  //     (queryPage - 1) * pageSize,
-  //     queryPage * pageSize
-  //   );
-  // }
   const products = [];
   db.getDb()
     .db()
@@ -87,14 +76,35 @@ router.patch('/:id', (req, res, next) => {
     price: new Decimal128(req.body.price.toString()), // store this as 128bit decimal in MongoDB
     image: req.body.image,
   };
-  console.log(updatedProduct);
-  res.status(200).json({ message: 'Product updated', productId: 'DUMMY' });
+  db.getDb()
+    .db()
+    .collection('products')
+    .updateOne({ _id: new ObjectId(req.params.id) }, { $set: updatedProduct })
+    .then(result => {
+      res
+        .status(200)
+        .json({ message: 'Product Updated', productId: req.params.id });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'An error occured' });
+    });
 });
 
 // Delete a product
 // Requires logged in user
 router.delete('/:id', (req, res, next) => {
-  res.status(200).json({ message: 'Product deleted' });
+  db.getDb()
+    .db()
+    .collection('products')
+    .deleteOne({ _id: new ObjectId(req.params.id) })
+    .then(result => {
+      res.status(200).json({ message: 'Product deleted' });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'An error occured' });
+    });
 });
 
 module.exports = router;
