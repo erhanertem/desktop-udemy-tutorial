@@ -1,4 +1,4 @@
-function add(
+function add_a(
   n1: number,
   n2: number,
   showResult: boolean,
@@ -20,7 +20,7 @@ number3 = 5;
 // const number1 = '5';
 const number1 = 5;
 const number2 = 2.8;
-const printResult = true;
+const printResult_a = true;
 const resultPhrase = 'Result is: ';
 
-add(number1, number2, printResult, resultPhrase);
+add_a(number1, number2, printResult_a, resultPhrase);
