@@ -50,14 +50,14 @@
 // const copiedPerson = person;
 // const copiedPerson = { ...person }; //perfect copy of an object - not a copy of an object in the memory
 
-// const add = (...numbers: number[]) => {
-//   //Array of arguments
-//   return numbers.reduce((curResult, curValue) => {
-//     return curResult + curValue;
-//   }, 0);
-// };
-// const addNumbers = add(5, 10, 2, 3, 7);
-// console.log(addNumbers);
+const add = (...numbers: number[]): number => {
+  //Array of arguments
+  return numbers.reduce((curResult, curValue) => {
+    return curResult + curValue;
+  }, 0);
+};
+const addNumbers = add(5, 10, 2, 3, 7);
+console.log(addNumbers);
 
 // const add2 = (...numbers: [number, number, number]) => {
 //   //tuple version arguments with restiricted length and types individually stated
