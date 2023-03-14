@@ -204,6 +204,9 @@
 //   }
 // }
 
+interface Form {}
+const validators: Form = {};
+
 //-->VALIDATION DECORATORS
 interface ValidatorConfig {
   [property: string]: {
@@ -213,9 +216,9 @@ interface ValidatorConfig {
 
 const registeredValidators: ValidatorConfig = {};
 
-//property decorator
+//property decorator applied @ 'title'
 function Required(target: any, propName: string) {
-  //target: COURSE CLASS, target.constructor.name: COURSE CLASS NAME
+  //target: COURSE CLASS, target.constructor.name: COURSE CLASS NAME, propname: 'title'
   // registeredValidators is required to have index notation here
   // because that is how it was defined in the interface.
   // console.log(target, target.constructor, target.constructor.name);
@@ -227,9 +230,10 @@ function Required(target: any, propName: string) {
       'required',
     ],
   };
+  console.log(registeredValidators[target.constructor.name]);
 }
 
-//property decorator
+//property decorator applied @ 'price'
 function PositiveNumber(target: any, propName: string) {
   registeredValidators[target.constructor.name] = {
     ...registeredValidators[target.constructor.name],
@@ -240,12 +244,14 @@ function PositiveNumber(target: any, propName: string) {
       'positive',
     ],
   };
+  console.log(registeredValidators[target.constructor.name]);
 }
 
 //  The input obj is the object that we are validating (IN THIS CASE createdcourse).
 function validate(obj: any) {
   // Because of the prototype chain (inheritance from the base class) we can grab the name of the constructor of the object we are validating and use it as a key to collect the validator configuration.
   const objValidatorConfig = registeredValidators[obj.constructor.name];
+  console.log(objValidatorConfig);
   if (!objValidatorConfig) {
     return true;
   }
@@ -275,6 +281,7 @@ function validate(obj: any) {
 
 class Course {
   @Required
+  @PositiveNumber
   title: string;
   @PositiveNumber
   price: number;
@@ -301,6 +308,6 @@ courseForm.addEventListener('submit', event => {
     return;
   }
 
-  console.log(createdCourse);
-  console.log('🎞', registeredValidators);
+  console.log('object created as ', createdCourse);
+  console.log('🎞 registered validator', registeredValidators);
 });
