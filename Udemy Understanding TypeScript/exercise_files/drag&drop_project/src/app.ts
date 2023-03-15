@@ -1,4 +1,47 @@
 // Code goes here!
+//Validation Logic
+interface ValidationOptions {
+  value: string | number;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+}
+function validate(validatableInput: ValidationOptions) {
+  let isValid = true;
+  if (validatableInput.required) {
+    isValid = isValid && validatableInput.value.toString().trim().length !== 0;
+  }
+  if (
+    validatableInput.minLength != null &&
+    typeof validatableInput.value === 'string'
+  ) {
+    isValid =
+      isValid && validatableInput.value.length > validatableInput.minLength;
+  }
+  if (
+    validatableInput.maxLength != null &&
+    typeof validatableInput.value === 'string'
+  ) {
+    isValid =
+      isValid && validatableInput.value.length < validatableInput.maxLength;
+  }
+  if (
+    validatableInput.min != null &&
+    typeof validatableInput.value === 'number'
+  ) {
+    isValid = isValid && validatableInput.value > validatableInput.min;
+  }
+  if (
+    validatableInput.max != null &&
+    typeof validatableInput.value === 'number'
+  ) {
+    isValid = isValid && validatableInput.value < validatableInput.max;
+  }
+  return isValid;
+}
+
 //AutoBind decorator
 function AutoBind(
   _1: any,
@@ -47,8 +90,8 @@ class ProjectInput {
       '#people'
     ) as HTMLInputElement;
 
-    this.configure();
     this.attach();
+    this.configure();
   }
 
   private gatherUserInput(): [string, string, number] | void {
@@ -56,10 +99,34 @@ class ProjectInput {
     const enteredDescription = this.descriptionInputElement.value;
     const enteredPeople = this.peopleInputElement.value;
 
+    const titleValidatable: ValidationOptions = {
+      value: enteredTitle,
+      required: true,
+    };
+    const descriptionValidatable: ValidationOptions = {
+      value: enteredDescription,
+      required: true,
+      minLength: 5,
+    };
+    const peopleValidatable: ValidationOptions = {
+      value: enteredPeople,
+      required: true,
+      min: 1,
+      max: 5,
+    };
+
     if (
-      enteredTitle.trim().length === 0 ||
-      enteredDescription.trim().length === 0 ||
-      enteredPeople.trim().length === 0
+      // enteredTitle.trim().length === 0 ||
+      // enteredDescription.trim().length === 0 ||
+      // enteredPeople.trim().length === 0
+      //
+      // validate({ value: enteredTitle, required: true, minLength: 5 }) &&
+      // validate({ value: enteredDescription, required: true, minLength: 5 }) &&
+      // validate({ value: enteredPeople, required: true, minLength: 5 })
+      //
+      !validate(titleValidatable) ||
+      !validate(descriptionValidatable) ||
+      !validate(peopleValidatable)
     ) {
       alert('Invalid input, please try again!');
       return;
@@ -69,7 +136,7 @@ class ProjectInput {
   @AutoBind
   private submitHandler(event: Event) {
     event.preventDefault();
-    console.log(this.titleInputElement.value);
+    // console.log(this.titleInputElement.value);
     const userInput = this.gatherUserInput();
     if (Array.isArray(userInput)) {
       const [title, desc, people] = userInput;
