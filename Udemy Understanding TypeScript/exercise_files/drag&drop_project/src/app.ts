@@ -1,9 +1,27 @@
 // Code goes here!
 
+//Project Type
+enum ProjectStatus {
+  Active,
+  Finished,
+}
+
+class Project {
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus
+  ) {}
+}
+
 //Project State Management
+type Listener = (items: Project[]) => void; // functions are typed not interfaced
+
 class ProjectState {
-  private listeners: any[] = [];
-  private projects: any[] = []; //create a list for the projects
+  private listeners: Listener[] = [];
+  private projects: Project[] = []; //create a list for the projects
   private static instance: ProjectState;
 
   private constructor() {}
@@ -16,20 +34,29 @@ class ProjectState {
     return this.instance;
   }
 
-  addListener(listenerFn: Function) {
+  addListener(listenerFn: Listener) {
     this.listeners.push(listenerFn);
   }
 
   addProject(title: string, description: string, numOfPeople: number) {
     //create project object
-    const newProject = {
-      id: Math.random().toString(),
-      title: title,
-      description: description,
-      people: numOfPeople,
-    };
+    // const newProject = {
+    //   id: Math.random().toString(),
+    //   title: title,
+    //   description: description,
+    //   people: numOfPeople,
+    // };
+    const newProject = new Project(
+      Math.random().toString(),
+      title,
+      description,
+      numOfPeople,
+      ProjectStatus.Active
+    );
+
     //add to the project list
     this.projects.push(newProject);
+
     //Shuffle thru list of registered listeners by pushing the copy of project array object
     for (const listenerFn of this.listeners) {
       listenerFn(this.projects.slice()); //we insert a copy of the projects array so that the original array doesnt gets accidentally modified
@@ -103,14 +130,14 @@ class ProjectList {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLElement;
-  assignedProjects: any[] = [];
+  assignedProjects: Project[];
 
   constructor(private type: 'active' | 'finished') {
     this.templateElement = document.getElementById(
       'project-list'
     )! as HTMLTemplateElement;
     this.hostElement = document.getElementById('app')! as HTMLDivElement;
-    // this.assignedProjects = [];
+    this.assignedProjects = [];
 
     const importedNode = document.importNode(
       this.templateElement.content,
@@ -120,7 +147,7 @@ class ProjectList {
     this.element = importedNode.firstElementChild as HTMLElement; //https://developer.mozilla.org/en-US/docs/Web/API
     this.element.id = `${this.type}-projects`;
 
-    projectState.addListener((projects: any[]) => {
+    projectState.addListener((projects: Project[]) => {
       this.assignedProjects = projects;
       this.renderProjects();
     });
