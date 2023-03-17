@@ -67,6 +67,18 @@ class ProjectState extends State<Project> {
     this.projects.push(newProject);
 
     //Shuffle thru list of registered listeners by pushing the copy of project array object
+    this.updateListeners();
+  }
+
+  moveProject(projectId: string, newStatus: ProjectStatus) {
+    const project = this.projects.find(prj => prj.id === projectId);
+    if (project && project.status !== newStatus) {
+      project.status = newStatus;
+      this.updateListeners();
+    }
+  }
+
+  private updateListeners() {
     for (const listenerFn of this.listeners) {
       listenerFn(this.projects.slice()); //we insert a copy of the projects array so that the original array doesnt gets accidentally modified
     }
@@ -157,7 +169,7 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
       true
     );
 
-    this.element = importedNode.firstElementChild as U; //https://developer.mozilla.org/en-US/docs/Web/API
+    this.element = importedNode.firstElementChild as U; //LINK: https://developer.mozilla.org/en-US/docs/Web/API
     if (newElementId) {
       this.element.id = newElementId;
     }
@@ -201,7 +213,13 @@ class ProjectItem
 
   @AutoBind
   dragStartHandler(event: DragEvent): void {
-    console.log(event);
+    /* 
+    NOTE: Per HTML Drag and Drop API - drag events provide datatransfer property which you can load drag event with some data to be cross check on the dropped area. In order to board data we are provided with setData function by JS. 
+    LINK: https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/effectAllowed
+    */
+    // ATTACH DATA FOR DRAG-DROP
+    event.dataTransfer!.setData('text/plain', this.project.id);
+    event.dataTransfer!.effectAllowed = 'move';
   }
 
   dragEndHandler(_: DragEvent): void {
@@ -236,16 +254,27 @@ class ProjectList
   }
 
   @AutoBind
-  dragOverHandler(_: DragEvent): void {
-    const listEl = this.element.querySelector('ul')!;
-    listEl.classList.add('droppable');
+  dragOverHandler(event: DragEvent): void {
+    // CHECK IF DRAG COULD BE DROPPED HERE
+    if (event.dataTransfer && event.dataTransfer.types[0] === 'text/plain') {
+      event.preventDefault();
+      const listEl = this.element.querySelector('ul')!;
+      listEl.classList.add('droppable');
+    }
   }
   @AutoBind
   dragLeaveHandler(_: DragEvent): void {
     const listEl = this.element.querySelector('ul')!;
     listEl.classList.remove('droppable');
   }
-  dropHandler(_: DragEvent): void {}
+  @AutoBind
+  dropHandler(event: DragEvent): void {
+    const prjId = event.dataTransfer!.getData('text/plain');
+    projectState.moveProject(
+      prjId,
+      this.type === 'active' ? ProjectStatus.Active : ProjectStatus.Finished
+    );
+  }
 
   private renderProjects() {
     // select where to add
@@ -307,11 +336,6 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     this.configure();
   }
 
-  // #1. Solving this issue with bind(this) @ submit handler
-  // private configure() {
-  //   this.element.addEventListener('submit', this.submitHandler.bind(this));
-  // }
-  // #2. Solving thru class method decorator function to submitHandler
   configure() {
     this.element.addEventListener('submit', this.submitHandler);
   }
@@ -342,14 +366,6 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     };
 
     if (
-      // enteredTitle.trim().length === 0 ||
-      // enteredDescription.trim().length === 0 ||
-      // enteredPeople.trim().length === 0
-      //
-      // validate({ value: enteredTitle, required: true, minLength: 5 }) &&
-      // validate({ value: enteredDescription, required: true, minLength: 5 }) &&
-      // validate({ value: enteredPeople, required: true, minLength: 5 })
-      //
       !validate(titleValidatable) ||
       !validate(descriptionValidatable) ||
       !validate(peopleValidatable)
