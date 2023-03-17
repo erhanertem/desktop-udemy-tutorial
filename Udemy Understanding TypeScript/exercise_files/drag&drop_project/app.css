@@ -126,3 +126,8 @@ button:active {
   border: 1px solid #ff0062;
   background: #f7f7f7;
 }
+
+.childElement {
+  pointer-events: none;
+}
+/* IMPORTANT - drag drop flickering while hovering over child elements gets turned off in chromium..this is the solution to the problem and assigned class for these child elements */

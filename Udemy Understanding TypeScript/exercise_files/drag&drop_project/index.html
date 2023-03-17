@@ -28,9 +28,10 @@
     </template>
     <template id="single-project">
       <li draggable="true">
-        <h2></h2>
-        <h3></h3>
-        <p></p>
+        <!-- IMPORTANT - drag flickering issue recovery class CSS on child elements-->
+        <h2 class="childElement"></h2>
+        <h3 class="childElement"></h3>
+        <p class="childElement"></p>
       </li>
     </template>
     <template id="project-list">
