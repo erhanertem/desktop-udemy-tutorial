@@ -153,3 +153,170 @@ console.log(isLeapYear(2013));
 // hint - use modulo
 
 //LESSON 5 - OBJECT TYPES
+const dog = {
+  name: 'Elton',
+  breed: 'Australian Shephard',
+  age: 0.5,
+};
+
+function printName(person: { first: string; last: string }): void {
+  console.log(`${person.first} ${person.last}`);
+}
+
+// printName({ first: 2 , last: 3});
+printName({ first: 'Thomas', last: 'Jenkins' });
+// printName({ first: 'Mick', last: 'Jagger', age: 473 });
+const singer = { first: 'Mick', last: 'Jagger', age: 473, isAlive: true };
+printName(singer);
+
+let coordinate: { x: number; y: number } = { x: 34, y: 2 };
+
+function randomCoordinate(): { x: number; y: number } {
+  return { x: Math.random(), y: Math.random() };
+}
+
+// TYPE ALIAS - Named type
+type Point = {
+  x: number;
+  y: number;
+};
+
+// function doublePoint(point: { x: number; y: number }): {
+//   x: number;
+//   y: number;
+// } {
+//   return { x: point.x * 2, y: point.y * 2 };
+// }
+
+function doublePoint(point: Point): Point {
+  return { x: point.x * 2, y: point.y * 2 };
+}
+
+type Song = {
+  title: string;
+  artist: string;
+  numStreams: number;
+  credits: { producer: string; writer: string };
+};
+
+function calculatePayout(song: Song): number {
+  const x = song.numStreams * 0.0033;
+  console.log(x);
+  return x;
+}
+
+function printSong(song: Song): void {
+  console.log(`${song.title}-${song.artist}`);
+}
+
+const mySong: Song = {
+  title: 'Unchained Melody',
+  artist: 'Erhan ERTEM',
+  numStreams: 1211,
+  credits: {
+    producer: 'Ernie Welco',
+    writer: 'Elon Edinburg',
+  },
+};
+calculatePayout(mySong);
+printSong(mySong);
+
+type _3Point = {
+  x: number;
+  y: number;
+  z?: number; //make it optional, not required
+};
+const myPoint: Point = { x: 1, y: 3 };
+
+//READONLY MODIFIER
+
+type User = {
+  readonly id: number;
+  username: string;
+};
+
+const user: User = {
+  id: 123456,
+  username: 'catgirl',
+};
+console.log(user.id);
+// user.id = 1111;
+
+//INTERSECTION TYPE
+type Circle = {
+  radius: number;
+};
+
+type Colorful = {
+  color: string;
+};
+
+type ColorfulCircle = Circle & Colorful;
+
+const happyFace: ColorfulCircle = {
+  radius: 4,
+  color: 'yellow',
+};
+
+type Cat = {
+  numLives: number;
+};
+type Dog = {
+  breed: string;
+};
+type CatDog = Cat & Dog & { age: number };
+
+const christy: CatDog = {
+  numLives: 7,
+  breed: 'Husky',
+  age: 9,
+};
+
+//CODING CHALLENGE - SECTION 5
+// Write the Movie type alias to make the following two variables properly typed
+// Make sure that "originalTitle" is optional and "title" is readonly
+type Movie = {
+  readonly title: string;
+  originalTitle?: string;
+  director: string;
+  releaseYear: number;
+  boxOffice: {
+    budget: number;
+    grossUS: number;
+    grossWorldwide: number;
+  };
+};
+
+const dune: Movie = {
+  title: 'Dune',
+  originalTitle: 'Dune Part One',
+  director: 'Denis Villeneuve',
+  releaseYear: 2021,
+  boxOffice: {
+    budget: 165000000,
+    grossUS: 108327830,
+    grossWorldwide: 400671789,
+  },
+};
+
+const cats: Movie = {
+  title: 'Cats',
+  director: 'Tom Hooper',
+  releaseYear: 2019,
+  boxOffice: {
+    budget: 95000000,
+    grossUS: 27166770,
+    grossWorldwide: 73833348,
+  },
+};
+
+// Write a function called getProfit that accepts a single Movie object
+// It should return the movie's worldwide gross minus its budget
+function getProfit(movie: Movie): number {
+  return movie.boxOffice.grossWorldwide - movie.boxOffice.budget;
+}
+// For example...
+console.log(getProfit(cats));
+// - 21166652
+
+//LESSON 6 - ARRAY TYPES

@@ -83,4 +83,81 @@ function isLeapYear(year) {
 }
 console.log(isLeapYear(2012));
 console.log(isLeapYear(2013));
+const dog = {
+    name: 'Elton',
+    breed: 'Australian Shephard',
+    age: 0.5,
+};
+function printName(person) {
+    console.log(`${person.first} ${person.last}`);
+}
+printName({ first: 'Thomas', last: 'Jenkins' });
+const singer = { first: 'Mick', last: 'Jagger', age: 473, isAlive: true };
+printName(singer);
+let coordinate = { x: 34, y: 2 };
+function randomCoordinate() {
+    return { x: Math.random(), y: Math.random() };
+}
+function doublePoint(point) {
+    return { x: point.x * 2, y: point.y * 2 };
+}
+function calculatePayout(song) {
+    const x = song.numStreams * 0.0033;
+    console.log(x);
+    return x;
+}
+function printSong(song) {
+    console.log(`${song.title}-${song.artist}`);
+}
+const mySong = {
+    title: 'Unchained Melody',
+    artist: 'Erhan ERTEM',
+    numStreams: 1211,
+    credits: {
+        producer: 'Ernie Welco',
+        writer: 'Elon Edinburg',
+    },
+};
+calculatePayout(mySong);
+printSong(mySong);
+const myPoint = { x: 1, y: 3 };
+const user = {
+    id: 123456,
+    username: 'catgirl',
+};
+console.log(user.id);
+const happyFace = {
+    radius: 4,
+    color: 'yellow',
+};
+const christy = {
+    numLives: 7,
+    breed: 'Husky',
+    age: 9,
+};
+const dune = {
+    title: 'Dune',
+    originalTitle: 'Dune Part One',
+    director: 'Denis Villeneuve',
+    releaseYear: 2021,
+    boxOffice: {
+        budget: 165000000,
+        grossUS: 108327830,
+        grossWorldwide: 400671789,
+    },
+};
+const cats = {
+    title: 'Cats',
+    director: 'Tom Hooper',
+    releaseYear: 2019,
+    boxOffice: {
+        budget: 95000000,
+        grossUS: 27166770,
+        grossWorldwide: 73833348,
+    },
+};
+function getProfit(movie) {
+    return movie.boxOffice.grossWorldwide - movie.boxOffice.budget;
+}
+console.log(getProfit(cats));
 //# sourceMappingURL=exercises.js.map
