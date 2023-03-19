@@ -512,47 +512,144 @@
 // greet1('Dennis');
 // greet1(['Ernie', 'Travis', 'Jenny']);
 
-//LESSON 8 - TUPLES AND ENUMS
+// //LESSON 8 - TUPLES AND ENUMS
 
-//TUPLES
-const rgbColor: [number, number, number] = [255, 0, 12];
-// const rgbColor1: [number, number, number] = ['Steve, 0, 12];
-// const rgbColor2: [number, number, number] = [255, 0, 12, 1];
+// //TUPLES
+// const rgbColor: [number, number, number] = [255, 0, 12];
+// // const rgbColor1: [number, number, number] = ['Steve, 0, 12];
+// // const rgbColor2: [number, number, number] = [255, 0, 12, 1];
 
-type HTTPResponse = [number, string];
-const goodRes: HTTPResponse = [200, 'OK'];
-// const goodRes: HTTPResponse = ['OK', 200];
-// goodRes[0] = '200';
-// goodRes.push(123);
-// goodRes.pop();
+// type HTTPResponse = [number, string];
+// const goodRes: HTTPResponse = [200, 'OK'];
+// // const goodRes: HTTPResponse = ['OK', 200];
+// // goodRes[0] = '200';
+// // goodRes.push(123);
+// // goodRes.pop();
 
-//ENUMS
-enum OrderStatus {
-  PENDING, //0
-  SHIPPED, //1
-  DELIVERED, //2
-  RETURNED, //3
+// //ENUMS
+// enum OrderStatus {
+//   PENDING, //0
+//   SHIPPED, //1
+//   DELIVERED, //2
+//   RETURNED, //3
+// }
+// const myStatus = OrderStatus.DELIVERED;
+// console.log(myStatus);
+
+// function isDelivered(status: OrderStatus) {
+//   return status === OrderStatus.DELIVERED;
+// }
+
+// console.log(isDelivered(OrderStatus.RETURNED));
+
+// enum ArrowKeys {
+//   UP = 'up',
+//   DOWN = 'down',
+//   LEFT = 'left',
+//   RIGHT = 'right',
+//   // ERROR = 123,
+// }
+// const pressed = {
+//   pressedDateTime: new Date(),
+//   status: ArrowKeys.UP,
+// };
+// console.log(pressed);
+
+// //LESSON 9 - INTERFACES
+// // type Point = {
+// //   x: number;
+// //   y: number;
+// // };
+// // const pt: Point = { x: 213, y: 121 };
+
+// interface Point {
+//   x: number;
+//   y: number;
+// }
+// const pt: Point = { x: 123, y: 123 };
+
+// interface Person {
+//   readonly id: number;
+//   first: string;
+//   last: string;
+//   sayHi?(): string; // sayHi?: () => string;
+//   nickname?: string;
+// }
+
+// const thomas: Person = {
+//   id: 212233,
+//   first: 'Thomas',
+//   last: 'Hardy',
+//   sayHi() {
+//     return 'Hello';
+//   },
+// };
+// thomas.first = 'Ertem';
+// // thomas.id = 122111;
+
+// interface Product {
+//   name: string;
+//   price: number;
+//   applyDiscount(discount: number): number;
+// }
+
+// const shoes: Product = {
+//   name: 'Blue suede shooes',
+//   price: 123,
+//   applyDiscount(amount: number) {
+//     return this.price * (1 - amount);
+//   },
+// };
+
+// console.log(shoes.applyDiscount(0.4));
+
+// interface Dog {
+//   name: string;
+//   age: number;
+// }
+// interface Dog {
+//   breed: string;
+//   bark(): string;
+// }
+// const elton: Dog = {
+//   name: 'Elton',
+//   age: 1,
+//   breed: 'Zombie',
+//   bark() {
+//     return 'Bli bli';
+//   },
+// };
+
+// interface ServiceDog extends Dog {
+//   job: 'drug sniffer' | 'bomb' | 'guide dog';
+// }
+
+// const chewy: ServiceDog = {
+//   name: 'Chewy',
+//   age: 4,
+//   breed: 'Halo',
+//   bark() {
+//     return 'Bark my bark!';
+//   },
+//   job: 'bomb',
+// };
+
+interface Person {
+  name: string;
 }
-const myStatus = OrderStatus.DELIVERED;
-console.log(myStatus);
-
-function isDelivered(status: OrderStatus) {
-  return status === OrderStatus.DELIVERED;
+interface Employee {
+  readonly id: number;
+  email: string;
+}
+interface Engineer2 extends Person, Employee {
+  level: string;
+  languages: string[];
 }
 
-console.log(isDelivered(OrderStatus.RETURNED));
-
-enum ArrowKeys {
-  UP = 'up',
-  DOWN = 'down',
-  LEFT = 'left',
-  RIGHT = 'right',
-  // ERROR = 123,
-}
-const pressed = {
-  pressedDateTime: new Date(),
-  status: ArrowKeys.UP,
+const pierre: Engineer2 = {
+  name: 'Pierre',
+  id: 122112,
+  email: 'e@e.com',
+  level: 'junior',
+  languages: ['C++', 'JS'],
 };
-console.log(pressed);
-
-//LESSON 9 - INTERFACES
