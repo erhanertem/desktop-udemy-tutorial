@@ -653,3 +653,13 @@ const pierre: Engineer2 = {
   level: 'junior',
   languages: ['C++', 'JS'],
 };
+
+//LESSON 10 - THE TYPESCRIPT COMPILER
+
+interface Product {
+  name: string;
+  price: number;
+}
+const printProduct = (product: Product): void => {
+  console.log(`${product.name}-${product.price}`);
+};

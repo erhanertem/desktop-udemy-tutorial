@@ -6,4 +6,7 @@ const pierre = {
     level: 'junior',
     languages: ['C++', 'JS'],
 };
+const printProduct = (product) => {
+    console.log(`${product.name}-${product.price}`);
+};
 //# sourceMappingURL=exercises.js.map
