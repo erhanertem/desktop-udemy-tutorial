@@ -159,5 +159,28 @@ const cats = {
 function getProfit(movie) {
     return movie.boxOffice.grossWorldwide - movie.boxOffice.budget;
 }
+function getProfit_alt({ boxOffice: { grossWorldwide, budget }, }) {
+    return grossWorldwide - budget;
+}
 console.log(getProfit(cats));
+const activeUsers = ['Max'];
+activeUsers.push('Tony');
+const activeNumbers = [1];
+const bools = [];
+const bolols_alt = [];
+const coords = [];
+coords.push({ x: 23, y: 8 });
+const board = [
+    ['X', 'O', 'X'],
+    ['X', 'O', 'X'],
+    ['X', 'O', 'X'],
+];
+const ages = [];
+const gameBoard = [];
+function getTotal(products) {
+    return products.reduce((total, curr) => total + curr.price, 0);
+}
+function getTotal_alt(products) {
+    return products.reduce((total, { price }) => total + price, 0);
+}
 //# sourceMappingURL=exercises.js.map

@@ -315,8 +315,71 @@ const cats: Movie = {
 function getProfit(movie: Movie): number {
   return movie.boxOffice.grossWorldwide - movie.boxOffice.budget;
 }
+function getProfit_alt({
+  boxOffice: { grossWorldwide, budget },
+}: Movie): number {
+  return grossWorldwide - budget;
+}
 // For example...
 console.log(getProfit(cats));
 // - 21166652
 
 //LESSON 6 - ARRAY TYPES
+// const activeUsers: [] = [1];
+const activeUsers: string[] = ['Max'];
+activeUsers.push('Tony');
+// activeUsers.push(1);
+const activeNumbers: number[] = [1];
+
+const bools: Array<boolean> = [];
+const bolols_alt: boolean[] = [];
+
+type Points = {
+  x: number;
+  y: number;
+};
+const coords: Points[] = [];
+coords.push({ x: 23, y: 8 });
+// coords.push({ x: 23, y: '8' });
+
+const board: string[][] = [
+  ['X', 'O', 'X'],
+  ['X', 'O', 'X'],
+  ['X', 'O', 'X'],
+];
+
+//CODING CHALLENGE - SECTION 6
+// **********************************************
+// ******************* PART 1 *******************
+// **********************************************
+// Create an empty array of numbers called "ages":
+const ages: number[] = [];
+// **********************************************
+// ******************* PART 2 *******************
+// **********************************************
+// Create an array variable called gameBoard that starts as an empty array.
+// It should be typed to hold a 2 dimensional array of strings
+const gameBoard: string[][] = [];
+// **********************************************
+// ******************* PART 3 *******************
+// **********************************************
+// Create a Product type that contains a name and a price.
+// An example product could be:
+// {name: "coffee mug", price: 11.50}
+type Product = {
+  name: string;
+  price: number;
+};
+// **********************************************
+// ******************* PART 4 *******************
+// **********************************************
+// Write a function called getTotal that accepts an array of Product types
+// It should return the sum of all the products' prices
+function getTotal(products: Product[]): number {
+  return products.reduce((total, curr) => total + curr.price, 0);
+}
+function getTotal_alt(products: Product[]): number {
+  return products.reduce((total, { price }) => total + price, 0);
+}
+
+//LESSON 7 - UNION TYPES
