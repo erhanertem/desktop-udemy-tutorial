@@ -183,4 +183,49 @@ function getTotal(products) {
 function getTotal_alt(products) {
     return products.reduce((total, { price }) => total + price, 0);
 }
+let age = 21;
+age = 33;
+age = '24';
+let coordinates = { x: 1, y: 34 };
+coordinates = { lat: 321.213, long: 23.3345 };
+function printAge(age) {
+    console.log(`You are ${age} years old`);
+}
+printAge(23);
+printAge('23');
+function calcTax(price, tax) {
+    return Number(price) * tax;
+}
+function calcTax_alt(price, tax) {
+    if (typeof price === 'string') {
+        price = parseFloat(price.replace('$', ''));
+    }
+    return price * tax;
+}
+console.log(calcTax_alt('$45', 0.07));
+const nums = [1, 2, 3, 4];
+const stuff = [1, 2, 3, 4, true, 'asad', { x: 1, y: true }];
+const mixed = [1, 2, 3, 4, 'das'];
+const mixed1 = ['das', 'this'];
+const mixed2 = [1, 2, 3, 4];
+const coords2 = [];
+coords2.push({ lat: 123.121, long: 23.123 });
+coords2.push({ x: 123.121, y: 23.123 });
+let zero = 0;
+let hi = 'hi';
+let mood = 'Freaky';
+let today = 'Sunday';
+let highScore;
+let stuff1;
+let colors1;
+function greet1(input) {
+    if (typeof input === 'string') {
+        console.log(`Hello, ${input}`);
+    }
+    else {
+        input.forEach(person => console.log(`Hello, ${person}`));
+    }
+}
+greet1('Dennis');
+greet1(['Ernie', 'Travis', 'Jenny']);
 //# sourceMappingURL=exercises.js.map
