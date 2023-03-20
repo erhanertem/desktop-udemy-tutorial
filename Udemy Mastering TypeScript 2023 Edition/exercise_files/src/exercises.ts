@@ -746,3 +746,134 @@
 // form?.addEventListener('submit', handleSubmit);
 
 //LESSON 12 - CLASSES
+// @DIST/CLASSES.JS
+//LESSON 13 - TYPESCRIPT CLASSES
+
+// class Player {
+//   public readonly first: string; //public is default but its good practice to show on the code
+//   public readonly last: string;
+//   // #score: number = 0; //Acceptable if ES2015 is the min target
+//   private score = 0; //inferred type - number
+
+//   constructor(first: string, last: string) {
+//     this.first = first;
+//     this.last = last;
+//     this.secretMethod();
+//   }
+
+//   private secretMethod(): void {
+//     console.log(`Secret ${this.score} score`);
+//   }
+// }
+
+class Player {
+  // #score: number = 0; //Acceptable if ES2015 is the min target
+  // private _score = 0; //inferred type - number
+  protected _score = 0; //inferred type - number
+
+  constructor(public readonly first: string, public readonly last: string) {
+    this.secretMethod();
+  }
+
+  get fullName(): string {
+    return `${this.first} ${this.last}`;
+  }
+
+  get score(): number {
+    return this._score;
+  }
+
+  set score(newScore: number) {
+    if (newScore < 0) {
+      throw 'Not a good score';
+    }
+    this._score = newScore;
+  }
+
+  private secretMethod(): void {
+    console.log(`Secret ${this.score} score`);
+  }
+}
+
+class SuperPlayer extends Player {
+  public isAdmin: boolean = true;
+  maxScore() {
+    this._score = 9999999;
+  }
+}
+
+const elton = new Player('Elton', 'Steele');
+// elton.score = true;
+// console.log(elton.score);
+// console.log(elton);
+// elton.secretMethod();
+elton.fullName;
+console.log('🚀 | file: exercises.ts:803 | elton.fullName:', elton.fullName);
+// elton.fullName = 'erhan ertem';
+elton.score;
+elton.score = 99;
+// elton.score = -99;
+console.log('🚀 | file: exercises.ts:805 | elton.score:', elton.score);
+
+interface Colorful {
+  color: string;
+}
+interface Printable {
+  print(): void;
+}
+
+class Bike implements Colorful {
+  constructor(public color: string) {}
+}
+class Jacket implements Colorful, Printable {
+  constructor(public brand: string, public color: string) {}
+  print() {
+    console.log(`${this.color} ${this.brand} jacket`);
+  }
+}
+const bike1 = new Bike('red');
+const jacket1 = new Jacket('Prada', 'black');
+
+abstract class Employee {
+  constructor(public first: string, public last: string) {}
+
+  abstract getPay(): number;
+  greet() {
+    console.log('HELLO!');
+  }
+}
+
+class FullTimeEmployee extends Employee {
+  constructor(
+    public first: string,
+    public last: string,
+    private salary: number
+  ) {
+    super(first, last);
+  }
+  getPay(): number {
+    return this.salary;
+  }
+}
+
+class PartTimeEmployee extends Employee {
+  constructor(
+    public first: string,
+    public last: string,
+    private hourlyRate: number,
+    private workedHours: number
+  ) {
+    super(first, last);
+  }
+  getPay(): number {
+    return this.workedHours * this.hourlyRate;
+  }
+}
+const betty = new FullTimeEmployee('Betty', 'White', 95000);
+betty.getPay();
+console.log('🚀 | file: exercises.ts:874 | betty:', betty);
+const bill = new PartTimeEmployee('Bill', 'White', 24, 1100);
+bill.getPay();
+console.log('🚀 | file: exercises.ts:876 | bill:', bill);
+
+//LESSON 14 - GENERICS
