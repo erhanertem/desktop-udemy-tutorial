@@ -6,6 +6,7 @@
     "lib": [
       "dom",
       "es6",
+      "es2021",
       "dom.iterable",
       "scripthost"
     ] /* Specify library files to be included in the compilation. */,
