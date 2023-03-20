@@ -684,63 +684,65 @@
 // const newWord = 'hello'.replaceAll('l', 'a'); //Per https://www.typescriptlang.org/tsconfig#lib individual typescript lib needs to be turned on to enable advanced or newwer JS features
 // console.log(newWord);
 
-//TYPE ASSERTION
-// let mystery: unknown = 'Hello World!!!';
-// const numChars = (mystery as string).length;
+// //TYPE ASSERTION
+// // let mystery: unknown = 'Hello World!!!';
+// // const numChars = (mystery as string).length;
 
-interface ToDo {
-  text: string;
-  completed: boolean;
-}
+// interface ToDo {
+//   text: string;
+//   completed: boolean;
+// }
 
-const input = document.getElementById('todoinput')! as HTMLInputElement;
-// console.dir(input);
-const btn = document.getElementById('btn')! as HTMLButtonElement;
-// console.dir(btn);
-const form = document.querySelector('form')!;
-const list = document.getElementById('todolist')!;
+// const input = document.getElementById('todoinput')! as HTMLInputElement;
+// // console.dir(input);
+// const btn = document.getElementById('btn')! as HTMLButtonElement;
+// // console.dir(btn);
+// const form = document.querySelector('form')!;
+// const list = document.getElementById('todolist')!;
 
-const todos: ToDo[] = readToDos(); //Read the localstroage array
-todos.forEach(el => createToDo(el)); //Render localstorage array elements
+// const todos: ToDo[] = readToDos(); //Read the localstroage array
+// todos.forEach(el => createToDo(el)); //Render localstorage array elements
 
-function readToDos(): ToDo[] {
-  const savedToDos = localStorage.getItem('todos');
-  if (savedToDos === null) return [];
-  return JSON.parse(savedToDos);
-}
+// function readToDos(): ToDo[] {
+//   const savedToDos = localStorage.getItem('todos');
+//   if (savedToDos === null) return [];
+//   return JSON.parse(savedToDos);
+// }
 
-function saveToDos() {
-  localStorage.setItem('todos', JSON.stringify(todos));
-}
+// function saveToDos() {
+//   localStorage.setItem('todos', JSON.stringify(todos));
+// }
 
-function handleSubmit(e: SubmitEvent) {
-  e.preventDefault();
-  // console.log('SUBMITTED!');
-  const newToDo: ToDo = {
-    text: input.value,
-    completed: false,
-  };
-  createToDo(newToDo);
-  todos.push(newToDo);
-  //save to localstorage
-  saveToDos();
-  //clear input fields
-  input.value = '';
-}
+// function handleSubmit(e: SubmitEvent) {
+//   e.preventDefault();
+//   // console.log('SUBMITTED!');
+//   const newToDo: ToDo = {
+//     text: input.value,
+//     completed: false,
+//   };
+//   createToDo(newToDo);
+//   todos.push(newToDo);
+//   //save to localstorage
+//   saveToDos();
+//   //clear input fields
+//   input.value = '';
+// }
 
-function createToDo(toDo: ToDo) {
-  const newLi = document.createElement('li');
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.checked = toDo.completed;
-  checkbox.addEventListener('change', function () {
-    console.log('CLICKED!!!');
-    toDo.completed = checkbox.checked; //mark checked
-    saveToDos(); //save to localstorage current array
-  });
-  newLi.append(toDo.text);
-  newLi.append(checkbox);
-  list?.append(newLi);
-}
+// function createToDo(toDo: ToDo) {
+//   const newLi = document.createElement('li');
+//   const checkbox = document.createElement('input');
+//   checkbox.type = 'checkbox';
+//   checkbox.checked = toDo.completed;
+//   checkbox.addEventListener('change', function () {
+//     console.log('CLICKED!!!');
+//     toDo.completed = checkbox.checked; //mark checked
+//     saveToDos(); //save to localstorage current array
+//   });
+//   newLi.append(toDo.text);
+//   newLi.append(checkbox);
+//   list?.append(newLi);
+// }
 
-form?.addEventListener('submit', handleSubmit);
+// form?.addEventListener('submit', handleSubmit);
+
+//LESSON 12 - CLASSES
