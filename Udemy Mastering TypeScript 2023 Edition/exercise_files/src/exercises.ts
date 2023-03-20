@@ -766,114 +766,223 @@
 //   }
 // }
 
-class Player {
-  // #score: number = 0; //Acceptable if ES2015 is the min target
-  // private _score = 0; //inferred type - number
-  protected _score = 0; //inferred type - number
+// class Player {
+//   // #score: number = 0; //Acceptable if ES2015 is the min target
+//   // private _score = 0; //inferred type - number
+//   protected _score = 0; //inferred type - number
 
-  constructor(public readonly first: string, public readonly last: string) {
-    this.secretMethod();
-  }
+//   constructor(public readonly first: string, public readonly last: string) {
+//     this.secretMethod();
+//   }
 
-  get fullName(): string {
-    return `${this.first} ${this.last}`;
-  }
+//   get fullName(): string {
+//     return `${this.first} ${this.last}`;
+//   }
 
-  get score(): number {
-    return this._score;
-  }
+//   get score(): number {
+//     return this._score;
+//   }
 
-  set score(newScore: number) {
-    if (newScore < 0) {
-      throw 'Not a good score';
-    }
-    this._score = newScore;
-  }
+//   set score(newScore: number) {
+//     if (newScore < 0) {
+//       throw 'Not a good score';
+//     }
+//     this._score = newScore;
+//   }
 
-  private secretMethod(): void {
-    console.log(`Secret ${this.score} score`);
+//   private secretMethod(): void {
+//     console.log(`Secret ${this.score} score`);
+//   }
+// }
+
+// class SuperPlayer extends Player {
+//   public isAdmin: boolean = true;
+//   maxScore() {
+//     this._score = 9999999;
+//   }
+// }
+
+// const elton = new Player('Elton', 'Steele');
+// // elton.score = true;
+// // console.log(elton.score);
+// // console.log(elton);
+// // elton.secretMethod();
+// elton.fullName;
+// console.log('🚀 | file: exercises.ts:803 | elton.fullName:', elton.fullName);
+// // elton.fullName = 'erhan ertem';
+// elton.score;
+// elton.score = 99;
+// // elton.score = -99;
+// console.log('🚀 | file: exercises.ts:805 | elton.score:', elton.score);
+
+// interface Colorful {
+//   color: string;
+// }
+// interface Printable {
+//   print(): void;
+// }
+
+// class Bike implements Colorful {
+//   constructor(public color: string) {}
+// }
+// class Jacket implements Colorful, Printable {
+//   constructor(public brand: string, public color: string) {}
+//   print() {
+//     console.log(`${this.color} ${this.brand} jacket`);
+//   }
+// }
+// const bike1 = new Bike('red');
+// const jacket1 = new Jacket('Prada', 'black');
+
+// abstract class Employee {
+//   constructor(public first: string, public last: string) {}
+
+//   abstract getPay(): number;
+//   greet() {
+//     console.log('HELLO!');
+//   }
+// }
+
+// class FullTimeEmployee extends Employee {
+//   constructor(
+//     public first: string,
+//     public last: string,
+//     private salary: number
+//   ) {
+//     super(first, last);
+//   }
+//   getPay(): number {
+//     return this.salary;
+//   }
+// }
+
+// class PartTimeEmployee extends Employee {
+//   constructor(
+//     public first: string,
+//     public last: string,
+//     private hourlyRate: number,
+//     private workedHours: number
+//   ) {
+//     super(first, last);
+//   }
+//   getPay(): number {
+//     return this.workedHours * this.hourlyRate;
+//   }
+// }
+// const betty = new FullTimeEmployee('Betty', 'White', 95000);
+// betty.getPay();
+// console.log('🚀 | file: exercises.ts:874 | betty:', betty);
+// const bill = new PartTimeEmployee('Bill', 'White', 24, 1100);
+// bill.getPay();
+// console.log('🚀 | file: exercises.ts:876 | bill:', bill);
+
+// //LESSON 14 - GENERICS
+
+// function doThing(thing: number | string): number | string {
+//   return thing;
+// }
+
+// const nums: number[] = [];
+// const nums_: Array<number> = [];
+
+// const inputEl = document.querySelector<HTMLInputElement>('#username')!;
+// // console.dir(inputEl);
+// inputEl.value = 'Hacked!';
+
+// const btn = document.querySelector<HTMLButtonElement>('.btn')!;
+// // console.dir(btn);
+
+//
+// function numberidentity(item: number): number {
+//   return item;
+// }
+// function stringidentity(item: string): string {
+//   return item;
+// }
+// function booleanidentity(item: boolean): boolean {
+//   return item;
+// }
+// function identity(item: any): any {
+//   return item;
+// }
+// function identity<T>(item: T): T {
+//   return item;
+// }
+// identity<number>(7);
+// // identity<string>(7);
+// identity<string>('Erhan');
+
+// function getRandomElement<T>(list: T[]): T {
+//   const randIdx = Math.floor(Math.random() * list.length);
+//   return list[randIdx];
+// }
+// const getRandomElement_ = <T>(list: T[]): T => {
+//   const randIdx = Math.floor(Math.random() * list.length);
+//   return list[randIdx];
+// };
+// getRandomElement<string>(['a', 'b', 'c']);
+// // console.log(
+// //   "🚀 | file: exercises.ts:920 | getRandomElement<string>(['a', 'b', 'c']):",
+// //   getRandomElement<string>(['a', 'b', 'c'])
+// // );
+// getRandomElement([5, 6, 21, 354, 567, 234, 654, 999]); //TS inference
+// console.log(
+//   '🚀 | file: exercises.ts:925 | getRandomElement<number>([5, 6, 21, 354, 567, 234, 654, 999]):',
+//   getRandomElement([5, 6, 21, 354, 567, 234, 654, 999])
+// );
+
+// function merge<T, U>(object1: T, object2: U) {
+//   return { ...object1, ...object2 };
+// }
+function merge<T extends object, U extends object>(object1: T, object2: U) {
+  return { ...object1, ...object2 };
+}
+// const comboObj = merge({ name: 'colt' }, { pets: ['blue', 'elton'] });
+const comboObj = merge({ name: 'colt' }, { num: 9 });
+console.log('🚀 | file: exercises.ts:938 | comboObj:', comboObj);
+
+//GENERIC CONSTRAINTS
+interface Lengthy {
+  length: number;
+}
+function printDoubleLength<T extends Lengthy>(thing: T): number {
+  return thing.length * 2;
+}
+printDoubleLength('erhan');
+// printDoubleLength(12);
+
+//DEFAULT GENERICS
+function makeEmptyArray<T = number>(): T[] {
+  return [];
+}
+const strings = makeEmptyArray();
+
+// GENERICS @ CLASS
+interface Song {
+  title: string;
+  artist: string;
+}
+interface Video {
+  title: string;
+  creator: string;
+  resolution: string;
+}
+class VideoPlayList {
+  public videos: Video[] = [];
+}
+class SongPlayList {
+  public songs: Song[] = [];
+}
+
+class PlayList<T> {
+  public queue: T[] = [];
+  add(el: T) {
+    this.queue.push(el);
   }
 }
 
-class SuperPlayer extends Player {
-  public isAdmin: boolean = true;
-  maxScore() {
-    this._score = 9999999;
-  }
-}
+const songs = new PlayList<Song>();
+const videos = new PlayList<Video>();
+videos.add();
 
-const elton = new Player('Elton', 'Steele');
-// elton.score = true;
-// console.log(elton.score);
-// console.log(elton);
-// elton.secretMethod();
-elton.fullName;
-console.log('🚀 | file: exercises.ts:803 | elton.fullName:', elton.fullName);
-// elton.fullName = 'erhan ertem';
-elton.score;
-elton.score = 99;
-// elton.score = -99;
-console.log('🚀 | file: exercises.ts:805 | elton.score:', elton.score);
-
-interface Colorful {
-  color: string;
-}
-interface Printable {
-  print(): void;
-}
-
-class Bike implements Colorful {
-  constructor(public color: string) {}
-}
-class Jacket implements Colorful, Printable {
-  constructor(public brand: string, public color: string) {}
-  print() {
-    console.log(`${this.color} ${this.brand} jacket`);
-  }
-}
-const bike1 = new Bike('red');
-const jacket1 = new Jacket('Prada', 'black');
-
-abstract class Employee {
-  constructor(public first: string, public last: string) {}
-
-  abstract getPay(): number;
-  greet() {
-    console.log('HELLO!');
-  }
-}
-
-class FullTimeEmployee extends Employee {
-  constructor(
-    public first: string,
-    public last: string,
-    private salary: number
-  ) {
-    super(first, last);
-  }
-  getPay(): number {
-    return this.salary;
-  }
-}
-
-class PartTimeEmployee extends Employee {
-  constructor(
-    public first: string,
-    public last: string,
-    private hourlyRate: number,
-    private workedHours: number
-  ) {
-    super(first, last);
-  }
-  getPay(): number {
-    return this.workedHours * this.hourlyRate;
-  }
-}
-const betty = new FullTimeEmployee('Betty', 'White', 95000);
-betty.getPay();
-console.log('🚀 | file: exercises.ts:874 | betty:', betty);
-const bill = new PartTimeEmployee('Bill', 'White', 24, 1100);
-bill.getPay();
-console.log('🚀 | file: exercises.ts:876 | bill:', bill);
-
-//LESSON 14 - GENERICS
+//LESSON 15 - TYPE NARROWING
