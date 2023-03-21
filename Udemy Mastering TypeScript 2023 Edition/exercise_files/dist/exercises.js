@@ -1,33 +1,28 @@
 "use strict";
-function isCat(animal) {
-    return animal.numLives !== undefined;
-}
-function makeNoise(animal) {
-    if (isCat(animal)) {
-        return 'Meoww';
-    }
-    return '';
-}
-function getFarmAnimalSound(animal) {
-    switch (animal.kind) {
-        case 'pig':
-            return 'Oink!';
-        case 'cow':
-            return 'Mooo!!!';
-        case 'rooster':
-            return 'CoocckoaaDooledoo!';
-        case 'sheep':
-            return 'Baaa!!';
-        default:
-            const _exhaustivecheck = animal;
-            return _exhaustivecheck;
-    }
-}
-const stevie = {
-    kind: 'rooster',
-    name: 'Steve Chicks',
-    weight: 2,
-    age: 2,
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-console.log(getFarmAnimalSound(stevie));
-//# sourceMappingURL=exercises.js.map
+Object.defineProperty(exports, "__esModule", { value: true });
+const axios_1 = __importDefault(require("axios"));
+axios_1.default
+    .get('https://jsonplaceholder.typicode.com/users/1')
+    .then(res => {
+    console.log('WOO!!!');
+    console.log(res.data);
+    printUser(res.data);
+})
+    .catch(e => console.log('ERROR!!', e));
+axios_1.default
+    .get('https://jsonplaceholder.typicode.com/users')
+    .then(res => {
+    console.log('WOO!!!');
+    console.log(res.data);
+    res.data.forEach(printUser);
+})
+    .catch(e => console.log('ERROR!!', e));
+function printUser(user) {
+    console.log('................');
+    console.log(user.name);
+    console.log(user.email);
+    console.log(user.phone);
+}

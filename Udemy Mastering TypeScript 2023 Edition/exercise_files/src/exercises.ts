@@ -1068,74 +1068,129 @@
 //   }
 // }
 
-//TYPE PREDICATES
-interface Cat {
+// //TYPE PREDICATES
+// interface Cat {
+//   name: string;
+//   numLives: number;
+// }
+// interface Dog {
+//   name: string;
+//   breed: string;
+// }
+// function isCat(animal: Cat | Dog): animal is Cat {
+//   return (animal as Cat).numLives !== undefined;
+// }
+
+// function makeNoise(animal: Cat | Dog): string {
+//   if (isCat(animal)) {
+//     return 'Meoww';
+//   }
+//   return '';
+// }
+// //DISCRIMINATED UNIONS
+// interface Rooster {
+//   kind: 'rooster';
+//   name: string;
+//   weight: number;
+//   age: number;
+// }
+// interface Cow {
+//   kind: 'cow';
+//   name: string;
+//   weight: number;
+//   age: number;
+// }
+// interface Pig {
+//   kind: 'pig';
+//   name: string;
+//   weight: number;
+//   age: number;
+// }
+// interface Sheep {
+//   kind: 'sheep';
+//   name: string;
+//   age: number;
+//   weight: number;
+// }
+
+// type FarmAnimal = Rooster | Cow | Pig | Sheep;
+// function getFarmAnimalSound(animal: FarmAnimal) {
+//   switch (animal.kind) {
+//     case 'pig':
+//       return 'Oink!';
+//     case 'cow':
+//       return 'Mooo!!!';
+//     case 'rooster':
+//       return 'CoocckoaaDooledoo!';
+//     case 'sheep':
+//       return 'Baaa!!';
+//     default:
+//       // We should never make it here, if we handled all cases correctly
+//       const _exhaustivecheck: never = animal;
+//       return _exhaustivecheck;
+//   }
+// }
+
+// const stevie: Rooster = {
+//   kind: 'rooster',
+//   name: 'Steve Chicks',
+//   weight: 2,
+//   age: 2,
+// };
+
+// console.log(getFarmAnimalSound(stevie));
+
+//LESSON 16 - TYPE DECLARATIONS
+import axios from 'axios';
+import _ from 'lodash';
+
+interface User {
+  id: number;
   name: string;
-  numLives: number;
-}
-interface Dog {
-  name: string;
-  breed: string;
-}
-function isCat(animal: Cat | Dog): animal is Cat {
-  return (animal as Cat).numLives !== undefined;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
 }
 
-function makeNoise(animal: Cat | Dog): string {
-  if (isCat(animal)) {
-    return 'Meoww';
-  }
-  return '';
-}
-//DISCRIMINATED UNIONS
-interface Rooster {
-  kind: 'rooster';
-  name: string;
-  weight: number;
-  age: number;
-}
-interface Cow {
-  kind: 'cow';
-  name: string;
-  weight: number;
-  age: number;
-}
-interface Pig {
-  kind: 'pig';
-  name: string;
-  weight: number;
-  age: number;
-}
-interface Sheep {
-  kind: 'sheep';
-  name: string;
-  age: number;
-  weight: number;
+axios
+  .get<User>('https://jsonplaceholder.typicode.com/users/1')
+  .then(res => {
+    console.log('WOO!!!');
+    console.log(res.data);
+    printUser(res.data);
+  })
+  .catch(e => console.log('ERROR!!', e));
+
+axios
+  .get<User[]>('https://jsonplaceholder.typicode.com/users')
+  .then(res => {
+    console.log('WOO!!!');
+    console.log(res.data);
+    res.data.forEach(printUser);
+  })
+  .catch(e => console.log('ERROR!!', e));
+
+function printUser(user: User): void {
+  console.log('................');
+  console.log(user.name);
+  console.log(user.email);
+  console.log(user.phone);
 }
 
-type FarmAnimal = Rooster | Cow | Pig | Sheep;
-function getFarmAnimalSound(animal: FarmAnimal) {
-  switch (animal.kind) {
-    case 'pig':
-      return 'Oink!';
-    case 'cow':
-      return 'Mooo!!!';
-    case 'rooster':
-      return 'CoocckoaaDooledoo!';
-    case 'sheep':
-      return 'Baaa!!';
-    default:
-      // We should never make it here, if we handled all cases correctly
-      const _exhaustivecheck: never = animal;
-      return _exhaustivecheck;
-  }
-}
-
-const stevie: Rooster = {
-  kind: 'rooster',
-  name: 'Steve Chicks',
-  weight: 2,
-  age: 2,
-};
-
-console.log(getFarmAnimalSound(stevie));
+//LESSON 17 - MODULES
