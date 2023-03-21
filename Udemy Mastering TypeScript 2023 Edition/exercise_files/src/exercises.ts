@@ -1140,57 +1140,80 @@
 
 // console.log(getFarmAnimalSound(stevie));
 
-//LESSON 16 - TYPE DECLARATIONS
-import axios from 'axios';
-import _ from 'lodash';
+// //LESSON 16 - TYPE DECLARATIONS
+// import axios from 'axios';
+// import _ from 'lodash';
 
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
+// interface User {
+//   id: number;
+//   name: string;
+//   username: string;
+//   email: string;
+//   address: {
+//     street: string;
+//     suite: string;
+//     city: string;
+//     zipcode: string;
+//     geo: {
+//       lat: string;
+//       lng: string;
+//     };
+//   };
+//   phone: string;
+//   website: string;
+//   company: {
+//     name: string;
+//     catchPhrase: string;
+//     bs: string;
+//   };
+// }
 
-axios
-  .get<User>('https://jsonplaceholder.typicode.com/users/1')
-  .then(res => {
-    console.log('WOO!!!');
-    console.log(res.data);
-    printUser(res.data);
-  })
-  .catch(e => console.log('ERROR!!', e));
+// axios
+//   .get<User>('https://jsonplaceholder.typicode.com/users/1')
+//   .then(res => {
+//     console.log('WOO!!!');
+//     console.log(res.data);
+//     printUser(res.data);
+//   })
+//   .catch(e => console.log('ERROR!!', e));
 
-axios
-  .get<User[]>('https://jsonplaceholder.typicode.com/users')
-  .then(res => {
-    console.log('WOO!!!');
-    console.log(res.data);
-    res.data.forEach(printUser);
-  })
-  .catch(e => console.log('ERROR!!', e));
+// axios
+//   .get<User[]>('https://jsonplaceholder.typicode.com/users')
+//   .then(res => {
+//     console.log('WOO!!!');
+//     console.log(res.data);
+//     res.data.forEach(printUser);
+//   })
+//   .catch(e => console.log('ERROR!!', e));
 
-function printUser(user: User): void {
-  console.log('................');
-  console.log(user.name);
-  console.log(user.email);
-  console.log(user.phone);
-}
+// function printUser(user: User): void {
+//   console.log('................');
+//   console.log(user.name);
+//   console.log(user.email);
+//   console.log(user.phone);
+// }
 
 //LESSON 17 - MODULES
+import { add, sample as randomSample, pi } from './temp_file.js';
+// import Thingy from './temp_user_class.js';
+import Thingy, { userHelper } from './temp_user_class.js';
+
+// const x = 'Teminator';
+// console.log(x);
+add(1, 2);
+console.log('🚀 | file: exercises.ts:1203 | add(1, 2):', add(1, 2));
+randomSample([12, 3, 34]);
+console.log(
+  '🚀 | file: exercises.ts:1205 | sample([12, 3, 34]):',
+  randomSample([12, 3, 34])
+);
+
+console.log(pi);
+
+const user1 = new Thingy('erhanertem', 'e@e.com');
+user1.logout();
+
+userHelper('blue');
+
+const sample = 1222322;
+console.log(sample);
