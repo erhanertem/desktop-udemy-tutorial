@@ -934,55 +934,208 @@
 // function merge<T, U>(object1: T, object2: U) {
 //   return { ...object1, ...object2 };
 // }
-function merge<T extends object, U extends object>(object1: T, object2: U) {
-  return { ...object1, ...object2 };
-}
-// const comboObj = merge({ name: 'colt' }, { pets: ['blue', 'elton'] });
-const comboObj = merge({ name: 'colt' }, { num: 9 });
-console.log('🚀 | file: exercises.ts:938 | comboObj:', comboObj);
+// function merge<T extends object, U extends object>(object1: T, object2: U) {
+//   return { ...object1, ...object2 };
+// }
+// // const comboObj = merge({ name: 'colt' }, { pets: ['blue', 'elton'] });
+// const comboObj = merge({ name: 'colt' }, { num: 9 });
+// console.log('🚀 | file: exercises.ts:938 | comboObj:', comboObj);
 
-//GENERIC CONSTRAINTS
-interface Lengthy {
-  length: number;
-}
-function printDoubleLength<T extends Lengthy>(thing: T): number {
-  return thing.length * 2;
-}
-printDoubleLength('erhan');
-// printDoubleLength(12);
+// //GENERIC CONSTRAINTS
+// interface Lengthy {
+//   length: number;
+// }
+// function printDoubleLength<T extends Lengthy>(thing: T): number {
+//   return thing.length * 2;
+// }
+// printDoubleLength('erhan');
+// // printDoubleLength(12);
 
-//DEFAULT GENERICS
-function makeEmptyArray<T = number>(): T[] {
-  return [];
-}
-const strings = makeEmptyArray();
+// //DEFAULT GENERICS
+// function makeEmptyArray<T = number>(): T[] {
+//   return [];
+// }
+// const strings = makeEmptyArray();
 
-// GENERICS @ CLASS
-interface Song {
-  title: string;
-  artist: string;
+// // GENERICS @ CLASS
+// interface Song {
+//   title: string;
+//   artist: string;
+// }
+// interface Video {
+//   title: string;
+//   creator: string;
+//   resolution: string;
+// }
+// class VideoPlayList {
+//   public videos: Video[] = [];
+// }
+// class SongPlayList {
+//   public songs: Song[] = [];
+// }
+
+// class PlayList<T> {
+//   public queue: T[] = [];
+//   add(el: T) {
+//     this.queue.push(el);
+//   }
+// }
+
+// const songs = new PlayList<Song>();
+// const videos = new PlayList<Video>();
+// videos.add({ title: 'Emily', creator: 'TYSC', resolution: '1080p' });
+
+// //LESSON 15 - TYPE NARROWING
+// //TYPEOF NARROWING
+// function triple(value: number | string) {
+//   if (typeof value === 'string') {
+//     return value.repeat(3);
+//   }
+//   return value * 3;
+// }
+// //TRUTHY NARROWING
+// const el = document.getElementById('idk');
+// if (!el) {
+//   throw 'HTML element does not exist';
+// } else el;
+
+// const printLetters = (word?: string) => {
+//   if (word) {
+//     for (let char of word) {
+//       console.log(char);
+//     }
+//   } else console.log('You did not pass in a word');
+// };
+// printLetters('tim');
+// printLetters();
+
+// //EQUALITY NARROWING
+// function someDemo(x: string | number, y: string | boolean) {
+//   if (x === '3') {
+//     console.log(x.toUpperCase());
+//   }
+// }
+
+// someDemo('e', '3');
+
+// //IN OPERATOR NARROWING
+// interface Movie {
+//   title: string;
+//   duration: number;
+// }
+// interface TVShow {
+//   title: string;
+//   numEpisodes: number;
+//   episodeDuration: number;
+// }
+// function getRuntime(media: Movie | TVShow) {
+//   if ('numEpisodes' in media) {
+//     return console.log(media.numEpisodes * media.episodeDuration);
+//   }
+//   return console.log(media.duration);
+// }
+
+// getRuntime({ title: 'Amedeus', duration: 140 });
+// getRuntime({ title: 'Amedeus', numEpisodes: 15, episodeDuration: 45 });
+
+// //INSTANCEOF NARROWING
+// [1, 2, 3] instanceof Array;
+// console.log(
+//   '🚀 | file: exercises.ts:1043 | [1, 2, 3] instanceof Array:',
+//   [1, 2, 3] instanceof Array
+// );
+
+// function printFullDate(date: string | Date) {
+//   if (date instanceof Date) {
+//     console.log(date.toUTCString);
+//   } else {
+//     console.log(new Date(date).toUTCString());
+//   }
+// }
+// printFullDate('1.6.2008');
+
+// class User {
+//   constructor(public username: string) {}
+// }
+// class Company {
+//   constructor(public name: string) {}
+// }
+// function printName(entity: User | Company) {
+//   if (entity instanceof User) {
+//     entity;
+//   } else {
+//     entity;
+//   }
+// }
+
+//TYPE PREDICATES
+interface Cat {
+  name: string;
+  numLives: number;
 }
-interface Video {
-  title: string;
-  creator: string;
-  resolution: string;
+interface Dog {
+  name: string;
+  breed: string;
 }
-class VideoPlayList {
-  public videos: Video[] = [];
-}
-class SongPlayList {
-  public songs: Song[] = [];
+function isCat(animal: Cat | Dog): animal is Cat {
+  return (animal as Cat).numLives !== undefined;
 }
 
-class PlayList<T> {
-  public queue: T[] = [];
-  add(el: T) {
-    this.queue.push(el);
+function makeNoise(animal: Cat | Dog): string {
+  if (isCat(animal)) {
+    return 'Meoww';
+  }
+  return '';
+}
+//DISCRIMINATED UNIONS
+interface Rooster {
+  kind: 'rooster';
+  name: string;
+  weight: number;
+  age: number;
+}
+interface Cow {
+  kind: 'cow';
+  name: string;
+  weight: number;
+  age: number;
+}
+interface Pig {
+  kind: 'pig';
+  name: string;
+  weight: number;
+  age: number;
+}
+interface Sheep {
+  kind: 'sheep';
+  name: string;
+  age: number;
+  weight: number;
+}
+
+type FarmAnimal = Rooster | Cow | Pig | Sheep;
+function getFarmAnimalSound(animal: FarmAnimal) {
+  switch (animal.kind) {
+    case 'pig':
+      return 'Oink!';
+    case 'cow':
+      return 'Mooo!!!';
+    case 'rooster':
+      return 'CoocckoaaDooledoo!';
+    case 'sheep':
+      return 'Baaa!!';
+    default:
+      // We should never make it here, if we handled all cases correctly
+      const _exhaustivecheck: never = animal;
+      return _exhaustivecheck;
   }
 }
 
-const songs = new PlayList<Song>();
-const videos = new PlayList<Video>();
-videos.add();
+const stevie: Rooster = {
+  kind: 'rooster',
+  name: 'Steve Chicks',
+  weight: 2,
+  age: 2,
+};
 
-//LESSON 15 - TYPE NARROWING
+console.log(getFarmAnimalSound(stevie));

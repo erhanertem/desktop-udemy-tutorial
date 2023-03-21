@@ -1,35 +1,33 @@
 "use strict";
-function merge(object1, object2) {
-    return Object.assign(Object.assign({}, object1), object2);
+function isCat(animal) {
+    return animal.numLives !== undefined;
 }
-const comboObj = merge({ name: 'colt' }, { num: 9 });
-console.log('🚀 | file: exercises.ts:938 | comboObj:', comboObj);
-function printDoubleLength(thing) {
-    return thing.length * 2;
+function makeNoise(animal) {
+    if (isCat(animal)) {
+        return 'Meoww';
+    }
+    return '';
 }
-printDoubleLength('erhan');
-function makeEmptyArray() {
-    return [];
-}
-const strings = makeEmptyArray();
-class VideoPlayList {
-    constructor() {
-        this.videos = [];
+function getFarmAnimalSound(animal) {
+    switch (animal.kind) {
+        case 'pig':
+            return 'Oink!';
+        case 'cow':
+            return 'Mooo!!!';
+        case 'rooster':
+            return 'CoocckoaaDooledoo!';
+        case 'sheep':
+            return 'Baaa!!';
+        default:
+            const _exhaustivecheck = animal;
+            return _exhaustivecheck;
     }
 }
-class SongPlayList {
-    constructor() {
-        this.songs = [];
-    }
-}
-class PlayList {
-    constructor() {
-        this.queue = [];
-    }
-    add(el) {
-        this.queue.push(el);
-    }
-}
-const songs = new PlayList();
-const videos = new PlayList();
+const stevie = {
+    kind: 'rooster',
+    name: 'Steve Chicks',
+    weight: 2,
+    age: 2,
+};
+console.log(getFarmAnimalSound(stevie));
 //# sourceMappingURL=exercises.js.map
