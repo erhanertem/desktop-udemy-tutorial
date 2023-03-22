@@ -1235,3 +1235,5 @@ const buffy = new ShelterDog('Buffy', 'Pitbul', 5, 'Desert village shelter');
 
 console.log(buffy);
 console.log('UPDATED');
+
+//LESSON 19 - REACT & TYPESCRIPT
