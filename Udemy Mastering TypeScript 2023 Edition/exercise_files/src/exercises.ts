@@ -1193,27 +1193,45 @@
 //   console.log(user.phone);
 // }
 
-//LESSON 17 - MODULES
-import { add, sample as randomSample, pi } from './temp_file.js';
-// import Thingy from './temp_user_class.js';
-import Thingy, { userHelper } from './temp_user_class.js';
+// //LESSON 17 - MODULES
+// import { add, sample as randomSample, pi } from './temp_file.js';
+// // import Thingy from './temp_user_class.js';
+// import Thingy, { userHelper } from './temp_user_class.js';
 
-// const x = 'Teminator';
-// console.log(x);
-add(1, 2);
-console.log('🚀 | file: exercises.ts:1203 | add(1, 2):', add(1, 2));
-randomSample([12, 3, 34]);
-console.log(
-  '🚀 | file: exercises.ts:1205 | sample([12, 3, 34]):',
-  randomSample([12, 3, 34])
-);
+// // const x = 'Teminator';
+// // console.log(x);
+// add(1, 2);
+// console.log('🚀 | file: exercises.ts:1203 | add(1, 2):', add(1, 2));
+// randomSample([12, 3, 34]);
+// console.log(
+//   '🚀 | file: exercises.ts:1205 | sample([12, 3, 34]):',
+//   randomSample([12, 3, 34])
+// );
 
-console.log(pi);
+// console.log(pi);
 
-const user1 = new Thingy('erhanertem', 'e@e.com');
-user1.logout();
+// const user1 = new Thingy('erhanertem', 'e@e.com');
+// user1.logout();
 
-userHelper('blue');
+// userHelper('blue');
 
-const sample = 1222322;
-console.log(sample);
+// const sample = 1222322;
+// console.log(sample);
+
+//LESSON 18 - WEBPACK & TYPESCRIPT
+console.log('FROM EXERCISES FILE');
+import Dog from './dog';
+import ShelterDog from './shelterdog';
+import { add, multiply, divide } from './utils';
+
+const elton = new Dog('Elton', 'Aussie', 0.5);
+elton.bark();
+
+console.log(add(4, 5));
+console.log(multiply(4, 5));
+console.log(divide(4, 5));
+
+const buffy = new ShelterDog('Buffy', 'Pitbul', 5, 'Desert village shelter');
+
+console.log(buffy);
+console.log('UPDATED');

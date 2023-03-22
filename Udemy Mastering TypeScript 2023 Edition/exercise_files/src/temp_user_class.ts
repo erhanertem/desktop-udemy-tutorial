@@ -2,8 +2,9 @@
 // import { Person } from './types.js';
 //#2 - guaranteed not to compile any JS
 // import type { Person } from './types.js';
+// import { type Person } from './types.js';
 //#3 - with other exports - advanced #2
-import { type Person, type Color } from './types.js';
+import { type Person, type Color } from './types';
 
 export default class User implements Person {
   constructor(public username: string, public email: string) {}
