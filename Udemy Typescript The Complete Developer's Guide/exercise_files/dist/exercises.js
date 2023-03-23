@@ -14,3 +14,16 @@ carMakers.map((car) => {
 const importantDates = [new Date()];
 importantDates.push('2030-10-10');
 importantDates.push(new Date());
+const drink = {
+    color: 'brown',
+    carbonated: true,
+    sugar: 40,
+};
+const pepsi = ['brown', true, 40];
+const sprite = ['clear', false, 0];
+const pepsi_ = ['brown', true, 40];
+const carSpecs = [400, 3354];
+const carStats = {
+    horsePower: 400,
+    weight: 3354,
+};
