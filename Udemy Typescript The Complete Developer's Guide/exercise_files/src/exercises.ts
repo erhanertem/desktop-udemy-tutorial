@@ -214,51 +214,88 @@
 //   weight: 3354,
 // };
 
-//LESSON 7 - INTERFACES
+// //LESSON 7 - INTERFACES
 
-interface CarProps {
-  // name: string;
-  // year: Date;
-  // broken: boolean;
-  summary(): string;
-}
+// interface CarProps {
+//   // name: string;
+//   // year: Date;
+//   // broken: boolean;
+//   summary(): string;
+// }
 
-const oldCivic = {
-  name: 'civic',
-  year: new Date(),
-  broken: true,
-  summary() {
-    return `Name of the car is ${this.name}, and the weather is not good for a test-drive`;
-  },
-};
-
-const drink = {
-  color: 'brown',
-  carbonated: true,
-  sugar: 40,
-  summary() {
-    return `My drink has ${this.sugar} grams of sugar`;
-  },
-};
-
-// const printVehicle = (vehicle: {
-//   name: string;
-//   year: number;
-//   broken: boolean;
-// }): void => {
-//   console.log(`Name: ${vehicle.name}`);
-//   console.log(`Year: ${vehicle.year}`);
-//   console.log(`Broken? ${vehicle.broken}`);
+// const oldCivic = {
+//   name: 'civic',
+//   year: new Date(),
+//   broken: true,
+//   summary() {
+//     return `Name of the car is ${this.name}, and the weather is not good for a test-drive`;
+//   },
 // };
 
-const printVehicle = (vehicle: CarProps): void => {
-  // console.log(`Name: ${vehicle.name}`);
-  // console.log(`Year: ${vehicle.year}`);
-  // console.log(`Broken? ${vehicle.broken}`);
-  console.log(`Summary: ${vehicle.summary()}`);
-};
+// const drink = {
+//   color: 'brown',
+//   carbonated: true,
+//   sugar: 40,
+//   summary() {
+//     return `My drink has ${this.sugar} grams of sugar`;
+//   },
+// };
 
-printVehicle(oldCivic);
-printVehicle(drink);
+// // const printVehicle = (vehicle: {
+// //   name: string;
+// //   year: number;
+// //   broken: boolean;
+// // }): void => {
+// //   console.log(`Name: ${vehicle.name}`);
+// //   console.log(`Year: ${vehicle.year}`);
+// //   console.log(`Broken? ${vehicle.broken}`);
+// // };
+
+// const printVehicle = (vehicle: CarProps): void => {
+//   // console.log(`Name: ${vehicle.name}`);
+//   // console.log(`Year: ${vehicle.year}`);
+//   // console.log(`Broken? ${vehicle.broken}`);
+//   console.log(`Summary: ${vehicle.summary()}`);
+// };
+
+// printVehicle(oldCivic);
+// printVehicle(drink);
 
 //LESSON 8 - BUILDING FUNCTIONALITY WITH CLASSES
+class Vehicle {
+  // private drive(): void {
+  //   console.log('ChuggaChugga Hugo Guwie');
+  // }
+  // color;
+  constructor(public color: string) {
+    // this.color = color;
+  }
+
+  protected honk(): void {
+    console.log('beep!!');
+  }
+}
+
+class Car extends Vehicle {
+  constructor(public wheels: number, color: string) {
+    super(color);
+  }
+  private drive(): void {
+    console.log('Vroomm!');
+  }
+  public startDrivingProcess(): void {
+    this.drive();
+    this.honk();
+  }
+}
+
+const vehicle = new Vehicle('orange');
+console.log(vehicle.color);
+const car = new Car(8, 'red');
+// vehicle.drive();
+// vehicle.honk();
+// car.drive();
+// car.honk();
+car.startDrivingProcess();
+
+//LESSON 9 - DESIGN PATTERNS WITH TYPESCRIPT
