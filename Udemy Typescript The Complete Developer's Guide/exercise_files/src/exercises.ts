@@ -261,41 +261,41 @@
 // printVehicle(oldCivic);
 // printVehicle(drink);
 
-//LESSON 8 - BUILDING FUNCTIONALITY WITH CLASSES
-class Vehicle {
-  // private drive(): void {
-  //   console.log('ChuggaChugga Hugo Guwie');
-  // }
-  // color;
-  constructor(public color: string) {
-    // this.color = color;
-  }
+// //LESSON 8 - BUILDING FUNCTIONALITY WITH CLASSES
+// class Vehicle {
+//   // private drive(): void {
+//   //   console.log('ChuggaChugga Hugo Guwie');
+//   // }
+//   // color;
+//   constructor(public color: string) {
+//     // this.color = color;
+//   }
 
-  protected honk(): void {
-    console.log('beep!!');
-  }
-}
+//   protected honk(): void {
+//     console.log('beep!!');
+//   }
+// }
 
-class Car extends Vehicle {
-  constructor(public wheels: number, color: string) {
-    super(color);
-  }
-  private drive(): void {
-    console.log('Vroomm!');
-  }
-  public startDrivingProcess(): void {
-    this.drive();
-    this.honk();
-  }
-}
+// class Car extends Vehicle {
+//   constructor(public wheels: number, color: string) {
+//     super(color);
+//   }
+//   private drive(): void {
+//     console.log('Vroomm!');
+//   }
+//   public startDrivingProcess(): void {
+//     this.drive();
+//     this.honk();
+//   }
+// }
 
-const vehicle = new Vehicle('orange');
-console.log(vehicle.color);
-const car = new Car(8, 'red');
-// vehicle.drive();
-// vehicle.honk();
-// car.drive();
-// car.honk();
-car.startDrivingProcess();
+// const vehicle = new Vehicle('orange');
+// console.log(vehicle.color);
+// const car = new Car(8, 'red');
+// // vehicle.drive();
+// // vehicle.honk();
+// // car.drive();
+// // car.honk();
+// car.startDrivingProcess();
 
 //LESSON 9 - DESIGN PATTERNS WITH TYPESCRIPT
