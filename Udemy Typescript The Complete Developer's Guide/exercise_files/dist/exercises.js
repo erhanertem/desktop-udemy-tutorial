@@ -1,41 +1,16 @@
 "use strict";
-const add = (a, b) => {
-    return a + b;
-};
-const subtract = (a, b) => {
-    return a - b;
-};
-function divide(a, b) {
-    return a / b;
-}
-const multiply = function (a, b) {
-    return a * b;
-};
-const logger = (message) => {
-    console.log(message);
-};
-const throwErro = (msg) => {
-    throw new Error(msg);
-};
-const todaysWeather = {
-    date: new Date(),
-    weather: 'sunny',
-};
-const logWeather = ({ date, weather }) => {
-    console.log(date);
-    console.log(weather);
-};
-logWeather(todaysWeather);
-const profile = {
-    name_: 'alex',
-    age: 20,
-    coords: {
-        lat: 0,
-        lng: 15,
-    },
-    setAge(age) {
-        this.age = age;
-    },
-};
-const { age, name_ } = profile;
-const { coords: { lat, lng }, } = profile;
+const carMakers_ = [];
+const carMakers = ['ford', 'toyota', 'chevy'];
+const dates = [new Date(), new Date()];
+const carsByMake_ = [];
+const carsByMake = [['f150'], ['corolla'], ['camero']];
+const car = carMakers[0];
+console.log('🚀 | file: exercises.ts:180 | car:', car);
+const myCar = carMakers.pop();
+console.log('🚀 | file: exercises.ts:182 | myCar:', myCar);
+carMakers.map((car) => {
+    return car.toUpperCase();
+});
+const importantDates = [new Date()];
+importantDates.push('2030-10-10');
+importantDates.push(new Date());

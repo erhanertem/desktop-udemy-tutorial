@@ -106,65 +106,92 @@
 //   }
 // }
 
-//LESSON 4 - ANNOTATIONS WITH FUNCTIONS AND OBJECTS
-const add = (a: number, b: number): number => {
-  return a + b;
-  // return 12;
-  // return 'Erhan';
-};
-
-// const subtract = (a: number, b: number) => {
-//   a - b;
+// //LESSON 4 - ANNOTATIONS WITH FUNCTIONS AND OBJECTS
+// const add = (a: number, b: number): number => {
+//   return a + b;
+//   // return 12;
+//   // return 'Erhan';
 // };
-const subtract = (a: number, b: number): number => {
-  return a - b;
-};
-function divide(a: number, b: number): number {
-  return a / b;
-}
-const multiply = function (a: number, b: number): number {
-  return a * b;
-};
 
-const logger = (message: string): void => {
-  console.log(message);
-  // return 'Erhan';
-};
-
-const throwErro = (msg: string): never => {
-  throw new Error(msg);
-};
-
-const todaysWeather = {
-  date: new Date(),
-  weather: 'sunny',
-};
-// const logWeather = (forecast: { date: Date; weather: string }): void => {
-//   console.log(forecast.date);
-//   console.log(forecast.weather);
+// // const subtract = (a: number, b: number) => {
+// //   a - b;
+// // };
+// const subtract = (a: number, b: number): number => {
+//   return a - b;
 // };
-//ES2015 - destructured object type annotations
-const logWeather = ({ date, weather }: { date: Date; weather: string }) => {
-  console.log(date);
-  console.log(weather);
-};
+// function divide(a: number, b: number): number {
+//   return a / b;
+// }
+// const multiply = function (a: number, b: number): number {
+//   return a * b;
+// };
 
-logWeather(todaysWeather);
+// const logger = (message: string): void => {
+//   console.log(message);
+//   // return 'Erhan';
+// };
 
-const profile = {
-  name_: 'alex',
-  age: 20,
-  coords: {
-    lat: 0,
-    lng: 15,
-  },
-  setAge(age: number): void {
-    this.age = age;
-  },
-};
-const { age, name_ }: { age: number; name_: string } = profile;
-const {
-  coords: { lat, lng },
-}: { coords: { lat: number; lng: number } } = profile;
+// const throwErro = (msg: string): never => {
+//   throw new Error(msg);
+// };
+
+// const todaysWeather = {
+//   date: new Date(),
+//   weather: 'sunny',
+// };
+// // const logWeather = (forecast: { date: Date; weather: string }): void => {
+// //   console.log(forecast.date);
+// //   console.log(forecast.weather);
+// // };
+// //ES2015 - destructured object type annotations
+// const logWeather = ({ date, weather }: { date: Date; weather: string }) => {
+//   console.log(date);
+//   console.log(weather);
+// };
+
+// logWeather(todaysWeather);
+
+// const profile = {
+//   name_: 'alex',
+//   age: 20,
+//   coords: {
+//     lat: 0,
+//     lng: 15,
+//   },
+//   setAge(age: number): void {
+//     this.age = age;
+//   },
+// };
+// const { age, name_ }: { age: number; name_: string } = profile;
+// const {
+//   coords: { lat, lng },
+// }: { coords: { lat: number; lng: number } } = profile;
 
 //LESSON 5 - MASTERING TYPED ARRAYS
+const carMakers_: string[] = []; // typed arr
+const carMakers = ['ford', 'toyota', 'chevy']; //inferred arr
+const dates = [new Date(), new Date()]; //inferred arr
+
+const carsByMake_: string[][] = []; //typed cascaded arr
+const carsByMake = [['f150'], ['corolla'], ['camero']]; //inferred cascaded arr
+
+//Help with inference when extracting values
+const car = carMakers[0]; //inferred
+console.log('🚀 | file: exercises.ts:180 | car:', car);
+const myCar = carMakers.pop(); //inferred
+console.log('🚀 | file: exercises.ts:182 | myCar:', myCar);
+
+//Prevent incompatible values
+// carMakers.push(100);
+
+//Help with 'map'
+carMakers.map((car: string): string => {
+  return car.toUpperCase();
+});
+
+//Flexible types
+const importantDates: (Date | string)[] = [new Date()];
+importantDates.push('2030-10-10');
+importantDates.push(new Date());
+
+//LESSON 6 - TUPLES IN TYPESCRIPT
