@@ -1,41 +1,41 @@
 "use strict";
-let apples = 5;
-let pineapples = 5;
-let apples_;
-let speed = 'fast';
-let nothingMuch = null;
-let notKnown = undefined;
-let now = new Date();
-let colors = ['red', 'green', 'orange'];
-let myNumbers = [1, 2, 3];
-let truths = [true, false, true];
-class Car {
-}
-let care = new Car();
-let point = {
-    x: 1,
-    y: 10,
+const add = (a, b) => {
+    return a + b;
 };
-const logNumber = i => {
-    console.log(i);
+const subtract = (a, b) => {
+    return a - b;
 };
-logNumber(5);
-let samples;
-samples = 5;
-const json = '{"x":10, "y":20}';
-const coordinates = JSON.parse(json);
-console.log(coordinates);
-let words = ['red', 'green', 'blue'];
-let foundWord;
-for (let i = 0; i < words.length; i++) {
-    if (words[i] === 'green') {
-        foundWord = true;
-    }
+function divide(a, b) {
+    return a / b;
 }
-let numbers = [-10, -1, 12];
-let numberAboveZero = false;
-for (let i = 0; i < numbers.length; i++) {
-    if (numbers[i] > 0) {
-        numberAboveZero = numbers[i];
-    }
-}
+const multiply = function (a, b) {
+    return a * b;
+};
+const logger = (message) => {
+    console.log(message);
+};
+const throwErro = (msg) => {
+    throw new Error(msg);
+};
+const todaysWeather = {
+    date: new Date(),
+    weather: 'sunny',
+};
+const logWeather = ({ date, weather }) => {
+    console.log(date);
+    console.log(weather);
+};
+logWeather(todaysWeather);
+const profile = {
+    name_: 'alex',
+    age: 20,
+    coords: {
+        lat: 0,
+        lng: 15,
+    },
+    setAge(age) {
+        this.age = age;
+    },
+};
+const { age, name_ } = profile;
+const { coords: { lat, lng }, } = profile;

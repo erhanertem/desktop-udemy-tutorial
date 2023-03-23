@@ -37,73 +37,134 @@
 // const red_ = new Color();
 // // red_.sksksk;
 
-//LESSON 3 - TYPE ANNOTATIONS
+// //LESSON 3 - TYPE ANNOTATIONS
 
-// Basic Data Type Annotation
-let apples: number = 5; //typed
-let pineapples = 5; //inferred
-// const apples_: number = true;
-let apples_: number;
-// apples_ = 'Erhan';
-let speed: string = 'fast';
-// let speed_: string = 10.02;
-let nothingMuch: null = null;
-// let nothingMuch_: null = 0;
-let notKnown: undefined = undefined;
+// // Basic Data Type Annotation
+// let apples: number = 5; //typed
+// let pineapples = 5; //inferred
+// // const apples_: number = true;
+// let apples_: number;
+// // apples_ = 'Erhan';
+// let speed: string = 'fast';
+// // let speed_: string = 10.02;
+// let nothingMuch: null = null;
+// // let nothingMuch_: null = 0;
+// let notKnown: undefined = undefined;
 
-// Built-in JS object Annonation
-let now: Date = new Date();
+// // Built-in JS object Annonation
+// let now: Date = new Date();
 
-// Array Annotation
-let colors: string[] = ['red', 'green', 'orange'];
-let myNumbers: number[] = [1, 2, 3];
-let truths: boolean[] = [true, false, true];
+// // Array Annotation
+// let colors: string[] = ['red', 'green', 'orange'];
+// let myNumbers: number[] = [1, 2, 3];
+// let truths: boolean[] = [true, false, true];
 
-// Classe Annotation
-class Car {}
-let care: Car = new Car();
+// // Classe Annotation
+// class Car {}
+// let care: Car = new Car();
 
-//Object Literals Annonation
-let point: { x: number; y: number } = {
-  // x: 'Er',
-  x: 1,
-  // a: 10,
-  y: 10,
-};
+// //Object Literals Annonation
+// let point: { x: number; y: number } = {
+//   // x: 'Er',
+//   x: 1,
+//   // a: 10,
+//   y: 10,
+// };
 
-//Arrow Function Annonation
-const logNumber: (i: number) => void = i => {
-  console.log(i);
-};
-logNumber(5);
-// logNumber('Ernie');
+// //Arrow Function Annonation
+// const logNumber: (i: number) => void = i => {
+//   console.log(i);
+// };
+// logNumber(5);
+// // logNumber('Ernie');
 
-//Inference
-let samples;
-samples = 5; //any - no type inference
+// //Inference
+// let samples;
+// samples = 5; //any - no type inference
 
-//When to use annotations
-//1.Function that returns the 'any' type
-const json = '{"x":10, "y":20}';
-const coordinates = JSON.parse(json);
-console.log(coordinates);
-//2.When we declare a variable on one line and intialize it later
-let words = ['red', 'green', 'blue'];
-let foundWord: boolean;
+// //When to use annotations
+// //1.Function that returns the 'any' type
+// const json = '{"x":10, "y":20}';
+// const coordinates = JSON.parse(json);
+// console.log(coordinates);
+// //2.When we declare a variable on one line and intialize it later
+// let words = ['red', 'green', 'blue'];
+// let foundWord: boolean;
 
-for (let i = 0; i < words.length; i++) {
-  if (words[i] === 'green') {
-    foundWord = true;
-  }
-}
-//3.Variable whose type cannot be inferred correctly
-let numbers = [-10, -1, 12];
-let numberAboveZero: boolean | number = false;
+// for (let i = 0; i < words.length; i++) {
+//   if (words[i] === 'green') {
+//     foundWord = true;
+//   }
+// }
+// //3.Variable whose type cannot be inferred correctly
+// let numbers = [-10, -1, 12];
+// let numberAboveZero: boolean | number = false;
 
-for (let i = 0; i < numbers.length; i++) {
-  if (numbers[i] > 0) {
-    numberAboveZero = numbers[i];
-  }
-}
+// for (let i = 0; i < numbers.length; i++) {
+//   if (numbers[i] > 0) {
+//     numberAboveZero = numbers[i];
+//   }
+// }
 
 //LESSON 4 - ANNOTATIONS WITH FUNCTIONS AND OBJECTS
+const add = (a: number, b: number): number => {
+  return a + b;
+  // return 12;
+  // return 'Erhan';
+};
+
+// const subtract = (a: number, b: number) => {
+//   a - b;
+// };
+const subtract = (a: number, b: number): number => {
+  return a - b;
+};
+function divide(a: number, b: number): number {
+  return a / b;
+}
+const multiply = function (a: number, b: number): number {
+  return a * b;
+};
+
+const logger = (message: string): void => {
+  console.log(message);
+  // return 'Erhan';
+};
+
+const throwErro = (msg: string): never => {
+  throw new Error(msg);
+};
+
+const todaysWeather = {
+  date: new Date(),
+  weather: 'sunny',
+};
+// const logWeather = (forecast: { date: Date; weather: string }): void => {
+//   console.log(forecast.date);
+//   console.log(forecast.weather);
+// };
+//ES2015 - destructured object type annotations
+const logWeather = ({ date, weather }: { date: Date; weather: string }) => {
+  console.log(date);
+  console.log(weather);
+};
+
+logWeather(todaysWeather);
+
+const profile = {
+  name_: 'alex',
+  age: 20,
+  coords: {
+    lat: 0,
+    lng: 15,
+  },
+  setAge(age: number): void {
+    this.age = age;
+  },
+};
+const { age, name_ }: { age: number; name_: string } = profile;
+const {
+  coords: { lat, lng },
+}: { coords: { lat: number; lng: number } } = profile;
+
+//LESSON 5 - MASTERING TYPED ARRAYS
