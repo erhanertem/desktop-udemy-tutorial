@@ -167,51 +167,98 @@
 //   coords: { lat, lng },
 // }: { coords: { lat: number; lng: number } } = profile;
 
-//LESSON 5 - MASTERING TYPED ARRAYS
-const carMakers_: string[] = []; // typed arr
-const carMakers = ['ford', 'toyota', 'chevy']; //inferred arr
-const dates = [new Date(), new Date()]; //inferred arr
+// //LESSON 5 - MASTERING TYPED ARRAYS
+// const carMakers_: string[] = []; // typed arr
+// const carMakers = ['ford', 'toyota', 'chevy']; //inferred arr
+// const dates = [new Date(), new Date()]; //inferred arr
 
-const carsByMake_: string[][] = []; //typed cascaded arr
-const carsByMake = [['f150'], ['corolla'], ['camero']]; //inferred cascaded arr
+// const carsByMake_: string[][] = []; //typed cascaded arr
+// const carsByMake = [['f150'], ['corolla'], ['camero']]; //inferred cascaded arr
 
-//Help with inference when extracting values
-const car = carMakers[0]; //inferred
-console.log('🚀 | file: exercises.ts:180 | car:', car);
-const myCar = carMakers.pop(); //inferred
-console.log('🚀 | file: exercises.ts:182 | myCar:', myCar);
+// //Help with inference when extracting values
+// const car = carMakers[0]; //inferred
+// console.log('🚀 | file: exercises.ts:180 | car:', car);
+// const myCar = carMakers.pop(); //inferred
+// console.log('🚀 | file: exercises.ts:182 | myCar:', myCar);
 
-//Prevent incompatible values
-// carMakers.push(100);
+// //Prevent incompatible values
+// // carMakers.push(100);
 
-//Help with 'map'
-carMakers.map((car: string): string => {
-  return car.toUpperCase();
-});
+// //Help with 'map'
+// carMakers.map((car: string): string => {
+//   return car.toUpperCase();
+// });
 
-//Flexible types
-const importantDates: (Date | string)[] = [new Date()];
-importantDates.push('2030-10-10');
-importantDates.push(new Date());
+// //Flexible types
+// const importantDates: (Date | string)[] = [new Date()];
+// importantDates.push('2030-10-10');
+// importantDates.push(new Date());
 
-//LESSON 6 - TUPLES IN TYPESCRIPT
+// //LESSON 6 - TUPLES IN TYPESCRIPT
+// const drink = {
+//   color: 'brown',
+//   carbonated: true,
+//   sugar: 40,
+// };
+// const pepsi: [string, boolean, number] = ['brown', true, 40];
+// // pepsi[0] = 40;
+// const sprite: Drink = ['clear', false, 0];
+
+// type Drink = [string, boolean, number];
+// const pepsi_: Drink = ['brown', true, 40];
+
+// const carSpecs: [number, number] = [400, 3354];
+
+// const carStats = {
+//   horsePower: 400,
+//   weight: 3354,
+// };
+
+//LESSON 7 - INTERFACES
+
+interface CarProps {
+  // name: string;
+  // year: Date;
+  // broken: boolean;
+  summary(): string;
+}
+
+const oldCivic = {
+  name: 'civic',
+  year: new Date(),
+  broken: true,
+  summary() {
+    return `Name of the car is ${this.name}, and the weather is not good for a test-drive`;
+  },
+};
+
 const drink = {
   color: 'brown',
   carbonated: true,
   sugar: 40,
-};
-const pepsi: [string, boolean, number] = ['brown', true, 40];
-// pepsi[0] = 40;
-const sprite: Drink = ['clear', false, 0];
-
-type Drink = [string, boolean, number];
-const pepsi_: Drink = ['brown', true, 40];
-
-const carSpecs: [number, number] = [400, 3354];
-
-const carStats = {
-  horsePower: 400,
-  weight: 3354,
+  summary() {
+    return `My drink has ${this.sugar} grams of sugar`;
+  },
 };
 
-//LESSON 7 - INTERFACES
+// const printVehicle = (vehicle: {
+//   name: string;
+//   year: number;
+//   broken: boolean;
+// }): void => {
+//   console.log(`Name: ${vehicle.name}`);
+//   console.log(`Year: ${vehicle.year}`);
+//   console.log(`Broken? ${vehicle.broken}`);
+// };
+
+const printVehicle = (vehicle: CarProps): void => {
+  // console.log(`Name: ${vehicle.name}`);
+  // console.log(`Year: ${vehicle.year}`);
+  // console.log(`Broken? ${vehicle.broken}`);
+  console.log(`Summary: ${vehicle.summary()}`);
+};
+
+printVehicle(oldCivic);
+printVehicle(drink);
+
+//LESSON 8 - BUILDING FUNCTIONALITY WITH CLASSES
