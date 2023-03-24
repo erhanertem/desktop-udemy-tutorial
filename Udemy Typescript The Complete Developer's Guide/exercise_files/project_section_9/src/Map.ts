@@ -14,33 +14,7 @@ export class CustomMap {
         center: { lat: 0, lng: 0 },
       }
     );
-    // this.initMap();
   }
-  // private initMap() {
-  //   new google.maps.Map(document.getElementById('map') as HTMLElement, {
-  //     zoom: 1,
-  //     center: { lat: 0, lng: 0 },
-  //   });
-  // }
-
-  // addMarker(el: User | Company): void {
-  //   new google.maps.Marker({
-  //     position: {
-  //       lat: el.location.lat,
-  //       lng: el.location.lng,
-  //     },
-  //     map: this.googleMap,
-  //   });
-  // }
-
-  // addUserMarker(user: User): void {
-  //   this.addMarker(user);
-  // }
-
-  // addCompanyMarker(company: Company): void {
-  //   this.addMarker(company);
-  // }
-
   addMarker(el: addableMarker): void {
     const marker = new google.maps.Marker({
       position: {
