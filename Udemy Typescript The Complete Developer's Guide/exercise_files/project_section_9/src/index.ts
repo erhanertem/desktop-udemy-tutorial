@@ -3,7 +3,7 @@ import { Company } from './Company';
 import { CustomMap } from './Map';
 
 const user = new User();
-console.log(user);
 const company = new Company();
-console.log(company);
-new CustomMap('map', 5);
+const customMap = new CustomMap('map', 1);
+customMap.addMarker(user);
+customMap.addMarker(company);
