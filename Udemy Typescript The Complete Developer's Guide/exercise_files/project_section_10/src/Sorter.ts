@@ -1,9 +1,3 @@
-export interface Sortable {
-  swap(leftIndex: number, rightIndex: number): void;
-  compare(leftIndex: number, rightIndex: number): boolean;
-  length: number;
-}
-
 // Bubble Sorting
 export abstract class Sorter {
   // tell TS that eventually the err throwing methods will exist on borrowing classes
