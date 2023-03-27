@@ -23,8 +23,8 @@ export class LinkedList extends Sorter {
       return;
     }
     //If there is a head node, find the last headnode and add the new node to the end of the chain
-    let tail = this.head; //reference to first node in our chain
-
+    let tail = this.head; //Set tail reference to the first node in our chain
+    //we traverse thru all node's next value till we hit the null whicvh would be the end node
     while (tail.next) {
       //as long as tail has a next property advance to the next
       tail = tail.next; //new tail is the next one till tail.next is null which is the end of chain
