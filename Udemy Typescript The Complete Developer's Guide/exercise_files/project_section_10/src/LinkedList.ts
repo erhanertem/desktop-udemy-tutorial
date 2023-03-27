@@ -1,11 +1,16 @@
+import { Sorter } from './Sorter';
 //NODE CONSISTS OF VALUE & NEXT POINTER TO A NEW NODE | NULL
 class Node {
   next: Node | null = null;
   constructor(public data: number) {}
 }
 
-export class LinkedList {
+export class LinkedList extends Sorter {
   head: Node | null = null;
+
+  constructor() {
+    super();
+  }
   /*
   VERY IMPORTANT! HEAD IS THE FIRST NODE IN THE CHAIN, TAIL IS THE LAST ADDED NODE IN THE CHAIN BEFORE THE ONE WE WOULD ADD
   */
