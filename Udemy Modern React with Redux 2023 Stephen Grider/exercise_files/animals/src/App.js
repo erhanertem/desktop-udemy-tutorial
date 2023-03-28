@@ -8,11 +8,7 @@ function App() {
 
   return (
     <div>
-      <button
-        onClick={() => {
-          console.log('Button was clicked');
-        }}
-      >
+      <button onClick={() => console.log('Button was clicked')}>
         Add Animal
       </button>
     </div>
