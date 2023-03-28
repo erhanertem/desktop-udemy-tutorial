@@ -1,3 +1,4 @@
+import 'bulma/css/bulma.css'; //import from node_modules folder bulma library
 import ProfileCard from './ProfileCard';
 import AlexaImage from './images/alexa.png';
 import CortanaImage from './images/cortana.png';
