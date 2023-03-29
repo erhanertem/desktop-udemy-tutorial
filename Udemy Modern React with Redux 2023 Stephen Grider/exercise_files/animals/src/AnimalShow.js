@@ -1,4 +1,4 @@
-import './AnimalShow.css'; //Import the CSS file
+import './AnimalShow.css'; //Import the CSS file - since we do not require variable, its adequate to mention the location of the file
 
 import { useState } from 'react';
 import bird from './svg/bird.svg';
