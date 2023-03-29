@@ -1,3 +1,4 @@
+import './App.css'; //Import the CSS file - since we do not require variable, its adequate to mention the location of the file
 import { useState } from 'react';
 import AnimalShow from './AnimalShow';
 
