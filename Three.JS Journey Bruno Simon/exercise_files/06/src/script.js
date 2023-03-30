@@ -1,6 +1,7 @@
 import './style.css';
 import * as THREE from 'three';
-
+import gsap from 'gsap';
+console.log(gsap);
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
 
@@ -30,23 +31,55 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 
-//Time
-let time = Date.now();
+//--->#1. Adjusted framerate for equal animation experience across machines - JS version
+// //Time
+// let time = Date.now();
+// //Animations
+// const tick = () => {
+//   //Time - Estimated FPS rate of your computer
+//   const currentTime = Date.now();
+//   const deltaTime = currentTime - time;
+//   time = currentTime;
+//   console.log(deltaTime);
+//   //Update objects
+//   //   mesh.position.x += 0.01;
+//   //   mesh.rotation.y += 0.001;
+//   mesh.rotation.y += 0.001 * deltaTime; //Adjusted FPS rate per computer performanse to provide equal experience across many machines
+//   //Render
+//   renderer.render(scene, camera);
 
-//Animations
+//   window.requestAnimationFrame(tick); //JS Window API
+// };
+// tick();
+
+//--->#2. Adjusted framerate for equal animation experience across machines - THREEJS version
+// //Clock
+// const clock = new THREE.Clock();
+// //Animations
+// const tick = () => {
+//   //Clock
+//   const elapsedTime = clock.getElapsedTime(); //Adjusted FPS rate multiplier based on computer performanse to provide equal experience across many machines
+//   console.log(elapsedTime);
+//   //Update objects
+//   //   mesh.rotation.y = elapsedTime;
+//   mesh.rotation.y = elapsedTime * Math.PI * 2; //Adjusted FPS rate 1full turn / sec
+//   mesh.position.x = Math.sin(elapsedTime);
+//   mesh.position.y = Math.cos(elapsedTime);
+
+//   camera.lookAt(mesh.position);
+//   //Render
+//   renderer.render(scene, camera);
+
+//   window.requestAnimationFrame(tick); //JS Window API
+// };
+// tick();
+
+//--->#3. GreenSock Library Timeline version
+gsap.to(mesh.position, { duration: 1, delay: 1, x: 1 });
+gsap.to(mesh.position, { duration: 1, delay: 2, x: 0 });
 const tick = () => {
-  //Time - Estimated FPS rate of your computer
-  const currentTime = Date.now();
-  const deltaTime = currentTime - time;
-  time = currentTime;
-  console.log(deltaTime);
-  //Update objects
-  //   mesh.position.x += 0.01;
-  //   mesh.rotation.y += 0.001;
-  mesh.rotation.y += 0.001 * deltaTime; //Adjusted FPS rate per computer performanse to provide equal experience across many machines
   //Render
   renderer.render(scene, camera);
-
-  window.requestAnimationFrame(tick);
+  window.requestAnimationFrame(tick); //JS Window API
 };
 tick();
