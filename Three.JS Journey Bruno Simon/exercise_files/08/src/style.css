@@ -1,0 +1,18 @@
+/* Global reset */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Disallow scroll beyond window limits */
+html,
+body {
+  overflow: hidden;
+}
+
+canvas.webgl {
+  position: fixed; /* to make the canvas cover the entire window to no scroll+ space*/
+  top: 0;
+  left: 0;
+  outline: none; /* for some browser and older versions */
+}
