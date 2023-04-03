@@ -2,13 +2,14 @@ import SearchBar from './components/SearchBar';
 
 function App() {
   const handleSubmit = term => {
-    // console.log('Do a search with ', term);
-    // searchImages(term);
+    //term is coming from the child component - searchbar
+    console.log('Do a search with', term);
   };
 
   return (
     <div>
-      <SearchBar onSubmit={handleSubmit} />
+      <SearchBar onSubmittal={handleSubmit} />
+      {/* create a  prop named onSubmit or could be named anything */}
     </div>
   );
 }
