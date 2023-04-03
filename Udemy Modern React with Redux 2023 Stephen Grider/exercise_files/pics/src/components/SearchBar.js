@@ -1,3 +1,4 @@
+import './SearchBar.css';
 import { useState } from 'react';
 
 function SearchBar({ onSubmittal }) {
@@ -6,7 +7,7 @@ function SearchBar({ onSubmittal }) {
   const handleFormSubmit = event => {
     event.preventDefault();
     // console.log('I need to tell the parent about some data');
-    onSubmittal();
+    onSubmittal(term);
     //NEVER EVER EVER DO THIS
     // document.querySelector('input').value
   };
@@ -18,8 +19,9 @@ function SearchBar({ onSubmittal }) {
   };
 
   return (
-    <div>
+    <div className="search-bar">
       <form onSubmit={handleFormSubmit}>
+        <label>Enter Search Term</label>
         <input value={term} onChange={handleChange} />
         {term.length < 3 && 'Term must be more than 3 characters'}
         {/* do not allow less than 3 chaarcters*/}
