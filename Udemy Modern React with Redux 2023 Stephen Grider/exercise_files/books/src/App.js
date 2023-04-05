@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import BookCreate from './components/BookCreate';
 import BookList from './components/BookList';
+import axios from 'axios';
 
 function App() {
   //State
@@ -23,20 +24,28 @@ function App() {
     setBooks(updatedBooks);
   };
 
-  const createBook = title => {
-    // console.log('✨', title);
-    // //BAD CODE
-    // books.push({ id: 123, title: title });
-    // console.log(books);
-
-    const updatedBooks = [
-      ...books,
-      { id: Math.round(Math.random() * 9999), title: title },
-    ];
-
+  const createBook = async title => {
+    const response = await axios.post('http://localhost:3001/books', {
+      title, // title: title,
+    });
+    // console.log(response);
+    const updatedBooks = [...books, response.data];
     setBooks(updatedBooks);
-    console.log(updatedBooks);
   };
+  // const createBook = title => {
+  //   // console.log('✨', title);
+  //   // //BAD CODE
+  //   // books.push({ id: 123, title: title });
+  //   // console.log(books);
+
+  //   const updatedBooks = [
+  //     ...books,
+  //     { id: Math.round(Math.random() * 9999), title: title },
+  //   ];
+
+  //   setBooks(updatedBooks);
+  //   console.log(updatedBooks);
+  // };
 
   return (
     <div className="app">
