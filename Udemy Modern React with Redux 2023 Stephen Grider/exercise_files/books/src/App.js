@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BookCreate from './components/BookCreate';
 import BookList from './components/BookList';
 import axios from 'axios';
@@ -7,10 +7,27 @@ function App() {
   //State
   const [books, setBooks] = useState([]);
 
-  const editBookById = (id, newTitle) => {
+  const fetchBooks = async () => {
+    const response = await axios.get('http://localhost:3001/books');
+    setBooks(response.data);
+  };
+  // fetchBooks(); //IMPORTANT!! React enters into a infinite loop if the function is called directly. Therefore, we make use of useEffect function in React.
+  //->1st variation of useEffect() - fetchBooks() is called only once @ initialization of DOM, and never after!
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const editBookById = async (id, newTitle) => {
+    const response = await axios.put(`http://localhost:3001/books/${id}`, {
+      title: newTitle,
+    });
+    // console.log('🎃', response);
+
     const updatedBooks = books.map(book => {
       if (book.id === id) {
-        return { ...book, title: newTitle };
+        // return { ...book, title: newTitle };
+        //NOTE: instead of manually registering the title, we acquire the response data and register our local array since some other gut may have already updated another property belongs to the same register.
+        return { ...book, ...response.data };
       }
       return book;
     });
