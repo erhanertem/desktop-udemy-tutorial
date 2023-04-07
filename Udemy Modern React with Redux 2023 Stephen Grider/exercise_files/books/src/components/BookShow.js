@@ -1,12 +1,12 @@
-import { useState, useContext } from 'react';
-import BooksContext from '../context/books';
+import { useState } from 'react';
+import useBooksContext from '../hooks/use-books-context';
 import BookEdit from './BookEdit';
 
 function BookShow({ book }) {
   //NOTE: Whenever the user clicks the bookshow component pencil icon, it toggles between info view and edit mode view. This is a state change, that needs to be handled within BookShow.js
   const [showEdit, setShowEdit] = useState(false);
 
-  const { deleteBookById } = useContext(BooksContext);
+  const { deleteBookById } = useBooksContext();
 
   const handleDeleteClick = () => {
     deleteBookById(book.id);
