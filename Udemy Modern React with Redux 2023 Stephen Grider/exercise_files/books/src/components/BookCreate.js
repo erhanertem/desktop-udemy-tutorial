@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import BooksContext from '../context/books';
 
-function BookCreate({ onCreate }) {
+function BookCreate() {
   const [title, setTitle] = useState('');
+  const { createBook } = useContext(BooksContext);
 
   //Update the title input in every key stroke
   const handleChange = e => {
@@ -10,7 +12,7 @@ function BookCreate({ onCreate }) {
   //Shoot the title up to parent component eventhandler
   const handleSubmit = e => {
     e.preventDefault();
-    onCreate(title);
+    createBook(title);
     //reset the state to clear the form area after submittal
     setTitle('');
   };
