@@ -11,7 +11,6 @@ function Provider({ children }) {
     const response = await axios.get('http://localhost:3001/books');
     setBooks(response.data);
   }, []);
-
   // fetchBooks(); //IMPORTANT!! React enters into a infinite loop if the function is called directly. Therefore, we make use of useEffect function in React.
 
   const editBookById = async (id, newTitle) => {
