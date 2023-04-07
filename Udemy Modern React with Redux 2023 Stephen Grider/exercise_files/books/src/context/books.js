@@ -62,7 +62,26 @@ function Provider({ children }) {
   //   console.log(updatedBooks);
   // };
 
-  return <BooksContext.Provider value={{}}>{children}</BooksContext.Provider>;
+  // const valueToShare = {
+  //   books: books,
+  //   deleteBookById: deleteBookById,
+  //   editBookById: editBookById,
+  //   createBook: createBook,
+  //   fetchBooks: fetchBooks,
+  // };
+  const valueToShare = {
+    books,
+    deleteBookById,
+    editBookById,
+    createBook,
+    fetchBooks,
+  };
+
+  return (
+    <BooksContext.Provider value={valueToShare}>
+      {children}
+    </BooksContext.Provider>
+  );
 }
 
 export { Provider };

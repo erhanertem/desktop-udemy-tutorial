@@ -4,7 +4,7 @@ import BookList from './components/BookList';
 import BooksContext from './context/books';
 
 function App() {
-  const { fetchBooks } = useContext(BooksContext);
+  const { fetchBooks } = useContext(BooksContext); //use only fetchbooks function from the context element to use in useEffect() method.
 
   //->1st variation of useEffect() - fetchBooks() is called only once @ initialization of DOM, and never after!
   useEffect(() => {
