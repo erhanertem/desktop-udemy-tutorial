@@ -9,7 +9,7 @@ function App() {
   //->1st variation of useEffect() - fetchBooks() is called only once @ initialization of DOM, and never after!
   useEffect(() => {
     fetchBooks();
-  }, []);
+  }, [fetchBooks]);
 
   return (
     <div className="app">
