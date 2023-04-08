@@ -1,22 +1,36 @@
+import { GoBell, GoCloudDownload, GoDatabase } from 'react-icons/go';
 import Button from './Button';
 
 function App() {
   return (
     <div>
       <div>
-        <Button success>Click!</Button>
+        <Button primary rounded outline>
+          <GoBell />
+          Click Me!
+        </Button>
       </div>
       <div>
-        <Button>Buy Now!</Button>
+        <Button secondary rounded outline>
+          <GoCloudDownload />
+          Buy Now!
+        </Button>
       </div>
       <div>
-        <Button>See Deals!</Button>
+        <Button success>
+          <GoDatabase />
+          See Deals!
+        </Button>
       </div>
       <div>
-        <Button>Hide Ads!</Button>
+        <Button warning outline>
+          Hide Ads!
+        </Button>
       </div>
       <div>
-        <Button>Something?</Button>
+        <Button danger rounded outline>
+          Something?
+        </Button>
       </div>
     </div>
   );
