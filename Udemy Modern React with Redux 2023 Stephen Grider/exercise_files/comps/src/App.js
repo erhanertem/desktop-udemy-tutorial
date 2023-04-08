@@ -18,6 +18,7 @@ function App() {
         <Button
           secondary
           rounded
+          className="mb-5" //Add extra tailwind CSS
           onMouseEnter={handleClick}
           onMouseLeave={handleClick}
         >
