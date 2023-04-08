@@ -11,6 +11,7 @@ function Button({
   danger,
   outline,
   rounded,
+  onClick,
 }) {
   // const classes = className('px-3', 'py-1.5', 'border'); //Same as below
   let classes = className('flex items-center px-3 py-1.5 border', {
@@ -31,7 +32,9 @@ function Button({
   classes = twMerge(classes);
 
   return (
-    <button className={classes}>{children}</button>
+    <button onClick={onClick} className={classes}>
+      {children}
+    </button>
     // <button className="px-3 py-1.5 border-2 border-blue-500 bg-blue-500 text-white">
     //   {children}
     // </button>
