@@ -15,7 +15,12 @@ function App() {
         </Button>
       </div>
       <div>
-        <Button secondary rounded outline>
+        <Button
+          secondary
+          rounded
+          onMouseEnter={handleClick}
+          onMouseLeave={handleClick}
+        >
           <GoCloudDownload />
           Buy Now!
         </Button>
