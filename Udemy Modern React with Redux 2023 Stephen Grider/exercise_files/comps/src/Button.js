@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 function Button({
   children,
   primary,
@@ -10,5 +12,19 @@ function Button({
 }) {
   return <button>{children}</button>; //underlying element - actual jsx element
 }
+
+Button.propTypes = {
+  checkButtonVariation: ({ primary, secondary, success, warning, danger }) => {
+    const count =
+      Number(!!primary) +
+      Number(!!secondary) +
+      Number(!!warning) +
+      Number(!!success) +
+      Number(!!danger);
+    if (count > 1) {
+      return new Error('Only one of could be used');
+    }
+  },
+};
 
 export default Button;
