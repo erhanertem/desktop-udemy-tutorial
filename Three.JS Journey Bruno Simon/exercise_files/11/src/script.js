@@ -20,30 +20,47 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 // image.src = '/textures/door/color.jpg';
 //#4 img@static@custom_folder folder 3JS version
 const loadingManager = new THREE.LoadingManager(); //Loading manager centralizes the model, texture loading in one place for textureloader
-loadingManager.onStart = () => {
-  console.log('onStart');
+loadingManager.onStart = (url, itemsLoaded, itemsTotal) => {
+  console.log(
+    'Started loading file: ' +
+      url +
+      '.\nLoaded ' +
+      itemsLoaded +
+      ' of ' +
+      itemsTotal +
+      ' files.'
+  );
 };
 loadingManager.onLoad = () => {
-  console.log('onLoad');
+  console.log('Loading complete!');
 };
-loadingManager.onProgress = () => {
-  console.log('onProgress');
+loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+  console.log(
+    'Loading file: ' +
+      url +
+      '.\nLoaded ' +
+      itemsLoaded +
+      ' of ' +
+      itemsTotal +
+      ' files.'
+  );
 };
-loadingManager.onError = () => {
-  console.log('onError');
+loadingManager.onError = url => {
+  console.log('There was an error loading ' + url);
 };
+
 const textureLoader = new THREE.TextureLoader(loadingManager); //Texture loader could be used for many textures. Thus, you create only once.
 // const texture = textureLoader.load(
 //   '/textures/door/color.jpg'
-//   //   () => {
-//   //     console.log('load');
-//   //   },
-//   //   () => {
-//   //     console.log('progress');
-//   //   },
-//   //   () => {
-//   //     console.log('error');
-//   //   }
+//     () => {
+//       console.log('load');
+//     },
+//     () => {
+//       console.log('progress');
+//     },
+//     () => {
+//       console.log('error');
+//     }
 // );
 // const colorTexture = textureLoader.load('/textures/door/color.jpg');
 // const colorTexture = textureLoader.load('/textures/checkerboard-8x8.png');
@@ -61,6 +78,7 @@ const roughnessTexture = textureLoader.load('/textures/door/roughness.jpg');
 // colorTexture.wrapS = THREE.RepeatingWrapping; //set texture to repeat itself
 // colorTexture.wrapT = THREE.RepeatingWrapping; //set texture to repeat itself
 // //->UV repeating
+// console.log(colorTexture);
 // colorTexture.repeat.x = 3;
 // colorTexture.repeat.y = 3;
 // //->UV Offset
@@ -91,7 +109,7 @@ const scene = new THREE.Scene();
  * Object
  */
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-// console.log(geometry.attributes.uv);
+console.log(geometry.attributes);
 // const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 const material = new THREE.MeshBasicMaterial({ map: colorTexture });
 const mesh = new THREE.Mesh(geometry, material);
