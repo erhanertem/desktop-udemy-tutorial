@@ -4,3 +4,4 @@ node_modules/
 *.exe
 desktop.ini
 Downloads/
+dist/
