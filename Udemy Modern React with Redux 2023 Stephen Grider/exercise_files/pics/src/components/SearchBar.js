@@ -7,9 +7,11 @@ function SearchBar({ onSubmittal }) {
   const handleFormSubmit = event => {
     event.preventDefault();
     // console.log('I need to tell the parent about some data');
-    onSubmittal(term);
-    //NEVER EVER EVER DO THIS
-    // document.querySelector('input').value
+    onSubmittal(
+      term
+      //NEVER EVER EVER DO THIS
+      // document.querySelector('input').value
+    );
   };
 
   const handleChange = event => {
