@@ -1,9 +1,9 @@
 import './ImageList.css';
 import ImageShow from '../components/ImageShow';
 
-function ImageList({ images }) {
+function ImageList({ imagesL }) {
   // return <div>ImageList: {images.length}</div>;
-  const renderedImages = images.map(each => {
+  const renderedImages = imagesL.map(each => {
     return <ImageShow key={each.id} image={each} />;
   });
 

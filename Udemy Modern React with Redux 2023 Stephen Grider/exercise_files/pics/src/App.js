@@ -18,7 +18,7 @@ function App() {
     <div>
       <SearchBar onSubmittal={handleSubmit} />
       {/* create a  prop named onSubmit or could be named anything */}
-      <ImageList images={images} />
+      <ImageList imagesL={images} />
     </div>
   );
 }
