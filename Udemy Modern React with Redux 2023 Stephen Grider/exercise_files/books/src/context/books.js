@@ -22,7 +22,7 @@ function Provider({ children }) {
     const updatedBooks = books.map(book => {
       if (book.id === id) {
         // return { ...book, title: newTitle };
-        //NOTE: instead of manually registering the title, we acquire the response data and register our local array since some other gut may have already updated another property belongs to the same register.
+        //VERY IMPORTANT!!  Instead of manually registering the title, we acquire the response data and register our local array since some other gut may have already updated another property belongs to the same register.
         return { ...book, ...response.data };
       }
       return book;
