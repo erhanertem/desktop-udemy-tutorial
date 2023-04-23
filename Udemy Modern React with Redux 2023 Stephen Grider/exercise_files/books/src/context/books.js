@@ -3,8 +3,9 @@ import axios from 'axios';
 
 const BooksContext = createContext();
 
+//IMPORTANT! We create a custom provider object that passes a react state for the books and function sets that interract with this state thru out the component layers. Beware that children refers to component(s) that is wrapped by the PROVIDER
 function Provider({ children }) {
-  //State
+  //State variable
   const [books, setBooks] = useState([]);
 
   const fetchBooks = useCallback(async () => {
@@ -69,6 +70,8 @@ function Provider({ children }) {
   //   createBook: createBook,
   //   fetchBooks: fetchBooks,
   // };
+
+  //VERY IMPORTANT!!! LIST ALL stuff that is being shared thru this context
   const valueToShare = {
     books,
     deleteBookById,
