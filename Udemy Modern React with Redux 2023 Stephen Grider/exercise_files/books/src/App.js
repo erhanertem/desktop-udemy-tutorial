@@ -8,7 +8,7 @@ function App() {
 
   //->1st variation of useEffect() - fetchBooks() is called only once @ initialization of DOM, and never after!
   useEffect(() => {
-    fetchBooks();
+    fetchBooks(); //functions are also values. So [] should include fetchbooks which would keep track of its state. In order to not cause infinite loop by doing so, we have to fix the issue @ fetchbooks()
   }, [fetchBooks]);
 
   return (
