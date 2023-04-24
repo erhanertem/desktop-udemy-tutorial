@@ -9,36 +9,39 @@ function App() {
   return (
     <div>
       <div>
-        <Button primary rounded outline onClick={handleClick}>
-          <GoBell />
-          Click Me!
-        </Button>
-      </div>
-      <div>
         <Button
-          secondary
+          success
           rounded
-          className="mb-5" //Add extra tailwind CSS
+          outline
+          className="mb-3" //Add extra external tailwind CSS
           onMouseEnter={handleClick}
-          onMouseLeave={handleClick}
         >
           <GoCloudDownload />
+          {/* ICONS FROM REACT-ICONS IMPORTED JUST LIKE ANY OTHER COMPONENT */}
           Buy Now!
         </Button>
       </div>
       <div>
-        <Button success>
+        <Button danger outline onClick={handleClick}>
+          <GoBell />
+          {/* ICONS FROM REACT-ICONS IMPORTED JUST LIKE ANY OTHER COMPONENT */}
+          Click Me!
+        </Button>
+      </div>
+      <div>
+        <Button warning onMouseLeave={handleClick}>
           <GoDatabase />
+          {/* ICONS FROM REACT-ICONS IMPORTED JUST LIKE ANY OTHER COMPONENT */}
           See Deals!
         </Button>
       </div>
       <div>
-        <Button warning outline>
+        <Button secondary outline>
           Hide Ads!
         </Button>
       </div>
       <div>
-        <Button danger rounded outline>
+        <Button primary rounded>
           Something?
         </Button>
       </div>
