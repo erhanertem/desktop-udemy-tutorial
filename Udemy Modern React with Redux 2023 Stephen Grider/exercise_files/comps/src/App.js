@@ -1,52 +1,27 @@
-import { GoBell, GoCloudDownload, GoDatabase } from 'react-icons/go';
-import Button from './Button';
+import Accordion from './components/Accordion';
 
 function App() {
-  const handleClick = () => {
-    console.log('Click!!');
-  };
-
-  return (
-    <div>
-      <div>
-        <Button
-          success
-          rounded
-          outline
-          className="mb-3" //Add extra external tailwind CSS
-          onMouseEnter={handleClick}
-        >
-          <GoCloudDownload />
-          {/* ICONS FROM REACT-ICONS IMPORTED JUST LIKE ANY OTHER COMPONENT */}
-          Buy Now!
-        </Button>
-      </div>
-      <div>
-        <Button danger outline onClick={handleClick}>
-          <GoBell />
-          {/* ICONS FROM REACT-ICONS IMPORTED JUST LIKE ANY OTHER COMPONENT */}
-          Click Me!
-        </Button>
-      </div>
-      <div>
-        <Button warning onMouseLeave={handleClick}>
-          <GoDatabase />
-          {/* ICONS FROM REACT-ICONS IMPORTED JUST LIKE ANY OTHER COMPONENT */}
-          See Deals!
-        </Button>
-      </div>
-      <div>
-        <Button secondary outline>
-          Hide Ads!
-        </Button>
-      </div>
-      <div>
-        <Button primary rounded>
-          Something?
-        </Button>
-      </div>
-    </div>
-  );
+  const items = [
+    {
+      id: '1',
+      label: 'Can I use React on this project?',
+      content:
+        'You can use React on any project!You can use React on any project!You can use React on any project!You can use React on any project!',
+    },
+    {
+      id: '2',
+      label: 'Can I use JS on this project?',
+      content:
+        'You can use JS on any project!You can use React on any project!You can use React on any project!',
+    },
+    {
+      id: '3',
+      label: 'Can I use SASS on this project?',
+      content:
+        'You can use SASS on any project!You can use React on any project!You can use React on any project!',
+    },
+  ];
+  return <Accordion items={items} />;
 }
 
 export default App;
