@@ -1,27 +1,24 @@
-import Accordion from './components/Accordion';
+import { useState } from 'react';
+import Dropdown from './components/Dropdown';
 
+//FOR DROPDOWNMENUS, ITS CONVINIENT TO PRODIDE AN ARRAY OF OBJECTS THAT TAKES IN LABEL AND CORRESPONDING VALUE TO TRIGGER SOMETHING
 function App() {
-  const items = [
-    {
-      id: '1',
-      label: 'Can I use React on this project?',
-      content:
-        'You can use React on any project!You can use React on any project!You can use React on any project!You can use React on any project!',
-    },
-    {
-      id: '2',
-      label: 'Can I use JS on this project?',
-      content:
-        'You can use JS on any project!You can use React on any project!You can use React on any project!',
-    },
-    {
-      id: '3',
-      label: 'Can I use SASS on this project?',
-      content:
-        'You can use SASS on any project!You can use React on any project!You can use React on any project!',
-    },
+  const [selection, setSelection] = useState(null);
+  const handleSelect = option => {
+    setSelection(option);
+  };
+  const options = [
+    { label: 'Red', value: 'red' },
+    { label: 'Blue', value: 'blue' },
+    { label: 'Green', value: 'green' },
   ];
-  return <Accordion items={items} />;
+
+  return (
+    <div className="flex">
+      <Dropdown options={options} value={selection} onChange={handleSelect} />
+      <Dropdown options={options} value={selection} onChange={handleSelect} />
+    </div>
+  );
 }
 
 export default App;
