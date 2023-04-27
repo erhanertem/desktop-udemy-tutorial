@@ -67,6 +67,8 @@ function Dropdown({ options, value, onChange }) {
         className="flex justify-between items-center cursor-pointer"
         onClick={handleClick}
       >
+        {/* if value is null provide select... else
+        provide the selection state label property */}
         {value?.label || 'Select...'}
         <GoChevronDown className="text-lg" />
       </Panel>
