@@ -28,6 +28,7 @@ function Dropdown({ options, value, onChange }) {
     // return cleanUp;
     return () => {
       document.removeEventListener('click', handler);
+      console.log('eventhandler removed');
     };
   }, []);
 
