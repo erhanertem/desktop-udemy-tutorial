@@ -51,11 +51,14 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', font => {
   //   -(textGeometry.boundingBox.max.y - 0.02) * 0.5,
   //   -(textGeometry.boundingBox.max.z - 0.03) * 0.5
   // );
-  textGeometry.center();
+  textGeometry.center(); //buffergeometry class method – put the mesh gizmo to the center of the object.
 
-  const textMaterial = new THREE.MeshMatcapMaterial();
+  // #1. Regular
+  // const textMaterial = new THREE.MeshMatcapMaterial();
   // textMaterial.wireframe = true;
-  textMaterial.matcap = matcapTexture;
+  // textMaterial.matcap = matcapTexture;
+  // #2. Shorthand
+  const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
   const text = new THREE.Mesh(textGeometry, textMaterial);
   scene.add(text);
 });
