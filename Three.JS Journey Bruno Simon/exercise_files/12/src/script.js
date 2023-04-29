@@ -65,7 +65,7 @@ const scene = new THREE.Scene();
 //->Opacity
 // material.opacity = 0.5; //requires transparency set as well
 // material.transparent = true;
-//->Texture Opaciity
+//->Texture Opacity
 // material.alphaMap = doorAlphaTexture;
 // material.transparent = true;
 //->BackCulling
