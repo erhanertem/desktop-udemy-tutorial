@@ -123,6 +123,7 @@ function generateGalaxy() {
     /**
      * Color
      */
+    const color1 = new THREE.Color('red');
     const mixedColor = colorInside.clone();
     // console.log(mixedColor);
     mixedColor.lerp(colorOutside, radius / parameters.radius);
