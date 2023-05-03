@@ -20,7 +20,8 @@ function Accordion({ items }) {
     setExpandedIndex(currentExpandedIndex => {
       if (currentExpandedIndex === nextIndex) {
         return -1;
-      } else {
+      } //toggle expanding/collapsing on the same object - collpase all by reverting state to initial -1 value
+      else {
         return nextIndex;
       }
     });
