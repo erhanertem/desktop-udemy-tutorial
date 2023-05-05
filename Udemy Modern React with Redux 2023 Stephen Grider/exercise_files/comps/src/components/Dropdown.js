@@ -38,11 +38,11 @@ function Dropdown({ options, value, onChange }) {
   };
 
   const handleOptionClick = option => {
-    console.log('I should close');
+    // console.log('I should close');
     //close down the drop down menu
     setIsOpen(false);
     //what option did the user clicked?
-    console.log(option);
+    // console.log(option);
     onChange(option);
   };
 

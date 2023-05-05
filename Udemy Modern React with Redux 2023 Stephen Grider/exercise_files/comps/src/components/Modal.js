@@ -10,6 +10,7 @@ VERY IMPORTANT!!
 function Modal({ onClose, children, actionBar }) {
   useEffect(() => {
     document.body.classList.add('overflow-hidden');
+    // Add clear function
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
