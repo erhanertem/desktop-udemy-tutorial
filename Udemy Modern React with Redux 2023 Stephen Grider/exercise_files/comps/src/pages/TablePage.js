@@ -24,9 +24,18 @@ function TablePage() {
     },
   ];
 
+  const config = [
+    { label: 'Fruits', render: rowData => rowData.name },
+    {
+      label: 'Color',
+      render: rowData => <div className={`p-3 m-2 ${rowData.color}`}></div>,
+    },
+    { label: 'Score', render: rowData => rowData.score },
+  ];
+
   return (
     <div>
-      <Table data={data} />
+      <Table data={data} config={config} />
     </div>
   );
 }
