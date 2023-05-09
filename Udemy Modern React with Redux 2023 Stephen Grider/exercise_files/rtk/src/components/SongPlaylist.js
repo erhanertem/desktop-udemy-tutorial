@@ -1,20 +1,32 @@
-import { createRandomSong } from "../data";
+import { useDispatch, useSelector } from 'react-redux';
+import { createRandomSong } from '../data/index';
+import { addSong, removeSong } from '../store/index';
 
 function SongPlaylist() {
-  // To Do:
+  const dispatch = useDispatch();
   // Get list of songs
-  const songPlaylist = [];
+  const songPlaylist = useSelector(state => {
+    // console.log(state);
+    //IMPORTANT! STATE IS THE BIG STATE. DO NOT MIX WITH THE STATE BEING USED INSIDE THE SLICE REDUCERS!
+    return state.songs;
+  });
 
-  const handleSongAdd = (song) => {
-    // To Do:
+  const handleSongAdd = song => {
     // Add song to list of songs
+    // console.log(song);
+    // const action = addSong(song); //@ the source of export note that addSong action type requires a payload (song as argumenbt in this function)
+    // console.log(action);
+    // dispatch(action);
+    dispatch(addSong(song));
   };
-  const handleSongRemove = (song) => {
-    // To Do:
+  const handleSongRemove = song => {
     // Remove song from list of songs
+    // const action = removeSong(song);
+    // dispatch(action);
+    dispatch(removeSong(song));
   };
 
-  const renderedSongs = songPlaylist.map((song) => {
+  const renderedSongs = songPlaylist.map(song => {
     return (
       <li key={song}>
         {song}
