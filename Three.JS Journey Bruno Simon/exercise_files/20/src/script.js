@@ -75,7 +75,9 @@ const sectionMeshes = [mesh1, mesh2, mesh3];
  */
 // Geometry
 const particlesCount = 200;
-const positions = new Float32Array(particlesCount * 3);
+const positions = new Float32Array(particlesCount * 3); //each particle w/(x,y,z)
+
+//Distribute random x,y,z values to each position of particles
 
 for (let i = 0; i < particlesCount; i++) {
   positions[i * 3 + 0] = (Math.random() - 0.5) * 10; //X
@@ -85,6 +87,7 @@ for (let i = 0; i < particlesCount; i++) {
   positions[i * 3 + 2] = (Math.random() - 0.5) * 10; //Z
 }
 
+//Assign position values to particle geometries
 const particlesGeometry = new THREE.BufferGeometry();
 particlesGeometry.setAttribute(
   'position',
@@ -153,7 +156,7 @@ cameraGroup.add(camera);
  */
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
-  alpha: true,
+  alpha: true, //MAKES BACKGROUND TRANSPARENT
 });
 // renderer.setClearAlpha(1); //same as assigning alpha property false in WEbGLRenderer object
 // renderer.setClearAlpha(0); //same as assigning alpha property true in WEbGLRenderer object
@@ -171,7 +174,7 @@ window.addEventListener('scroll', () => {
   //   console.log(scrollY);
 
   const newSection = Math.round(scrollY / sizes.height);
-  //   console.log(newSection);
+  // console.log(newSection);
 
   if (newSection != currentSection) {
     currentSection = newSection;
@@ -180,7 +183,7 @@ window.addEventListener('scroll', () => {
     gsap.to(sectionMeshes[currentSection].rotation, {
       duration: 1.5,
       ease: 'power2.inOut',
-      x: '+=6',
+      x: '+=6', //gsap docs - '+=' prefix indicates a relative value
       y: '+=3',
       z: '+=1.5',
     });
@@ -208,18 +211,27 @@ const clock = new THREE.Clock();
 let previousTime = 0;
 
 const tick = () => {
-  //Deltatime to standardtize the experience amongst many nonmatching frame rate experiences
+  //Deltatime to make standard the experience among many FPS monitors
   const elapsedTime = clock.getElapsedTime();
   const deltaTime = elapsedTime - previousTime;
   previousTime = elapsedTime;
 
   //Animate Camera
-  cameraGroup.position.y = (-scrollY / sizes.height) * objectsDistance;
+  camera.position.y = (-scrollY / sizes.height) * objectsDistance;
 
-  const parallaxX = cursor.x;
-  const parallaxY = -cursor.y;
-  camera.position.x += (parallaxX - camera.position.x) * 5 * deltaTime;
-  camera.position.y += (parallaxY - camera.position.y) * 5 * deltaTime;
+  const parallaxX = cursor.x * 0.5;
+  const parallaxY = -cursor.y * 0.5;
+
+  // console.log(parallaxX, cameraGroup.position.x, 5 * deltaTime);
+
+  //PARALLAX ADJUSTED NEW CAMERA POSITION THRU CAMERA GROUP
+  /**
+   * LERP formula => start_value+(end_value-start_value)*pct
+   */
+  cameraGroup.position.x +=
+    (parallaxX - cameraGroup.position.x) * 5 * deltaTime;
+  cameraGroup.position.y +=
+    (parallaxY - cameraGroup.position.y) * 5 * deltaTime;
 
   //Animate Meshes
   for (const mesh of sectionMeshes) {
