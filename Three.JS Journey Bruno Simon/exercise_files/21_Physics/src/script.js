@@ -26,7 +26,7 @@ debugObject.createBox = () => {
 debugObject.reset = () => {
   for (const object of objectsToUpdate) {
     //#1.CANNON.js side cleaning
-    //Remove eventListener
+    //Remove body eventListener
     object.body.removeEventListener('collide', playHitSound);
     //Remove body
     world.removeBody(object.body);
@@ -34,8 +34,8 @@ debugObject.reset = () => {
     //Remove meshes from scene
     scene.remove(object.mesh);
     //Reset objectsToUpdate array
-    objectsToUpdate.splice(0, objectsToUpdate.length);
   }
+  objectsToUpdate.splice(0, objectsToUpdate.length);
 };
 gui.add(debugObject, 'createBox');
 gui.add(debugObject, 'createSphere');
