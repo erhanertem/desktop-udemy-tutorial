@@ -17,7 +17,7 @@ const canvas = document.querySelector('canvas.webgl');
 const scene = new THREE.Scene();
 
 /**
- * >Models
+ * > Models
  */
 const dracoLoader = new DRACOLoader(); //got to be instantiated before gltfloader if using gltfdraco version
 dracoLoader.setDecoderPath('/draco/'); //provide the decorder for the compressed file
