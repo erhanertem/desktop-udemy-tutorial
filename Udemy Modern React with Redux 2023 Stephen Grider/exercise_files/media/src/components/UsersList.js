@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; //import useDispatch to call thunk action
 import { fetchUsers } from '../store'; //import thunk to fetch data
+import { addUser } from '../store';
+import Button from './Button';
 import Skeleton from './Skeleton';
 
 function UsersList() {
@@ -16,6 +18,11 @@ function UsersList() {
     dispatch(fetchUsers()); //thunk requires useDispatch to run...
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  //Eventhandlers
+  const handleUserAdd = () => {
+    dispatch(addUser()); //thunk requires useDispatch to run ...
+  };
 
   //If loading true display....
   if (isLoading) {
@@ -35,7 +42,15 @@ function UsersList() {
       </div>
     );
   });
-  return <div>{renderedUsers}</div>;
+  return (
+    <div>
+      <div className="flex flex-row justify-between m-3">
+        <h1 className="m-2 text-xl">Users</h1>
+        <Button onClick={handleUserAdd}>+ Add User</Button>
+      </div>
+      {renderedUsers}
+    </div>
+  );
 }
 
 export default UsersList;
