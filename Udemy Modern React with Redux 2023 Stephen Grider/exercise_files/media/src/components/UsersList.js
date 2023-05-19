@@ -4,6 +4,7 @@ import { fetchUsers, addUser } from '../store'; //import thunk to fetch data
 import { useThunk } from '../hooks/use-thunk';
 import Button from './Button';
 import Skeleton from './Skeleton';
+import UsersListItem from './UsersListItem';
 
 function UsersList() {
   // const [isLoadingUsers, setIsLoadingUsers] = useState(false);
@@ -44,7 +45,7 @@ function UsersList() {
     // // );
     // // eslint-disable-next-line react-hooks/exhaustive-deps
     doFetchUsers();
-  }, [doFetchUsers]);
+  }, [doFetchUsers]); //For functions to be called inside useEffect, array needs to include this function but also causes to repeat itself to inifinity. In order to make it call once, we have to wrap the actuall function with a useCallBack() hook
 
   //Eventhandlers
   const handleUserAdd = () => {
@@ -56,36 +57,37 @@ function UsersList() {
     doCreateUser();
   };
 
+  let content;
   //If loading true display....
   if (isLoadingUsers) {
-    return <Skeleton times={6} className="h-10 w-full" />;
+    content = <Skeleton times={6} className="h-10 w-full" />;
   }
   //If error fetching display...
-  if (loadingUsersError) {
-    return <div> Error Fetching Data...</div>;
+  else if (loadingUsersError) {
+    content = <div> Error Fetching Data...</div>;
   }
   //If success fetching display...
-  const renderedUsers = data.map(user => {
-    return (
-      <div key={user.id} className="mb-2 border rounded">
-        <div className="flex p-2 justify-between items-center cursor-pointer">
-          {user.name}
-        </div>
-      </div>
-    );
-  });
+  else {
+    content = data.map(user => {
+      return <UsersListItem key={user.id} user={user} />;
+    });
+  }
+
   return (
     <div>
-      <div className="flex flex-row justify-between m-3">
+      <div className="flex flex-row justify-between items-center m-3">
         <h1 className="m-2 text-xl">Users</h1>
-        {isCreatingUser ? (
+        {/* {isCreatingUser ? (
           'Creating User....'
         ) : (
           <Button onClick={handleUserAdd}>+ Add User</Button>
-        )}
+          )} */}
+        <Button loading={isCreatingUser} onClick={handleUserAdd}>
+          + Add User
+        </Button>
         {creatingUserError && 'Error creating user...'}
       </div>
-      {renderedUsers}
+      {content}
     </div>
   );
 }
