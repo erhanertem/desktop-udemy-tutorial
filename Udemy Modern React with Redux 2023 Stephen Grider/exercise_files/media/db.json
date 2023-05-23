@@ -3,16 +3,60 @@
     {
       "id": 1,
       "name": "Myra"
-    },
-    {
-      "name": "Misty Senger",
-      "id": 2
-    },
-    {
-      "name": "Paul Tromp",
-      "id": 3
     }
   ],
-  "albums": [],
-  "photos": []
+  "albums": [
+    {
+      "userId": 1,
+      "title": "Handmade Frozen Bike",
+      "id": 4
+    },
+    {
+      "userId": 1,
+      "title": "Rustic Fresh Cheese",
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "title": "Fantastic Fresh Chair",
+      "id": 6
+    }
+  ],
+  "photos": [
+    {
+      "albumId": 4,
+      "url": "https://loremflickr.com/150/150/nature?lock=3061030510919680",
+      "id": 6
+    },
+    {
+      "albumId": 4,
+      "url": "https://loremflickr.com/150/150/nature?lock=1705875660079104",
+      "id": 10
+    },
+    {
+      "albumId": 5,
+      "url": "https://loremflickr.com/150/150/abstract?lock=3210572413796352",
+      "id": 11
+    },
+    {
+      "albumId": 6,
+      "url": "https://loremflickr.com/150/150/abstract?lock=2146475066785792",
+      "id": 12
+    },
+    {
+      "albumId": 6,
+      "url": "https://loremflickr.com/150/150/abstract?lock=6516220345974784",
+      "id": 13
+    },
+    {
+      "albumId": 6,
+      "url": "https://loremflickr.com/150/150/abstract?lock=470745656328192",
+      "id": 14
+    },
+    {
+      "albumId": 6,
+      "url": "https://loremflickr.com/150/150/abstract?lock=804188690841600",
+      "id": 15
+    }
+  ]
 }
