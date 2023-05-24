@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* effects html tag elements */
+@layer base {
+  h1 {
+    font-size: 2rem;
+    background-color: red;
+  }
+  h2 {
+    @apply text-xl bg-red-200;
+  }
+}
+
+/* effects corresponding classes */
+@layer components {
+  .btn-blue {
+    @apply bg-blue-500 py-2 px-4 rounded-xl font-bold text-white hover:bg-blue-700;
+  }
+}
+/* Alternate way of referring to a classname */
+/* Using theme function we refer to our custom spacing value */
+.content-area {
+  @apply bg-green-200;
+  height: theme('spacing.128');
+}
+/* Add media query values using screen function */
+@media screen(xl) {
+  body {
+    @apply bg-black text-white;
+  }
+}
