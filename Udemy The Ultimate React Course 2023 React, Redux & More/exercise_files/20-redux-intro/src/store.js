@@ -1,14 +1,20 @@
-import { createStore } from 'redux'
+import { combineReducers, createStore } from 'redux'
 
 //REDUCER INITIAL STATE
-const initialState = {
+const initialStateAccount = {
 	balance: 0,
 	loan: 0,
 	loanPurpose: '',
 }
 
+const initialStateCustomer = {
+	fullName: '',
+	nationalID: '',
+	createdAt: '',
+}
+
 //CREATE A REDUCER
-function reducer(state = initialState, action) {
+function accountReducer(state = initialStateAccount, action) {
 	switch (action.type) {
 		case 'account/deposit':
 			return {
@@ -36,9 +42,29 @@ function reducer(state = initialState, action) {
 			return state
 	}
 }
-
+function customerReducer(state = initialStateCustomer, action) {
+	switch (action.type) {
+		case 'customer/createCustomer':
+			return {
+				...state,
+				fullName: action.payload.fullName,
+				nationalID: action.payload.nationalID,
+				createdAt: action.payload.createdAt,
+			}
+		case 'customer/updateName':
+			return { ...state, fullName: action.payload }
+		default:
+			return state
+	}
+}
+//COMBINED REDUCERS
+const rootReducer = combineReducers({
+	account: accountReducer,
+	customer: customerReducer,
+})
 //CREATE REDUX STORE
-const store = createStore(reducer)
+// const store = createStore(accountReducer)
+const store = createStore(rootReducer)
 
 // -> #1. TYPE IN ACTION OBJECT INSIDE DISPATCH DIRECTLY...PRONE TO ERROR
 // store.dispatch({ type: 'account/deposit', payload: 500 })
@@ -79,4 +105,22 @@ console.log(store.getState())
 store.dispatch(requestLoan(500, 'car loan'))
 console.log(store.getState())
 store.dispatch(payLoan())
+console.log(store.getState())
+
+function createCustomer(fullName, nationalID) {
+	return {
+		type: 'customer/createCustomer',
+		payload: { fullName, nationalID, createdAt: new Date().toISOString() },
+	}
+}
+function updateName(fullName) {
+	return {
+		type: 'customer/updateName',
+		payload: fullName,
+	}
+}
+
+store.dispatch(createCustomer('Ernie Walters', '124545478'))
+console.log(store.getState())
+store.dispatch(updateName('Ernie Sanders'))
 console.log(store.getState())
