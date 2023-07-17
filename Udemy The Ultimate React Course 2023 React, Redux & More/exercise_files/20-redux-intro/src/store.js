@@ -15,6 +15,9 @@ const rootReducer = combineReducers({
 })
 //CREATE REDUX STORE
 // const store = createStore(accountReducer)
-const store = createStore(rootReducer, applyMiddleware(thunk))
+const store = createStore(
+	rootReducer,
+	composeWithDevTools(applyMiddleware(thunk)), //wrap the middleware with redux devtools
+)
 
 export default store
