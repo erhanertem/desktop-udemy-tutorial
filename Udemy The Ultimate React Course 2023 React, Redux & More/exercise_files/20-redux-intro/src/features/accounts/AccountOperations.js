@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deposit, payLoan, requestLoan, withdraw } from './accountSlice'
 
+const DEFAULT_CURRENCY = 'USD'
+
 function AccountOperations() {
 	const [depositAmount, setDepositAmount] = useState('')
 	const [withdrawalAmount, setWithdrawalAmount] = useState('')
 	const [loanAmount, setLoanAmount] = useState('')
 	const [loanPurpose, setLoanPurpose] = useState('')
-	const [currency, setCurrency] = useState('USD')
+	const [currency, setCurrency] = useState(DEFAULT_CURRENCY)
 
 	const dispatch = useDispatch()
 
@@ -25,7 +27,7 @@ function AccountOperations() {
 		if (!depositAmount) return
 		dispatch(deposit(depositAmount, currency)) //dispatch the deposit action
 		setDepositAmount('')
-		setCurrency('')
+		setCurrency(DEFAULT_CURRENCY)
 	}
 
 	function handleWithdrawal() {
