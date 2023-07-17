@@ -3,6 +3,7 @@ const initialStateAccount = {
 	balance: 0,
 	loan: 0,
 	loanPurpose: '',
+	isLoading: false,
 }
 
 //CREATE A REDUCER - exported as default
@@ -12,6 +13,7 @@ export default function accountReducer(state = initialStateAccount, action) {
 			return {
 				...state,
 				balance: state.balance + action.payload,
+				isLoading: false,
 			}
 		case 'account/withdraw':
 			return { ...state, balance: state.balance - action.payload }
@@ -30,14 +32,30 @@ export default function accountReducer(state = initialStateAccount, action) {
 				loanPurpose: '',
 				balance: state.balance - state.loan,
 			}
+		case 'account/convertingCurrency':
+			return { ...state, isLoading: true }
 		default:
 			return state
 	}
 }
 
 //SETUP ACTION CREATORS - DESIGNATED FUNCTIONS TO BE CALLED BY DISPATCH - named exported
-export function deposit(amount) {
-	return { type: 'account/deposit', payload: amount }
+export function deposit(amount, currency) {
+	if (currency === 'USD') return { type: 'account/deposit', payload: amount }
+	//REDUX THUNK FUNCTION MIDDLEWARE RECEIVES ALWAYS A DISPATCH AND GETSTATE PARAMETERS
+	return async function (dispatch, getState) {
+		dispatch({ type: 'account/convertingCurrency' }) //isloading true
+		//API CALL
+		const res = await fetch(
+			`https:\\api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=USD`,
+		)
+		const data = await res.json()
+		console.log(data)
+		const converted = data.rates.USD
+		//RETURN ACTION
+		//NOTE: we dispatch the async result not return!!! in thunks
+		dispatch({ type: 'account/deposit', payload: converted })
+	}
 }
 export function withdraw(amount) {
 	return { type: 'account/withdraw', payload: amount }
