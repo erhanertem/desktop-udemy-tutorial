@@ -1,5 +1,7 @@
+import { createSlice } from '@reduxjs/toolkit'
+
 //REDUCER INITIAL STATE
-const initialStateAccount = {
+const initialState = {
 	balance: 0,
 	loan: 0,
 	loanPurpose: '',
@@ -7,65 +9,44 @@ const initialStateAccount = {
 }
 
 //CREATE A REDUCER - exported as default
-export default function accountReducer(state = initialStateAccount, action) {
-	switch (action.type) {
-		case 'account/deposit':
-			return {
-				...state,
-				balance: state.balance + action.payload,
-				isLoading: false,
-			}
-		case 'account/withdraw':
-			return { ...state, balance: state.balance - action.payload }
-		case 'account/requestLoan':
-			if (state.loan > 0) return state
-			return {
-				...state,
-				loan: action.payload.amount,
-				loanPurpose: action.payload.purpose,
-				balance: state.balance + action.payload.amount,
-			}
-		case 'account/payLoan':
-			return {
-				...state,
-				loan: 0,
-				loanPurpose: '',
-				balance: state.balance - state.loan,
-			}
-		case 'account/convertingCurrency':
-			return { ...state, isLoading: true }
-		default:
-			return state
-	}
-}
-
-//SETUP ACTION CREATORS - DESIGNATED FUNCTIONS TO BE CALLED BY DISPATCH - named exported
-export function deposit(amount, currency) {
-	if (currency === 'USD') return { type: 'account/deposit', payload: amount }
-	//REDUX THUNK FUNCTION MIDDLEWARE RECEIVES ALWAYS A DISPATCH AND GETSTATE PARAMETERS
-	return async function (dispatch, getState) {
-		dispatch({ type: 'account/convertingCurrency' }) //isloading true
-		//API CALL
-		const res = await fetch(
-			`https:\\api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=USD`,
-		)
-		const data = await res.json()
-		console.log(data)
-		const converted = data.rates.USD
-		//RETURN ACTION
-		//NOTE: we dispatch the async result not return!!! in thunks
-		dispatch({ type: 'account/deposit', payload: converted })
-	}
-}
-export function withdraw(amount) {
-	return { type: 'account/withdraw', payload: amount }
-}
-export function requestLoan(amount, purpose) {
-	return {
-		type: 'account/requestLoan',
-		payload: { amount, purpose },
-	}
-}
-export function payLoan() {
-	return { type: 'account/payLoan' }
-}
+const accountSlice = createSlice({
+	name: 'account',
+	initialState,
+	//ACTION CREATORS
+	reducers: {
+		deposit(state, action) {
+			state.balance += action.payload
+		},
+		withdraw(state, action) {
+			// ACTION PAYLOAD ACCEPTS ONLY ONE ARGUMENT
+			state.balance -= action.payload // WE ARE DIRECTLY OVERRIDING VIA IMMER
+		},
+		requestLoan: {
+			// ACTION PAYLOAD ACCEPTS ONLY ONE ARGUMENT - IN ORDER TO CONSUME MULTIPLE STATE ARGUMENTS (NOT IN AN OBJECT LITERAL) IN A ACTION FUNCTION, WE NEED TO PREP THE STATE
+			prepare(amount, purpose) {
+				return {
+					//PREP THE PAYLOAD AS AN OBJECT INTAKING TWO ARGUMENTS IN THIS CASE
+					payload: { amount, purpose },
+				}
+			},
+			//ISOLATED REDUCER FUNCTION THEN TAKES IN THIS PREPED ACTION PAYLOAD
+			reducer(state, action) {
+				if (state.loan > 0) return // WE DONOT RETURN STATE ANYMORE
+				state.loan = action.payload.amount
+				state.loanPurpose = action.payload.purpose
+				state.balance += action.payload.amount
+			},
+		},
+		payLoan(state, action) {
+			//VERY IMPORTANT! BEWARE DIRECT MUTATION AFFECTS DEPENDANT STATES!!! SINCE THIS REQUIRES LOAN STATE: FIRST, WE DO OUR SUBSTRACTION AND THEN MUTATE THE LOAN TO ZERO.
+			state.balance -= state.loan
+			state.loan = 0
+			state.loanPurpose = ''
+		},
+	},
+})
+// console.log(accountSlice)
+//EXPORT ACTION CREATORS
+export const { deposit, payLoan, withdraw, requestLoan } = accountSlice.actions
+//EXPORT REDUCER
+export default accountSlice.reducer
