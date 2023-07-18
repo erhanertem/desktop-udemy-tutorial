@@ -10,12 +10,13 @@ const initialState = {
 
 //CREATE A REDUCER - exported as default
 const accountSlice = createSlice({
-	name: 'account',
+	name: 'account', //NAME OF THE SLICE
 	initialState,
 	//ACTION CREATORS
 	reducers: {
 		deposit(state, action) {
 			state.balance += action.payload
+			state.isLoading = false
 		},
 		withdraw(state, action) {
 			// ACTION PAYLOAD ACCEPTS ONLY ONE ARGUMENT
@@ -43,10 +44,32 @@ const accountSlice = createSlice({
 			state.loan = 0
 			state.loanPurpose = ''
 		},
+		convertingCurrency(state, action) {
+			state.isLoading = true
+		},
 	},
 })
 // console.log(accountSlice)
 //EXPORT ACTION CREATORS
-export const { deposit, payLoan, withdraw, requestLoan } = accountSlice.actions
+// export const { deposit, payLoan, withdraw, requestLoan } = accountSlice.actions
+export const { payLoan, withdraw, requestLoan } = accountSlice.actions
+//ASYNC FETCH CUSTOMIZED ACTION CREATOR
+export function deposit(amount, currency) {
+	if (currency === 'USD') return { type: 'account/deposit', payload: amount }
+	//REDUX THUNK FUNCTION MIDDLEWARE RECEIVES ALWAYS A DISPATCH AND GETSTATE PARAMETERS
+	//REDUX THUNKS ARE AUTOMATICALLY PROVIDED INSIDE REDUX RTK
+	return async function (dispatch, getState) {
+		dispatch({ type: 'account/convertingCurrency' }) //isloading true
+		//API CALL
+		const res = await fetch(
+			`https:\\api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=USD`,
+		)
+		const data = await res.json()
+		const converted = data.rates.USD
+		//RETURN ACTION
+		//NOTE: we dispatch the async result not return!!! in thunks
+		dispatch({ type: 'account/deposit', payload: converted })
+	}
+}
 //EXPORT REDUCER
 export default accountSlice.reducer
