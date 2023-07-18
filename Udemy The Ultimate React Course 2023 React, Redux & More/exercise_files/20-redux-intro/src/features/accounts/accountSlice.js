@@ -10,7 +10,8 @@ const initialState = {
 
 //CREATE A REDUCER - exported as default
 const accountSlice = createSlice({
-	name: 'account', //NAME OF THE SLICE
+	//NAME OF THE SLICE
+	name: 'account',
 	initialState,
 	//ACTION CREATORS
 	reducers: {
