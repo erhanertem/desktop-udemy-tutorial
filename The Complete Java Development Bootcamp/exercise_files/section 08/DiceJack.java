@@ -50,8 +50,9 @@ public class DiceJack {
   }
 
   public static int rollDice(int lowestRange, int highestRange) {
-    return (int) Math.floor(
-      ((Math.random() * (highestRange - lowestRange + 1) + lowestRange))
+    return (
+      (int) Math.floor(Math.random() * (highestRange - lowestRange + 1)) +
+      lowestRange
     );
   }
 }
