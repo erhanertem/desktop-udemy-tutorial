@@ -5,7 +5,7 @@ public class User {
 
     private static int userCount = 0; // STATIC FIELD
 
-    public static int getUserCount() {
+    public static int getUserCount() { // STATIC METHOD THAT CALLS A STATIC FIELD
         return userCount;
     }
 
