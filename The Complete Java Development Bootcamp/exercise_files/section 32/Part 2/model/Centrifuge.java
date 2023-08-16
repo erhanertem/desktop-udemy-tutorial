@@ -21,7 +21,8 @@ public class Centrifuge extends LabEquipment {
 
     public void setMaxRPM(int maxRPM) {
         if (maxRPM < MIN_RPM) {
-            throw new IllegalArgumentException("Max RPM must be greater than or equal to the minimum RPM.");
+            throw new IllegalArgumentException(
+                    "Max RPM must be greater than or equal to the minimum RPM.");
         }
         this.maxRPM = maxRPM;
     }

@@ -36,9 +36,12 @@ public class Shirt extends Product {
         System.out.println("Thats blah SHIRTY SHITTY blahhh");
     }
 
+
+
     @Override
     public String toString() {
-        return "SHIRT " + this.size + " " + super.getBrand() + " BRAND & " + super.getColor() + " COLOR IS NOT NICE";
+        return "SHIRT " + this.size + " " + super.getBrand() + " BRAND & " + super.getColor()
+                + " COLOR IS NOT NICE";
     }
 
 }
