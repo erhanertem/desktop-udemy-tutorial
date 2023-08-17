@@ -15,28 +15,59 @@ public class Movie {
     this.imdbRating = imdbRating;
   }
 
+  public Movie(Movie source) {
+    this.name = source.name;
+    this.actor = source.actor;
+    this.genre = source.genre;
+    this.releaseDate = source.releaseDate;
+    this.imdbRating = source.imdbRating;
+  }
+
+
   public String getName() {
     return this.name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getActor() {
     return this.actor;
   }
 
+  public void setActor(String actor) {
+    this.actor = actor;
+  }
+
   public String getGenre() {
     return this.genre;
+  }
+
+  public void setGenre(String genre) {
+    this.genre = genre;
   }
 
   public int getReleaseDate() {
     return this.releaseDate;
   }
 
+  public void setReleaseDate(int releaseDate) {
+    this.releaseDate = releaseDate;
+  }
+
   public double getImdbRating() {
     return this.imdbRating;
   }
 
+  public void setImdbRating(double imdbRating) {
+    this.imdbRating = imdbRating;
+  }
+
+
   @Override
   public String toString() {
-    return name + " (" + releaseDate + ") - Directed by " + actor + ", Genre: " + genre + ", Rating: " + imdbRating;
+    return name + " (" + releaseDate + ") - Directed by " + actor + ", Genre: " + genre
+        + ", Rating: " + imdbRating;
   }
 }

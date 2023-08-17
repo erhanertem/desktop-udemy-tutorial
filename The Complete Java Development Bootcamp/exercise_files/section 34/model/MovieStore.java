@@ -18,12 +18,18 @@ public class MovieStore {
     return movies.stream().filter(movie -> movie.getGenre().equalsIgnoreCase(genre)).toList();
   }
 
+  public List<Movie> sortByActor() {
+    return movies.stream().sorted((a, b) -> a.getActor().compareTo(b.getActor())).toList();
+  }
+
   public List<Movie> sortByReleaseYear() {
-    return movies.stream().sorted((a, b) -> Integer.compare(a.getReleaseDate(), b.getReleaseDate())).toList();
+    return movies.stream().sorted((a, b) -> Integer.compare(a.getReleaseDate(), b.getReleaseDate()))
+        .toList();
   }
 
   public List<Movie> getTopRatedMovies(int n) {
-    return movies.stream().sorted((a, b) -> Double.compare(b.getImdbRating(), a.getImdbRating())).limit(n).toList();
+    return movies.stream().sorted((a, b) -> Double.compare(b.getImdbRating(), a.getImdbRating()))
+        .limit(n).toList();
   }
 
 }
