@@ -1,3 +1,5 @@
+#
+
 # LESSON 5
 # twith_handler = "Arabic"
 # twith_handler = '@OPUS'
@@ -26,4 +28,28 @@
 # "hello"[3]
 
 # Same as null
-user = None
+# user = None
+
+# LESSON 6
+# full_name = "Erhan Ertem"
+# full_name[2:6]  # including start - excluding end index
+# full_name[2:]  # including start - to the end of the string
+# full_name[:4]  # including start - excluding 4th index of the string
+# full_name[2:-1]  # including start - excluding the last index
+# full_name[2::2]
+# including start - to the end of the string - SKIPPING EVERY N CHARACTER
+
+# print("hello \n world")
+# print("hello \t world")
+
+# print(
+#     """
+# Hello my name is
+#         Erhan Ertem
+#   I am dangling jiggy jiggy mashmallow
+#      hoping for a pirate ship
+#     Langard!!
+# """
+# )
+
+# LESSON 7
