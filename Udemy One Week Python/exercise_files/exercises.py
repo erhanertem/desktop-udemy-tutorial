@@ -53,3 +53,24 @@
 # )
 
 # LESSON 7
+# len("Erhan")
+# len(12345)
+# first_name = input("What is your first name ?")
+# print("Hi there, " + first_name)
+# type("hi")
+# type(5)
+# int("12")
+# int(12.5)
+# float("3.3")
+# str(44.5)
+# float("2")
+
+# age = input("What's your age")
+# days = float(age) * 365
+# print(days)
+
+# f"there are {24*60*60} seconds in a day"
+# age = input("What's your age")
+# f"hello dear {age} old boi"
+
+# LESSON 8
