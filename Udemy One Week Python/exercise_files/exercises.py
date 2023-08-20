@@ -74,3 +74,27 @@
 # f"hello dear {age} old boi"
 
 # LESSON 8
+# "purpleface".capitalize()
+# "purpleface".upper()
+# "puRPleface".lower()
+
+"  PURFLANGE  ".strip()
+# "__PURF-LAN-G-E--".strip("-_")
+# "    PURFLANGE".lstrip()
+# "PURFLANGE    ".rstrip()
+
+# " ".join("selfie")
+
+# "3kilometers 5kilometers 8kilometers".replace("kilometers", "miles")
+# "3kilometers 5kilometers 8kilometers".replace("kilometers", "")
+# "3kilometers 5kilometers 8kilometers".replace("kilometers", "miles", 2)
+
+# msg = "Cat in a hat"
+# msg.find("a")
+# msg.rfind("a")
+# msg.index("a")
+# msg.rindex("a")
+# msg.count("a")
+
+# email = "eERtem12321@gmail.com"
+# email.strip().lower()
