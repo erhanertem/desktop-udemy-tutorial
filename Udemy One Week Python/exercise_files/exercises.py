@@ -98,3 +98,34 @@
 
 # email = "eERtem12321@gmail.com"
 # email.strip().lower()
+
+# int("45")
+# int("45.2")
+# float("45")
+# float("45.5")
+
+# LESSON 9
+# 1 > 10
+# 1 <= 10
+# age = 19
+# age < 21
+
+# "hello" == "hello"
+# "hello" != "hello"
+# "hello" == "hello "
+# "hello" != "hello "
+# "a" == "A"
+# "a" != "A"
+
+# 4 == 4.0
+# 4.0001 == 4.0
+# "4" == 4
+
+# bool(0)
+# bool(-1)
+# bool("Ernie")
+
+# "a" in "bat"
+# "a" < "b"
+# ord("a")  # 97
+# ord("b")  # 98
