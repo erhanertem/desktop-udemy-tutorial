@@ -129,3 +129,45 @@
 # "a" < "b"
 # ord("a")  # 97
 # ord("b")  # 98
+
+# LESSON 10
+# age = input("How old are you: ")
+# age = int(age)
+# if age > 21:
+#     print("COME ON IN!")
+#     print("***********")
+# print("GO HOME!")
+
+# score = -99
+# if score <= 0:
+#     print("You died!")
+# else:
+#     print("Game Over!")
+
+# score = -99
+# if score <= 0:
+#     print("You died!")
+# print("Game Over!")
+
+# color = "black"
+# color = 22
+
+# if color == "green":
+#     print("BEGINNER!")
+# elif color == "blue":
+#     print("INTERMEDIATE")
+# elif color == "black":
+#     print("ADVANCED")
+# else:
+#     print("I HAVE NO IDEA WHAT YOU ARE TALKING ABOUT!!!!")
+
+
+# num = 3
+# if num > 0:
+#     print("LAYER 1")
+# elif num == 3:
+#     print("LAYER 2")
+# elif num < 10:
+#     print("LAYER 3")
+
+# LESSON 11
