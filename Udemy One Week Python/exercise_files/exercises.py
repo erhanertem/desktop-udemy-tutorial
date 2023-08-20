@@ -78,7 +78,7 @@
 # "purpleface".upper()
 # "puRPleface".lower()
 
-"  PURFLANGE  ".strip()
+# "  PURFLANGE  ".strip()
 # "__PURF-LAN-G-E--".strip("-_")
 # "    PURFLANGE".lstrip()
 # "PURFLANGE    ".rstrip()
@@ -171,29 +171,37 @@
 #     print("LAYER 3")
 
 # LESSON 11
-mood = "happy"
+# mood = "happy"
 
-if mood == "happy":
-    print("I'm happy you are happy!")
-    print(":) " * 10)
+# if mood == "happy":
+#     print("I'm happy you are happy!")
+#     print(":) " * 10)
 
-unit = input("What unit are you using?")
-temp = int(input("What temp is the water ?"))
+# unit = input("What unit are you using?")
+# temp = int(input("What temp is the water ?"))
 
-if unit == "f":
-    if temp >= 212:
-        print("WATER IS BOILING")
-    else:
-        print("WATER IS NOT BOILING")
-elif unit == "c":
-    if temp >= 100:
-        print("WATER IS BOILING")
-    else:
-        print("WATER IS NOT BOILING")
-elif unit == "k":
-    if temp >= 373:
-        print("WATER IS BOILING")
-    else:
-        print("WATER IS NOT BOILING")
-else:
-    print("I couldnt get your request, either type c, k, f as temp types")
+# if unit == "f":
+#     if temp >= 212:
+#         print("WATER IS BOILING")
+#     else:
+#         print("WATER IS NOT BOILING")
+# elif unit == "c":
+#     if temp >= 100:
+#         print("WATER IS BOILING")
+#     else:
+#         print("WATER IS NOT BOILING")
+# elif unit == "k":
+#     if temp >= 373:
+#         print("WATER IS BOILING")
+#     else:
+#         print("WATER IS NOT BOILING")
+# else:
+#     print("I couldnt get your request, either type c, k, f as temp types")
+
+# LESSON 12
+# "a" == "a" and 1 < 5
+# "a" == "b" or 1 < 5
+# age = 16
+# not age < 18
+
+# LESSON 13
