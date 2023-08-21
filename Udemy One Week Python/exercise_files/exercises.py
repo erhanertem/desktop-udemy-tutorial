@@ -204,4 +204,60 @@
 # age = 16
 # not age < 18
 
+
 # LESSON 16
+# def laugh(num):
+#     print("ha_" * num)
+# laugh(10)
+# len("pickle")
+# def divide(x, y):
+#     print(x / y)
+# divide(4, 2)
+# def hello(text):
+#     print(text)
+
+# def divide(x, y):
+#     return x / y
+
+# result = divide(3, 2)
+# print(result)
+
+# def is_even(num):
+#     return num % 2 == 0
+
+# def slugify(phrase):
+#     return phrase.lower().strip().replace(" ", "_")
+
+# slugify("hello world oopps")
+
+def count_vowels(str):
+    count = 0
+    # for i in range(0, len(str)):
+    #     if str[i] in "aeiou":
+    for i in str:
+        if i in "aeiou":
+
+            count += 1
+    return count
+
+
+count_vowels("hello world")
+count_vowels("lll")
+
+
+def laugh(intensity=10):
+    print("HA!!"*intensity)
+
+
+laugh()
+laugh(2)
+
+
+def greet(person, msg='Hi'):
+    print(f"{msg}, {person}!")
+
+
+greet("Tonya")
+
+
+greet("Hello", "Tonya")
