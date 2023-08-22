@@ -230,34 +230,39 @@
 
 # slugify("hello world oopps")
 
-def count_vowels(str):
-    count = 0
-    # for i in range(0, len(str)):
-    #     if str[i] in "aeiou":
-    for i in str:
-        if i in "aeiou":
+# def count_vowels(str):
+#     count = 0
+#     # for i in range(0, len(str)):
+#     #     if str[i] in "aeiou":
+#     for i in str:
+#         if i in "aeiou":
 
-            count += 1
-    return count
+#             count += 1
+#     return count
 
+# count_vowels("hello world")
+# count_vowels("lll")
 
-count_vowels("hello world")
-count_vowels("lll")
+# def laugh(intensity=10):
+#     print("HA!!"*intensity)
 
+# laugh()
+# laugh(2)
 
-def laugh(intensity=10):
-    print("HA!!"*intensity)
+# def greet(person, msg='Hi'):
+#     print(f"{msg}, {person}!")
 
+# greet("Tonya")
 
-laugh()
-laugh(2)
+# greet("Hello", "Tonya")
 
+# LESSON 17
+# temperature = 78
 
-def greet(person, msg='Hi'):
-    print(f"{msg}, {person}!")
+# def get_weather():
+#     temperature = 90
 
+# get_weather()
+# print(temperature)
 
-greet("Tonya")
-
-
-greet("Hello", "Tonya")
+# LESSON 18
