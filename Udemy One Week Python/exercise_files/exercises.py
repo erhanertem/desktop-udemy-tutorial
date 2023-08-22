@@ -308,3 +308,62 @@
 #     print(lang)
 
 # LESSON 19
+# langs = ["Py", "JS", "C", "Java", "C", 2, 3, 2]
+# langs.count("C")
+# langs.count("CS")
+# langs.count(2)
+
+# evens = [2, 4, 6]
+# evens.reverse()
+# evens.sort()
+# evens
+
+# colors = ["red", "blue", "beige"]
+# colors.sort()
+# colors
+
+# id([])
+# id([])
+# id("STring")
+# id(0)
+# id(0)
+
+# res = (id([1, 2, 3]) == id([1, 2, 3]))
+# res  # True
+# list1 = [1, 2, 3]
+# list2 = list1
+# result = list1 == list2  # True
+# result = list1 is list2  # True - list2 is a memory reference copy of list1
+# result = ([1, 2, 3] == [1, 2, 3])  # True
+# result = [1, 2, 3] is [1, 2, 3]  # False
+# result
+
+# birthday = "03/27/2020"
+# array = birthday.split("/")
+# array
+
+# fruits = ["Apple", "Mango", "Tobacco"]
+# fruits = "!! ** ".join(fruits)
+# fruits
+
+# user = ["Ernie", "Malloy", 42]
+# first, last, age = user
+
+# user = ["Ernie", "Malloy", "Operator", "$20000", 42]
+# first, last, *details, age = user
+# details
+
+# list1 = [12, 9, 3, 7]
+# list2 = list1.copy()
+# list1 == list2
+# list1 is list2
+
+# list3 = [2, 9, ["a", "b"], 2]
+# list4 = list3.copy()
+# list4
+
+import copy
+list1 = [2, 9, ["a", "b", [1, 3, 4, 5, ["x", "y", [1, 4, 5]]]], 2]
+list2 = copy.deepcopy(list1)
+list2
+# LESSON 20
