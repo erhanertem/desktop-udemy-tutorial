@@ -266,3 +266,45 @@
 # print(temperature)
 
 # LESSON 18
+
+# high_scores = [99, 100, 78, 56, 50, 20, 12]
+# high_scores
+# stuff = [4, 5.6, True, False, 'hi', []]
+# stuff
+# stuff[1]
+# stuff[-1]
+
+# len([1, 2, 3, 4])
+# len(stuff)
+
+# nums = [7, 8, 9]
+# nums[1] = 10
+# nums.append("rosa")
+# nums.extend("rosa")
+# nums.extend(['charlie', 'marley', 'borris'])
+# nums.insert(0, "Hello")
+# nums[0:2]
+# s = "May".rjust(10, "*")
+# s = "May".ljust(10, "*")
+# s
+# s[0:2]
+
+# nums = [7, 8, 9, 10, 11, 14]
+# nums[0:6:2]  # [7, 9, 11]
+# nums[::2]  # [7, 9, 11]
+
+# nums = [7, 8, 9, 10, 11, 14]
+# nums[0:3] = ["a", "b", "c", "d"]
+# nums.clear()
+# nums.remove(10)
+# nums.remove('a')
+# nums.pop()
+# nums.pop(0)
+
+# del [1, 2, 3, 4, 5][2:]
+
+# langs = ["Pyhton", "C++", "C", "C#", "Java"]
+# for lang in langs:
+#     print(lang)
+
+# LESSON 19
