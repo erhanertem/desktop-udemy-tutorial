@@ -362,8 +362,51 @@
 # list4 = list3.copy()
 # list4
 
-import copy
-list1 = [2, 9, ["a", "b", [1, 3, 4, 5, ["x", "y", [1, 4, 5]]]], 2]
-list2 = copy.deepcopy(list1)
-list2
+# import copy
+# list1 = [2, 9, ["a", "b", [1, 3, 4, 5, ["x", "y", [1, 4, 5]]]], 2]
+# list2 = copy.deepcopy(list1)
+# list2
+
 # LESSON 20
+
+movies = {}
+movie = {"title": "Amedeus",
+         "imdb": 3.6,
+         'score': 7.0,
+         'records': 2000,
+         'director': "Allen Fredo"}
+
+movie['title']
+movie['title'] = "Jonny"
+movie['genre'] = "Comics"
+movie
+
+prices = {
+    "arugala": 1.10,
+    "basil": 2.54,
+    "blackberries": 4.93,
+    "blueberries": 2.88,
+    "coconut": 7.15,
+    "fennel": 3.36,
+}
+
+# prices.pop('basil')
+# prices.popitem()
+# # prices.clear()
+# del prices['coconut']
+# prices
+
+# prices.keys()
+# prices.values()
+# prices.items()
+
+# order = {"cost": 3.5, "quantity": 12}
+# order.update({"cost": 4.5, "date": "03/05/2023"})
+# order
+
+# d1 = {"a": 1, "b": 2}
+# d2 = {"c": 3}
+# d3 = {**d1, **d2}
+# d4 = d1 | d2
+
+# LESSON 21
