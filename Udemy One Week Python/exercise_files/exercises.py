@@ -460,3 +460,39 @@
 # x
 
 # LESSON 22
+# def display_info1(person, status="file"):
+#     # Default has to come after regular arg
+#     print(f"{status}")
+#     print(f"{person}")
+
+
+# display_info1("colt", status="married")
+
+
+# def display_info2(person, *args, status="file"):
+#     # *args has to provided before status in order to have status default to "file"
+#     print(f"{status}")
+#     print(f"{person}")
+#     print(f"{args}")
+
+
+# display_info2("colt", 4, 5, 6, 7, 8, 9,
+#               status="married")
+
+
+# def display_info3(person, *args, status="file", **kwargs):
+#     # **kwargs has to come after all
+#     print(f"{status}")
+#     print(f"{person}")
+#     print(f"{args}")
+#     print(f"{kwargs}")
+
+
+# display_info3("colt", 4, 5, 6, 7, 8, 9,
+#               status="married", age=87, mood="thriving")
+
+# nums = [1, 2, 3, 4, 111, 333, 33, 34, 5, 6, 8, 9999122, 1]
+# sum(nums)
+# sum(*nums)
+
+# LESSON 23
