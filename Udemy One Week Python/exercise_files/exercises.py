@@ -519,12 +519,32 @@
 
 # LESSON 24
 # from calendar import isleap, weekday
-import math as ma
+# import math as ma
 # from math import *
-import random
-import calendar
-random.randint(1, 6)
-calendar.weekday(2012, 1, 1)
+# import random
+# import calendar
+# random.randint(1, 6)
+# calendar.weekday(2012, 1, 1)
 # isleap(2015)
 # weekday(2012, 1, 1)
-ma.pi
+# ma.pi
+
+# LESSON 25
+# {
+#     "name": 'elton',
+#     "breed": "australian shep",
+#     "tricks": ['sit', 'down'],
+#     "available": True
+# }
+
+class Puppy:
+    # Naming convention is to capitalize the class name
+    # __init__ represents the constructor function in Python
+    def __init__(self, name):  # self must be forst parameter
+        self.name = name  # self points to the current instance of Puppy
+        self.tricks = []
+
+
+elton = Puppy("Elton")
+elton.name
+elton.tricks
