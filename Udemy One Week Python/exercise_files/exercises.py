@@ -496,3 +496,25 @@
 # sum(*nums)
 
 # LESSON 23
+# def get_user_name():
+#     res = input('Please enter your name: ')
+#     if not res.isalpha():
+#         raise ValueError("can only return letters!")
+#     return res
+
+# def get_user_name():
+#     try:
+#         res = input('Please enter your name: ')
+#         if not res.isalpha():
+#             raise NameError
+#         return res
+#     except NameError:
+#         # except (ValueError, EOFError):
+#         # except Exception:
+#         # except ValueError:
+#         print("An exception")
+
+
+# get_user_name()
+
+# LESSON 24
