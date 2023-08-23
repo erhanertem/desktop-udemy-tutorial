@@ -369,26 +369,26 @@
 
 # LESSON 20
 
-movies = {}
-movie = {"title": "Amedeus",
-         "imdb": 3.6,
-         'score': 7.0,
-         'records': 2000,
-         'director': "Allen Fredo"}
+# movies = {}
+# movie = {"title": "Amedeus",
+#          "imdb": 3.6,
+#          'score': 7.0,
+#          'records': 2000,
+#          'director': "Allen Fredo"}
 
-movie['title']
-movie['title'] = "Jonny"
-movie['genre'] = "Comics"
-movie
+# movie['title']
+# movie['title'] = "Jonny"
+# movie['genre'] = "Comics"
+# movie
 
-prices = {
-    "arugala": 1.10,
-    "basil": 2.54,
-    "blackberries": 4.93,
-    "blueberries": 2.88,
-    "coconut": 7.15,
-    "fennel": 3.36,
-}
+# prices = {
+#     "arugala": 1.10,
+#     "basil": 2.54,
+#     "blackberries": 4.93,
+#     "blueberries": 2.88,
+#     "coconut": 7.15,
+#     "fennel": 3.36,
+# }
 
 # prices.pop('basil')
 # prices.popitem()
@@ -410,3 +410,53 @@ prices = {
 # d4 = d1 | d2
 
 # LESSON 21
+# dishes = ("burrito", "taco", "fajita", "quesadilla")
+# dishes[2]
+# dishes[:2]
+# dishes.index("burriato")
+# dishes.index("burrito")
+# dishes.count("taco")
+# answer = "burrito" in dishes
+# answer
+
+# for dish in dishes:
+#     print(dish)
+# t = (1, 2, 3)
+# type(t)
+# t
+
+# (True, False, 23, 'Aikido')
+
+# x = tuple()
+
+# gps_locations = {(121.1211, 34323.2211): 'home base',
+#                  (111.1122, 10001.1): 'phone boot'}
+
+# evens = {2, 4, 6, 8, 2}
+# evens = {1, 2, 3, True, 'ads'}
+# sell = dict()
+# sell
+# evennum = set()
+# evennum = {1}
+# evennum = {2, 4, 5, 6, 7}
+# evennum = {2, 4, 5, 6, 7, 7}
+# evennum.add("SamsClub")
+# evennum.add("A SamsClub")
+# evennum.add("a SamsClub")
+# evennum.add("samsClub")
+# evennum.remove("samsClub")
+# response = "samsClub" in evennum
+# response
+# evennum.remove(3)
+# evennum.discard(3)
+# evennum.clear()
+# evennum
+
+# set1 = {1, 3, 5, 7, 9, 11}
+# set2 = {2, 4, 6, 8, 10, 11}
+# x = set1 & set2
+# x = set1 | set2
+# x = set1-set2
+# x
+
+# LESSON 22
