@@ -518,3 +518,13 @@
 # get_user_name()
 
 # LESSON 24
+# from calendar import isleap, weekday
+import math as ma
+# from math import *
+import random
+import calendar
+random.randint(1, 6)
+calendar.weekday(2012, 1, 1)
+# isleap(2015)
+# weekday(2012, 1, 1)
+ma.pi
