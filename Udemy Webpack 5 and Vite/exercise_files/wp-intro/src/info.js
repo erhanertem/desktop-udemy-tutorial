@@ -1,1 +1,1 @@
-export default 'inner text from info.js';
+export default 'inner text hello from info.js';
