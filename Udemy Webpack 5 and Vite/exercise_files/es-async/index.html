@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ESM Async</title>
+    <style>
+      body {
+        text-align: center;
+      }
+      h1 {
+        color: cadetblue;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Dynamic Imports</h1>
+    <button id="btn">Click Me</button>
+    <script type="module">
+      /* document.getElementById('btn').onclick = () => {
+        import('./functions.js').then(({ sayHi, default: func_name }) => {
+          sayHi();
+          func_name();
+        });
+      };*/
+      document.getElementById('btn').onclick = async () => {
+        let { sayHi, default: func_name } = await import('./functions.js');
+        sayHi();
+        func_name();
+      };
+    </script>
+  </body>
+</html>
