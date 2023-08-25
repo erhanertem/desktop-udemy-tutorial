@@ -1,3 +1,3 @@
 <?php
-    echo 'dfdf hello f   rom PHP; update   dddsddd'
+    echo 'Hello from PHP; I am updated'
 ?>

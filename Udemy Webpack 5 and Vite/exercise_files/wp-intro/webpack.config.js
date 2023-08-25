@@ -38,5 +38,23 @@ module.exports = {
     port: 8080,
     hot: true,
     watchFiles: ['**/src/backend/*'], //MONITORS BACKEND AND FRONTEND FILES ..JUST SPECIFY THEM
+    static: [
+      //INTRODUCE PUBLIC FOLDER LOCATION
+      {
+        directory: path.resolve(__dirname, 'public'),
+        watch: true,
+        publicPath: '/',
+      },
+      //INTRODUCE STYLE FOLDER
+      {
+        directory: path.resolve(__dirname, 'style'),
+        watch: false, //IF NOT WATCHED MANUAL BROWSER REFRESH
+        publicPath: '/style/',
+        serveIndex: false, //default is true - INDEX IS NOT SHOWN IF MANUALLY ENTERED
+        staticOptions: {
+          index: 'about.html', //if typed localhost/index redirected to about.html inside the /style/ folder
+        },
+      },
+    ],
   },
 };
