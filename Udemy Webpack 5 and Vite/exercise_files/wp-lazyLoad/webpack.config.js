@@ -5,11 +5,12 @@ module.exports = {
   mode: 'production',
   entry: './entry.js',
   optimization: {
-    // chunkIds: 'named',
-    chunkIds: 'deterministic',
+    chunkIds: 'named',
+    // chunkIds: 'deterministic',
 
     splitChunks: {
       minSize: 2000, // bytes
+      chunks: 'all', //OPTIONS ARE async, all, initial - SPECIFY CHUNKS TO BE FURTHER SPLIT. FILES NEEDS TO HAVE DEPENDENCIES (imports) TO BE FURTHER SPLIT INTO CHUNKS.
     },
   },
   output: {
