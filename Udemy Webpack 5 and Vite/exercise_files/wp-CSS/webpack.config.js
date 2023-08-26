@@ -47,6 +47,7 @@ module.exports = {
   plugins: [
     new css({
       filename: '[name].css',
+      chunkFilename: '[name].chunk_css.css',
     }),
     new html({
       filename: 'index.html',
