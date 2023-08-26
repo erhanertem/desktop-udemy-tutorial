@@ -1,0 +1,16 @@
+header{
+    position:fixed;top:0;left: 50%;transform: translateX(-50%);
+    border:1px white solid; border-radius:5px;
+    padding:10px;width:460px;height:60px;line-height:60px;
+    color:white;font-size:32px;font-family:monospace;
+    background-image: linear-gradient(to right, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+}
+
+footer{
+    position:fixed;bottom:0;left: 50%;transform: translateX(-50%);
+    border:1px white solid; border-radius:5px;padding:10px;
+    width:460px;height:40px;line-height:40px;color:white;
+    font-size:24px;
+    background-image: linear-gradient(to right, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+    display: flex;
+}
