@@ -4,22 +4,42 @@ const html = require('html-webpack-plugin');
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'production',
-  entry: './entry.js',
+  // entry: './entry.js',
+  entry: {
+    pageOne: {
+      import: './entry.js',
+      dependOn: 'shared',
+    },
+    pageTwo: {
+      import: './entryTwo.js',
+      dependOn: 'shared',
+    },
+    shared: 'lodash',
+  },
   optimization: {
     chunkIds: 'named',
     // chunkIds: 'deterministic',
     splitChunks: {
       minSize: 2000, // bytes
-      chunks: 'all', //OPTIONS ARE async, all, initial - SPECIFY CHUNKS TO BE FURTHER SPLIT. FILES NEEDS TO HAVE DEPENDENCIES (imports) TO BE FURTHER SPLIT INTO CHUNKS.
+      chunks: 'async', //OPTIONS ARE async, all, initial - SPECIFY CHUNKS TO BE FURTHER SPLIT. FILES NEEDS TO HAVE DEPENDENCIES (imports) TO BE FURTHER SPLIT INTO CHUNKS.
     },
   },
   plugins: [
     new html({
-      filename: 'index.html',
+      filename: 'pageOne.html',
+      chunks: ['pageOne', 'shared'], //Creates a seperate chunk for this entry point - SEPERATES THE LINK FROM OTHER ENTRY POINTS
       minify: false, //true under prod. mode
       inject: 'body', //default head
-      title: 'by htmlWebpackPlugin', //custom title name for the page
-      template: './tpl.html',
+      title: 'by htmlWebpackPlugin page One', //custom title name for the page
+      template: './template.html',
+    }),
+    new html({
+      filename: 'pageTwo.html',
+      chunks: ['pageTwo', 'shared'], //Creates a seperate chunk for this entry point - SEPERATES THE LINK FROM OTHER ENTRY POINTS
+      minify: false, //true under prod. mode
+      inject: 'body', //default head
+      title: 'by htmlWebpackPlugin page Two', //custom title name for the page
+      template: './template.html',
     }),
   ], //THIS FIELD ALLOWS MULTIPLE PLUGINS INSTALLATION
   output: {
