@@ -17,6 +17,7 @@ module.exports = {
     chunkFilename: '[id].chunk.js',
     assetModuleFilename: 'assets/[name].[hash][ext]',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/orange/', //@uploaded webserver - keep this folder as dist
   },
   module: {
     rules: [
@@ -38,7 +39,8 @@ module.exports = {
         type: 'asset/resource', // file-loader
         generator: {
           filename: 'IMG/[hash].[name][ext]',
-          publicPath: '/apple/',
+          // publicPath: '/orange/apple/', //always end the publicpath with a slash
+          publicPath: '/apple/', //always end the publicpath with a slash
           outputPath: 'apple/',
         },
       },
@@ -59,6 +61,7 @@ module.exports = {
       title: 'Asset Modules',
       minify: false,
       favicon: './assets/favicon.ico',
+      publicPath: '/html',
     }),
   ],
 };
