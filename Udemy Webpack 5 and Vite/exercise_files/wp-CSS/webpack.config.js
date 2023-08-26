@@ -1,5 +1,7 @@
 const path = require('path');
 const html = require('html-webpack-plugin');
+const css = require('mini-css-extract-plugin');
+const cssMinimizer = require('css-minimizer-webpack-plugin');
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -7,6 +9,7 @@ module.exports = {
   entry: './page.js',
   optimization: {
     chunkIds: 'named', // default to 'deterministic' under prod. mode
+    minimizer: ['...', new cssMinimizer()], //spread operator tells webpack to keep the existing JS minimizer - terser.
   },
   output: {
     clean: true,
@@ -19,7 +22,8 @@ module.exports = {
     rules: [
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        // use: ['style-loader', 'css-loader'],
+        use: [css.loader, 'css-loader'],
       },
       {
         test: /\.txt$/i,
@@ -41,6 +45,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new css({
+      filename: '[name].css',
+    }),
     new html({
       filename: 'index.html',
       template: './template/tpl.html',
