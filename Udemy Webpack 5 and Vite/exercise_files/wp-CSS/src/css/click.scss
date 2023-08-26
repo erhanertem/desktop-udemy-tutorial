@@ -1,5 +1,7 @@
+$bg_color: violet;
+
 #notice {
-  background-color: violet;
+  background-color: $bg_color;
   color: white;
   padding: 5px;
   text-align: center;

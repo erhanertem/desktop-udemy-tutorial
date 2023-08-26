@@ -1,4 +1,4 @@
-import './css/click.css';
+import './css/click.scss';
 
 export default function () {
   if (document.getElementById('notice')) return;

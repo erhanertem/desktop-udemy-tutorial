@@ -21,6 +21,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.scss$/i,
+        use: [css.loader, 'css-loader', 'sass-loader'], //Order from right to left - first compile the sass css to regular css, then css-loader to inject code and then css.loader to form a css file
+      },
+      {
         test: /\.css$/i,
         // use: ['style-loader', 'css-loader'],
         use: [css.loader, 'css-loader'],
