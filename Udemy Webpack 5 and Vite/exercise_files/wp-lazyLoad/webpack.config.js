@@ -1,5 +1,6 @@
 const path = require('path');
 const html = require('html-webpack-plugin');
+const webpack = require('webpack'); //REQUIRED FOR SHIMMING
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -25,6 +26,17 @@ module.exports = {
     },
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      //SHIMMING PLUGIN - THIS IS TO MAKE MODULE AVAILABLE TO ALL MODULES IN THE PROJECT GLOBALLY
+      //NODEMODULE
+      _: 'lodash',
+      join: ['lodash', 'join'],
+      //FILE
+      func: './functions.js', //MAKE FUNCTIONS TYPES GLOBAL FROM THIS FILE
+      default_func: ['./functions.js', 'default'], //ALIAS with default to diffrentiate from funcs - MAKE DEFAULT FUNC TYPE GLOBAL FROM THIS FILE
+      default_func2: ['./functions2.js', 'default'],
+      sayHi: ['./functions.js', 'sayHi'], //NAME THE FUNCTION TO BE ASSIGNED GLOBALLY AFTER ABOVE
+    }),
     new html({
       filename: 'pageOne.html',
       chunks: ['pageOne', 'shared'], //Creates a seperate chunk for this entry point - SEPERATES THE LINK FROM OTHER ENTRY POINTS
