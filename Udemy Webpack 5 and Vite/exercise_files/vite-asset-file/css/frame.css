@@ -1,0 +1,16 @@
+#frame{
+    border-radius: 5px;
+    margin:0 auto;
+    width:460px;padding:10px;
+    border:1px white solid;
+    background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+}
+#frame img{
+    border-radius:5px;width:100%;height:auto;
+    display:block;;
+    border:1px solid white
+}
+#frame p{
+    color:greenyellow;font-family: Arial, Helvetica, sans-serif;
+    font-size:20px;line-height:1.2;margin-top:10px;margin-bottom:10px;
+}
