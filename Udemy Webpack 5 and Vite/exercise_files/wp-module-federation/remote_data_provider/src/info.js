@@ -1,0 +1,1 @@
+export default 'inner text from REMOTE pkg'

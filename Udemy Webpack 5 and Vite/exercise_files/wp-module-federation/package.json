@@ -1,0 +1,22 @@
+{
+	"name": "wp-module-federation",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "lerna run --parallel start",
+		"build": "lerna run build"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"lerna": "^7.1.5"
+	},
+	"workspaces": {
+		"packages": [
+			"local_data_receiver",
+			"remote_data_provider"
+		]
+	}
+}
