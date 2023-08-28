@@ -23,4 +23,15 @@ module.exports = {
       export: ['product', 'spec', 'engine', 'fuel'],
     },
   },
+  //-> SPECIFY PACKAGES THAT WILL BE EXCLUDED FROM BUNDLED FILES
+  externals: {
+    //--> 'jquery' FIELD NAME corresponds to import name of the npm package
+    // jquery: '$', // or jQuery; decided by CDN file
+    jquery: {
+      root: '$',
+      commonjs: 'apple',
+      commonjs2: 'orange',
+      amd: 'brown',
+    },
+  },
 };
