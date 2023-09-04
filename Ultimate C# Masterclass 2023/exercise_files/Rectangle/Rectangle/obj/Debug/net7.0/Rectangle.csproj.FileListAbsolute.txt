@@ -1,0 +1,14 @@
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\obj\Debug\net7.0\Rectangle.GeneratedMSBuildEditorConfig.editorconfig
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\obj\Debug\net7.0\Rectangle.AssemblyInfoInputs.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\obj\Debug\net7.0\Rectangle.AssemblyInfo.cs
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\obj\Debug\net7.0\Rectangle.csproj.CoreCompileInputs.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\bin\Debug\net7.0\Rectangle.exe
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\bin\Debug\net7.0\Rectangle.deps.json
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\bin\Debug\net7.0\Rectangle.runtimeconfig.json
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\bin\Debug\net7.0\Rectangle.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\bin\Debug\net7.0\Rectangle.pdb
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\obj\Debug\net7.0\Rectangle.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\obj\Debug\net7.0\refint\Rectangle.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\obj\Debug\net7.0\Rectangle.pdb
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\obj\Debug\net7.0\Rectangle.genruntimeconfig.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\Rectangle\Rectangle\obj\Debug\net7.0\ref\Rectangle.dll

@@ -5,7 +5,11 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList", "TodoList.csproj", "{DD33D44A-F6FC-44C0-8E84-EC1925DB909E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "..\Calculator\Calculator.csproj", "{35D8C79C-8480-4731-A8B6-C417C9C73672}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calculator", "..\Calculator\Calculator.csproj", "{35D8C79C-8480-4731-A8B6-C417C9C73672}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rectangle", "..\Rectangle\Rectangle\Rectangle.csproj", "{E11FF80C-B835-4443-A9DC-BCB69C41AD7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiceRollGame", "..\DiceRollGame\DiceRollGame.csproj", "{80F0C1D2-FD9E-4E44-A8B2-ACA6FE85A80F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{35D8C79C-8480-4731-A8B6-C417C9C73672}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35D8C79C-8480-4731-A8B6-C417C9C73672}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35D8C79C-8480-4731-A8B6-C417C9C73672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E11FF80C-B835-4443-A9DC-BCB69C41AD7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E11FF80C-B835-4443-A9DC-BCB69C41AD7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E11FF80C-B835-4443-A9DC-BCB69C41AD7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E11FF80C-B835-4443-A9DC-BCB69C41AD7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80F0C1D2-FD9E-4E44-A8B2-ACA6FE85A80F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80F0C1D2-FD9E-4E44-A8B2-ACA6FE85A80F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80F0C1D2-FD9E-4E44-A8B2-ACA6FE85A80F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80F0C1D2-FD9E-4E44-A8B2-ACA6FE85A80F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

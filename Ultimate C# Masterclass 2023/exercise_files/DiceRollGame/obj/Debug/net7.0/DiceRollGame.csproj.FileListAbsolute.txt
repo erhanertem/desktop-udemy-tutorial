@@ -1,0 +1,14 @@
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\bin\Debug\net7.0\DiceRollGame.exe
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\bin\Debug\net7.0\DiceRollGame.deps.json
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\bin\Debug\net7.0\DiceRollGame.runtimeconfig.json
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\bin\Debug\net7.0\DiceRollGame.dll
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\bin\Debug\net7.0\DiceRollGame.pdb
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\obj\Debug\net7.0\DiceRollGame.GeneratedMSBuildEditorConfig.editorconfig
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\obj\Debug\net7.0\DiceRollGame.AssemblyInfoInputs.cache
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\obj\Debug\net7.0\DiceRollGame.AssemblyInfo.cs
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\obj\Debug\net7.0\DiceRollGame.csproj.CoreCompileInputs.cache
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\obj\Debug\net7.0\DiceRollGame.dll
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\obj\Debug\net7.0\refint\DiceRollGame.dll
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\obj\Debug\net7.0\DiceRollGame.pdb
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\obj\Debug\net7.0\DiceRollGame.genruntimeconfig.cache
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\DiceRollGame\obj\Debug\net7.0\ref\DiceRollGame.dll
