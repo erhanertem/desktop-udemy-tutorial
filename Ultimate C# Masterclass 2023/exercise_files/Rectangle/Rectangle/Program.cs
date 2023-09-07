@@ -1,12 +1,291 @@
 ﻿//SECTION #3
 
+//> JSON
+
+using System.Text.Json;
+
+var person = new Person { FirstName = "John", LastName = "Mc Callisto", YearOfBirth = 1922 };
+
+var asJson = JsonSerializer.Serialize(person);
+System.Console.WriteLine($"Our fellow JSON file is :  {asJson}");
+
+var personJson = "{ \"FirstName\":\"John\",\"LastName\":\"Mc Callisto\",\"YearOfBirth\":1922}";
+
+var persomFromJson = JsonSerializer.Deserialize<Person>(personJson);
+
+Console.ReadKey();
+public class Person
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public int YearOfBirth { get; set; }
+}
+
+// //> INTERFACES
+
+// public static class Exercise
+// {
+//     public static int Transform(
+//         int number)
+//     {
+//         var transformations = new List<INumericTransformation>
+//             {
+//                 new By1Incrementer(),
+//                 new By2Multiplier(),
+//                 new ToPowerOf2Raiser()
+//             };
+
+//         var result = number;
+//         foreach (var transformation in transformations)
+//         {
+//             result = transformation.Transform(result);
+//         }
+//         return result;
+//     }
+// }
+
+// public interface INumericTransformation
+// {
+//     int Transform(int input);
+// }
+
+// public class By1Incrementer : INumericTransformation
+// {
+//     public int Transform(int input) => ++input;
+// }
+// public class By2Multiplier : INumericTransformation
+// {
+//     public int Transform(int input) => input * 2;
+// }
+// public class ToPowerOf2Raiser : INumericTransformation
+// {
+//     public int Transform(int input) => input * input;
+// }
+
+// //INTERFACE CLASS
+// public interface IFlyable
+// {
+//     void Fly();
+// }
+
+// //CLASS WITH INTERFACE INHERITANCE
+// public class Bird : IFlyable
+// {
+//     int CurrentHeight = 200;
+//     public void Tweet() => System.Console.WriteLine("Tweet");
+//     // private void Fly() => System.Console.WriteLine("Fly me");
+//     public void Fly() => System.Console.WriteLine("Fly me");
+// }
+
+// public class Hawk : IFlyable
+// {
+//     public void Gark() => System.Console.WriteLine("Gark");
+//     public void Fly() => System.Console.WriteLine("Fly me");
+//     // public void Fly(int arg) => System.Console.WriteLine($"Fly me {arg} meters");
+// }
+
+// var bakeableDishes = new List<IBakeable> {
+//     new Pizza(),
+//     new Panettone(),
+// }
+
+// foreach (var bakeableDish in bakeableDishes)
+// {
+//     System.Console.WriteLine(bakeableDish.GetInstructions());
+// }
+
+// Console.ReadKey();
+
+// public abstract class Dessert { }
+// public interface IBakeable
+// {
+//     string GetInstructions();
+// }
+// public class Panettone : Dessert, IBakeable
+// {
+//     public string GetInstructions() => "Bake at 180 degree Celcius for 20 mins";
+// }
+
+// public class Pizza : IBakeable
+// {
+//     public string GetInstructions() => "Bake at 200 degree Celcius for 10mins";
+// }
+
+// //> EXTENSION METHOD
+// using Rectangle.Extensions;
+
+// var list = new List<int> { 1, 5, 108, 12, 4, 5, 6 };
+// var result = list.TakeEverySecond();
+
+// var multilineText = @"aaaa
+// bbbb
+// cccc
+// dddd";
+// int CountLines(string input) => input.Split(Environment.NewLine).Length;
+// System.Console.WriteLine($"Count of lines is {CountLines(multilineText)}");
+
+// System.Console.WriteLine($"Count of lines is {multilineText.CountLines()}");
+
+// Console.WriteLine($"Next after spring is {Season.Spring.Next()}");
+// Console.ReadKey();
+// public enum Season
+// {
+//     Spring,
+//     Summer,
+//     Autumn,
+//     Winter
+// }
+
+
+// //> SEALED CLASSES
+// //> ABSTRACT CLASSES
+
+// Cheddar cheddar1 = new Cheddar();
+// System.Console.WriteLine(Ingredient.PublicMethod());
+// System.Console.WriteLine(cheddar1.Name);
+// Ingredient mozzy = new Mozzarella();
+// System.Console.WriteLine(Ingredient.PublicMethod());
+// System.Console.WriteLine(mozzy.Name);
+// System.Console.WriteLine("!!" + mozzy);
+// Console.ReadKey();
+
+// //BASE CLASS
+// public abstract class Ingredient
+// {
+//     public abstract void Prepare();
+//     public virtual string? Name { get; }
+//     public static string PublicMethod()
+//     {
+//         return "This method is PUBLIC in Ingredient Class";
+//     }
+
+//     protected string ProtectedMethod() => "This method is PROTECTED in Ingredient Class";
+//     // private string PrivateMethod() => "This method is PRIVATE in Ingredient Class";
+// }
+// //1ST DEPTH DERIVED CLASS
+// public abstract class Cheese : Ingredient { }
+// //2ND LEVEL DERVIED CLASS
+// public sealed class Mozzarella : Cheese
+// {
+//     public override string Name => "Amorella";
+//     public bool IsLight { get; }
+
+//     public override void Prepare() => Console.WriteLine("I am MOzzy!");
+// }
+
+// public class SpecialMozzarella : Mozzarella { }
+
+// public class Cheddar : Cheese
+// {
+//     public override void Prepare() => Console.WriteLine("I am PREPARING CHEDDAR NOW!");
+
+//     public override string Name => "Cheddar cheese";
+//     public int AgedForMonths { get; }
+// }
+
+
+// Ernie newErnie = new Ernie();
+// abstract class Ernie
+// {
+//     public string getName() => "I am Ernie";
+// }
+
+// //> NULL
+
+// public static class NumericTypesDescriber
+// {
+//     public static string Describe(object someObject)
+//     {
+//         if (someObject is int)
+//         {
+//             return $"Int of value {someObject}";
+//         }
+//         else if (someObject is double)
+//         {
+//             return $"Double of value {someObject}";
+//         }
+//         else if (someObject is decimal)
+//         {
+//             return $"Decimal of value {someObject}";
+//         }
+//         else return null;
+
+//     }
+// }
+// var pizza = new Pizza();
+// // System.Console.WriteLine(pizza.ingredient.message); //defaults to null
+// Ingredient? nullIngredient = null;
+// if (nullIngredient != null)
+// {
+//     System.Console.WriteLine(nullIngredient.message);
+// }
+
+// if (nullIngredient is not null)
+// {
+//     System.Console.WriteLine(nullIngredient.message);
+// }
+
+// // int nullInt = null;
+
+// System.Console.WriteLine(pizza.ingredient); //defaults to null
+// System.Console.WriteLine(pizza.pizzaName); //defaults to null
+// System.Console.WriteLine(pizza.number); //defaults to 0
+// System.Console.WriteLine(pizza.date); //1/1/0001 12:00:00 AM
+
+// // Console.ReadKey();
+
+// public class Pizza
+// {
+//     // public Ingredient ingredient = new Ingredient();
+//     // public Ingredient ingredient = null;
+//     public Ingredient ingredient;
+//     public string pizzaName;
+//     public int number;
+//     public DateTime date;
+// }
+// public class Ingredient
+// {
+//     public string message = "I am an Ingredient";
+// }
+// //> IS OPERATOR
+// string word = "hello";
+// bool isString = word is string;
+// bool isInt = word is int;
+// System.Console.WriteLine(isString);
+// System.Console.WriteLine(isInt);
+// static string Format(int age, string firstName = "Unknown")
+// {
+//     return $"{firstName} who is {age} years old.";
+// }
+// var formatted = Format(25, "Toby");
+
 // //> ENUMS
 // Season firstSeason = Season.Spring;
 // int firstSeasonAsNumber = (int)firstSeason;
+
+// decimal a = 10.01m;
+// double b = 10.01;
+
+// int integer = 10;
+// decimal c = integer;
+
+// decimal d = 10.01m;
+// int e = (int)d;
+
+// // string s = (string)integer;
+// string s = integer.ToString();
+
+// int secondSeasonNumber = 1;
+// Season summer = (Season)secondSeasonNumber;
+// System.Console.WriteLine("!!!!" + summer);
+
 // System.Console.WriteLine(firstSeason + " " + firstSeasonAsNumber);
+
+// Console.ReadKey();
 // public enum Season
 // {
-//     Spring = 1, Summer, Autumn, Winter
+//     // Spring = 1, Summer, Autumn, Winter
+//     Spring, Summer, Autumn, Winter
 // }
 // public enum HttpCode
 // {

@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Calculator",
+    "\\CookiesCookbook",
     "\\TodoList"
   ],
-  "SelectedNode": "\\Calculator\\Program.cs",
+  "SelectedNode": "\\CookiesCookbook\\CookiesCookbook.csproj",
   "PreviewInSolutionExplorer": false
 }
