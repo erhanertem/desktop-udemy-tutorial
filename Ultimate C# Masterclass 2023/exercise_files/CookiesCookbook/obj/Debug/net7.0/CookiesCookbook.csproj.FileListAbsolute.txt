@@ -1,0 +1,14 @@
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\bin\Debug\net7.0\CookiesCookbook.exe
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\bin\Debug\net7.0\CookiesCookbook.deps.json
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\bin\Debug\net7.0\CookiesCookbook.runtimeconfig.json
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\bin\Debug\net7.0\CookiesCookbook.dll
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\bin\Debug\net7.0\CookiesCookbook.pdb
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\obj\Debug\net7.0\CookiesCookbook.GeneratedMSBuildEditorConfig.editorconfig
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\obj\Debug\net7.0\CookiesCookbook.AssemblyInfoInputs.cache
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\obj\Debug\net7.0\CookiesCookbook.AssemblyInfo.cs
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\obj\Debug\net7.0\CookiesCookbook.csproj.CoreCompileInputs.cache
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\obj\Debug\net7.0\CookiesCookbook.dll
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\obj\Debug\net7.0\refint\CookiesCookbook.dll
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\obj\Debug\net7.0\CookiesCookbook.pdb
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\obj\Debug\net7.0\CookiesCookbook.genruntimeconfig.cache
+D:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\CookiesCookbook\obj\Debug\net7.0\ref\CookiesCookbook.dll
