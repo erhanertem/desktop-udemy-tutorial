@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\CODING\\REPO ARCHIEVE\\desktop-udemy-tutorial-files\\Ultimate C# Masterclass 2023\\exercise_files\\DiceRollGame\\DiceRollGame.csproj",
+      "projectUniqueName": "d:\\CODING\\REPO ARCHIEVE\\desktop-udemy-tutorial-files\\Ultimate C# Masterclass 2023\\exercise_files\\DiceRollGame\\DiceRollGame.csproj",
       "projectName": "DiceRollGame",
-      "projectPath": "D:\\CODING\\REPO ARCHIEVE\\desktop-udemy-tutorial-files\\Ultimate C# Masterclass 2023\\exercise_files\\DiceRollGame\\DiceRollGame.csproj",
+      "projectPath": "d:\\CODING\\REPO ARCHIEVE\\desktop-udemy-tutorial-files\\Ultimate C# Masterclass 2023\\exercise_files\\DiceRollGame\\DiceRollGame.csproj",
       "packagesPath": "C:\\Users\\RN10\\.nuget\\packages\\",
-      "outputPath": "D:\\CODING\\REPO ARCHIEVE\\desktop-udemy-tutorial-files\\Ultimate C# Masterclass 2023\\exercise_files\\DiceRollGame\\obj\\",
+      "outputPath": "d:\\CODING\\REPO ARCHIEVE\\desktop-udemy-tutorial-files\\Ultimate C# Masterclass 2023\\exercise_files\\DiceRollGame\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -67,7 +67,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

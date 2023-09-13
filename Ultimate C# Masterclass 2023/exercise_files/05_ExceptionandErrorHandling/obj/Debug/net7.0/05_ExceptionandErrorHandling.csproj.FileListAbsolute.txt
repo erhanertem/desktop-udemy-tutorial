@@ -1,0 +1,14 @@
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\bin\Debug\net7.0\05_ExceptionandErrorHandling.exe
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\bin\Debug\net7.0\05_ExceptionandErrorHandling.deps.json
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\bin\Debug\net7.0\05_ExceptionandErrorHandling.runtimeconfig.json
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\bin\Debug\net7.0\05_ExceptionandErrorHandling.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\bin\Debug\net7.0\05_ExceptionandErrorHandling.pdb
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\obj\Debug\net7.0\05_ExceptionandErrorHandling.GeneratedMSBuildEditorConfig.editorconfig
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\obj\Debug\net7.0\05_ExceptionandErrorHandling.AssemblyInfoInputs.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\obj\Debug\net7.0\05_ExceptionandErrorHandling.AssemblyInfo.cs
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\obj\Debug\net7.0\05_ExceptionandErrorHandling.csproj.CoreCompileInputs.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\obj\Debug\net7.0\05_ExceptionandErrorHandling.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\obj\Debug\net7.0\refint\05_ExceptionandErrorHandling.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\obj\Debug\net7.0\05_ExceptionandErrorHandling.pdb
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\obj\Debug\net7.0\05_ExceptionandErrorHandling.genruntimeconfig.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\05_ExceptionandErrorHandling\obj\Debug\net7.0\ref\05_ExceptionandErrorHandling.dll
