@@ -1,0 +1,14 @@
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\bin\Debug\net7.0\06_GenericTypes.exe
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\bin\Debug\net7.0\06_GenericTypes.deps.json
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\bin\Debug\net7.0\06_GenericTypes.runtimeconfig.json
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\bin\Debug\net7.0\06_GenericTypes.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\bin\Debug\net7.0\06_GenericTypes.pdb
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\obj\Debug\net7.0\06_GenericTypes.GeneratedMSBuildEditorConfig.editorconfig
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\obj\Debug\net7.0\06_GenericTypes.AssemblyInfoInputs.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\obj\Debug\net7.0\06_GenericTypes.AssemblyInfo.cs
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\obj\Debug\net7.0\06_GenericTypes.csproj.CoreCompileInputs.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\obj\Debug\net7.0\06_GenericTypes.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\obj\Debug\net7.0\refint\06_GenericTypes.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\obj\Debug\net7.0\06_GenericTypes.pdb
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\obj\Debug\net7.0\06_GenericTypes.genruntimeconfig.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\06_GenericTypes\obj\Debug\net7.0\ref\06_GenericTypes.dll
