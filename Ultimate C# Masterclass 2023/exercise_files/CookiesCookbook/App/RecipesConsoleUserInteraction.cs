@@ -38,10 +38,11 @@ public class RecipesConsoleUserInteraction : IRecipesUserInteraction
     public void PromptToCreateRecipe()
     {
         System.Console.WriteLine("Create a new cookie recipe!" + "Available ingreidents are:");
-        foreach (var ingredient in _ingredientsRegister.All)
-        {
-            System.Console.WriteLine(ingredient);
-        }
+        // foreach (var ingredient in _ingredientsRegister.All)
+        // {
+        //     System.Console.WriteLine(ingredient);
+        // }
+        System.Console.WriteLine(string.Join(Environment.NewLine, _ingredientsRegister.All));
     }
 
     public void ShowMessage(string message)
@@ -60,14 +61,19 @@ public class RecipesConsoleUserInteraction : IRecipesUserInteraction
         if (allRecipes.Count() > 0) //Count() method comes from the LINQ library
         {
             System.Console.WriteLine("Existing recipes are:" + Environment.NewLine);
-            var counter = 1;
-            foreach (var recipe in allRecipes)
-            {
-                Console.WriteLine($"*****{counter}*****");
-                System.Console.WriteLine(recipe);
-                System.Console.WriteLine(); //empty line
-                ++counter;
-            }
+            // var counter = 1;
+            // foreach (var recipe in allRecipes)
+            // {
+            //     Console.WriteLine($"*****{counter}*****");
+            //     System.Console.WriteLine(recipe);
+            //     System.Console.WriteLine(); //empty line
+            //     ++counter;
+            // }
+            var allRecipesAsStrings = allRecipes.Select((recipe, index) =>
+                $@"*****{index + 1}*****
+                {recipe}");
+            System.Console.WriteLine(string.Join(Environment.NewLine, allRecipesAsStrings));
+            System.Console.WriteLine(); //empty line after the last recipe string
         }
     }
 }

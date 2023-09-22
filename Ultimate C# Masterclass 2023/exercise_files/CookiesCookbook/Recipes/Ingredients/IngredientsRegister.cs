@@ -15,14 +15,24 @@ public class IngredientsRegister : IIngredientsRegister
 
     public Ingredient GetById(int id)
     {
-        foreach (var ingredient in All)
+        // foreach (var ingredient in All)
+        // {
+        //     if (ingredient.Id == id)
+        //     {
+        //         return ingredient;
+        //     }
+        // }
+        // return null;
+        var allIngredientWithGivenId = All.Where(ingredient => ingredient.Id == id);
+        if (allIngredientWithGivenId.Count() > 1)
         {
-            if (ingredient.Id == id)
-            {
-                return ingredient;
-            }
+            throw new InvalidOperationException($"More than one ingredients share the same Id equal to {id}.");
         }
-        return null;
+        // if (All.Select(ingredient => ingredient.Id).Distinct().Count() != All.Count())
+        // {
+        //     throw new InvalidOperationException($"Some ingredients have duplicated IDs.");
+        // }
+        return allIngredientWithGivenId.FirstOrDefault();
     }
 }
 
