@@ -1,0 +1,14 @@
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\bin\Debug\net7.0\07_Linq.exe
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\bin\Debug\net7.0\07_Linq.deps.json
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\bin\Debug\net7.0\07_Linq.runtimeconfig.json
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\bin\Debug\net7.0\07_Linq.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\bin\Debug\net7.0\07_Linq.pdb
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\obj\Debug\net7.0\07_Linq.GeneratedMSBuildEditorConfig.editorconfig
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\obj\Debug\net7.0\07_Linq.AssemblyInfoInputs.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\obj\Debug\net7.0\07_Linq.AssemblyInfo.cs
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\obj\Debug\net7.0\07_Linq.csproj.CoreCompileInputs.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\obj\Debug\net7.0\07_Linq.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\obj\Debug\net7.0\refint\07_Linq.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\obj\Debug\net7.0\07_Linq.pdb
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\obj\Debug\net7.0\07_Linq.genruntimeconfig.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\07_Linq\obj\Debug\net7.0\ref\07_Linq.dll
