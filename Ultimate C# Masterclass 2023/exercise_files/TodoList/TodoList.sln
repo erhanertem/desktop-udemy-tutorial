@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCash", "..\CustomCash
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "07_Linq", "..\07_Linq\07_Linq.csproj", "{DA95AA8B-9C47-46AC-AF01-8184155D3F80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvProcessing", "..\CsvProcessing\CsvProcessing.csproj", "{6678768C-5577-4412-8E13-AA8D622CB4FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{DA95AA8B-9C47-46AC-AF01-8184155D3F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA95AA8B-9C47-46AC-AF01-8184155D3F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA95AA8B-9C47-46AC-AF01-8184155D3F80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6678768C-5577-4412-8E13-AA8D622CB4FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6678768C-5577-4412-8E13-AA8D622CB4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6678768C-5577-4412-8E13-AA8D622CB4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6678768C-5577-4412-8E13-AA8D622CB4FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
