@@ -24,11 +24,11 @@ Console.WriteLine($"Time of loading the CSV was " +
 Console.WriteLine($"Time of reading the CSV was " +
     $"{testResult.TimeOfDataReading}.");
 
-ITableDataBuilder fastTableDataBuiler = new FastTableDataBuilder();
+ITableDataBuilder fastTableDataBuilder = new FastTableDataBuilder();
 
 //TODO uncomment when new code is ready
 var testResultForNewCode = TableDataPerformanceMeasurer.Test(
-   fastTableDataBuiler, csvData);
+   fastTableDataBuilder, csvData);
 
 Console.WriteLine();
 Console.WriteLine("Test results for new code:");
@@ -43,7 +43,7 @@ Console.WriteLine();
 Console.WriteLine("Checking if results are the same...");
 var areEqual = ContentEqualityChecker.IsEqual(
    tableDataBuiler,
-   fastTableDataBuiler,
+   fastTableDataBuilder,
    csvData);
 
 if (areEqual)

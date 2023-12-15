@@ -1,0 +1,14 @@
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\bin\Debug\net7.0\09_AdvancedC#Types.exe
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\bin\Debug\net7.0\09_AdvancedC#Types.deps.json
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\bin\Debug\net7.0\09_AdvancedC#Types.runtimeconfig.json
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\bin\Debug\net7.0\09_AdvancedC#Types.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\bin\Debug\net7.0\09_AdvancedC#Types.pdb
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\obj\Debug\net7.0\09_AdvancedC#Types.GeneratedMSBuildEditorConfig.editorconfig
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\obj\Debug\net7.0\09_AdvancedC#Types.AssemblyInfoInputs.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\obj\Debug\net7.0\09_AdvancedC#Types.AssemblyInfo.cs
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\obj\Debug\net7.0\09_AdvancedC#Types.csproj.CoreCompileInputs.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\obj\Debug\net7.0\09_AdvancedC#Types.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\obj\Debug\net7.0\refint\09_AdvancedC#Types.dll
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\obj\Debug\net7.0\09_AdvancedC#Types.pdb
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\obj\Debug\net7.0\09_AdvancedC#Types.genruntimeconfig.cache
+d:\CODING\REPO ARCHIEVE\desktop-udemy-tutorial-files\Ultimate C# Masterclass 2023\exercise_files\09_AdvancedC#Types\obj\Debug\net7.0\ref\09_AdvancedC#Types.dll

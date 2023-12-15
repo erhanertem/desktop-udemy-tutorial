@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "07_Linq", "..\07_Linq\07_Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvProcessing", "..\CsvProcessing\CsvProcessing.csproj", "{6678768C-5577-4412-8E13-AA8D622CB4FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "09_AdvancedC#Types", "..\09_AdvancedC#Types\09_AdvancedC#Types.csproj", "{F158EF01-D24A-4246-BB95-818AE04F2B58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{6678768C-5577-4412-8E13-AA8D622CB4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6678768C-5577-4412-8E13-AA8D622CB4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6678768C-5577-4412-8E13-AA8D622CB4FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F158EF01-D24A-4246-BB95-818AE04F2B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F158EF01-D24A-4246-BB95-818AE04F2B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F158EF01-D24A-4246-BB95-818AE04F2B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F158EF01-D24A-4246-BB95-818AE04F2B58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
