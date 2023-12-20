@@ -563,4 +563,158 @@ const url = `${BASE_URL}/1`;
 //   })
 //   .catch((e) => console.log("INSIDE CATCH", e));
 
-// SECTION 07
+// // SECTION 07
+// // Optional chaining @ object keys
+// const long = user?.address?.coodinates?.long;
+// // Optional chaining @ functions inside an object
+// user.greet?.();
+// //Nullish Coalescing
+// const age = user?.age ?? 'IDK THE AGE';
+// console.log('AGE IS ', age);
+// //Numeric Seperators
+// const withSeperators = 1_000_000_000;
+// const withoutSeperators = 1000000000;
+// // Prototype.at()
+// const colors = ['red', 'orange', 'yellow', 'green'];
+// colors[0];
+// colors.at(1);
+// colors.at(-1);
+// // Replace All()
+// const str =
+//   'Lorem ipsum dolor sit amet consectetur adipisicing elit. cAt CAT cat ccAT.';
+// const a = str.replaceAll('cat', 'x');
+// console.log(a);
+// const b = str.replaceAll(new RegExp('cat', 'gi'), 'x');
+// console.log('b :', b);
+// console.log(b);
+// //||= operator
+// const todo = { priority: '', task: 'Finish Editing Course' };
+// const a = (todo.priority ||= 'MEDIUM');
+// console.log('a :', a);
+// // todo.priority || (todo.priority = 'MEDIUM');
+// // &&= OPERATOR
+// let num = 0;
+// num &&= 50;
+// let loggedInUser = { username: 'Taco' };
+// loggedInUser &&= { ...loggedInUser, colorPreference: 'purple' };
+// //??=OPERATOR
+// let score = 0;
+// score ??= 0;
+// score ??= 100;
+// function doSomething(options = {}) {
+//   options.timeout ??= 5000;
+//   options.retries ??= 3;
+//   console.log(options);
+// }
+// doSomething();
+
+// class MyClass {
+//   static sharedState;
+//   static {
+//     this.sharedState = 'Initialized';
+//   }
+// }
+
+// console.log(MyClass.sharedState);
+
+// // SECTION 08
+// function blah() {
+//   return { name: 'chickenface' };
+// }
+// //Generator functions
+// function* evens(n) {
+//   while (true) {
+//     yield n;
+//     n += 2;
+//   }
+// }
+// const evenGen = evens(10);
+// evenGen.next();
+
+// function* myCats() {
+//   yield 'Blue';
+//   yield 'Kitty';
+//   yield 'Creamy';
+//   yield 'Sourcy';
+// }
+// const catGenerator = myCats();
+// catGenerator.next();
+
+// function* fibonacci() {
+//   let a = 0,
+//     b = 1;
+//   while (true) {
+//     yield a;
+//     [a, b] = [b, a + b];
+//   }
+// }
+// const fibGenerator = fibonacci();
+// console.log('fibGenerator.next(); :', fibGenerator.next().value);
+// console.log('fibGenerator.next(); :', fibGenerator.next().value);
+// console.log('fibGenerator.next(); :', fibGenerator.next().value);
+// console.log('fibGenerator.next(); :', fibGenerator.next().value);
+// console.log('fibGenerator.next(); :', fibGenerator.next().value);
+// console.log('fibGenerator.next(); :', fibGenerator.next().value);
+
+// const allImages = Array.from(
+//   { length: 1000 },
+//   (_, i) => `https://placeimg.com/640/480/any?image=${i}`
+// );
+// function* getImageBatch(images, batchSize = 10) {
+//   let currIndex = 1;
+//   while (currIndex < images.length) {
+//     yield images.slice(currIndex, currIndex + batchSize);
+//     currIndex += batchSize;
+//   }
+// }
+
+// const imageGen = getImageBatch(allImages);
+// console.log('imageGen.next().value :', imageGen.next().value);
+
+// function parseAndCheck(arr) {
+//   let parsedArray = [];
+
+//   for (let i = 0; i < arr.length; i++) {
+//     const parsed = parseFloat(arr[i]);
+//     if (Number.isNaN(parsed)) {
+//       throw new Error('Invalid Number');
+//     }
+//     parsedArray[i] = parsed;
+//   }
+//   return parsedArray;
+// }
+
+// // function parseAndCheck(values) {
+// //   return values.map(value => {
+// //     const parsed = parseFloat(value);
+// //     if (Number.isNaN(parsed) === true) {
+// //       throw new Error('Invalid Number');
+// //     }
+// //     return parsed;
+// //   });
+// // }
+
+// const result = parseAndCheck(['10px', '02px', 'px']);
+// console.log('result :', result);
+
+// function decrementArrayElements(arr) {
+//   for (let i = 0; i < arr.length; i++) {
+//     arr[i] = --arr[i];
+//   }
+//   return arr;
+// }
+
+// function* rangeGenerator(start, end) {
+//   if (start <= end) {
+//     for (let i = start; i <= end; i++) {
+//       yield i;
+//     }
+//   } else {
+//     for (let i = start; i >= end; i--) {
+//       yield i;
+//     }
+//   }
+// }
+// const rangeGen = rangeGenerator(1, 5);
+
+// // SECTION 09
