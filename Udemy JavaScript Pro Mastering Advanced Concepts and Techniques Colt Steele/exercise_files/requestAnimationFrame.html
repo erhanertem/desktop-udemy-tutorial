@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framerate Comparison</title>
+    <style>
+        .box {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            top: 50%;
+            transform-origin: 50% 50%;
+            background-color: coral;
+            text-align: center;
+            line-height: 100px;
+            font-size: 2rem;
+            border: 3px solid black;
+        }
+
+        #boxInterval {
+            left: calc(25% - 50px);
+        }
+
+        #boxAnimationFrame {
+            left: calc(75% - 50px);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="boxInterval" class="box">Interval</div>
+    <div id="boxAnimationFrame" class="box">AnimationFrame</div>
+
+    <script src="requestAnimationFrame.js"></script>
+</body>
+
+</html>

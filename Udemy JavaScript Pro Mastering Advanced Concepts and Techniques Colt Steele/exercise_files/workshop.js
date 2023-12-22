@@ -302,9 +302,9 @@
 
 // child.greet();
 
-// SECTION 06
-const BASE_URL = 'https://pokeapi.co/api/v2/pokemon';
-const url = `${BASE_URL}/1`;
+// // SECTION 06
+// const BASE_URL = 'https://pokeapi.co/api/v2/pokemon';
+// const url = `${BASE_URL}/1`;
 
 // fetch(`${BASE_URL}/1`)
 //   .then((res1) => {
@@ -564,7 +564,7 @@ const url = `${BASE_URL}/1`;
 //   .catch((e) => console.log("INSIDE CATCH", e));
 
 // // SECTION 07
-// // Optional chaining @ object keys
+// //>Optional chaining @ object keys
 // const long = user?.address?.coodinates?.long;
 // // Optional chaining @ functions inside an object
 // user.greet?.();
@@ -579,7 +579,7 @@ const url = `${BASE_URL}/1`;
 // colors[0];
 // colors.at(1);
 // colors.at(-1);
-// // Replace All()
+// //>Replace All()
 // const str =
 //   'Lorem ipsum dolor sit amet consectetur adipisicing elit. cAt CAT cat ccAT.';
 // const a = str.replaceAll('cat', 'x');
@@ -592,7 +592,7 @@ const url = `${BASE_URL}/1`;
 // const a = (todo.priority ||= 'MEDIUM');
 // console.log('a :', a);
 // // todo.priority || (todo.priority = 'MEDIUM');
-// // &&= OPERATOR
+// //>&&= OPERATOR
 // let num = 0;
 // num &&= 50;
 // let loggedInUser = { username: 'Taco' };
@@ -718,3 +718,414 @@ const url = `${BASE_URL}/1`;
 // const rangeGen = rangeGenerator(1, 5);
 
 // // SECTION 09
+// //>Scope with var
+// var color = 'red';
+
+// function blah() {
+//   console.log(color);
+//   var animal = 'Fishy Reptile';
+//   console.log(animal);
+// }
+// blah();
+
+// if (true) {
+//   console.log(color);
+//   var food = 'chicken Parmesan';
+// }
+
+// console.log(food);
+// console.log(animal);
+
+// for (var i = 0; i < 10; i++) {
+//   console.log(i);
+// }
+// console.log('After the loop is over', i);
+
+// //>Scope with let & const
+// var color = 'teal';
+// let origin = 'Ethiopia';
+// console.log('origin :', origin);
+// window.origin;
+// console.log('window.origin :', window.origin);
+// const city = 'Izmir';
+// // city = 'Istanbul';
+// if (true) {
+//   const animal = 'Filthy fish';
+//   console.log(animal);
+// }
+// console.log(animal);
+
+// for (let i = 0; i < 3; i++) {
+//   console.log(i);
+// }
+// console.log(i);
+// for (var i = 0; i < 3; i++) {
+//   console.log(i);
+// }
+// console.log(i);
+
+// //>Scope Chain
+// let age = 10;
+// function outher() {
+//   //   let age = 'ageless';
+//   function inner() {
+//     // let age = 'Ethernal';
+//     // age = 5;
+//     console.log(age);
+//   }
+//   inner();
+// }
+// outher();
+
+// //>Static Scope
+// let animal = 'Barn Owl';
+// function printAnimal() {
+//   console.log(animal);
+// }
+// function alsoPrintAnimal() {
+//   let animal = 'Idiot Owl';
+//   printAnimal();
+//   console.log('printAnimal() :', printAnimal());
+// }
+// alsoPrintAnimal();
+
+// //>Hoisting
+// console.log(food);
+// var food = 'pizza';
+
+// //>IIEFs
+// (function () {
+//   console.log('Hello from IIFE');
+// })();
+
+// //>CLOSURES
+// function idGenerator() {
+//   let count = 1;
+//   return function generate() {
+//     return count++;
+//   };
+// }
+// const nextId = idGenerator();
+// console.log('nextId() :', nextId());
+// console.log('nextId() :', nextId());
+// console.log('nextId() :', nextId());
+// console.log('nextId() :', nextId());
+
+// function counter() {
+//   let count = 0;
+//   return {
+//     increment: function () {
+//       return count++;
+//     },
+//     decrement: function () {
+//       return count--;
+//     },
+//     getCount: function () {
+//       return count;
+//     },
+//   };
+// }
+// const count = counter();
+
+// const count = (function counter() {
+//   let count = 0;
+//   return {
+//     increment: function () {
+//       return count++;
+//     },
+//     decrement: function () {
+//       return count--;
+//     },
+//     getCount: function () {
+//       return count;
+//     },
+//   };
+// })();
+// console.log(count.increment());
+// console.log(count.increment());
+// console.log(count.increment());
+
+// //>CLOSURES AS FACTORY FUNCTIONS
+// function createExponentFunction(exp) {
+//   return function (val) {
+//     return val ** exp;
+//   };
+// }
+// const square = createExponentFunction(2);
+// const cube = createExponentFunction(3);
+// square(2);
+// cube(2);
+
+// function uniqueIdGenerator(prefix) {
+//   let id = 0;
+//   return function () {
+//     id += 1;
+//     return `${prefix}${id}`;
+//   };
+// }
+// const getBookId = uniqueIdGenerator('book-');
+// const getUserId = uniqueIdGenerator('user_');
+// getBookId();
+// getUserId();
+
+// //>CLOSURES @ EVENTLISTENERS
+// let count = 0;
+// document.querySelector('.button').addEventListener('click', function () {
+//   count++;
+//   console.log(`You clicked me ${count} times`);
+// });
+
+// document.querySelector('.button').addEventListener(
+//   'click',
+//   (function () {
+//     let count = 0;
+//     return function () {
+//       count++;
+//       console.log(`You clicked me ${count} times`);
+//     };
+//   })()
+// );
+
+// function createCounterBtn(id) {
+//   const btn = document.getElementById(id);
+//   let count = 0;
+//   btn.addEventListener('click', function () {
+//     count++;
+//     btn.innerText = `Clicked ${count} times`;
+//   });
+// }
+
+// createCounterBtn('btn1');
+// createCounterBtn('btn2');
+// createCounterBtn('btn3');
+
+// //>CLOSURES @ LOOPS
+// for (let i = 0; i < 5; i++) {
+//   setTimeout(function () {
+//     console.log(++i);
+//     console.log('Time is UP!!!');
+//   }, 1000);
+// }
+
+// function guessingGame() {
+//   const secretNumber = Math.random() * 100;
+//   let count = 0;
+//   let gameOver = false;
+//   return function (guess) {
+//     if (gameOver) {
+//       return 'The game is over, you already won!';
+//     }
+//     count++;
+//     if (guess === secretNumber) {
+//       gameOver = true;
+//       return `You win! You found ${secretNumber} in ${count} ${
+//         count === 1 ? 'guess' : 'guesses'
+//       }.`;
+//     }
+//     if (guess < secretNumber) {
+//       return `${guess} is too low!`;
+//     }
+//     if (guess > secretNumber) {
+//       return `${guess} is too high!`;
+//     }
+//   };
+// }
+
+// let game = guessingGame();
+// game(50); // "50 is too low!"
+// game(90); // "90 is too high!"
+// game(70); // "You win! You found 70 in 3 guesses."
+// game(70); // "The game is over, you already won!"
+
+// function specialAdd(total) {
+//   if (total === undefined) return 0;
+//   return function addNext(num) {
+//     if (num === undefined) return total;
+//     total += num;
+//     return addNext;
+//   };
+// }
+
+// specialAdd(); // 0
+// console.log('specialAdd() :', specialAdd());
+// specialAdd(1)(2)(); // 3
+// console.log('specialAdd(1)(2)() :', specialAdd(1)(2)());
+// specialAdd(2)(8)(5)(1)(); // 16
+// console.log('specialAdd(2)(8)(5)(1)() :', specialAdd(2)(8)(5)(1)());
+
+// //SECTION 10
+//>TIMERS
+// function showNotification(message, duration) {
+//   const notification = document.createElement('div');
+//   notification.innerText = message;
+//   notification.className = 'notification';
+//   notification.style.display = 'block';
+//   notification.style.backgroundColor = 'green';
+//   notification.style.color = 'white';
+//   notification.style.width = '3%';
+//   notification.style.margin = 'auto';
+//   notification.style.padding = '10px';
+//   notification.style.textAlign = 'center';
+//   document.body.appendChild(notification);
+
+//   setTimeout(() => {
+//     notification.remove();
+//   }, duration);
+// }
+// showNotification('Danger', 5000);
+// showNotification('Holy', 3000);
+// showNotification('Molly', 1000);
+
+// setInterval(() => {
+//   console.log('It has been 2 seconds');
+// }, 2000);
+
+// function startCountdown(duration) {
+//   let timeRemaining = duration;
+//   const h1 = document.getElementById('timer');
+//   h1.innerText = timeRemaining;
+//   timeRemaining--;
+//   const intervalId = setInterval(() => {
+//     h1.innerText = timeRemaining;
+//     timeRemaining--;
+
+//     if (timeRemaining < 0) {
+//       clearInterval(intervalId);
+//       h1.innerText = 'time is Up!';
+//     }
+//   }, 100);
+// }
+// startCountdown(10);
+
+// function greet() {
+//   console.log('Hello There!!');
+// }
+// const timeoutId = setTimeout(greet, 20000);
+// clearTimeout(timeoutId); //cancelled timeout prematurely
+
+// const cancelBtn = document.querySelector('#cancel');
+// const timeoutId = setTimeout(() => {
+//   window.open('http://www.google.com', '_blank');
+// }, 5000);
+// cancelBtn.addEventListener('click', () => {
+//   clearTimeout(timeoutId);
+//   alert('Oppsy cancelled!!');
+// });
+
+// //>Debouncing - Deliberate Pause
+// function queryAPI() {
+//   console.log('SEARCHING THE API!');
+// }
+// const searchInput = document.querySelector('#search');
+// let debounceTimeout;
+// searchInput.addEventListener('input', () => {
+//   clearTimeout(debounceTimeout);
+//   debounceTimeout = setTimeout(() => {
+//     queryAPI();
+//   }, 400);
+// });
+
+// function queryAPI(searchTerm, color) {
+//   console.log(`SEARCHING THE API! for ${searchTerm}`);
+// console.log(`COLOR ARGUMENT IS ${color}`);
+// }
+// const searchInput = document.querySelector('#search');
+// function debounce(callback, delay) {
+//   let timeoutId;
+//   return (...args) => {
+//     if (timeoutId) {
+//       clearTimeout(timeoutId);
+//     }
+//     timeoutId = setTimeout(() => callback(...args), delay);
+//   };
+// }
+// searchInput.addEventListener('input', e =>
+//   debouncedQueryAPI(e.target.value, 'purple')
+// );
+// const debouncedQueryAPI = debounce(queryAPI, 400);
+
+// //>Throttling
+// function getRandomColor() {
+//   const palette = [
+//     '#FFADAD',
+//     '#FFC3A0',
+//     '#FF677D',
+//     '#392F5A',
+//     '#31A2AC',
+//     '#61C0BF',
+//     '#6B4226',
+//     '#D9BF77',
+//     '#ACD8AA',
+//     '#FFE156',
+//     '#6A0572',
+//     '#AB83A1',
+//   ];
+//   const randomIndex = Math.floor(Math.random() * palette.length);
+//   return palette[randomIndex];
+// }
+
+// const content = document.getElementById('content');
+
+// function loadMoreItems() {
+//   const scrollDistanceToBottom =
+//     document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
+//   if (scrollDistanceToBottom < 200) {
+//     console.log('LOADING DATA FROM AN API!!!');
+//     for (let i = 0; i < 10; i++) {
+//       const item = document.createElement('div');
+//       item.classList.add('item');
+//       item.textContent = 'Item ' + (content.children.length + 1);
+//       item.style.backgroundColor = getRandomColor();
+//       content.appendChild(item);
+//     }
+//   }
+// }
+
+// //SIMPLE THROTTLE
+// // let isThrottled = false;
+// // window.addEventListener('scroll', () => {
+// //   if (!isThrottled) {
+// //     loadMoreItems();
+// //     isThrottled = true;
+// //     setTimeout(() => {
+// //       isThrottled = false;
+// //     }, 200);
+// //   }
+// // });
+// //ADVANCED THROTTLE
+// function throttle(callback, delay = 500) {
+//   let isThrottled = false;
+//   let savedArgs = null;
+
+//   const executeCallback = () => {
+//     if (savedArgs === null) {
+//       isThrottled = false;
+//     } else {
+//       callback(...savedArgs);
+//       savedArgs = null;
+//       setTimeout(executeCallback, delay);
+//     }
+//   };
+
+//   return (...args) => {
+//     if (isThrottled) {
+//       savedArgs = args;
+//       return;
+//     }
+//     callback(...args);
+//     isThrottled = true;
+//     setTimeout(executeCallback, delay);
+//   };
+// }
+// const throttledLoadItems = throttle(loadMoreItems, 300);
+
+// window.addEventListener('scroll', () => {
+//   throttledLoadItems();
+// });
+
+// // Initial load
+// loadMoreItems();
+
+//>RequestAnimationFrame
+
+// // SECTION 11
