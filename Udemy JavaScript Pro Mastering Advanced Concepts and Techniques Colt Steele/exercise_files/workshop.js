@@ -1129,3 +1129,273 @@
 //>RequestAnimationFrame
 
 // // SECTION 11
+// //>FUNCTIONAL PROGRAMMING
+// /*
+// map, filter, some/every, find/findIndex, reduce
+// */
+// const func = function greet(person) {
+//   console.log(`Hello there ${person}`);
+// };
+// const func2 = function (person) {
+//   console.log(`Hello there ${person}`);
+// };
+// func('Blue');
+
+// const funcs = [
+//   function greet(person) {
+//     console.log(`Hello there ${person}`);
+//   },
+//   function hate(person) {
+//     console.log(`I hate you  ${person}`);
+//   },
+// ];
+// funcs[0];
+
+// //>FIRST CLASS FUNCTIONS
+// function greet(person) {
+//   console.log(`Hello there ${person}`);
+// }
+// function hate(person) {
+//   console.log(`I hate you  ${person}`);
+// }
+// function callWithBlue(func) {
+//   func('Blue');
+// }
+// callWithBlue(greet);
+// callWithBlue(hate);
+// callWithBlue(color => {
+//   console.log(`${color} is the best color`);
+// });
+
+// //>PURE FUNCTIONS
+// //IMPURE FUNCTION EXAMPLE
+// let value = 2;
+// function squareAndUpdateValue(num) {
+//   value = num * num;
+// }
+// //PURE VERSION
+// function square(num) {
+//   return num * num;
+// }
+
+// //IMPURE FUNCTION EXAMPLE
+// const colors = ['red', 'orange'];
+// function addToArray(arr, value) {
+//   return arr.push(value);
+// }
+// addToArray(colors, 'yellow');
+// console.log('colors :', colors);
+// //PURE VERSION
+// function pureAddToArray(arr, value) {
+//   return [...arr, value];
+// }
+
+// //>HIGHER ORDER FUNCTIONS
+// function doTwice(func) {
+//   func();
+//   func();
+// }
+// doTwice(function () {
+//   console.log('HELLO XXXXX');
+// });
+
+// function multiplyBy(factor) {
+//   return function (number) {
+//     return number * factor;
+//   };
+// }
+// const triple = multiplyBy(3);
+// const quadruple = multiplyBy(4);
+
+// //>IMMUTABILITY
+// const nums = [1, 2, 3, 4];
+// function push(arr, val) {
+//   // arr.push(val)
+//   return [...arr, val];
+// }
+// function pop(arr) {
+//   return arr.slice(0, -1); //make a copy of the array and returns wothout the last item
+// }
+
+// const person = { name: 'Teddy' };
+// person.age = 4; //MUTATING APPROACH
+// console.log(person);
+// //IMMUTATING APPROACH
+// function addAgeToObject(object) {
+//   return { ...object, age: 4 };
+// }
+
+//>RECURSION
+// //IMPERATIVE VERSION
+// function factorial(n) {
+//   let result = 1;
+//   for (let i = n; i > 1; i--) {
+//     result *= i;
+//   }
+//   return console.log(result);
+// }
+// //RECURSIVE VERSION
+// function factorial(n) {
+//   if (n === 0 || n === 1) {
+//     return 1;
+//   } // base case
+//   return n * factorial(n - 1); //recurser statement
+// }
+// console.log('factorial(4) :', factorial(4));
+
+// //>EXERCISE @ https://www.youtube.com/watch?v=lMBVwYrmFZQ
+// function countDown(num) {
+//   if (num <= 0) {
+//     console.log('All done!');
+//     return;
+//   } //base case
+//   console.log(num);
+//   num--;
+//   countDown(num); //recurser statement
+// }
+// countDown(4);
+
+// function sumRange(num) {
+//   if (num === 1) return 1; //base case
+//   return num + sumRange(num - 1); //recurser statement
+// }
+
+// console.log('sumRange(5) :', sumRange(5));
+
+// //>Partial Function with BIND
+// function greet(greeting, name) {
+//   console.log(`${greeting} , ${name}!!!!`);
+// }
+// const aussieGreet = greet.bind(null, 'GoodDay!!'); //Null = this no t being used / First argument baked in the new form of greet function to variable.
+// aussieGreet('Blue');
+
+// function multiply(a, b) {
+//   return a * b;
+// }
+// const double = multiply.bind(null, 2);
+// const triple = multiply.bind(null, 3);
+// console.log('double(4) :', double(4));
+// console.log('triple(4) :', triple(4));
+
+// //>Partial Function
+// function multiply(a, b) {
+//   return a * b;
+// }
+// function partial(func, ...fixedArgs) {
+//   return function (...remainingArgs) {
+//     return func(...fixedArgs, ...remainingArgs);
+//   };
+// }
+// const double = partial(multiply, 2);
+// const triple = partial(multiply, 3);
+// console.log('double(4) :', double(4));
+// console.log('triple(4) :', triple(4));
+// console.log('partial(multiply,2)(3) :', partial(multiply, 2)(4));
+
+// function calculateSalesTax(rate, amount) {
+//   const total = rate * amount;
+//   const rounded = total.toFixed(2);
+//   return console.log(Number(rounded));
+// }
+// function partial(func, ...fixedArgs) {
+//   return function (...remainingArgs) {
+//     return func(...fixedArgs, ...remainingArgs);
+//   };
+// }
+// const calculateCASalesTax = partial(calculateSalesTax, 0.07);
+// const calculateTXSalesTax = partial(calculateSalesTax, 0.05);
+// calculateCASalesTax(300);
+// calculateTXSalesTax(300);
+
+// //>Function Compositions
+// const add = (a, b) => a + b;
+// const multiply = (a, b) => a * b;
+// const square = a => a * a;
+// const addAndSquare = (a, b) => square(add(a, b));
+// add(10, multiply(10, 20));
+// add(square(10), multiply(10, 20));
+
+// function compose(fn1, fn2) {
+//   return function (value) {
+//     return fn1(fn2(value));
+//   };
+// }
+// function repeatTwice(str) {
+//   return str.repeat(2);
+// }
+// function upperCase(str) {
+//   return str.toUpperCase();
+// }
+// const repeatAndUpperCase = compose(repeatTwice, upperCase);
+
+// function flip(fn) {
+//   return function (...args) {
+//     return fn(...args.reverse());
+//   };
+// }
+
+// //> Advanced Functional Composition
+// function compose(...functions) {
+//   //[joinWithDash, splitWords, lowerCaseString]
+//   return function (
+//     data //'fAncy product fiften'
+//   ) {
+//     return functions.reduceRight(
+//       (accVal, nextFunc) => nextFunc(accVal),
+//       data
+//       // data === reduce right initial value
+//     );
+//   };
+// }
+// function lowerCaseString(str) {
+//   return str.toLowerCase();
+// }
+// function splitWords(str) {
+//   return str.split(' ');
+// }
+// function joinWithDash(array) {
+//   return array.join('_');
+// }
+// const sluggify = compose(joinWithDash, splitWords, lowerCaseString);
+// sluggify('fAncy product fiften');
+
+// //>CURRYING BASICS
+// f(a, b, c);
+// f(a)(b)(c);
+
+//Basic Currying
+// function add(a, b, c) {
+//   return a + b + c;
+// }
+// function addCurry(a) {
+//   return function (b) {
+//     return function (c) {
+//       return a + b + c;
+//     };
+//   };
+// }
+// addCurry(1)(20)(5);
+// console.log('addCurry(1)(20)(5) :', addCurry(1)(20)(5));
+
+// //Advanced Currying
+// function add3(x, y, z) {
+//   return x + y + z;
+// }
+// function curry(fn) {
+//   return function curried(...args) {
+//     //If called function args in one go fn(x,y,z) call this function with arguments
+//     if (args.length >= fn.length) {
+//       return fn.apply(this, args);
+//     } else {
+//       //else return functions individually chaining all the way down seperately inside each other
+//       return function (...args2) {
+//         return curried.apply(this, args.concat(args2));
+//       };
+//     }
+//   };
+// }
+
+// const curriedAdd = curry(add3);
+// curriedAdd(1, 2, 3);
+// curriedAdd(1)(2)(3);
+// // console.log(add3.length);

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Styler</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <textarea
+        id="input-text"
+        placeholder="Enter your text here..."
+      ></textarea>
+      <label> <input type="checkbox" id="uppercase" /> Uppercase </label>
+      <label>
+        Choose color:
+        <input type="color" id="color-picker" />
+      </label>
+      <label>
+        Font size:
+        <select id="font-size">
+          <option value="16px">16px</option>
+          <option value="18px">18px</option>
+          <option value="20px">20px</option>
+          <option value="24px">24px</option>
+          <option value="28px">28px</option>
+        </select>
+      </label>
+      <label>
+        Font family:
+        <select id="font-family">
+          <option value="Arial">Arial</option>
+          <option value="Verdana">Verdana</option>
+          <option value="Helvetica">Helvetica</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Courier New">Courier New</option>
+        </select>
+      </label>
+      <button id="apply-styles">Apply Styles</button>
+      <div id="styled-text">...Waiting for your input</div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
