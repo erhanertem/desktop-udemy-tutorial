@@ -1383,12 +1383,14 @@
 // }
 // function curry(fn) {
 //   return function curried(...args) {
-//     //If called function args in one go fn(x,y,z) call this function with arguments
+//     //If called function args in one go fn(x,y,z) or fn(x,y) call this function with arguments
 //     if (args.length >= fn.length) {
+//       console.log(args);
 //       return fn.apply(this, args);
 //     } else {
 //       //else return functions individually chaining all the way down seperately inside each other
 //       return function (...args2) {
+//         console.log('arg', args, 'arg2', args2);
 //         return curried.apply(this, args.concat(args2));
 //       };
 //     }
@@ -1397,5 +1399,135 @@
 
 // const curriedAdd = curry(add3);
 // curriedAdd(1, 2, 3);
+// curriedAdd(1, 2)(3);
 // curriedAdd(1)(2)(3);
-// // console.log(add3.length);
+// console.log(add3.length);
+
+// const result = [175, 50, 25].reduceRight((fel, sel) => {
+//   console.log('ACC', fel, 'EL', sel);
+//   return fel - sel;
+// });
+// console.log(result);
+
+// // SECTION 12
+// //>GET REQUEST
+// const POKE_URL = 'https://pokeapi.co/api/v2/pokemon';
+// //>ASYNC VERSION
+// (async function getPokemon() {
+//   try {
+//     //#1 step fetch data from server
+//     const response = await fetch(POKE_URL);
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: 🥶 ${res.status}`);
+//     }
+//     //#2 step translate the response to readable data
+//     const data = await response.json();
+//     console.log(data.results);
+//   } catch (error) {
+//     console.log('SOMETHING WENT WRONG WITH FETCHING');
+//   }
+// })();
+// //>THEN VERSION
+// fetch(POKE_URL)
+//   .then(res => {
+//     if (!res.ok) {
+//       throw new Error(`HTTP error! Status: 🥶 ${res.status}`);
+//     }
+//     console.log('⚠️', res.headers.get('content-type'));
+//     console.log('🥶', [...res.headers.keys()]);
+//     // for (let h of res.headers) {
+//     //   console.log('😖', h );
+//     // }
+//     return res.json();
+//   })
+//   .then(data => console.log('JSON DATA', data))
+//   .catch(error => {
+//     console.log('SOMETHING WENT WRONG WITH FETCHING', error);
+//   });
+
+// //>ASYNC VERSION w/headers
+// (async function getPokemon() {
+//   try {
+//     //#1 step fetch data from server
+//     const response = await fetch(POKE_URL, { method: 'GET' });
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: 🥶 ${res.status}`);
+//     }
+//     //#2 step translate the response to readable data BASED ON HEADERS
+//     let type = res.headers.get('content-type');
+//     let obj = {
+//       html: null,
+//       json: null,
+//       blob: null,
+//     };
+//     if (type.startsWith('text/html')) {
+//       obj.html = await res.someTextMethod();
+//     }
+//     if (type.startsWith('application/json')) {
+//       obj.json = await res.json();
+//     }
+//     if (type.startsWith('image/')) {
+//       obj.blob = await res.someBlobMethod();
+//     }
+//     if (obj.html) {
+//       const doc = new DOMParser().parseFromString(obj.html, 'text/html');
+//       let h1Text = doc.querySelector('h1').textContent;
+//     }
+//     if (obj.json) {
+//       console.log(obj.json);
+//     }
+//     if (obj.blob) {
+//       let img = document.createElement('img');
+//       let url = URL.createObjectURL(blob);
+//       img.src = url;
+//       document.body.append(img);
+//     }
+//   } catch (error) {
+//     console.log('SOMETHING WENT WRONG WITH FETCHING');
+//   }
+// })();
+
+// //>POST REQUEST
+// (async function postData() {
+//   const payload = {
+//     handle: 'chickenco',
+//     name: 'Chickens and Company',
+//     description: 'A lovely company run by Chickens',
+//     numEmployees: 999,
+//     logoUrl: 'http://www.google.com',
+//   };
+
+//   const response = await fetch('http://localhost:3001/companies', {
+//     method: 'POST',
+//     headers: { 'content-type': 'application/json' },
+//     body: JSON.stringify(payload),
+//   });
+
+//   const data = await response.json();
+//   console.log(data);
+// })();
+
+// //>UPLOAD FILE VIA FETCH
+//UPLOAD POST REQUEST
+async function uploadFile(formData) {
+  try {
+    const response = await fetch(
+      'http://localhost:3001/companies/coltco/upload-logo',
+      { method: 'POST', body: formData }
+    );
+    const result = await response.json();
+    console.log(result);
+  } catch (error) {
+    console.error('Error uploading file:', error);
+  }
+}
+
+//FORM FIELD SELECTOR
+const fileInput = document.querySelector('#fileupload');
+//EVENTLISTENER FOR THIS FORM FIELD..IN THE EVENT OF ANY CHANGE, CREATE NEW FORM DATA PACKAGE AND REQUEST A POST FETCH
+fileInput.addEventListener('change', e => {
+  console.log('CHANGED');
+  const formData = new FormData();
+  formData.append('logo', fileInput.files[0]);
+  uploadFile(formData);
+});
