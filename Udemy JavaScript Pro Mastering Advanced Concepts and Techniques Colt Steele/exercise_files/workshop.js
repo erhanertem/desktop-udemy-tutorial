@@ -1508,26 +1508,47 @@
 // })();
 
 // //>UPLOAD FILE VIA FETCH
-//UPLOAD POST REQUEST
-async function uploadFile(formData) {
-  try {
-    const response = await fetch(
-      'http://localhost:3001/companies/coltco/upload-logo',
-      { method: 'POST', body: formData }
-    );
-    const result = await response.json();
-    console.log(result);
-  } catch (error) {
-    console.error('Error uploading file:', error);
-  }
+// //UPLOAD POST REQUEST
+// async function uploadFile(formData) {
+//   try {
+//     const response = await fetch(
+//       'http://localhost:3001/companies/coltco/upload-logo',
+//       { method: 'POST', body: formData }
+//     );
+//     const result = await response.json();
+//     console.log(result);
+//   } catch (error) {
+//     console.error('Error uploading file:', error);
+//   }
+// }
+
+// //FORM FIELD SELECTOR
+// const fileInput = document.querySelector('#fileupload');
+// //EVENTLISTENER FOR THIS FORM FIELD..IN THE EVENT OF ANY CHANGE, CREATE NEW FORM DATA PACKAGE AND REQUEST A POST FETCH
+// fileInput.addEventListener('change', e => {
+//   console.log('CHANGED');
+//   const formData = new FormData();
+//   formData.append('logo', fileInput.files[0]);
+//   uploadFile(formData);
+// });
+
+// // SECTION 13
+localStorage.setItem('color', 'magenta');
+localStorage;
+localStorage.clear();
+const nums = [1, 2, 3, 4];
+localStorage.setItem('nums', nums);
+localStorage.getItem('nums'); //Returns '1,2,3,4' - array object defintion gets lost
+localStorage.setItem('nums', JSON.stringify(nums)); //Returns '[1,2,3,4]'
+JSON.parse(localStorage.getItem('nums')); //We destrigify the JSON to retireve our array objecyt back.
+
+const Storage = window.localStorage;
+if (typeof Storage !== 'undefined') {
+  alert('ls exists');
+  // Code for localStorage/sessionStorage.
+} else {
+  alert('ls does not exist');
+  // Sorry! No Web Storage support..
 }
 
-//FORM FIELD SELECTOR
-const fileInput = document.querySelector('#fileupload');
-//EVENTLISTENER FOR THIS FORM FIELD..IN THE EVENT OF ANY CHANGE, CREATE NEW FORM DATA PACKAGE AND REQUEST A POST FETCH
-fileInput.addEventListener('change', e => {
-  console.log('CHANGED');
-  const formData = new FormData();
-  formData.append('logo', fileInput.files[0]);
-  uploadFile(formData);
-});
+// // SECTION 14
