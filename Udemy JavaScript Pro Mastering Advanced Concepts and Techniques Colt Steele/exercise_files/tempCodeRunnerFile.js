@@ -1,1 +1,0 @@
-callWithBlue(greet);

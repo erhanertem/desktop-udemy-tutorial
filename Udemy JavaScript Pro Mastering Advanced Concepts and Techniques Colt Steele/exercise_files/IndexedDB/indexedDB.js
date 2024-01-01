@@ -1,4 +1,4 @@
-const open = indexedDB.open('MyFirstDB', 2);
+const open = indexedDB.open('MyFirstDB', 1);
 
 open.onupgradeneeded = () => {
   const db = open.result;
@@ -8,6 +8,7 @@ open.onupgradeneeded = () => {
 open.onsuccess = () => {
   console.log('SUCCESS!!!');
   const db = open.result;
+  // console.log(open);
   const transaction = db.transaction('MyUserStore', 'readwrite');
   const store = transaction.objectStore('MyUserStore');
 
