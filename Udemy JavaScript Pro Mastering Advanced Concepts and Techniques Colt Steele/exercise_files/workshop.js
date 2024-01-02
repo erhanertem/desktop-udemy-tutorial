@@ -1533,22 +1533,68 @@
 // });
 
 // // SECTION 13
-localStorage.setItem('color', 'magenta');
-localStorage;
-localStorage.clear();
-const nums = [1, 2, 3, 4];
-localStorage.setItem('nums', nums);
-localStorage.getItem('nums'); //Returns '1,2,3,4' - array object defintion gets lost
-localStorage.setItem('nums', JSON.stringify(nums)); //Returns '[1,2,3,4]'
-JSON.parse(localStorage.getItem('nums')); //We destrigify the JSON to retireve our array objecyt back.
+// localStorage.setItem('color', 'magenta');
+// localStorage;
+// localStorage.clear();
+// const nums = [1, 2, 3, 4];
+// localStorage.setItem('nums', nums);
+// localStorage.getItem('nums'); //Returns '1,2,3,4' - array object defintion gets lost
+// localStorage.setItem('nums', JSON.stringify(nums)); //Returns '[1,2,3,4]'
+// JSON.parse(localStorage.getItem('nums')); //We destrigify the JSON to retireve our array objecyt back.
 
-const Storage = window.localStorage;
-if (typeof Storage !== 'undefined') {
-  alert('ls exists');
-  // Code for localStorage/sessionStorage.
-} else {
-  alert('ls does not exist');
-  // Sorry! No Web Storage support..
+// const Storage = window.localStorage;
+// if (typeof Storage !== 'undefined') {
+//   alert('ls exists');
+//   // Code for localStorage/sessionStorage.
+// } else {
+//   alert('ls does not exist');
+//   // Sorry! No Web Storage support..
+// }
+
+// // SECTION 15
+const largeArray = Array.from({ length: 10000 }, () =>
+  Math.floor(Math.random() * 1000)
+);
+// console.log(largeArray);
+
+const arrayForBubbleSort = [...largeArray];
+const arrayForNativeSort = [...largeArray];
+
+//Native Sorting Function
+performance.mark('nativeSortingStart');
+arrayForNativeSort.sort((a, b) => a - b);
+performance.mark('nativeSortingEnd');
+//Bubble Sorting Function
+performance.mark('bubbleSortingStart');
+bubbleSort(arrayForBubbleSort);
+performance.mark('bubbleSortingEnd');
+
+performance.measure(
+  'Native Sort Time',
+  'nativeSortingStart',
+  'nativeSortingEnd'
+);
+performance.measure(
+  'Bubble Sort Time',
+  'bubbleSortingStart',
+  'bubbleSortingEnd'
+);
+
+console.log('performance.getEntries() :', performance.getEntries());
+const measure1 = performance.getEntriesByName('Native Sort Time')[0].duration;
+const measure2 = performance.getEntriesByName('Bubble Sort Time')[0].duration;
+console.log(measure2 - measure1);
+
+function bubbleSort(arr) {
+  let len = arr.length;
+  for (let i = 0; i < len; i++) {
+    for (let j = 0; j < len - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        let temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
+    }
+  }
+  return arr;
 }
-
-// // SECTION 14

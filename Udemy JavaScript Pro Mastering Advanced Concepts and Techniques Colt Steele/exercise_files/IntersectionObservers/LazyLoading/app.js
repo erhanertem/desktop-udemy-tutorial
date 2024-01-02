@@ -8,7 +8,8 @@ const observer = new IntersectionObserver(entries => {
       // console.log(entry.target);
       observer.unobserve(entry.target);
     }
-  });
+  }),
+    { root: null, threshold: 0.5 };
 });
 
 const allImages = document.querySelectorAll('img.lazy');
