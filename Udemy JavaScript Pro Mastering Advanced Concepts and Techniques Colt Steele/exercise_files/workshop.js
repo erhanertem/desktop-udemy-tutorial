@@ -1552,49 +1552,91 @@
 // }
 
 // // SECTION 15
-const largeArray = Array.from({ length: 10000 }, () =>
-  Math.floor(Math.random() * 1000)
-);
-// console.log(largeArray);
+// const largeArray = Array.from({ length: 10000 }, () =>
+//   Math.floor(Math.random() * 1000)
+// );
+// // console.log(largeArray);
 
-const arrayForBubbleSort = [...largeArray];
-const arrayForNativeSort = [...largeArray];
+// const arrayForBubbleSort = [...largeArray];
+// const arrayForNativeSort = [...largeArray];
 
-//Native Sorting Function
-performance.mark('nativeSortingStart');
-arrayForNativeSort.sort((a, b) => a - b);
-performance.mark('nativeSortingEnd');
-//Bubble Sorting Function
-performance.mark('bubbleSortingStart');
-bubbleSort(arrayForBubbleSort);
-performance.mark('bubbleSortingEnd');
+// //Native Sorting Function
+// performance.mark('nativeSortingStart');
+// arrayForNativeSort.sort((a, b) => a - b);
+// performance.mark('nativeSortingEnd');
+// //Bubble Sorting Function
+// performance.mark('bubbleSortingStart');
+// bubbleSort(arrayForBubbleSort);
+// performance.mark('bubbleSortingEnd');
 
-performance.measure(
-  'Native Sort Time',
-  'nativeSortingStart',
-  'nativeSortingEnd'
-);
-performance.measure(
-  'Bubble Sort Time',
-  'bubbleSortingStart',
-  'bubbleSortingEnd'
-);
+// performance.measure(
+//   'Native Sort Time',
+//   'nativeSortingStart',
+//   'nativeSortingEnd'
+// );
+// performance.measure(
+//   'Bubble Sort Time',
+//   'bubbleSortingStart',
+//   'bubbleSortingEnd'
+// );
 
-console.log('performance.getEntries() :', performance.getEntries());
-const measure1 = performance.getEntriesByName('Native Sort Time')[0].duration;
-const measure2 = performance.getEntriesByName('Bubble Sort Time')[0].duration;
-console.log(measure2 - measure1);
+// console.log('performance.getEntries() :', performance.getEntries());
+// const measure1 = performance.getEntriesByName('Native Sort Time')[0].duration;
+// const measure2 = performance.getEntriesByName('Bubble Sort Time')[0].duration;
+// console.log(measure2 - measure1);
 
-function bubbleSort(arr) {
-  let len = arr.length;
-  for (let i = 0; i < len; i++) {
-    for (let j = 0; j < len - i - 1; j++) {
-      if (arr[j] > arr[j + 1]) {
-        let temp = arr[j];
-        arr[j] = arr[j + 1];
-        arr[j + 1] = temp;
-      }
-    }
-  }
-  return arr;
-}
+// function bubbleSort(arr) {
+//   let len = arr.length;
+//   for (let i = 0; i < len; i++) {
+//     for (let j = 0; j < len - i - 1; j++) {
+//       if (arr[j] > arr[j + 1]) {
+//         let temp = arr[j];
+//         arr[j] = arr[j + 1];
+//         arr[j + 1] = temp;
+//       }
+//     }
+//   }
+//   return arr;
+// }
+
+// // SECTION 16
+// const canvas = document.querySelector('#canvas');
+// const ctx = canvas.getContext('2d');
+// ctx.fillStyle = 'rgb(255,0,0)';
+
+// const bigRectangle = new Path2D();
+// bigRectangle.rect(0, 0, 200, 80);
+// ctx.fillStyle = 'rgba(55,0,0,0.5)';
+// ctx.stroke(bigRectangle);
+// ctx.fill(bigRectangle);
+
+// ctx.fillRect(100, 100, 40, 80);
+// ctx.fillStyle = 'rgba(55,0,0,0.5)';
+// ctx.fillRect(120, 120, 40, 80);
+// ctx.clearRect(100, 100, 20, 20);
+// ctx.fillRect(100, 100, 20, 20);
+// ctx.strokeStyle = 'white';
+// ctx.strokeRect(100, 100, 20, 20);
+
+// ctx.strokeStyle = 'black';
+// ctx.beginPath();
+// ctx.moveTo(10, 50);
+// ctx.lineTo(100, 215);
+// ctx.stroke();
+
+// ctx.beginPath();
+// ctx.moveTo(50, 50);
+// ctx.lineTo(100, 100);
+// ctx.lineTo(200, 80);
+// ctx.lineTo(200, 40);
+// ctx.lineTo(50, 50);
+// ctx.fillStyle = 'yellow';
+// ctx.fill();
+// ctx.stroke();
+
+// ctx.fillStyle = 'rgba(55,0,0,0.5)';
+// ctx.beginPath();
+// // ctx.arc(145, 145, 50, 0, 2 * Math.PI);
+// ctx.arc(145, 145, 50, 20, 2 * Math.PI);
+// ctx.stroke();
+// ctx.fill();
