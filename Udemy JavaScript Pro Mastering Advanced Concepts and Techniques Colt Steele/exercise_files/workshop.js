@@ -1640,3 +1640,23 @@
 // ctx.arc(145, 145, 50, 20, 2 * Math.PI);
 // ctx.stroke();
 // ctx.fill();
+
+// function add(a, b, c) {
+//   return a + b + c;
+// }
+
+// function curryThis(fn) {
+//   return function curriedfn(...args) {
+//     console.log(args);
+//     if (args.length >= fn.length) {
+//       return fn.apply(this, args);
+//     } else {
+//       return function (...partial_args) {
+//         return curriedfn.apply(this, args.concat(partial_args));
+//       };
+//     }
+//   };
+// }
+
+// const curriedAdd = curryThis(add);
+// console.log(curriedAdd(1, 2)(3));
