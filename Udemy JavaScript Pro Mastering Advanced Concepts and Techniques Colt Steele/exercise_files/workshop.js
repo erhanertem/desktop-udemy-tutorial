@@ -1660,3 +1660,50 @@
 
 // const curriedAdd = curryThis(add);
 // console.log(curriedAdd(1, 2)(3));
+
+// SECTION 20
+//> SINGLETON PATTERN
+// class DatabaseConnection {
+//   constructor() {
+//     if (!DatabaseConnection.instance) {
+//       this.connection = this.createConnection(); // assume createConnection establishes a database connection
+//       DatabaseConnection.instance = this;
+//     }
+//     return DatabaseConnection.instance;
+//   }
+
+//   createConnection() {
+//     // logic to connect to the database
+//     console.log('CREATING CONNECTION TO DATABASE!!!!');
+//     return { connection: 'I am the database connection object' };
+//   }
+
+//   // Other database-related methods...
+// }
+
+// const db1 = new DatabaseConnection();
+// console.log(DatabaseConnection.instance);
+// const db2 = new DatabaseConnection();
+// console.log(DatabaseConnection.instance);
+// console.log(db2 instanceof DatabaseConnection);
+// console.log(db1 instanceof DatabaseConnection);
+
+function multiply(a, b) {
+  console.log(a * b);
+}
+
+function sum(a, b) {
+  console.log(a + b);
+}
+
+const handler = {
+  apply: function (targetFunc, thisArg, argsList) {
+    console.log('YOU RAN THE FUNCTION!!!');
+    console.log('args are:', argsList);
+    targetFunc(...argsList);
+  },
+};
+
+const multiplyProxy = new Proxy(multiply, handler);
+const sumProxy = new Proxy(sum, handler);
+multiplyProxy(4, 5);
