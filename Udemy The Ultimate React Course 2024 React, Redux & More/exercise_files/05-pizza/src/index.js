@@ -1,7 +1,6 @@
-import './index.css'; //Import external CSS
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import './index.css';
 
 const pizzaData = [
 	{
@@ -61,63 +60,100 @@ function App() {
 function Header() {
 	return (
 		<header className="header">
-			<h1>Fast React Pizza Co.</h1>
+			<h1 className="header">Fast React Pizza Co.</h1>
 		</header>
 	);
 }
-//Inline CSS examples
-// function Header() {
-// 	const style = { color: 'red', fontSize: '48px', textTransform: 'uppercase' };
-// 	return (
-// 			<h1 style={style} className="header">
-// 				Fast React Pizza Co.
-// 			</h1>
-// 	); //Inline CSS with JSX
-// }
+// //Inline CSS examples
 // function Header() {
 // 	return (
-// 		<h1 style={{ color: 'red', fontSize: '48px', textTransform: 'uppercase' }}>
+// 		<h1
+//Inline CSS with JSX
+// 			style={{
+// 				color: 'blue',
+// 				fontSize: '48px',
+// 				textTransform: 'uppercase',
+// 			}}
+// 		>
 // 			Fast React Pizza Co.
 // 		</h1>
 // 	);
 // }
 
-// function Menu() {
-// 	return (
-// 		<main className="menu">
-// 			<h2>Our Menu</h2>
-// 			{pizzaData.length > 0 && ( //VERY IMPORTANT!!! pizzaData.length >0 check disable rendering ul element all together!!!
-// 				<ul className="pizzas">
-// 					{pizzaData.map((pizza) => (
-// 						<Pizza key={pizza.name} pizzaObj={pizza} />
-// 					))}
-// 				</ul>
-// 			)}
-// 		</main>
-// 	);
-// }
 function Menu() {
+	// // NOTE - CANT DIRECTLY DECLARE A COMPONENT INSIDE ANOTHER COMPONENT - CAUSES ISSUES IN THE LONG RUN.
+	// function Pizza() {
+	// 	return (
+	// 		<div>
+	// 			<img src="pizzas/spinaci.jpg" alt="Pizza spinaci" />
+	// 			<h2>Pizza Spinaci</h2>
+	// 			<p>Tomato, mozarella, spinach, and ricotta cheese</p>
+	// 		</div>
+	// 	);
+	// }
+
+	const pizzas = pizzaData;
+	// const pizzas = [];
+
 	return (
 		<main className="menu">
-			<h2>Our Menu</h2>
-			{/* VERY IMPORTANT!!! pizzaData.length >0 check disable rendering ul element
-			all together!!! */}
-			{pizzaData.length > 0 ? (
+			<h2>Our menu</h2>
+
+			{pizzas.length > 0 ? (
 				<>
 					<p>
-						Authentic Italian cuisine. 6 creative dishes to choose from. All
-						from our stone even, all organic, all delicious.
+						Authentic Italian cuisine. 6 creative dishes to choose
+						from. All from our stone oven, all organic, all
+						delicious.
 					</p>
-
 					<ul className="pizzas">
-						{pizzaData.map((pizza) => (
-							<Pizza key={pizza.name} pizzaObj={pizza} />
+						{pizzas.map(pizza => (
+							<Pizza pizzaObj={pizza} key={pizza.name} />
 						))}
 					</ul>
 				</>
 			) : (
-				<p>We're still working on our menu. Please come back later.</p>
+				<p>
+					We're still working on our menu. Please come back later :)
+				</p>
 			)}
+			{/* {pizzas.length > 0 ? (
+				<ul className="pizzas">
+					{pizzas.map(pizza => (
+						<Pizza pizzaObj={pizza} key={pizza.name} />
+					))}
+				</ul>
+			) : null} */}
+			{/* {pizzas.length > 0 && (
+				<ul className="pizzas">
+					{pizzas.map(pizza => (
+						<Pizza pizzaObj={pizza} key={pizza.name} />
+					))}
+				</ul>
+			)} */}
+
+			{/* <div>
+				{pizzaData.map(pizza => (
+					<Pizza
+						name={pizza.name}
+						ingredients={pizza.ingredients}
+						photoName={pizza.photoName}
+						price={pizza.price}
+					/>
+				))}
+			</div> */}
+			{/* <Pizza
+				name="Pizza Spinaci"
+				ingredients="Tomato, mozarella, spinach, and ricotta cheese"
+				photoName="pizzas/spinaci.jpg"
+				price={10} //entering numbers via entering js mode in jsx
+			/>
+			<Pizza
+				name="Pizza Fungi"
+				ingredients="Tomato, mushrooms"
+				photoName="pizzas/funghi.jpg"
+				price={12}
+			/> */}
 		</main>
 	);
 }
@@ -126,19 +162,15 @@ function Pizza({ pizzaObj }) {
 	// if (pizzaObj.soldOut) return null;
 
 	return (
-		// VERY IMPORTANT!!! CLASS NAME MANUPULATION W/TERNARY OPERATOR FOR SELECTIVE CSS
 		<li className={`pizza ${pizzaObj.soldOut ? 'sold-out' : ''}`}>
 			<img src={pizzaObj.photoName} alt={pizzaObj.name} />
 			<div>
 				<h3>{pizzaObj.name}</h3>
 				<p>{pizzaObj.ingredients}</p>
-
-				{/* {pizzaObj.soldOut ? (
-					<span>SOLD OUT</span>
-				) : (
-					<span>$ {pizzaObj.price}</span>
-				)} */}
-				<span>{pizzaObj.soldOut ? 'SOLD OUT' : '$' + pizzaObj.price}</span>
+				<span>
+					{pizzaObj.soldOut ? 'SOLD OUT' : `$${pizzaObj.price}`}
+				</span>
+				{/* <span>{props.price + 1}</span> */}
 			</div>
 		</li>
 	);
@@ -146,59 +178,77 @@ function Pizza({ pizzaObj }) {
 
 function Footer() {
 	const hour = new Date().getHours();
-	const openHour = 12;
-	const closeHour = 22;
+	// console.log(hour);
+	const openHour = 0;
+	const closeHour = 20;
 	const isOpen = hour >= openHour && hour <= closeHour;
+	// console.log(isOpen);
 
-	// return React.createElement('footer', null, "We're currently open!");
+	// if (!isOpen)
+	// 	return (
+	// 		<footer className="footer">
+	// 			<p>
+	// 				We're happy to welcome you between {openHour}:00 and{' '}
+	// 				{closeHour}
+	// 				:00
+	// 			</p>
+	// 		</footer>
+	// 	);
 	// return (
 	// 	<footer className="footer">
-	// 		{isOpen ? (
+	// 		{isOpen && (
 	// 			<div className="order">
-	// 				<p>We're open until {closeHour}:00. Come visit us or order online.</p>
+	// 				<p>
+	// 					We're open until {closeHour}:00. Come visit us or order
+	// 					online
+	// 				</p>
 	// 				<button className="btn">Order</button>
 	// 			</div>
-	// 		) : (
-	// 			<p>
-	// 				We're happy to welcome you between {openHour}:00 and {closeHour}:00.
-	// 			</p>
 	// 		)}
 	// 	</footer>
 	// );
-	return isOpen && pizzaData.length > 0 ? (
-		<Order closeHour={closeHour} />
-	) : (
-		<Close closeHour={closeHour} openHour={openHour} />
-	);
-}
-
-function Order({ closeHour }) {
 	return (
 		<footer className="footer">
-			<div className="order">
-				<p>We're open until {closeHour}:00. Come visit us or order online.</p>
-				<button className="btn">Order</button>
-			</div>
-		</footer>
-	);
-}
-
-function Close({ openHour, closeHour }) {
-	return (
-		<footer className="footer">
-			<div className="order">
+			{/* {isOpen && (
+				<div className="order">
+					<p>
+						We're open until {closeHour}:00. Come visit us or order
+						online
+					</p>
+					<button className="btn">Order</button>
+				</div>
+			)} */}
+			{isOpen ? (
+				<Order closeHour={closeHour} openHour={openHour} />
+			) : (
 				<p>
-					We're happy to welcome you between {openHour}:00 and {closeHour}:00.
+					We're happy to welcome you between {openHour}:00 and{' '}
+					{closeHour}:00
 				</p>
-			</div>
+			)}
 		</footer>
+	);
+	// return React.createElement('footer', null, "We're currently open!"); //html tag element/received props/tag element content
+}
+
+function Order({ closeHour, openHour }) {
+	return (
+		<div className="order">
+			<p>
+				We're open from {openHour}:00 until {closeHour}:00. Come visit
+				us or order online
+			</p>
+			<button className="btn">Order</button>
+		</div>
 	);
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
 root.render(
 	<React.StrictMode>
 		<App />
 	</React.StrictMode>,
 );
+
+// //Prior to react 18
+// ReactDOM.render(<App />, document.getElementById('root'));
