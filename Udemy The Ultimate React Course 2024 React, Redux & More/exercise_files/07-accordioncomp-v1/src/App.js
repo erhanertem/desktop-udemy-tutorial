@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import './styles.css'
+import { useState } from 'react';
+import './styles.css';
 
 const faqs = [
 	{
@@ -14,44 +14,45 @@ const faqs = [
 		title: 'Do you ship to countries outside the EU?',
 		text: 'Excepturi velit laborum, perspiciatis nemo perferendis reiciendis aliquam possimus dolor sed! Dolore laborum ducimus veritatis facere molestias!',
 	},
-]
+];
 
 export default function App() {
 	return (
 		<div>
 			<Accordion data={faqs} />
 		</div>
-	)
+	);
 }
 
 function Accordion({ data }) {
 	return (
 		<div className="accordion">
-			{data.map((el, index) => (
+			{data.map((el, i) => (
 				<AccordionItem
-					key={index}
-					num={(index + 1).toString().padStart(2, 0)}
+					num={i + 1}
 					title={el.title}
 					text={el.text}
+					key={i + 1}
 				/>
 			))}
 		</div>
-	)
+	);
 }
 
 function AccordionItem({ num, title, text }) {
-	const [isOpen, setIsOpen] = useState(false)
+	// WE HAVE TO USE STATE ON EACH ITEM SINCE WE WANT TO OPEN/CLOSE EACH ITEM INDEPENDANT OF EACH OTHER.
+	const [isOpen, setIsOpen] = useState(false);
 
 	function handleToggle() {
-		setIsOpen(isOpen => !isOpen)
+		setIsOpen((isOpen) => !isOpen);
 	}
 
 	return (
 		<div className={`item ${isOpen ? 'open' : ''}`} onClick={handleToggle}>
-			<p className="number">{num}</p>
+			<p className="number">{num < 9 ? `0${num}` : num}</p>
 			<p className="title">{title}</p>
 			<p className="icon">{isOpen ? '-' : '+'}</p>
 			{isOpen && <div className="content-box">{text}</div>}
 		</div>
-	)
+	);
 }
