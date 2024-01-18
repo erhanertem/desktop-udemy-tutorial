@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
 const content = [
 	{
@@ -16,21 +16,20 @@ const content = [
 		details:
 			'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
 	},
-]
+];
 
 export default function App() {
 	return (
 		<div>
 			<Tabbed content={content} />
 		</div>
-	)
+	);
 }
 
-// console.log(<DifferentContent test={23} />)
-// console.log(DifferentContent()) // Creates a raw react element - do not use this way
+// console.log(<DifferentContent test={23} />);
 
 function Tabbed({ content }) {
-	const [activeTab, setActiveTab] = useState(0)
+	const [activeTab, setActiveTab] = useState(0);
 
 	return (
 		<div>
@@ -42,60 +41,50 @@ function Tabbed({ content }) {
 			</div>
 
 			{activeTab <= 2 ? (
-				<TabContent
-					key={content.at(activeTab).summary}
-					item={content.at(activeTab)}
-				/>
+				<TabContent item={content.at(activeTab)} key={content.at(activeTab).summary} />
 			) : (
 				<DifferentContent />
 			)}
-
-			{/* {TabContent({ item: content.at(0) })} */}
-			{/* If a component is called as function, its no longer seen as an instance by REACT */}
 		</div>
-	)
+	);
 }
 
 function Tab({ num, activeTab, onClick }) {
 	return (
-		<button
-			className={activeTab === num ? 'tab active' : 'tab'}
-			onClick={() => onClick(num)}
-		>
+		<button className={activeTab === num ? 'tab active' : 'tab'} onClick={() => onClick(num)}>
 			Tab {num + 1}
 		</button>
-	)
+	);
 }
 
 function TabContent({ item }) {
-	const [showDetails, setShowDetails] = useState(true)
-	const [likes, setLikes] = useState(0)
+	const [showDetails, setShowDetails] = useState(true);
+	const [likes, setLikes] = useState(0);
 
-	console.log('RENDER')
+	console.log('RENDER');
 
 	function handleInc() {
-		setLikes(likes + 1)
+		// setLikes(likes + 1);
+		setLikes((likes) => likes + 1);
 	}
-
 	function handleTripleInc() {
-		// setLikes(likes + 1)
-		// setLikes(likes + 1)
-		// setLikes(likes + 1)
+		// setLikes(likes + 1);
+		// setLikes(likes + 1);
+		// setLikes(likes + 1);
 
-		setLikes(likes => likes + 1)
-		console.log(likes)
-		setLikes(likes => likes + 1)
-		setLikes(likes => likes + 1)
+		setLikes((likes) => likes + 1);
+		setLikes((likes) => likes + 1);
+		setLikes((likes) => likes + 1);
 	}
 
 	function handleUndo() {
-		setShowDetails(true)
-		setLikes(0)
-		console.log(likes)
+		setShowDetails(true);
+		setLikes(0);
+		console.log(likes);
 	}
 
 	function handleUndoLater() {
-		setTimeout(handleUndo, 2000)
+		setTimeout(handleUndo, 2000);
 	}
 
 	return (
@@ -104,7 +93,7 @@ function TabContent({ item }) {
 			{showDetails && <p>{item.details}</p>}
 
 			<div className="tab-actions">
-				<button onClick={() => setShowDetails(h => !h)}>
+				<button onClick={() => setShowDetails((h) => !h)}>
 					{showDetails ? 'Hide' : 'Show'} details
 				</button>
 
@@ -120,7 +109,7 @@ function TabContent({ item }) {
 				<button onClick={handleUndoLater}>Undo in 2s</button>
 			</div>
 		</div>
-	)
+	);
 }
 
 function DifferentContent() {
@@ -128,5 +117,5 @@ function DifferentContent() {
 		<div className="tab-content">
 			<h4>I'm a DIFFERENT tab, so I reset state 💣💥</h4>
 		</div>
-	)
+	);
 }
