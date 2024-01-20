@@ -1,82 +1,71 @@
-import { useEffect, useState } from 'react'
-
 // `https://api.frankfurter.app/latest?amount=100&from=EUR&to=USD`
 
+import { useEffect, useState } from 'react';
+import './styles.css';
+
 export default function App() {
-	const [amount, setAmount] = useState(1)
-	const [fromCur, setFromCur] = useState('EUR')
-	const [toCur, setToCur] = useState('USD')
-	const [converted, setConverted] = useState('')
-	const [isLoading, setIsLoading] = useState(false)
-
-	useEffect(() => {
-		async function convert() {
-			setIsLoading(true)
-			const res = await fetch(
-				`https://api.frankfurter.app/latest?amount=${amount}&from=${fromCur}&to=${toCur}`,
-			)
-			const data = await res.json()
-			console.log(data.rates[toCur])
-			setConverted(data.rates[toCur])
-			setIsLoading(false)
-		}
-
-		if (fromCur === toCur) {
-			return setConverted(amount)
-		}
-		convert()
-	}, [amount, fromCur, toCur])
-
-	return (
-		<div>
-			<Input amount={amount} setAmount={setAmount} />
-			<select
-				value={fromCur}
-				onChange={e => setFromCur(e.target.value)}
-				disabled={isLoading}
-			>
-				<option value="USD">USD</option>
-				<option value="EUR">EUR</option>
-				<option value="CAD">CAD</option>
-				<option value="INR">INR</option>
-			</select>
-			<select
-				value={toCur}
-				onChange={e => setToCur(e.target.value)}
-				disabled={isLoading}
-			>
-				<option value="USD">USD</option>
-				<option value="EUR">EUR</option>
-				<option value="CAD">CAD</option>
-				<option value="INR">INR</option>
-			</select>
-			<p>
-				{converted} {toCur}
-			</p>
-		</div>
-	)
-}
-
-function Input({ amount, setAmount, isLoading }) {
-	console.log(amount)
-	const [tempAmount, setTempAmount] = useState(amount)
+	const [amount, setAmount] = useState(1);
+	const [fromCur, setFromCur] = useState('USD');
+	const [toCur, setToCur] = useState('EUR');
+	const [output, setOutput] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(
 		function () {
-			const lag = setTimeout(() => setAmount(tempAmount), 500)
+			if (fromCur === toCur) {
+				setOutput(amount + ` ${toCur}`);
+			}
+			(async function () {
+				try {
+					setIsLoading(true);
 
-			// Cleanup timeout
-			return () => clearTimeout(lag)
+					const res = await fetch(
+						`https://api.frankfurter.app/latest?amount=${amount}&from=${fromCur}&to=${toCur}`,
+					);
+
+					if (!res.ok) throw new Error('Problem fetching currency conversion data');
+
+					const data = await res.json();
+
+					console.log(data);
+
+					if (!data.rates) throw new Error(`Received incompatible data from server`);
+
+					// console.log(Object.values({ ...data.rates })[0]);
+					// setOutput(Object.values({ ...data.rates })[0] + ` ${toCur}`);
+					// console.log(data.rates[toCur]);
+					setOutput(data.rates[toCur] + ` ${toCur}`);
+				} catch (err) {
+					console.log(err.message);
+				} finally {
+					setIsLoading(false);
+				}
+			})();
 		},
-		[setAmount, tempAmount],
-	)
+		[amount, fromCur, toCur],
+	);
 
 	return (
-		<input
-			type="text"
-			value={tempAmount}
-			onChange={e => setTempAmount(Number(e.target.value))}
-			disabled={isLoading}
-		/>
-	)
+		<div>
+			<input
+				type="text"
+				value={amount}
+				onChange={(e) => setAmount(+e.target.value)}
+				disabled={isLoading}
+			/>
+			<select value={fromCur} onChange={(e) => setFromCur(e.target.value)} disabled={isLoading}>
+				<option value="USD">USD</option>
+				<option value="EUR">EUR</option>
+				<option value="CAD">CAD</option>
+				<option value="INR">INR</option>
+			</select>
+			<select value={toCur} onChange={(e) => setToCur(e.target.value)} disabled={isLoading}>
+				<option value="USD">USD</option>
+				<option value="EUR">EUR</option>
+				<option value="CAD">CAD</option>
+				<option value="INR">INR</option>
+			</select>
+			<p>{output}</p>
+		</div>
+	);
 }
