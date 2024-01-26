@@ -36,14 +36,9 @@ function formatDay(dateStr) {
 
 class Weather extends React.Component {
 	//IMPORTANT!! IF WE DO NOT NEED A STATE OR AN EVEN HANDLER TO BIND THEN A CONSTRUCTOR IS NOT REQUIRED FOR A COMPONENT CLASS
-	//LIFECYCLE METHOD THAT RUNS AFTER THE COMPONENT GETS UNMOUNTED - A CLEANUP FUNCTION SO TO SPEAK
-	componentWillUnmount() {
-		console.log('Weather is unmounting');
-	}
 
 	render() {
 		// console.log('⭐', this.props);
-		// I s d
 		const {
 			temperature_2m_max: max,
 			temperature_2m_min: min,
@@ -90,40 +85,16 @@ class Day extends React.Component {
 }
 
 class App extends React.Component {
-	state = { location: '', isLoading: false, displayLocation: '', weather: {} };
+	constructor(props) {
+		super(props);
 
-	//IMPORTANT!!! STATES COULD BE DECLARED OFF THE CONSTRUCTOR, RENDERING THE CONSTRUCTOR FUNCTION USELESS
-	// constructor(props) {
-	// 	super(props);
-	// 	this.state = { location: 'lisbon', isLoading: false, displayLocation: '', weather: {} };
-	// }
-
-	setLocation = (e) => this.setState({ location: e.target.value });
-
-	//> LIFECYCLE METHODS
-	//Similar to useEffect w/ [] dependency - CALLED ON MOUNT
-	componentDidMount() {
-		// this.fetchWeather();
-		this.setState({ location: localStorage.getItem('location') || '' });
-	}
-	//Similar to useEffect w/ [...variables,state,etc] dependency - CALLED ON MOUNT + ON RERENDER
-	componentDidUpdate(prevProps, prevState) {
-		if (this.state.location !== prevState.location) {
-			this.fetchWeather();
-			localStorage.setItem('location', this.state.location);
-		}
+		this.state = { location: 'lisbon', isLoading: false, displayLocation: '', weather: {} };
+		this.fetchWeather.bind(this);
 	}
 
-	//IMPORTANT!! ARROW FUNCTIONS DON'T BEAR THIS KEYWORD AND TAKES ON THE NEARING OBJECT'S THIS. THUS, BINDING COULD BE OMITTED
-	// async fetchWeather() {
-	fetchWeather = async () => {
+	async fetchWeather() {
 		// console.log('Loading data....');
 		// console.log(this);
-
-		//GUARD CLAUSE
-		if (this.state.location.length < 2) return this.setState({ weather: {} });
-
-		//CORE LOGIC
 		try {
 			this.setState({ isLoading: true });
 			// 1) Getting location (geocoding)
@@ -147,22 +118,25 @@ class App extends React.Component {
 			// console.log(weatherData.daily);
 			this.setState({ weather: weatherData.daily });
 		} catch (err) {
-			console.error(err);
+			console.err(err);
 		} finally {
 			this.setState({ isLoading: false });
 		}
-	};
+	}
 
 	render() {
 		return (
 			<div className="app">
 				<h1>Classy Weather</h1>
-
-				<Input location={this.state.location} onChangeLocation={this.setLocation} />
-
-				{/* NOTE: ASYNC ARROW FUNCTIONS DO NOT NEED BINDING */}
-				{/* <button onClick={this.fetchWeather.bind(this)}>Get weather</button> */}
-				{/* <button onClick={this.fetchWeather}>Get weather</button> */}
+				<div>
+					<input
+						type="text"
+						placeholder="Search from location..."
+						value={this.state.location}
+						onChange={(e) => this.setState({ location: e.target.value })}
+					/>
+				</div>
+				<button onClick={this.fetchWeather.bind(this)}>Get weather</button>
 				{this.state.isLoading && <p className="loader">Loading...</p>}
 				{this.state.weather.weathercode && (
 					<Weather weather={this.state.weather} location={this.state.displayLocation} />
@@ -173,18 +147,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-class Input extends React.Component {
-	render() {
-		return (
-			<div>
-				<input
-					type="text"
-					placeholder="Search from location..."
-					value={this.props.location}
-					onChange={this.props.onChangeLocation}
-				/>
-			</div>
-		);
-	}
-}
