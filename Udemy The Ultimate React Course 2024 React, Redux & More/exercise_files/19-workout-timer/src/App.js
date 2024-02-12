@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
-import Calculator from './Calculator'
-import ToggleSounds from './ToggleSounds'
+import { useEffect, useMemo, useState } from 'react';
+import Calculator from './Calculator';
+import ToggleSounds from './ToggleSounds';
 
 function formatTime(date) {
 	return new Intl.DateTimeFormat('en', {
@@ -9,16 +9,17 @@ function formatTime(date) {
 		hour: '2-digit',
 		minute: '2-digit',
 		second: '2-digit',
-	}).format(date)
+	}).format(date);
 }
 
 function App() {
-	const [allowSound, setAllowSound] = useState(true)
-	const [time, setTime] = useState(formatTime(new Date()))
+	const [allowSound, setAllowSound] = useState(true);
+	const [time, setTime] = useState(formatTime(new Date()));
 
 	// Will be be AM or PM
-	const partOfDay = time.slice(-2)
+	const partOfDay = time.slice(-2);
 
+	// COMPLEMENTS TO MEMO @ CALCULATOR COMPONENT.ARRAY IS AN OBJECT LITERAL AND NEEDS TO BE PASSED BY USEMEMO TO MAKE IT SAME OBJECT
 	const workouts = useMemo(() => {
 		return [
 			{
@@ -41,16 +42,16 @@ function App() {
 				name: 'Core only',
 				numExercises: partOfDay === 'AM' ? 5 : 4,
 			},
-		]
-	}, [partOfDay])
+		];
+	}, [partOfDay]);
 
 	useEffect(function () {
 		const id = setInterval(function () {
-			setTime(formatTime(new Date()))
-		}, 1000)
+			setTime(formatTime(new Date()));
+		}, 1000);
 
-		return () => clearInterval(id)
-	}, [])
+		return () => clearInterval(id);
+	}, []);
 
 	return (
 		<main>
@@ -59,7 +60,7 @@ function App() {
 			<ToggleSounds allowSound={allowSound} setAllowSound={setAllowSound} />
 			<Calculator workouts={workouts} allowSound={allowSound} />
 		</main>
-	)
+	);
 }
 
-export default App
+export default App;
