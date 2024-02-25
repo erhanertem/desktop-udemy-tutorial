@@ -3,60 +3,103 @@
     {
       "id": 1,
       "name": "Myra"
+    },
+    {
+      "id": 2,
+      "name": "Mina"
+    },
+    {
+      "id": 3,
+      "name": "Melisa"
     }
   ],
   "albums": [
     {
       "userId": 1,
-      "title": "Handmade Frozen Bike",
-      "id": 4
+      "title": "Licensed Metal Ball",
+      "id": 2
     },
     {
       "userId": 1,
-      "title": "Rustic Fresh Cheese",
+      "title": "Elegant Fresh Chair",
+      "id": 3
+    },
+    {
+      "userId": 3,
+      "title": "Gorgeous Granite Chips",
       "id": 5
     },
     {
-      "userId": 1,
-      "title": "Fantastic Fresh Chair",
+      "userId": 2,
+      "title": "Recycled Concrete Chair",
       "id": 6
+    },
+    {
+      "userId": 2,
+      "title": "Incredible Wooden Chair",
+      "id": 7
     }
   ],
   "photos": [
     {
-      "albumId": 4,
-      "url": "https://loremflickr.com/150/150/nature?lock=3061030510919680",
-      "id": 6
+      "albumId": 7,
+      "url": "https://loremflickr.com/150/150/abstract?lock=91477",
+      "id": 2
     },
     {
-      "albumId": 4,
-      "url": "https://loremflickr.com/150/150/nature?lock=1705875660079104",
+      "albumId": 6,
+      "url": "https://loremflickr.com/150/150/abstract?lock=87559",
+      "id": 5
+    },
+    {
+      "albumId": 6,
+      "url": "https://loremflickr.com/150/150/abstract?lock=64986",
+      "id": 7
+    },
+    {
+      "albumId": 6,
+      "url": "https://loremflickr.com/150/150/abstract?lock=77465",
+      "id": 8
+    },
+    {
+      "albumId": 7,
+      "url": "https://loremflickr.com/150/150/abstract?lock=46595",
+      "id": 9
+    },
+    {
+      "albumId": 7,
+      "url": "https://loremflickr.com/150/150/abstract?lock=17017",
       "id": 10
     },
     {
-      "albumId": 5,
-      "url": "https://loremflickr.com/150/150/abstract?lock=3210572413796352",
+      "albumId": 7,
+      "url": "https://loremflickr.com/150/150/abstract?lock=25201",
       "id": 11
     },
     {
-      "albumId": 6,
-      "url": "https://loremflickr.com/150/150/abstract?lock=2146475066785792",
+      "albumId": 7,
+      "url": "https://loremflickr.com/150/150/abstract?lock=19221",
       "id": 12
     },
     {
-      "albumId": 6,
-      "url": "https://loremflickr.com/150/150/abstract?lock=6516220345974784",
+      "albumId": 5,
+      "url": "https://loremflickr.com/150/150/abstract?lock=41457",
       "id": 13
     },
     {
-      "albumId": 6,
-      "url": "https://loremflickr.com/150/150/abstract?lock=470745656328192",
+      "albumId": 5,
+      "url": "https://loremflickr.com/150/150/abstract?lock=8533",
       "id": 14
     },
     {
-      "albumId": 6,
-      "url": "https://loremflickr.com/150/150/abstract?lock=804188690841600",
+      "albumId": 5,
+      "url": "https://loremflickr.com/150/150/abstract?lock=98932",
       "id": 15
+    },
+    {
+      "albumId": 7,
+      "url": "https://loremflickr.com/150/150/abstract?lock=84036",
+      "id": 16
     }
   ]
 }

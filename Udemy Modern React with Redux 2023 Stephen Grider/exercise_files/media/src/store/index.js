@@ -1,39 +1,29 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { usersReducer } from './slices/usersSlice';
-//RTK QUERY
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
-import { albumsApi } from './apis/albumsApi';
-import { photosApi } from './apis/photosApi';
+import albumsApi from './apis/albumsApi';
+import photosApi from './apis/photosApi';
 
 export const store = configureStore({
-  reducer: {
-    users: usersReducer,
-
-    //NOTE: A slicer is automatically created when an API is created. That slicer would have its reducer. So that slicer reducer should be incorporated into store
-    // //#1.First way of creating reducer for albums
-    // albums: albumsApi.reducer,
-    [albumsApi.reducerPath]: albumsApi.reducer, ///same as writing albums: .... middleware property below auto slices for albums behind the scene
-    [photosApi.reducerPath]: photosApi.reducer,
-  },
-  middleware: getDefaultMiddleware => {
-    return getDefaultMiddleware()
-      .concat(albumsApi.middleware)
-      .concat(photosApi.middleware);
-  }, //middleware property provides connection between the store and albumsApi, etc.
+	reducer: {
+		users: usersReducer,
+		// albums: albumsApi.reducer,
+		[albumsApi.reducerPath]: albumsApi.reducer,
+		[photosApi.reducerPath]: photosApi.reducer,
+	},
+	middleware: (getDefaultMiddleware) => {
+		return getDefaultMiddleware().concat(albumsApi.middleware).concat(photosApi.middleware);
+	},
 });
 
-setupListeners(store.dispatch); //Finally, setup listener for connecting API to store
+// window.store = store;
 
+setupListeners(store.dispatch);
+
+// RTK NATIVE THUNKS FROM USERS SLICER
 export * from './thunks/fetchUsers';
 export * from './thunks/addUser';
 export * from './thunks/removeUser';
-export {
-  useFetchAlbumsQuery,
-  useAddAlbumMutation,
-  useRemoveAlbumMutation,
-} from './apis/albumsApi';
-export {
-  useFetchPhotosQuery,
-  useAddPhotoMutation,
-  useRemovePhotoMutation,
-} from './apis/photosApi';
+// RTK QUERY THUNK FROM ALBUMS API
+export { useFetchAlbumsQuery, useAddAlbumMutation, useRemoveAlbumMutation } from './apis/albumsApi';
+export { useFetchPhotosQuery, useAddPhotoMutation, useRemovePhotoMutation } from './apis/photosApi';
