@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { faker } from "@faker-js/faker";
 import "./styles.css";
+import withToggles from "./HOC";
 
 // DATA
 const products = Array.from({ length: 20 }, () => {
@@ -31,7 +32,6 @@ function ProductItem({ product }) {
 
 function CompanyItem({ company, defaultVisibility }) {
   const [isVisible, setIsVisisble] = useState(defaultVisibility);
-  console.log(defaultVisibility);
   return (
     <li
       className="company"
@@ -76,12 +76,14 @@ function List({ title, items, render }) {
   );
 }
 
+const ProductListWithToggles = withToggles(ProductList);
+
 export default function App() {
   return (
     <div>
       <h1>Render Props Demo</h1>
-
-      <div className="col-2">
+      {/* EXAMPLES FOR RENDER PROPS PATTERN */}
+      {/* <div className="col-2">
         <List
           title="Products"
           items={products}
@@ -100,6 +102,11 @@ export default function App() {
             />
           )}
         />
+      </div> */}
+      {/* EXAMPLE FOR HOC PATTERN */}
+      <div className="col-2">
+        <ProductList title="Products HOC" items={products} />
+        <ProductListWithToggles title="Products HOC" items={products} />
       </div>
     </div>
   );
@@ -108,10 +115,12 @@ export default function App() {
 // LATER: Let's say we got this component from a 3rd-party library, and can't change it. But we still want to add the 2 toggle functionalities to it
 function ProductList({ title, items }) {
   return (
-    <ul className="list">
-      {items.map((product) => (
-        <ProductItem key={product.productName} product={product} />
-      ))}
-    </ul>
+    <>
+      <ul className="list">
+        {items.map((product) => (
+          <ProductItem key={product.productName} product={product} />
+        ))}
+      </ul>
+    </>
   );
 }
