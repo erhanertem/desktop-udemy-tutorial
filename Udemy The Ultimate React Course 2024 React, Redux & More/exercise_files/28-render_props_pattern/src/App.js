@@ -1,22 +1,24 @@
-import { useState } from 'react';
-import { faker } from '@faker-js/faker';
-import './styles.css';
+import { useState } from "react";
+import { faker } from "@faker-js/faker";
+import "./styles.css";
 
+// DATA
 const products = Array.from({ length: 20 }, () => {
   return {
     productName: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
-    price: faker.commerce.price(),
+    price: faker.commerce.price()
   };
 });
 
 const companies = Array.from({ length: 15 }, () => {
   return {
     companyName: faker.company.name(),
-    phrase: faker.company.catchPhrase(),
+    phrase: faker.company.catchPhrase()
   };
 });
 
+//COMPONENTS
 function ProductItem({ product }) {
   return (
     <li className="product">
@@ -29,7 +31,7 @@ function ProductItem({ product }) {
 
 function CompanyItem({ company, defaultVisibility }) {
   const [isVisible, setIsVisisble] = useState(defaultVisibility);
-
+  console.log(defaultVisibility);
   return (
     <li
       className="company"
@@ -46,7 +48,7 @@ function CompanyItem({ company, defaultVisibility }) {
   );
 }
 
-function List({ title, items }) {
+function List({ title, items, render }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -65,16 +67,10 @@ function List({ title, items }) {
           {isOpen ? <span>&or;</span> : <span>&and;</span>}
         </button>
       </div>
-      {isOpen && (
-        <ul className="list">
-          {displayItems.map((product) => (
-            <ProductItem key={product.productName} product={product} />
-          ))}
-        </ul>
-      )}
+      {isOpen && <ul className="list">{displayItems.map(render)}</ul>}
 
       <button onClick={() => setIsCollapsed((isCollapsed) => !isCollapsed)}>
-        {isCollapsed ? `Show all ${items.length}` : 'Show less'}
+        {isCollapsed ? `Show all ${items.length}` : "Show less"}
       </button>
     </div>
   );
@@ -86,7 +82,24 @@ export default function App() {
       <h1>Render Props Demo</h1>
 
       <div className="col-2">
-        <List title="Products" items={products} />
+        <List
+          title="Products"
+          items={products}
+          render={(product) => (
+            <ProductItem key={product.productName} product={product} />
+          )}
+        />
+        <List
+          title="Companies"
+          items={companies}
+          render={(company) => (
+            <CompanyItem
+              key={company.companyName}
+              company={company}
+              defaultVisibility={false}
+            />
+          )}
+        />
       </div>
     </div>
   );
