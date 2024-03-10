@@ -5,7 +5,7 @@ const internals = require('./internals');
 function makeRequest(url, data) {
   // send(url, data);
   internals.send(url, data);
-  return read();
+  return internals.read();
 }
 
 const responseData = makeRequest('www.google.com', 'HELLO THERE⚠️');
