@@ -1,0 +1,16 @@
+{
+    "name": "package_example",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon request.js",
+        "start": "node request.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^1.6.7"
+    }
+}
