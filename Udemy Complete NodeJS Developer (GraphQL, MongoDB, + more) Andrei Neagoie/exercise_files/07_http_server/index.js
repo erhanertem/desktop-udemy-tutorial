@@ -36,11 +36,30 @@ const PORT = 3000;
 //   })
 //   .listen(PORT); //Server object listens on PORT
 
+const friends = [
+  {
+    id: 0,
+    name: 'Nicky',
+  },
+  {
+    id: 1,
+    name: 'Tommy',
+  },
+  {
+    id: 2,
+    name: 'Micky',
+  },
+];
+
 //> SHORTHAND VERSION W/CUSTOM ENDPOINT REPONSES
 const server = http
   .createServer((req, res) => {
     console.log(req.url);
-    if (req.url === '/friends') {
+    const items = req.url.split('/');
+    // /friends/2 => translates to an array of ['', 'friends', '2']
+
+    // if (req.url === '/friends') {
+    if (items[1] === 'friends') {
       //> SHORTHAND RES HEADER
       // res.writeHead(200, {
       //   'Content-Type': 'application/json',
@@ -48,10 +67,18 @@ const server = http
       // > LONG VERSION RES HEADER
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-
-      res.end(JSON.stringify({ id: 1, name: 'Sir Iam feeling weird today' })); //End the response
+      const friendIndex = Number(items[2]);
+      if (items.length === 2) {
+        res.end(JSON.stringify(friends));
+      } else if (items.length === 3 && friendIndex <= friends.length) {
+        res.end(JSON.stringify(friends[friendIndex]));
+      } else {
+        res.statusCode = 404;
+        res.end('No such friend');
+      } //End the response
       //res.end function expects a string. So JS object needs to be  JSON STRINGIFIED.
-    } else if (req.url === '/messages') {
+      // } else if (req.url === '/messages') {
+    } else if (items[1] === 'messages') {
       res.setHeader('Content-Type', 'text/html');
       res.write('<html>');
       res.write('<body>');
