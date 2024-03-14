@@ -54,12 +54,24 @@ const friends = [
 //> SHORTHAND VERSION W/CUSTOM ENDPOINT REPONSES
 const server = http
   .createServer((req, res) => {
+    //req, res are readable streams which allows us use various listeners on those
     console.log(req.url);
+    console.log(req.method);
     const items = req.url.split('/');
     // /friends/2 => translates to an array of ['', 'friends', '2']
 
     // if (req.url === '/friends') {
-    if (items[1] === 'friends') {
+    if (req.method === 'POST' && items[1] === 'friends') {
+      req.on('data', (data) => {
+        // Node passes in data on the req object as a readable stream node raw buffer object
+        // It looks something like this --> <Buffer 7b 22 69 64 22 3a 33 2c 22 6e 61 6d 65 22 3a 22 52 79 61 6e 22 7d>
+        const friend = data.toString(); //Define buffer data as a string
+        // console.log('Request: ', data);
+        console.log('Request: ', friend);
+        friends.push(JSON.parse(friend)); //DeJSON the the object so that we can add this JS object into our array
+      });
+      // IN ORDER TO FETCH POST TYPE @ DEV TOOLS --> fetch('http://localhost:3000/friends',{method: 'POST', body: JSON.stringify({id:3, name:'Ryan'})})
+    } else if (req.method === 'GET' && items[1] === 'friends') {
       //> SHORTHAND RES HEADER
       // res.writeHead(200, {
       //   'Content-Type': 'application/json',
@@ -78,7 +90,7 @@ const server = http
       } //End the response
       //res.end function expects a string. So JS object needs to be  JSON STRINGIFIED.
       // } else if (req.url === '/messages') {
-    } else if (items[1] === 'messages') {
+    } else if (req.method === 'GET' && items[1] === 'messages') {
       res.setHeader('Content-Type', 'text/html');
       res.write('<html>');
       res.write('<body>');
