@@ -63,14 +63,23 @@ const server = http
     // if (req.url === '/friends') {
     if (req.method === 'POST' && items[1] === 'friends') {
       req.on('data', (data) => {
+        // console.log(friends);
         // Node passes in data on the req object as a readable stream node raw buffer object
         // It looks something like this --> <Buffer 7b 22 69 64 22 3a 33 2c 22 6e 61 6d 65 22 3a 22 52 79 61 6e 22 7d>
         const friend = data.toString(); //Define buffer data as a string
         // console.log('Request: ', data);
         console.log('Request: ', friend);
         friends.push(JSON.parse(friend)); //DeJSON the the object so that we can add this JS object into our array
+        /* IN ORDER TO FETCH POST TYPE @ DEV TOOLS -->
+        fetch('http://localhost:3000/friends', {
+          method: 'POST',
+          body: JSON.stringify({ id: 3, name: 'Ryan' }),
+        })
+          .then((res) => res.json())
+          .then((friend) => console.log(friend));
+        */
       });
-      // IN ORDER TO FETCH POST TYPE @ DEV TOOLS --> fetch('http://localhost:3000/friends',{method: 'POST', body: JSON.stringify({id:3, name:'Ryan'})})
+      req.pipe(res); //Pipes the returned data from req to response stream so the fetch string 1st then can get hold of the data
     } else if (req.method === 'GET' && items[1] === 'friends') {
       //> SHORTHAND RES HEADER
       // res.writeHead(200, {
