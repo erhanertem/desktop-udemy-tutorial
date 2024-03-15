@@ -17,6 +17,16 @@ const friends = [
   },
 ];
 
+// > REGISTER A MIDDLEWARE
+app.use(function (req, res, next) {
+  const start = Date.now();
+
+  next();
+  // actions go here.... MEANING RETURNING RES LAST VISITS HERE...
+  const delta = Date.now() - start;
+  console.log(`${req.method} ${req.url} , it took ${delta}ms`);
+});
+
 // > GET REQUEST /friends endpoint
 app.get('/friends', (req, res) => {
   // res.send('Hellooow My Friend');
