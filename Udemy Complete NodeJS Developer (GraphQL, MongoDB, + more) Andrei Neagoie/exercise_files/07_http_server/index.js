@@ -52,7 +52,7 @@ const friends = [
 ];
 
 //> SHORTHAND VERSION W/CUSTOM ENDPOINT REPONSES
-const server = http
+const _server = http
   .createServer((req, res) => {
     //req, res are readable streams which allows us use various listeners on those
     console.log(req.url);
