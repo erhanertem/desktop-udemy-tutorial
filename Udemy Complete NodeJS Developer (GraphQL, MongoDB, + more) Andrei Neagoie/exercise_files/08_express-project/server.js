@@ -35,6 +35,7 @@ app.get('/friends/:friendId', (req, res) => {
   if (friend) {
     // EXPRESSJS DEFAULTS TO STATUS(200) IF NONE GIVEN BUT FOR THE SAKE OF BEING EXPLICIT, WE HEREBY PROVIDE STATUS(200)
     res.status(200).json(friend);
+    //Status() is a chainable version of nodejs's setStatus()
   } else {
     res.status(404).json({ error: 'Friend does not exist' });
   }
