@@ -2,20 +2,12 @@
 
 const express = require('express');
 
+const friendsController = require('./controllers/friends.controller');
+const messagesController = require('./controllers/messages.controller');
+
 const app = express();
 
 const PORT = 3000;
-
-const friends = [
-  {
-    id: 0,
-    name: 'Sir Erhan ERTEM',
-  },
-  {
-    id: 1,
-    name: 'Ms. Melisa ERTEM',
-  },
-];
 
 // > REGISTER A MIDDLEWARE
 // We want this middleware @ the top of all middlewares because we want the timer to capture as much time as possible of the process.
@@ -31,55 +23,15 @@ app.use(function (req, res, next) {
 app.use(express.json());
 
 // > GET REQUEST /friends endpoint
-app.get('/friends', (req, res) => {
-  // res.send('Hellooow My Friend');
-  // IMPORTANT EXPRESS GIVES US JSON() FN INLIEU OF GENERIC SEND() FN TO BE EXPLICIT THAT WE ARE SENDING A JSON DATA
-  res.json(friends);
-  // res.send({
-  //   id: 1,
-  //   name: 'Albert',
-  // });
-});
-
+app.get('/friends', friendsController.getFriends);
 // > GET REQUEST /friends/2 endpoint
-app.get('/friends/:friendId', (req, res) => {
-  const friendId = Number(req.params.friendId);
-  const friend = friends[friendId];
-  if (friend) {
-    // EXPRESSJS DEFAULTS TO STATUS(200) IF NONE GIVEN BUT FOR THE SAKE OF BEING EXPLICIT, WE HEREBY PROVIDE STATUS(200)
-    res.status(200).json(friend);
-    //Status() is a chainable version of nodejs's setStatus()
-  } else {
-    res.status(404).json({ error: 'Friend does not exist' });
-  }
-});
-
+app.get('/friends/:friendId', friendsController.getFriend);
 // > POST REQUEST /friends
-app.post('/friends', (req, res) => {
-  //GUARD CLAUSE
-  if (!req.body.name) {
-    return res.status(400).json({ error: 'Missing friend name' });
-  }
-
-  //json format object is passed from sender to the server thru req
-  const newFriend = {
-    id: friends.length,
-    name: req.body.name,
-  };
-  friends.push(newFriend);
-
-  //SENDS NEWFRIEND AS JSON STRING AS A RESPONSE
-  res.json(newFriend);
-});
+app.post('/friends', friendsController.postFriend);
 
 // > GET REQUEST /messages endpoint
-app.get('/messages', (req, res) => {
-  res.send('<ul><li>Hello Einstein</li></ul>');
-});
-
+app.get('/messages', messagesController.getMessages);
 // > POST REQUEST /messages endpoint
-app.post('/messages', (req, res) => {
-  console.log('Updating messages...');
-});
+app.post('/messages', messagesController.postMessage);
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
