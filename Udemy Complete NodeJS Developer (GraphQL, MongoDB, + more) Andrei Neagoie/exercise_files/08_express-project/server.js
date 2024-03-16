@@ -8,6 +8,11 @@ const messagesRouter = require('./routes/messages.router');
 
 const app = express();
 
+// > SETUP VIEW ENGINE SETTING ON THE EXPRESS APP
+app.set('view engine', 'hbs');
+// > SETUP VIEWS FOLDER FOR HBS
+app.set('views', path.join(__dirname, 'views'));
+
 const PORT = 3000;
 
 // > REGISTER A MIDDLEWARE
@@ -28,6 +33,13 @@ app.use('/site', express.static(path.join(__dirname, 'public'))); // Just like p
 // > REGISTER A MIDDLEWARE THAT PARSES(DESTRINGIFY) THE JSON DATA PASSED INTO REQ FLOW TO A JS OBJECT
 // USEFULL FOR POST REQUEST (APPLICABLE TO ALL API ROUTES WE HAVE CREATED)
 app.use(express.json());
+
+app.get('/', (_req, res) => {
+  res.render('index', {
+    title: 'My Friends are lame',
+    caption: 'Wohoo I love skiing!',
+  });
+});
 
 // > ROUTER MIDDLEWARES
 // #1. all requests will be tempted to this router. If none of the endpoints in the router satisfies, the next router will be tempted

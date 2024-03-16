@@ -1,0 +1,19 @@
+{{! THIS IS A TEMPLATE FILE THAT WILL BE COMMON ACROSS THE ENTIRE WEBPAGE }}
+
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>{{title}}</title>
+    <!-- don't use absolute path  -->
+    <!-- <link rel="stylesheet" href="/csss/style.css"/> -->
+    <!-- use relative path -->
+    <link rel='stylesheet' href='/site/css/style.css' />
+  </head>
+  <body>
+    {{{body}}}
+    {{! Triple {{{ with body is a special syntax and variable provided by moustache template engine }}
+    {{! body is index.hbs @ app.get('/', ..=>{ res.render('index')}) }}
+    {{! body is index.hbs @ app.get('/', ..=>{ res.render('index')}) }}
+  </body>
+</html>
