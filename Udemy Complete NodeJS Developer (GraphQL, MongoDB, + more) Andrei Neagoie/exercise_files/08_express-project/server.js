@@ -1,6 +1,7 @@
 // WE NAMED THIS FILE NOT INDEX.JS BUT SERVER.JS BECAUSE THERE IS A SPECIAL CASE THAT NODE WILL RUN THIS FILE W/PUT EDITING PACKAGE.JSON
 
 const express = require('express');
+const path = require('node:path');
 
 const friendsRouter = require('./routes/friends.router');
 const messagesRouter = require('./routes/messages.router');
@@ -18,8 +19,14 @@ app.use(function (req, _res, next) {
   const delta = Date.now() - start;
   console.log(`${req.method} ${req.baseUrl}${req.url} , it took ${delta}ms`);
 });
+
+// > REGISTER A MIDDLEWARE THAT SERVES STATIC HTML WEBSITE CONTENT (VUE, REACT, PURE HTML, ANGULAR ETC)
+// #1. ACCESSED @ ROOT
+// app.use(express.static('public')); // Directly availabe at the root
+// #2. ACCESSED @ URL
+app.use('/site', express.static(path.join(__dirname, 'public'))); // Just like prefix routes used @ router middlewares, we may like to provide extra URL
 // > REGISTER A MIDDLEWARE THAT PARSES(DESTRINGIFY) THE JSON DATA PASSED INTO REQ FLOW TO A JS OBJECT
-// USEFULL FOR POST REQUEST
+// USEFULL FOR POST REQUEST (APPLICABLE TO ALL API ROUTES WE HAVE CREATED)
 app.use(express.json());
 
 // > ROUTER MIDDLEWARES
