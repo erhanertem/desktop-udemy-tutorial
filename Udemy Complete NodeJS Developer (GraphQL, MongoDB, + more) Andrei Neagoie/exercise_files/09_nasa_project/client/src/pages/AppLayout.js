@@ -61,7 +61,6 @@ const AppLayout = (props) => {
           style={{ visibility: frameVisible ? 'visible' : 'hidden' }}
         >
           {(anim) => {
-            console.log(anim);
             return (
               <div style={{ padding: '20px' }}>
                 <Switch>
