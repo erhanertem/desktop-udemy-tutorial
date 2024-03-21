@@ -16,7 +16,11 @@ app.use(
   })
 );
 app.use(express.json()); // PARSES JSON FROM THE BODY OF ANY INCOMING REQUEST
-app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public'))); //SERVE THE FRONTEND BUILD PUBLIC FILE LOCATED UNDER SERVER WITH THE BACKEND- SO THAT WE DONT RUN TWO SERVERS RUNNING ON DISTINCT PORTS LISTENING FOR BOTH BACKEND AND FRONTEND
+
 app.use(planetsRouter);
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+}); //FORCE EXPRESS TO PRESENT INDEX.HTML @ / ROUTE. BY DEFAULT INDEX.HTML IS TREATED SO BUT IF INDEX.HTML REMANED TO ANOTHER FILE THAN WE HAVE TO USE THIS SNIPPET. IN EITHER CASE, IT IS SAFER TO HAVE IT.
 
 module.exports = app;
