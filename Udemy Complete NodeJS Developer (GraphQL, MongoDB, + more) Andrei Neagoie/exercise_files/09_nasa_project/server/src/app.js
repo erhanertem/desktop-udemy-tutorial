@@ -25,8 +25,8 @@ app.use(morgan('combined'));
 app.use(express.json()); // PARSES JSON FROM THE BODY OF ANY INCOMING REQUEST
 app.use(express.static(path.join(__dirname, '..', 'public'))); //SERVE THE FRONTEND BUILD PUBLIC FILE LOCATED UNDER SERVER WITH THE BACKEND- SO THAT WE DONT RUN TWO SERVERS RUNNING ON DISTINCT PORTS LISTENING FOR BOTH BACKEND AND FRONTEND
 
-app.use(planetsRouter);
-app.use(launchesRouter);
+app.use('/planets', planetsRouter);
+app.use('/launches', launchesRouter);
 
 // > FULLSTACK - BACKEND TO FRONT END ROUTES CONNECTION
 // NOTE: app.get('/*',...) MEANS ANY ENDPOINT NOT MATCHING ABOVE ROUTES ARE HANDLED BY... THIS APPLIES ALSO TO VUE, ANGULAR PROJECTS WHICH IS BASED ON PUSHSTATE HISTORY WEB API

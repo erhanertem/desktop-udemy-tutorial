@@ -1,9 +1,16 @@
 const express = require('express');
 
-const { httpGetAllLaunches } = require('./launches.controller');
+const {
+  httpGetAllLaunches,
+  httpAddNewLaunch,
+} = require('./launches.controller');
 
 const launchesRouter = express.Router();
 
-launchesRouter.get('/launches', httpGetAllLaunches);
+// launchesRouter.get('/launches', httpGetAllLaunches);
+// launchesRouter.post('/launches', httpAddNewLaunch);
+// NOTE!! /launches BECOMES REPITATIVE. @app.js we can add this route to launcgesRouter middleware so that we do not need to specify it here.
+launchesRouter.get('/', httpGetAllLaunches);
+launchesRouter.post('/', httpAddNewLaunch);
 
 module.exports = launchesRouter;
