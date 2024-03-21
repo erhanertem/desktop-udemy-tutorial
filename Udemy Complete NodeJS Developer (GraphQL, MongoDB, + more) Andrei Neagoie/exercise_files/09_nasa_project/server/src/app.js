@@ -1,7 +1,7 @@
 // THIS IS THE EXPRESS SERVER RUNNING UNDER NODEJS HTTP SERVER
 const path = require('path');
 const express = require('express');
-const cors = require('cors');
+// const cors = require('cors');
 const morgan = require('morgan');
 
 const planetsRouter = require('./routes/planets/planets.router');
@@ -10,14 +10,14 @@ const launchesRouter = require('./routes/launches/launches.router');
 const app = express();
 
 // > MIDDLEWARE CHAIN
-// > SECURITY RELATED FEATURE
-app.use(
-  // SETS RESPONSE HEADER A-C-A-O AS PORT 3000 TO ALLOW SERVER COMMUNICATE SAFELY
-  cors({
-    origin: 'http://localhost:3000', //WHITELISTED/ALLOWED PORT
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  })
-);
+// // > SECURITY RELATED FEATURE
+// app.use(
+//   // SETS RESPONSE HEADER A-C-A-O AS PORT 3000 TO ALLOW SERVER COMMUNICATE SAFELY
+//   cors({
+//     origin: 'http://localhost:3000', //WHITELISTED/ALLOWED PORT
+//     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+//   })
+// );
 // > SERVER LOGGER
 // NOTE: SHOULD BE ABOVE EVERYTHING BELOW SECURITY FEATURES
 app.use(morgan('combined'));

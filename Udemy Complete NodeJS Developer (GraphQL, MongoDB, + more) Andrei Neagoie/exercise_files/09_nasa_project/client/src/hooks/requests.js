@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000';
+const API_URL = 'http://localhost:8000';
 
 async function httpGetPlanets() {
   // Load planets
