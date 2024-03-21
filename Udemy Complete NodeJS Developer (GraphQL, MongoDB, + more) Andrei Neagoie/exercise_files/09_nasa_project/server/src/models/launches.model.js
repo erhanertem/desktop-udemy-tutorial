@@ -13,6 +13,10 @@ const launch = {
 
 launches.set(launch.flightNumber, launch);
 
+function getAllLaunches() {
+  return Array.from(launches.values()); //Trnasforms map array into an array
+}
+
 module.exports = {
-  launches,
+  getAllLaunches,
 };
