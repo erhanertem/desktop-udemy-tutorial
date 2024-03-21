@@ -5,8 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "cross-env PORT=5000 nodemon src/server.js",
-    "start": "cross-env PORT=5000 node src/server.js"
+    "watch": "cross-env PORT=8000 nodemon src/server.js",
+    "start": "cross-env PORT=8000 node src/server.js"
   },
   "keywords": [],
   "author": "",
