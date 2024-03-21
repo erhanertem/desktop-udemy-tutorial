@@ -15,7 +15,8 @@
     "09_nasa_project": "file:..",
     "cors": "^2.8.5",
     "csv-parse": "^5.5.5",
-    "express": "^4.18.3"
+    "express": "^4.18.3",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

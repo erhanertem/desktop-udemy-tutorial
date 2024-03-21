@@ -2,12 +2,14 @@
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan');
 
 const planetsRouter = require('./routes/planets/planets.router');
 
 const app = express();
 
 // > MIDDLEWARE CHAIN
+// > SECURITY RELATED FEATURE
 app.use(
   // SETS RESPONSE HEADER A-C-A-O AS PORT 3000 TO ALLOW SERVER COMMUNICATE SAFELY
   cors({
@@ -15,6 +17,10 @@ app.use(
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   })
 );
+// > SERVER LOGGER
+// NOTE: SHOULD BE ABOVE EVERYTHING BELOW SECURITY FEATURES
+app.use(morgan('combined'));
+
 app.use(express.json()); // PARSES JSON FROM THE BODY OF ANY INCOMING REQUEST
 app.use(express.static(path.join(__dirname, '..', 'public'))); //SERVE THE FRONTEND BUILD PUBLIC FILE LOCATED UNDER SERVER WITH THE BACKEND- SO THAT WE DONT RUN TWO SERVERS RUNNING ON DISTINCT PORTS LISTENING FOR BOTH BACKEND AND FRONTEND
 
