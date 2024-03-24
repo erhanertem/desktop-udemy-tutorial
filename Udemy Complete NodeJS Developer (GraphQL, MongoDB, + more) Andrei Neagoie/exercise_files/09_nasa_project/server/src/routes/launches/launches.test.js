@@ -1,7 +1,7 @@
 const supertest = require('supertest');
 const app = require('../../app');
 
-//SINGLE CASE TESTING
+// > SINGLE CASE TESTING
 describe('Test GET /launches', () => {
   test('It should respond with 200 success', async () => {
     const response = await supertest(app)
@@ -12,8 +12,14 @@ describe('Test GET /launches', () => {
   });
 });
 
-// MULTI CASE TESTING
+// > MULTI CASE TESTING
 describe('Test POST /launch', () => {
+  const launchDataWithInvalidDate = {
+    mission: 'USS Enterprise',
+    rocket: 'NCC 1701-D',
+    target: 'Kepler-186 f',
+    launchDate: 'Tombi 4, 2028',
+  };
   const completeLaunchData = {
     mission: 'USS Enterprise',
     rocket: 'NCC 1701-D',
@@ -43,6 +49,36 @@ describe('Test POST /launch', () => {
     // JEST ASSERTION TESTING
     // CHECK IF CRIPPLED VERSION OF THE LAUNCH DATA MATCHES THE RESPONSE.BODY OBJECT
     expect(response.body).toMatchObject(launchDataWithoutDate);
+  });
+
+  test('It should catch missing required properties', async () => {
+    // SUPERTEST POST FETCH TEST w/supertest functions
+    const response = await supertest(app)
+      .post('/launches')
+      .send(launchDataWithoutDate) //Intentionally sendign an incomplete data
+      .expect('Content-Type', /json/)
+      .expect(400); //via supertest syntax
+
+    // JEST ASSERTION TESTING
+    // CHECXK FOR STRICT EQUALITY
+    expect(response.body).toStrictEqual({
+      error: 'Missing required launch property',
+    });
+  });
+
+  test('It should catch invalid dates', async () => {
+    // SUPERTEST POST FETCH TEST w/supertest functions
+    const response = await supertest(app)
+      .post('/launches')
+      .send(launchDataWithInvalidDate) //Intentionally sendign an incomplete data
+      .expect('Content-Type', /json/)
+      .expect(400); //via supertest syntax
+
+    // JEST ASSERTION TESTING
+    // CHECXK FOR STRICT EQUALITY
+    expect(response.body).toStrictEqual({
+      error: 'Invalid launch date',
+    });
   });
 });
 
