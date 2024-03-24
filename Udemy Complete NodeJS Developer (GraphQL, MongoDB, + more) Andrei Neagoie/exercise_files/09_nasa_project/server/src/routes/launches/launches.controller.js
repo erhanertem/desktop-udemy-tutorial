@@ -47,8 +47,8 @@ function httpAddNewLaunch(req, res) {
   // }
 
   addNewLaunch(launch);
-  // res.status(201).json(launch);
-  res.status(201).end();
+  res.status(201).json(launch);
+  // res.status(201).end();
 }
 
 function httpAbortLaunch(req, res) {
@@ -61,8 +61,8 @@ function httpAbortLaunch(req, res) {
   }
   //IF LAUNCHID EXISTS IN THE DB
   const aborted = abortLaunchById(launchId);
-  // res.status(200).json(aborted);
-  res.status(200).end();
+  res.status(200).json(aborted);
+  // res.status(200).end();
 }
 
 module.exports = { httpGetAllLaunches, httpAddNewLaunch, httpAbortLaunch };
