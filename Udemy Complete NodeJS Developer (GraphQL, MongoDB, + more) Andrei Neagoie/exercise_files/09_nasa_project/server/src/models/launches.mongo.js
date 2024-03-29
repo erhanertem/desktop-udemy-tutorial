@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const launchSchema = new mongoose.Schema({
+// > #1. CREATE THE SCHEMA
+const launchesSchema = new mongoose.Schema({
   flightNumber: {
     type: Number,
     required: true,
@@ -35,3 +36,8 @@ const launchSchema = new mongoose.Schema({
     default: true,
   },
 });
+
+// > #2. CREATE THE MODEL FROM SCHEMA
+// NOTE: Connects launchesSchema with the "launches" collection - behind the scene "Launch" is made lowercase and turn into plural.
+module.exports = mongoose.model('Launch', launchesSchema);
+// VERY IMPORTANT!! (NAME OF THE COLLECTION - IN SINGULAR NAMING , NAME OF THE SCHEMA)
