@@ -7,7 +7,7 @@ const { loadPlanetsData } = require('./models/planets.model');
 
 const PORT = process.env.PORT || 8000;
 const MONGO_URL =
-  'mongodb+srv://eertem:vGKVAF5WMMchLEWe@nasacluster.uwkt9gn.mongodb.net/?retryWrites=true&w=majority&appName=NASACluster';
+  'mongodb+srv://eertem:vGKVAF5WMMchLEWe@nasacluster.uwkt9gn.mongodb.net/nasa?retryWrites=true&w=majority&appName=NASACluster';
 
 // NODEJS HTTP SERVER WRAPS EXPRESS SERVER AND CONSUMES IT AS A LISTENER ARG
 // IMPORTANT! STARTING AN EXPRESS SERVER LIKE THIS ENABLES NOT ONLY RESPONDING HTTP REQ VIA EXPRESS BUT ALSO UTILIZE WEB SOCKETS
