@@ -1,4 +1,5 @@
 const launches = require('./launches.mongo');
+const planets = require('./planets.mongo');
 
 // const launches = new Map();
 
@@ -20,6 +21,12 @@ saveLaunch(launch);
 // launches.set(launch.flightNumber, launch);
 
 async function saveLaunch(launch) {
+  // GUARD CLAUSE - checking referential integrity - aka.SQL foreign key
+  const planet = await planets.findOne({ keplerName: launch.target });
+  if (!planet) {
+    throw new Error('No matching planet found'); //Built-in generic JS and node Error class
+  }
+
   await launches.updateOne(
     {
       flightNumber: launch.flightNumber,
