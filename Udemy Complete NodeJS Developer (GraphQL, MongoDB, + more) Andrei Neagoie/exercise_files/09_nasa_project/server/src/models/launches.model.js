@@ -1,6 +1,8 @@
-const launches = new Map();
+const launches = require('./launches.mongo');
 
-let latestFlightNumber = 100;
+// const launches = new Map();
+
+// let latestFlightNumber = 100;
 
 const launch = {
   flightNumber: 100,
@@ -13,10 +15,26 @@ const launch = {
   success: true,
 };
 
-launches.set(launch.flightNumber, launch);
+saveLaunch(launch);
 
-function getAllLaunches() {
-  return Array.from(launches.values()); //Transforms map array into an array
+// launches.set(launch.flightNumber, launch);
+
+async function saveLaunch(launch) {
+  await launches.updateOne(
+    {
+      flightNumber: launch.flightNumber,
+    }, //if it does not exist here does not do anything unless upsert is marked true on options object
+    launch, //if the preceding data exists here is the data to update with
+    { upsert: true } //allow upserting
+  );
+}
+
+async function getAllLaunches() {
+  return await launches.find(
+    {}, //select all
+    { _id: 0, __v: 0 } //projection argument for exclusion
+  );
+  // return Array.from(launches.values()); //Transforms map array into an array
 }
 
 function addNewLaunch(launch) {

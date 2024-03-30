@@ -13,8 +13,8 @@ const {
 } = require('../../models/launches.model');
 
 // RECEIVE REQ N/A - SEND RES TO GET FETCH REQ @ client requests.js/httpGetLaunches/@route "/launches"
-function httpGetAllLaunches(_req, res) {
-  return res.status(200).json(getAllLaunches());
+async function httpGetAllLaunches(_req, res) {
+  return res.status(200).json(await getAllLaunches());
 }
 
 // RECEIVE REQ FROM POST FETCH REQ @ client requests.js/httpSubmitLaunch/@route "/launches" -
