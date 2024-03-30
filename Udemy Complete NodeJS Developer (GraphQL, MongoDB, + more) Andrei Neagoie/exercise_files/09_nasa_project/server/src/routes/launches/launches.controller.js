@@ -18,7 +18,7 @@ async function httpGetAllLaunches(_req, res) {
 }
 
 // RECEIVE REQ FROM POST FETCH REQ @ client requests.js/httpSubmitLaunch/@route "/launches" -
-function httpAddNewLaunch(req, res) {
+async function httpAddNewLaunch(req, res) {
   //NOTE!! since @app we have used  express.json() MIDDLEWARE , any incoming req body is parsed to JS object that we can make use of.
   const launch = req.body;
   //REQ.BODY RETURNS A JSON OBJECT. HOWEVER, WE UTILZIED @APP.JS EXPRESS.JSON() MIDDLEWARE SO IT GETS AUTOMATICALLY PARSED.
@@ -46,7 +46,7 @@ function httpAddNewLaunch(req, res) {
   //   return res.status(400).json({ error: 'Invalid launch date' });
   // }
 
-  addNewLaunch(launch);
+  await addNewLaunch(launch);
   res.status(201).json(launch);
   // res.status(201).end();
 }
