@@ -81,7 +81,7 @@ async function savePlanet(planet) {
   try {
     await planets.updateOne(
       { keplerName: planet.kepler_name }, //if it does not exist here does not do anything unless upsert is marked true on options object
-      { keplerName: planet.kepler_name }, //if the prceding data exists here is the data to update with
+      { keplerName: planet.kepler_name }, //if the preceding data exists here is the data to update with
       { upsert: true }
     );
   } catch (err) {
