@@ -27,6 +27,7 @@ async function saveLaunch(launch) {
     throw new Error('No matching planet found'); //Built-in generic JS and node Error class
   }
 
+  // VERY IMPORTANT!! WE REPLACED UPDATEONE WITH FINDONEANDUPDATE SINCE IT WAS RETURNING EXTRA INFORMATION ON RESPONSE TRIGGERED DUE TO SETTING UPSERT:TRUE OPTION.
   await launches.findOneAndUpdate(
     {
       flightNumber: launch.flightNumber,
@@ -68,8 +69,8 @@ async function addNewLaunch(launch) {
 //   );
 // }
 
-function existsLaunchWithId(launchId) {
-  return launches.has(launchId);
+async function existsLaunchWithId(launchId) {
+  return await launches.findOne({ flightNumber: launchId });
 }
 
 async function getLatestFlightNumber() {
@@ -83,13 +84,29 @@ async function getLatestFlightNumber() {
   return latestLaunch.flightNumber;
 }
 
-function abortLaunchById(launchId) {
-  // launches.delete(launchId);
-  // INSTEAD OF DELETING THE LAUNCH WE MARK IT AS ABORTED
-  const abortedLaunch = launches.get(launchId);
-  abortedLaunch.upcoming = false;
-  abortedLaunch.success = false;
-  return abortedLaunch;
+async function abortLaunchById(launchId) {
+  // VERY IMPORTANT!! WE HAVE USED UPDATEONE HERE INSTEAD OF FINDONEANDUPDATE AS WE ARE NOT USING UPSERT:TRUE OPTIONAL SETTING. MOREOVER, UPDATEONE IS REQUIRED AS WE ARE FIST CHECKING IF LAUNCH EXISTS IN HTTPABORTLAUNCH @ LAUNCHES CONTROLLER. IF ANYTHING GOT DELETED IN BETWEEN, UPDATEONE WILL NOT CREATE A NEW ENTRY AS ITS NOT AN UPSERT OPERATION
+  const abortedLaunch = await launches.updateOne(
+    { flightNumber: launchId },
+    { upcoming: false, success: false }
+  );
+  /*
+	Returned abortedLaunch object:
+	{
+  "acknowledged": true,
+  "modifiedCount": 1,
+  "upsertedId": null,
+  "upsertedCount": 0,
+  "matchedCount": 1
+  }
+	*/
+  return abortedLaunch.modifiedCount === 1;
+  // // launches.delete(launchId);
+  // // INSTEAD OF DELETING THE LAUNCH WE MARK IT AS ABORTED
+  // const abortedLaunch = launches.get(launchId);
+  // abortedLaunch.upcoming = false;
+  // abortedLaunch.success = false;
+  // return abortedLaunch;
 }
 
 module.exports = {

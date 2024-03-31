@@ -51,17 +51,21 @@ async function httpAddNewLaunch(req, res) {
   // res.status(201).end();
 }
 
-function httpAbortLaunch(req, res) {
+async function httpAbortLaunch(req, res) {
   // REQ SENDS ID PARAMS AS A STRING. THAT NEEDS TO BE CHANGED TO NUMERIC VALUE BEFORE WE CAN USE
   const launchId = Number(req.params.id);
+  const existsLaunch = await existsLaunchWithId(launchId);
 
   //IF LAUNCHID DOES NOT EXIST IN THE DB
-  if (!existsLaunchWithId(launchId)) {
+  if (!existsLaunch) {
     res.status(404).json({ error: 'Launch not found' });
   }
   //IF LAUNCHID EXISTS IN THE DB
-  const aborted = abortLaunchById(launchId);
-  res.status(200).json(aborted);
+  const isAbortCompleted = await abortLaunchById(launchId);
+  if (!isAbortCompleted) {
+    return res.status(400).json({ error: 'Launch not aborted' });
+  }
+  res.status(200).json({ ok: true });
   // res.status(200).end();
 }
 
