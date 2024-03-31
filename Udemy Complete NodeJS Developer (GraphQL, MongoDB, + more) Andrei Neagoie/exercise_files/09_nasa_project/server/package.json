@@ -4,7 +4,7 @@
   "description": "NASA Mission Control API",
   "main": "src/server.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "test-watch": "jest --watch",
     "watch": "cross-env PORT=8000 nodemon src/server.js",
     "start": "cross-env PORT=8000 node src/server.js",
