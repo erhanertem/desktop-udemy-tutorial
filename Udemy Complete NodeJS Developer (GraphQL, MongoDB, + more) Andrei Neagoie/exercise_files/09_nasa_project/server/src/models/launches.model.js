@@ -27,10 +27,10 @@ async function saveLaunch(launch) {
     throw new Error('No matching planet found'); //Built-in generic JS and node Error class
   }
 
-  await launches.updateOne(
+  await launches.findOneAndUpdate(
     {
       flightNumber: launch.flightNumber,
-    }, //if it does not exist here does not do anything unless upsert is marked true on options object
+    }, // filter object
     launch, //if the preceding data exists here is the data to update with
     { upsert: true } //allow upserting
   );
