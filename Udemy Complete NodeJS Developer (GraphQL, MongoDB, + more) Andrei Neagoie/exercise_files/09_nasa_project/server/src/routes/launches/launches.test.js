@@ -16,7 +16,7 @@ describe('Launches API', () => {
   describe('Test GET /launches', () => {
     test('It should respond with 200 success', async () => {
       const response = await supertest(app)
-        .get('/launches')
+        .get('/v1/launches')
         .expect('Content-Type', /json/)
         .expect(200); //via supertest syntax
       // expect(response.statusCode).toBe(200); // via JEST syntax
@@ -46,7 +46,7 @@ describe('Launches API', () => {
     test('It should respond with 201 created', async () => {
       // SUPERTEST POST FETCH TEST w/supertest functions
       const response = await supertest(app)
-        .post('/launches')
+        .post('/v1/launches')
         .send(completeLaunchData)
         .expect('Content-Type', /json/)
         .expect(201);
@@ -65,7 +65,7 @@ describe('Launches API', () => {
     test('It should catch missing required properties', async () => {
       // SUPERTEST POST FETCH TEST w/supertest functions
       const response = await supertest(app)
-        .post('/launches')
+        .post('/v1/launches')
         .send(launchDataWithoutDate) //Intentionally sendign an incomplete data
         .expect('Content-Type', /json/)
         .expect(400); //via supertest syntax
@@ -80,7 +80,7 @@ describe('Launches API', () => {
     test('It should catch invalid dates', async () => {
       // SUPERTEST POST FETCH TEST w/supertest functions
       const response = await supertest(app)
-        .post('/launches')
+        .post('/v1/launches')
         .send(launchDataWithInvalidDate) //Intentionally sendign an incomplete data
         .expect('Content-Type', /json/)
         .expect(400); //via supertest syntax

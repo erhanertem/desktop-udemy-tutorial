@@ -11,7 +11,7 @@
     "installs": "npm run install-client && npm run install-server",
     "install-server": "npm install --prefix server",
     "install-client": "npm install --prefix client",
-    "deploy": "npm run build_win --prefix client && npm run start --prefix server",
+    "deploy": "npm run build_mac --prefix client && npm run start --prefix server",
     "deploy-cluster": "npm run build_win --prefix client && npm run cluster --prefix server",
     "test": "npm run test --prefix server && npm run test --prefix client"
   },
