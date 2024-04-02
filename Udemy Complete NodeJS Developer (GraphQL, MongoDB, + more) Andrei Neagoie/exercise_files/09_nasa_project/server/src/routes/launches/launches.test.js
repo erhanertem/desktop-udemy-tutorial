@@ -2,6 +2,8 @@ const supertest = require('supertest');
 const app = require('../../app');
 const { mongoConnect, mongoDisconnect } = require('../../services/mongo');
 
+const API_VERSION = '/v1';
+
 describe('Launches API', () => {
   // > PROVIDE CONNECTION BEFORE ALL TESTS START
   beforeAll(async () => {
@@ -16,7 +18,7 @@ describe('Launches API', () => {
   describe('Test GET /launches', () => {
     test('It should respond with 200 success', async () => {
       const response = await supertest(app)
-        .get('/v1/launches')
+        .get(`${API_VERSION}/launches`)
         .expect('Content-Type', /json/)
         .expect(200); //via supertest syntax
       // expect(response.statusCode).toBe(200); // via JEST syntax
@@ -46,7 +48,7 @@ describe('Launches API', () => {
     test('It should respond with 201 created', async () => {
       // SUPERTEST POST FETCH TEST w/supertest functions
       const response = await supertest(app)
-        .post('/v1/launches')
+        .post(`${API_VERSION}/launches`)
         .send(completeLaunchData)
         .expect('Content-Type', /json/)
         .expect(201);
@@ -65,7 +67,7 @@ describe('Launches API', () => {
     test('It should catch missing required properties', async () => {
       // SUPERTEST POST FETCH TEST w/supertest functions
       const response = await supertest(app)
-        .post('/v1/launches')
+        .post(`${API_VERSION}/launches`)
         .send(launchDataWithoutDate) //Intentionally sendign an incomplete data
         .expect('Content-Type', /json/)
         .expect(400); //via supertest syntax
@@ -80,7 +82,7 @@ describe('Launches API', () => {
     test('It should catch invalid dates', async () => {
       // SUPERTEST POST FETCH TEST w/supertest functions
       const response = await supertest(app)
-        .post('/v1/launches')
+        .post(`${API_VERSION}/launches`)
         .send(launchDataWithInvalidDate) //Intentionally sendign an incomplete data
         .expect('Content-Type', /json/)
         .expect(400); //via supertest syntax
