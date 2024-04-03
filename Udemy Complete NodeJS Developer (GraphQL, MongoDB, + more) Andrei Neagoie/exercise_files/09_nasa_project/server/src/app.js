@@ -39,7 +39,7 @@ app.use('/v1', api);
 // > FULLSTACK - BACKEND TO FRONT END ROUTES CONNECTION
 // NOTE: app.get('/*',...) MEANS ANY ENDPOINT NOT MATCHING ABOVE ROUTES ARE HANDLED BY... THIS APPLIES ALSO TO VUE, ANGULAR PROJECTS WHICH IS BASED ON PUSHSTATE HISTORY WEB API
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+	res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 }); //FORCE EXPRESS TO PRESENT INDEX.HTML @ / ROUTE. BY DEFAULT INDEX.HTML IS TREATED SO BUT IF INDEX.HTML REMANED TO ANOTHER FILE THAN WE HAVE TO USE THIS SNIPPET. IN EITHER CASE, IT IS SAFER TO HAVE IT.
 
 module.exports = app;

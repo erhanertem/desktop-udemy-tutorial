@@ -1,5 +1,7 @@
 {
-  "trailingComma": "es5",
-  "tabWidth": 2,
-  "singleQuote": true
+	"indent_style": "tabs",
+	"tabWidth": 4,
+	"useTabs": true,
+	"singleQuote": true,
+	"bracketSpacing": true
 }
