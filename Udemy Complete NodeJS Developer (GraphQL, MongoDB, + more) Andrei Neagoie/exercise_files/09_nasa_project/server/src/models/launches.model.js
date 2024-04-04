@@ -106,11 +106,14 @@ async function findLaunch(filter) {
 	return await launches.findOne(filter);
 }
 
-async function getAllLaunches() {
-	return await launches.find(
-		{}, //select all
-		{ _id: 0, __v: 0 } //projection argument for exclusion
-	);
+async function getAllLaunches(skip, limit) {
+	return await launches
+		.find(
+			{}, //select all
+			{ _id: 0, __v: 0 } //projection argument for exclusion
+		)
+		.skip(skip)
+		.limit(limit);
 	// return Array.from(launches.values()); //Transforms map array into an array
 }
 
