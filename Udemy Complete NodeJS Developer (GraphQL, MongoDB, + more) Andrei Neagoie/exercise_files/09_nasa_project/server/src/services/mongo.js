@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+require("dotenv").config(); // NOTE: USE THE CONFIGURATION, IF SERVER IS NOT RUN BUT A TEST IS MADE
+
 const MONGO_URL = process.env.MONGO_URL;
 
 // > MONGOOSE EVENT LISTENERS
