@@ -8,19 +8,19 @@ const planets = require("./planets.mongo");
 // let latestFlightNumber = 100;
 const DEFAULT_FLIGHT_NUMBER = 100;
 
-const launch = {
-	flightNumber: 100, // Corresponds to flight_number in SpaceX DB
-	mission: "Kepler Exploration X", // Corresponds to name in SpaceX DB
-	rocket: "Explorer IS1", // Corresponds to rocket.name in SpaceX DB
-	launchDate: new Date("December 27, 2030"), // Corresponds to date_local in SpaceX DB
-	target: "Kepler-442 b", // Corresponds to N/A in SpaceX DB
-	customers: ["ZTM", "NASA"], // Corresponds to payload.customers for each payload arr object in SpaceX DB
-	upcoming: true, // Corresponds to upcoming in SpaceX DB
-	success: true, // Corresponds to success in SpaceX DB
-};
+// const launch = {
+// 	flightNumber: 100, // Corresponds to flight_number in SpaceX DB
+// 	mission: "Kepler Exploration X", // Corresponds to name in SpaceX DB
+// 	rocket: "Explorer IS1", // Corresponds to rocket.name in SpaceX DB
+// 	launchDate: new Date("December 27, 2030"), // Corresponds to date_local in SpaceX DB
+// 	target: "Kepler-442 b", // Corresponds to N/A in SpaceX DB
+// 	customers: ["ZTM", "NASA"], // Corresponds to payload.customers for each payload arr object in SpaceX DB
+// 	upcoming: true, // Corresponds to upcoming in SpaceX DB
+// 	success: true, // Corresponds to success in SpaceX DB
+// };
 
-// launches.set(launch.flightNumber, launch);
-saveLaunch(launch);
+// // launches.set(launch.flightNumber, launch);
+// saveLaunch(launch);
 
 async function saveLaunch(launch) {
 	// VERY IMPORTANT!! WE REPLACED UPDATEONE WITH FINDONEANDUPDATE SINCE IT WAS RETURNING EXTRA INFORMATION ON RESPONSE TRIGGERED DUE TO SETTING UPSERT:TRUE OPTION.
@@ -83,7 +83,7 @@ async function populateLaunches() {
 			success: launchDoc["success"],
 			customers,
 		};
-		console.log(`${launch.flightNumber} ${launch.mission}`);
+		// console.log(`${launch.flightNumber} ${launch.mission}`);
 		await saveLaunch(launch);
 	}
 }
@@ -112,8 +112,9 @@ async function getAllLaunches(skip, limit) {
 			{}, //select all
 			{ _id: 0, __v: 0 } //projection argument for exclusion
 		)
-		.skip(skip)
-		.limit(limit);
+		.sort({ flightNumber: 1 }) // -1 FOR DESC , 1 FOR ASC ORDER BASED ON A SELECTED PARAMETER - Order the entire collection based on flightnumbers
+		.skip(skip) //pagination starts from...
+		.limit(limit); //items per each pagination
 	// return Array.from(launches.values()); //Transforms map array into an array
 }
 
