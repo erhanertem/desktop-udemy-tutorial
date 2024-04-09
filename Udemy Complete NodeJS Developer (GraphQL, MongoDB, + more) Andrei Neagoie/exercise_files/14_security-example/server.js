@@ -23,6 +23,7 @@ const AUTH_OPTIONS = {
 };
 function verifyCallback(accessToken, refreshToken, profile, done) {
 	console.log("Google profile", profile);
+	// done(err, user);
 	done(null, profile); // null-> error object , profile-> verified object
 }
 
@@ -33,7 +34,7 @@ const app = express();
 // > SECURITY MIDDLEWARES @ THE VERY TOP
 // NOTE: HELP PROTECT ALL END POINTS THAT COMES AFTER IT
 app.use(helmet()); //SETUPS HELMET W/DEFAULT CONFIGURATION
-app.use(passport.initialize()); //SETUPS PASSPORT
+app.use(passport.initialize()); //SETUPS PASSPORT SESSION
 
 // MIDDLEWARE FUNCTION
 function checkLoggedIn(req, res, next) {
