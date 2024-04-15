@@ -112,7 +112,13 @@ app.get(
 	}
 );
 // -> #4. USER LOGOUT GENERIC ENDPOINT - USER DOES NOT NEED TO PROVIDE ANY DATA
-app.get("/auth/logout", (req, res) => {});
+app.get("/auth/logout", (req, res) => {
+	// #1.PASSPORT.JS EXPOSES A LOGOUT FUNCTION.
+	req.logout(); //Removes req.user and terminates any logged in session
+
+	// #2.REDIRECT TO A PAGE OF UNPROTECTED ENDPOINT
+	return res.redirect("/"); //EXPRESS.JS RES METHOD
+});
 
 // IN EXPRESS EACH ENDPOINT CAN GET A MIDDLEWARE/MIDDLEWARES AFTER THE ROUTE DEFINITION
 app.get("/secret", checkLoggedIn, (req, res) => {
