@@ -1,0 +1,57 @@
+# DEFINE A GITHUB WORKFLOW PIPELINE
+# name of the workflow
+name: NASA Project CI
+
+# define the events that trigger the workflow
+on:
+   push:
+      branches: [main]
+   pull_request:
+      branches: [main]
+
+# jobs to accomplish on the triggering events
+jobs:
+   # name of the jobs
+   build:
+      # --> SETUP ENV FOR THIS WORKFLOW
+      env:
+         # Tells GitHub we are in CI environment and disables watch mode which is necessary for running 'npm test' task
+         CI: true
+         # Default mongoDB local connection string (mongodb://localhost/) + name of the mongodb database (nasa) for local testing
+         MONGO_URL: mongodb://localhost/nasa
+         # Specify a custom PORT for the server
+         # PORT: 9000
+      strategy:
+         matrix:
+            node-version: ["16.x", "20.12.2"]
+            mongodb-version: ["4.4", "7.0.7"]
+      runs-on: ubuntu-latest
+      # --> DEFINE STEPS FOR THE WORKKFLOW
+      steps:
+         # -> ACTIONS
+         # > Action #1 - Built-in GitHub Repository checkout action
+         # About script: This action checks-out your repository, so your workflow can access it.
+         - uses: actions/checkout@v4 # Action script without a tag
+         # > Action #2 - Setup a NodeJS server
+         # Provide tag for the action
+         - name: Use Node.js version ${{matrix.node-version}}
+           uses: actions/setup-node@v4
+           # Pass in option for node-version
+           with:
+              # node-version: "20"
+              node-version: ${{matrix.node-version}}
+         # > Action #3 - Start a MongoDB server
+         # About script: Starts a MongoDB server on default port 27017 or a custom port
+         - name: Use MongoDB in GitHub Actions
+           uses: supercharge/mongodb-github-action@1.10.0
+           with:
+              mongodb-version: ${{matrix.mongodb-version}}
+         # -> RUN PROJECT NPM SCRIPTS
+         # Install npm
+         - run: npm install
+         # Run npm commands from package.json @ project root
+         - run: npm run build_mac --prefix client
+         - run: npm test
+
+   # deploy:
+   #    needs: build

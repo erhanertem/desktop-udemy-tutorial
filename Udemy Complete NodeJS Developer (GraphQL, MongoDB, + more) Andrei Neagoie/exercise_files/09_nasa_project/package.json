@@ -1,21 +1,21 @@
 {
-  "name": "09_nasa_project",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "server": "npm run watch --prefix server",
-    "client": "npm run start --prefix client",
-    "watch_mac": "npm run server & npm run client",
-    "watch_windows": "npm run client | npm run server",
-    "installs": "npm run install-client && npm run install-server",
-    "install-server": "npm install --prefix server",
-    "install-client": "npm install --prefix client",
-    "deploy": "npm run build_mac --prefix client && npm run start --prefix server",
-    "deploy-cluster": "npm run build_win --prefix client && npm run cluster --prefix server",
-    "test": "npm run test --prefix server && npm run test --prefix client"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+	"name": "09_nasa_project",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"server": "npm run watch --prefix server",
+		"client": "npm run start --prefix client",
+		"watch_mac": "npm run server & npm run client",
+		"watch_windows": "npm run client | npm run server",
+		"install": "npm run install-client && npm run install-server",
+		"install-server": "npm install --prefix server",
+		"install-client": "npm install --prefix client",
+		"deploy": "npm run build_mac --prefix client && npm run start --prefix server",
+		"deploy-cluster": "npm run build_win --prefix client && npm run cluster --prefix server",
+		"test": "npm run test --prefix server && npm run test --prefix client"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
 }
