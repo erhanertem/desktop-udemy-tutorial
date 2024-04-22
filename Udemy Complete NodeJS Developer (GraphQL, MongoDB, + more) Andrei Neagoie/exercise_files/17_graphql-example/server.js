@@ -15,7 +15,7 @@ const PORT = 4000;
 // 👆 Uses the above function under the hood
 const schema = createSchema({
    typeDefs: aggregateTypes,
-   resolvers: resolvers,
+   resolvers,
 });
 
 // -> CREATE EXPRESS HTTP CONNECTION HANDLER FOR THE GRAPHQL SCHEMA

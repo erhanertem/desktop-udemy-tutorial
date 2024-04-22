@@ -13,18 +13,18 @@ const root = {
 
 const resolvers = {
    Query: {
-      products(obj, args, context, info) {
+      products: (parent = root, args, context, info) => {
          // Args summary:
-         // obj - N/A
+         // parent - N/A
          // ?args - for paramterized queries to filter data conditionally
          // ?context - datat shared across resolvers /user auth data, etc.
          // ?info - about current state of the operation
          console.log('Getting the products...');
-         return root.products;
+         return parent.products;
       },
-      orders(obj, args, context, info) {
+      orders: (parent = root, args, context, info) => {
          console.log('Getting the orders...');
-         return root.orders;
+         return parent.orders;
       },
    },
 };
