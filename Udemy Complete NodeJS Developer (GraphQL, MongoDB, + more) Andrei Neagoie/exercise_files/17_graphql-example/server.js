@@ -6,7 +6,7 @@ const { createYoga, createSchema } = require('graphql-yoga');
 // // Used within createSchema - from Yoga
 // const { makeExecutableSchema } = require('@graphql-tools/schema');
 
-const { typesArray, resolvers } = require('./graphql/index');
+const { typesArray, resolversArray } = require('./graphql/index');
 
 const PORT = 4000;
 
@@ -15,7 +15,7 @@ const PORT = 4000;
 // 👆 Uses the above function under the hood
 const schema = createSchema({
    typeDefs: typesArray,
-   resolvers,
+   resolvers: resolversArray,
 });
 
 // -> CREATE EXPRESS HTTP CONNECTION HANDLER FOR THE GRAPHQL SCHEMA
