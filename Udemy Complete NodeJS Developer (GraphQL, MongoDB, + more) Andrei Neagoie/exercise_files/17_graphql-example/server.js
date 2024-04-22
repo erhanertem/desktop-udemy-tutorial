@@ -6,7 +6,7 @@ const { createYoga, createSchema } = require('graphql-yoga');
 // // Used within createSchema - from Yoga
 // const { makeExecutableSchema } = require('@graphql-tools/schema');
 
-const { aggregateTypes, resolvers } = require('./graphql/index');
+const { typesArray, resolvers } = require('./graphql/index');
 
 const PORT = 4000;
 
@@ -14,7 +14,7 @@ const PORT = 4000;
 // const schema = makeExecutableSchema({
 // 👆 Uses the above function under the hood
 const schema = createSchema({
-   typeDefs: aggregateTypes,
+   typeDefs: typesArray,
    resolvers,
 });
 

@@ -4,7 +4,9 @@ const { mergeTypeDefs } = require('@graphql-tools/merge');
 const typesArray = loadFilesSync('**/*', {
    extensions: ['graphql'],
 });
-const aggregateTypes = mergeTypeDefs(typesArray);
+
+// const resolversArray = loadFilesSync('**/*.resolvers.js');
+// console.log(resolversArray);
 
 const root = {
    products: require('./products/products.model'),
@@ -30,6 +32,6 @@ const resolvers = {
 };
 
 module.exports = {
-   aggregateTypes,
+   typesArray,
    resolvers,
 };
