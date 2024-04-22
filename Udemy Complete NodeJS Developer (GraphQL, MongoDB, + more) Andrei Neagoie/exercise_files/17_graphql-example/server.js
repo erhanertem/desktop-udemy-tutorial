@@ -10,7 +10,8 @@ const { typesArray, resolversArray } = require('./graphql/index');
 
 const PORT = 4000;
 
-// -> CREATE A UNIFIED GRAPHQL-TOOL SCHEMA FROM DISPARATE GRAPHQL FILES
+// -> CREATE A UNIFIED YOGA SCHEMA FROM DISPARATE GRAPHQL FILES
+// CREATE A UNIFIED GRAPHQL-TOOL SCHEMA FROM DISPARATE GRAPHQL FILES
 // const schema = makeExecutableSchema({
 // 👆 Uses the above function under the hood
 const schema = createSchema({
