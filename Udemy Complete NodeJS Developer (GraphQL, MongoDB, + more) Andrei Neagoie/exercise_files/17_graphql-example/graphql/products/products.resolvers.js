@@ -22,5 +22,12 @@ module.exports = {
             args.price
          );
       },
+      addNewProductReview: (_, args) => {
+         return productsModel.addNewProductReview(
+            args.id,
+            args.rating,
+            args.comment
+         );
+      },
    },
 };
