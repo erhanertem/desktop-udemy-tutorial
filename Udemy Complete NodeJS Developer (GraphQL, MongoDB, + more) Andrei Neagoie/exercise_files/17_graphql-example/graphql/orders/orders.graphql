@@ -1,7 +1,9 @@
+# ROOT LEVEL TYPES
 type Query {
    orders: [Order]
 }
 
+# CUSTOM TYPES
 type Order {
    date: String!
    subtotal: Float!

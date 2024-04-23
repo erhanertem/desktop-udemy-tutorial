@@ -1,9 +1,14 @@
+# ROOT LEVEL TYPES
 type Query {
    products: [Product]
    productsByPrice(min: Float!, max: Float!): [Product]
    product(id: ID!): Product
 }
+type Mutation {
+   addNewProduct(id: ID!, description: String!, price: Float!): Product
+}
 
+# CUSTOM TYPES
 type Product {
    id: ID!
    description: String!
