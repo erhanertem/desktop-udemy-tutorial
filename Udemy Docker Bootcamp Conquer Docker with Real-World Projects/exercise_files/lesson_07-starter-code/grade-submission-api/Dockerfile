@@ -22,3 +22,5 @@ CMD ["node", "app.js"]
 
 # docker build -t erhanertem/grade-submission-api .
 # docker run --name node-server --network myconnection --rm -p 3000:3000 erhanertem/grade-submission-api
+# docker push erhanertem/grade-submission-api
+# docker push erhanertem/grade-submission-api:1.0.0

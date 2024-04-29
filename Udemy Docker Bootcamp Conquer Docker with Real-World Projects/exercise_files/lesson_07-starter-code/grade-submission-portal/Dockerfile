@@ -20,3 +20,5 @@ CMD ["python", "app.py"]
 # docker network create my-connection
 # docker build -t erhanertem/grade-submission-portal .
 # docker run --name flask-app --network myconnection --rm -p 5001:5001 -e GRADE_SERVICE_HOST=node-server erhanertem/grade-submission-portal
+# docker push erhanertem/grade-submission-portal 
+# docker push erhanertem/grade-submission-portal:1.0.0 
