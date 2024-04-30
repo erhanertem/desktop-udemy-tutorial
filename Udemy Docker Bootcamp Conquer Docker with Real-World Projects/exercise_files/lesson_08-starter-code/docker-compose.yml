@@ -1,0 +1,23 @@
+# Developer: Captain DevOps, I noticed a docker-compose.yml file, but I don't know the first thing about Docker Compose, so I'll leave the container orchestration to you. Happy sailing!
+# Declare the Docker Compose version
+version: '3'
+# Enumerate the Docker Containers to be run
+services:
+   # Docker Container #1 named flask-app
+   flask-app:
+      image: erhanertem/grade-submission-portal:1.0.0 # Specify the image for this container
+      container_name: flask-app # While the origin Docker Container declaration for flask-app warrants its container_name, we explicitly state it here as well
+      ports: # This is eaqual to -p 5001:5001 flagged CLI entry
+         - '5001:5001' # - is the symbol for array entry
+      environment: # This is equal to -e GRADE_SERVICE_HOST=node-server flagged CLI entry
+         - GRADE_SERVICE_HOST=node-server
+      depends_on: # Indicate the dependency of this container to others
+         - node-server # - is the symbol for array entry
+   # Docker Container #2 named node-server
+   node-server:
+      image: erhanertem/grade-submission-api:1.0.0
+      container_name: node-server
+      ports:
+         - '3000:3000'
+# RUN @CLI
+# docker compose up
