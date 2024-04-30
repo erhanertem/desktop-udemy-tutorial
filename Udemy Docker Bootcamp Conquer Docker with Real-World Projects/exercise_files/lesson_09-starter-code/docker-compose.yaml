@@ -1,0 +1,40 @@
+# docker build -t erhanertem/grade-submission-api:2.0.0 .
+# docker push erhanertem/grade-submission-api:2.0.0
+
+version: '3'
+services:
+  flask-app:
+    image: erhanertem/grade-submission-portal
+    container_name: flask-app
+    ports:
+      - 5001:5001
+    environment:
+      - GRADE_SERVICE_HOST=node-server
+    depends_on:
+      - node-server
+
+  node-server:
+    image: erhanertem/grade-submission-api:2.0.0
+    container_name: node-server
+    environment:
+      - DB_HOST=mongo
+      - DB_PORT=27017
+      - DB_NAME=grade_db
+    ports:
+      - 3000:3000
+
+  mongo:
+    image: mongo # import mongo image from Docker Hub
+    container_name: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      # Store @ folder /data/db
+      - mongo-data:/data/db
+    environment:
+      # Create locally stored mongo db called grade_db
+      - MONGO_INITDB_DATABASE=grade_db
+volumes:
+  # Persist data on mongo-data Docker volume
+  mongo-data:
