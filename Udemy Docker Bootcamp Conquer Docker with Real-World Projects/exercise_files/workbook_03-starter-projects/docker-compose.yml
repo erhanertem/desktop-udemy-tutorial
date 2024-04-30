@@ -1,0 +1,66 @@
+version: '3'
+services:
+   # docker run --rm --name ecommerce-ui --network mynetwork -p 4000:4000 -e REACT_APP_PROFILE_API_HOST=http://profile-management -e REACT_APP_SHIPPING_API_HOST=http://shipping-and-handling -e REACT_APP_CONTACT_API_HOST=http://contact-support-team -e REACT_APP_INVENTORY_API_HOST=http://product-inventory -e REACT_APP_PRODUCT_API_HOST=http://product-catalog -e REACT_APP_ORDER_API_HOST=http://order-management ecommerce-ui
+   ecommerce-ui:
+      image: erhanertem/ecommerce-ui:latest
+      container_name: ecommerce-ui
+      ports:
+         - 4000:4000
+      environment:
+         - REACT_APP_PROFILE_API_HOST=http://profile-management
+         - REACT_APP_SHIPPING_API_HOST=http://shipping-and-handling
+         - REACT_APP_CONTACT_API_HOST=http://contact-support-team
+         - REACT_APP_INVENTORY_API_HOST=http://product-inventory
+         - REACT_APP_PRODUCT_API_HOST=http://product-catalog
+         - REACT_APP_ORDER_API_HOST=http://order-management
+      depends_on:
+         - profile-management
+         - shipping-and-handling
+         - contact-support-team
+         - product-inventory
+         - product-catalog
+         - order-management
+   # docker run --rm --name profile-management --network mynetwork -p 3003:3003 profile-management
+   profile-management:
+      image: erhanertem/profile-management:1.0.0
+      container_name: profile-management
+      ports:
+         - 3003:3003
+   # docker run --rm --name product-catalog --network mynetwork -p 3001:3001 product-catalog
+   product-catalog:
+      image: erhanertem/product-catalog:1.0.0
+      container_name: product-catalog
+      ports:
+         - 3001:3001
+   # docker run --rm --name product-inventory --network mynetwork -p 3002:3002 product-inventory
+   product-inventory:
+      image: erhanertem/product-inventory:1.0.0
+      container_name: product-inventory
+      ports:
+         - 3002:3002
+   # docker run --rm --name contact-support-team --network mynetwork -p 8000:8000 contact-support-team
+   contact-support-team:
+      image: erhanertem/contact-support-team:1.0.0
+      container_name: contact-support-team
+      ports:
+         - 8000:8000
+   # docker run --rm --name shipping-and-handling --network mynetwork -p 8080:8080 shipping-and-handling
+   shipping-and-handling:
+      image: erhanertem/shipping-and-handling:1.0.0
+      container_name: shipping-and-handling
+      ports:
+         - 8080:8080
+   # docker run --rm --name order-management --network mynetwork -p 9090:9090 -e PRODUCT_INVENTORY_API_HOST=http://product-inventory -e PRODUCT_CATALOG_API_HOST=http://product-catalog -e SHIPPING_HANDLING_API_HOST=http://shipping-and-handling order-management
+   order-management:
+      image: erhanertem/order-management:1.0.0
+      container_name: order-management
+      ports:
+         - 9090:9090
+      environment:
+         - PRODUCT_INVENTORY_API_HOST=http://product-inventory
+         - PRODUCT_CATALOG_API_HOST=http://product-catalog
+         - SHIPPING_HANDLING_API_HOST=http://shipping-and-handling
+      depends_on:
+         - product-inventory
+         - product-catalog
+         - shipping-and-handling
