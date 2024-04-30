@@ -11,7 +11,7 @@ COPY server /app/server
 WORKDIR /app/server
 
 # Install the client dependencies (only needed if you're not copying over the node_modules)
-# RUN npm install
+RUN npm install
 
 # Change back to the app directory
 WORKDIR /app
@@ -23,7 +23,7 @@ COPY client /app/client
 WORKDIR /app/client
 
 # Install the client dependencies (only needed if you're not copying over the node_modules)
-# RUN npm install
+RUN npm install
 
 # Build the React application
 RUN npm run build
@@ -32,7 +32,7 @@ RUN npm run build
 WORKDIR /app
 
 # Copy the README file to the root directory
-COPY README.md /README.md
+COPY README.md ./README.md
 
 # Expose the port that the server listens on
 EXPOSE 4000

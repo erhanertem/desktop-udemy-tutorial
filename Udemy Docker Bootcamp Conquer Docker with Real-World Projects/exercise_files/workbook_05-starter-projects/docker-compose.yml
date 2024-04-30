@@ -1,1 +1,158 @@
+# -> Define version of Docker Composer
+version: '3'
+# -> Specify Docker Containers to be created
+services:
+   # --> docker run --rm --name ecommerce-ui --network mynetwork -p 4000:4000 -e REACT_APP_PROFILE_API_HOST=http://profile-management -e REACT_APP_SHIPPING_API_HOST=http://shipping-and-handling -e REACT_APP_CONTACT_API_HOST=http://contact-support-team -e REACT_APP_INVENTORY_API_HOST=http://product-inventory -e REACT_APP_PRODUCT_API_HOST=http://product-catalog -e REACT_APP_ORDER_API_HOST=http://order-management ecommerce-ui
+   ecommerce-ui:
+      image: erhanertem/ecommerce-ui
+      container_name: ecommerce-ui
+      ports:
+         - 4000:4000
+      environment:
+         - REACT_APP_PROFILE_API_HOST=http://profile-management
+         - REACT_APP_PRODUCT_API_HOST=http://product-catalog
+         - REACT_APP_INVENTORY_API_HOST=http://product-inventory
+         - REACT_APP_CONTACT_API_HOST=http://contact-support-team
+         - REACT_APP_SHIPPING_API_HOST=http://shipping-and-handling
+         - REACT_APP_ORDER_API_HOST=http://order-management
+      depends_on:
+         - profile-management
+         - product-catalog
+         - product-inventory
+         - contact-support-team
+         - shipping-and-handling
+         - order-management
 
+   # --> docker run --rm --name profile-management --network mynetwork -p 3003:3003 profile-management
+   profile-management:
+      image: erhanertem/profile-management:2.0.0
+      container_name: profile-management
+      ports:
+         - 3003:3003
+      environment:
+         - MYSQL_HOST=mysql_profile_management # mySQL Docker Container
+         - MYSQL_PORT=3306 # Port number mySQL DB is running @
+         - MYSQL_USER=profile_user # DB username
+         - MYSQL_PASSWORD=profile_password # DB userpass
+         - MYSQL_DATABASE=profile_management #Name of DB
+      depends_on:
+         - mysql_profile_management
+   mysql_profile_management: # will run on container port 3306 by default - since we are not planning to access it, no need to expose the port.
+      image: mysql:8.0 # Docker image utilized for mySQL Docker Con tainer
+      container_name: mysql_profile_management # Name of the mySQL Docker Container
+      # Configure mySQL DB
+      environment:
+         - MYSQL_DATABASE=profile_management # Name the mysql database
+         - MYSQL_ROOT_PASSWORD=root_password # Mandatory setup for mySQL
+         - MYSQL_USER=profile_user # Provide user entry for mySQL DB
+         - MYSQL_PASSWORD=profile_password # Provide password entry for mySQL DB
+      volumes:
+         - mysql_profile_management_data:/var/lib/mysql # default place where data is saved based on Docker Hub mySQL Image info
+
+   # --> docker run --rm --name product-catalog --network mynetwork -p 3001:3001 product-catalog
+   product-catalog:
+      image: erhanertem/product-catalog:2.0.0
+      container_name: product-catalog
+      ports:
+         - 3001:3001
+      environment:
+         - MONGODB_HOST=mongodb_product_catalog
+         - MONGODB_PORT=27017
+         - MONGODB_DATABASE=product_catalog # Made up name
+      depends_on:
+         - mongodb_product_catalog
+   mongodb_product_catalog:
+      image: mongo
+      container_name: mongodb_product_catalog
+      volumes:
+         - mongodb_product_catalog_data:/data/db
+
+   # --> docker run --rm --name product-inventory --network mynetwork -p 3002:3002 product-inventory
+   product-inventory:
+      image: erhanertem/product-inventory:2.0.0
+      container_name: product-inventory
+      ports:
+         - 3002:3002
+      environment:
+         - POSTGRES_HOST=postgres_product_inventory
+         - POSTGRES_PORT=5432
+         - POSTGRES_DB=product_inventory
+         - POSTGRES_USER=inventory_user
+         - POSTGRES_PASSWORD=inventory_password
+      depends_on:
+         - postgres_product_inventory
+   postgres_product_inventory: # will run on container port 5432 by default - since we are not planning to access it, no need to expose the port.
+      image: postgres
+      container_name: postgres_product_inventory
+      # Configure postGre DB
+      environment:
+         - POSTGRES_DB=product_inventory # Name of DB
+         - POSTGRES_USER=inventory_user
+         - POSTGRES_PASSWORD=inventory_password
+      volumes:
+         - postgres_product_inventory_data:/var/lib/postgresql/data # default place where data is saved based on Docker Hub postgres Image info
+
+   # --> docker run --rm --name contact-support-team --network mynetwork -p 8000:8000 contact-support-team
+   contact-support-team:
+      image: erhanertem/contact-support-team:2.0.0
+      container_name: contact-support-team
+      ports:
+         - 8000:8000
+      environment:
+         - MONGODB_HOST=mongodb_contact_support
+         - MONGODB_PORT=27017
+         - MONGODB_DATABASE= contact_support # Made up name
+      depends_on:
+         - mongodb_contact_support
+   mongodb_contact_support:
+      image: mongo
+      container_name: mongodb_contact_support
+      volumes:
+         - mongodb_contact_support_data:/data/db
+
+   # --> docker run --rm --name shipping-and-handling --network mynetwork -p 8080:8080 shipping-and-handling
+   shipping-and-handling:
+      image: erhanertem/shipping-and-handling:2.0.0
+      container_name: shipping-and-handling
+      ports:
+         - 8080:8080
+      environment:
+         - MONGO_URI=mongodb://mongodb_shipping:27017
+      depends_on:
+         - mongodb_shipping
+   mongodb_shipping:
+      image: mongo
+      container_name: mongodb_shipping
+      volumes:
+         - mongodb_shipping_data:/data/db
+
+   # --> docker run --rm --name order-management --network mynetwork -p 9090:9090 -e PRODUCT_INVENTORY_API_HOST=http://product-inventory -e PRODUCT_CATALOG_API_HOST=http://product-catalog -e SHIPPING_HANDLING_API_HOST=http://shipping-and-handling order-management
+   order-management:
+      image: erhanertem/order-management:2.0.0
+      container_name: order-management
+      ports:
+         - 9090:9090
+      environment:
+         - PRODUCT_INVENTORY_API_HOST=http://product-inventory
+         - PRODUCT_CATALOG_API_HOST=http://product-catalog
+         - SHIPPING_HANDLING_API_HOST=http://shipping-and-handling
+         - SPRING_DATA_MONGODB_URI=mongodb://mongodb_order_management:27017/order_management
+      depends_on:
+         - product-inventory
+         - product-catalog
+         - shipping-and-handling
+         - mongodb_order_management
+   mongodb_order_management: # mongodb defaults to port 27017 - no need to expose port as we are not going to access it directly
+      image: mongo
+      container_name: mongodb_order_management
+      volumes:
+         - mongodb_order_management_data:/data/db # Per docs, defaults to save into this folder
+
+# -> Specify Docker named volumes for APIs to save DB data locally
+volumes:
+   mongodb_product_catalog_data:
+   mongodb_contact_support_data:
+   mongodb_shipping_data:
+   mongodb_order_management_data:
+   mysql_profile_management_data:
+   postgres_product_inventory_data:
