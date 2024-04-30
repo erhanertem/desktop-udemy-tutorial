@@ -21,3 +21,4 @@ services:
          - '3000:3000'
 # RUN @CLI
 # docker compose up
+# docker compose down
