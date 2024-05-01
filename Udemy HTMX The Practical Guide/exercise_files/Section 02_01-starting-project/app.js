@@ -39,7 +39,12 @@ app.get('/', (req, res) => {
 						HTMX is a JavaScript library that you use without writing
 						JavaScript code.
 					</p>
-					<form hx-post="/note" hx-target="ul" hx-swap="outerHTML">
+					<form
+						hx-post="/note"
+						hx-target="ul"
+						hx-swap="outerHTML"
+						hx-select="ul"
+					>
 						<p>
 							<label for="note">Your note</label>
 							<input type="text" id="note" name="note" />
@@ -57,16 +62,22 @@ app.get('/', (req, res) => {
 	`);
 });
 
-// #1. DO NOT REDIRECT TO HOMEPAGE AND ONLY SEND THE HTML FRAGMENT TO REPLACE THE TARGET HTML ELEMENT
+// #2. KEEP REDIRECT TO HOMEPAGE AND SELECTIVELY INSERT THE HTML FRAGMENT TO TARGETTED ELEMENT
 app.post('/note', (req, res) => {
 	const enteredNote = req.body.note;
 	HTMX_KNOWLEDGE.unshift(enteredNote);
-	// res.redirect('/'); // IMPORTANT!! We can't just redirect to the homepage again as it would render it twice one over another, but we should return a fragment from the location its been called and rebuild the entire list @ the targeted page element
-	res.send(html`
-		<ul>
-			${HTMX_KNOWLEDGE.map((info) => `<li>${info}</li>`).join('')}
-		</ul>
-	`);
+	res.redirect('/');
 });
+// // #1. DO NOT REDIRECT TO HOMEPAGE AND ONLY SEND THE HTML FRAGMENT TO REPLACE THE TARGET HTML ELEMENT
+// app.post('/note', (req, res) => {
+// 	const enteredNote = req.body.note;
+// 	HTMX_KNOWLEDGE.unshift(enteredNote);
+// 	// res.redirect('/'); // IMPORTANT!! We can't just redirect to the homepage again as it would render it twice one over another, but we should return a fragment from the location its been called and rebuild the entire list @ the targeted page element
+// 	res.send(html`
+// 		<ul>
+// 			${HTMX_KNOWLEDGE.map((info) => `<li>${info}</li>`).join('')}
+// 		</ul>
+// 	`);
+// });
 
 app.listen(3000);
