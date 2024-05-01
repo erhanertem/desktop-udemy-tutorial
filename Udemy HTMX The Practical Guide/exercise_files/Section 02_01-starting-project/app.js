@@ -9,6 +9,9 @@ const html = String.raw;
 
 const app = express();
 
+// request.body receives form-input-name attributes -> <input ... name="note" /> accessed as const enteredNote = req.body.note;
+app.use(express.urlencoded({ extended: false }));
+// Serves files as public treated root
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
@@ -36,7 +39,7 @@ app.get('/', (req, res) => {
 						HTMX is a JavaScript library that you use without writing
 						JavaScript code.
 					</p>
-					<form>
+					<form hx-post="/note" hx-target="ul" hx-swap="outerHTML">
 						<p>
 							<label for="note">Your note</label>
 							<input type="text" id="note" name="note" />
@@ -51,6 +54,17 @@ app.get('/', (req, res) => {
 				</main>
 			</body>
 		</html>
+	`);
+});
+
+app.post('/note', (req, res) => {
+	const enteredNote = req.body.note;
+	HTMX_KNOWLEDGE.unshift(enteredNote);
+	// res.redirect('/'); // IMPORTANT!! We can't just redirect to the homepage again as it would render it twice one over another, but we should return a fragment from the location its been called and rebuild the entire list @ the targeted page element
+	res.send(html`
+		<ul>
+			${HTMX_KNOWLEDGE.map((info) => `<li>${info}</li>`).join('')}
+		</ul>
 	`);
 });
 
