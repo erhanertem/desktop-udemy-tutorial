@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 						HTMX is a JavaScript library that you use without writing
 						JavaScript code.
 					</p>
-					<button hx-get="/info">Learn More</button>
+					<button hx-get="/info" hx-swap="outerHTML">Learn More</button>
 				</main>
 			</body>
 		</html>
@@ -46,7 +46,7 @@ app.get('/', (req, res) => {
 app.get('/info', (req, res) => {
 	res.send(html`
 		<ul>
-			${HTMX_KNOWLEDGE.map((info) => `<li>${info}</li>`)}
+			${HTMX_KNOWLEDGE.map((info) => `<li>${info}</li>`).join('')}
 		</ul>
 	`);
 });
