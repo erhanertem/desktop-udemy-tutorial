@@ -36,25 +36,21 @@ app.get('/', (req, res) => {
 						HTMX is a JavaScript library that you use without writing
 						JavaScript code.
 					</p>
-					<button
-						hx-get="/info"
-						hx-target="main"
-						hx-swap="beforeend"
-						hx-trigger="mouseenter[ctrlKey], click"
-					>
-						Learn More
-					</button>
+					<form>
+						<p>
+							<label for="note">Your note</label>
+							<input type="text" id="note" name="note" />
+						</p>
+						<p>
+							<button>Save Note</button>
+						</p>
+					</form>
+					<ul>
+						${HTMX_KNOWLEDGE.map((info) => `<li>${info}</li>`).join('')}
+					</ul>
 				</main>
 			</body>
 		</html>
-	`);
-});
-
-app.get('/info', (req, res) => {
-	res.send(html`
-		<ul>
-			${HTMX_KNOWLEDGE.map((info) => `<li>${info}</li>`).join('')}
-		</ul>
 	`);
 });
 
