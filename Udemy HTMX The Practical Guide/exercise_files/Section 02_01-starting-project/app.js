@@ -57,6 +57,7 @@ app.get('/', (req, res) => {
 	`);
 });
 
+// #1. DO NOT REDIRECT TO HOMEPAGE AND ONLY SEND THE HTML FRAGMENT TO REPLACE THE TARGET HTML ELEMENT
 app.post('/note', (req, res) => {
 	const enteredNote = req.body.note;
 	HTMX_KNOWLEDGE.unshift(enteredNote);
