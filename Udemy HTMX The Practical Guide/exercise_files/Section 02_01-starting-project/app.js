@@ -36,7 +36,14 @@ app.get('/', (req, res) => {
 						HTMX is a JavaScript library that you use without writing
 						JavaScript code.
 					</p>
-					<button hx-get="/info" hx-swap="outerHTML">Learn More</button>
+					<button
+						hx-get="/info"
+						hx-target="main"
+						hx-swap="beforeend"
+						hx-trigger="mouseenter[ctrlKey], click"
+					>
+						Learn More
+					</button>
 				</main>
 			</body>
 		</html>
