@@ -5,7 +5,7 @@ import express from 'express';
  */
 const html = String.raw;
 
-const courseGoals = [];
+const courseGoals = ['Learn HTMX', 'Learn advanced concepts'];
 
 const app = express();
 
@@ -44,7 +44,18 @@ app.get('/', (req, res) => {
 						</form>
 					</section>
 					<section>
-						<ul id="goals"></ul>
+						<ul id="goals">
+							${courseGoals
+								.map(
+									(goal, index) => html`
+										<li id="goal-${index}">
+											<span>${goal}</span>
+											<button>Remove</button>
+										</li>
+									`
+								)
+								.join('')}
+						</ul>
 					</section>
 				</main>
 			</body>
