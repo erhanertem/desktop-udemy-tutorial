@@ -33,9 +33,8 @@ app.get('/', (req, res) => {
 						<form
 							id="goal-form"
 							hx-post="/goals"
-							hx-select="#goals"
 							hx-target="#goals"
-							hx-swap="outerHTML"
+							hx-swap="beforeend"
 						>
 							<div>
 								<label htmlFor="goal">Goal</label>
@@ -45,18 +44,7 @@ app.get('/', (req, res) => {
 						</form>
 					</section>
 					<section>
-						<ul id="goals">
-							${courseGoals
-								.map(
-									(goal, index) => html`
-										<li id="goal-${index}">
-											<span>${goal}</span>
-											<button>Remove</button>
-										</li>
-									`
-								)
-								.join('')}
-						</ul>
+						<ul id="goals"></ul>
 					</section>
 				</main>
 			</body>
@@ -65,9 +53,15 @@ app.get('/', (req, res) => {
 });
 
 app.post('/goals', (req, res) => {
-	courseGoals.push(req.body.goal);
-	console.log(courseGoals);
-	res.redirect('/');
+	const goalText = req.body.goal;
+	courseGoals.push(goalText);
+	// res.redirect('/');
+	res.send(html`
+		<li id="goal-${courseGoals.length - 1}">
+			<span>${goalText}</span>
+			<button>Remove</button>
+		</li>
+	`);
 });
 
 app.listen(3000);
