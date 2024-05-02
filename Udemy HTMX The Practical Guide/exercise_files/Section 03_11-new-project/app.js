@@ -12,30 +12,28 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
-  const availableLocations = AVAILABLE_LOCATIONS.filter(
-    (location) => !INTERESTING_LOCATIONS.includes(location)
-  );
-  res.send(renderLocationsPage(availableLocations, INTERESTING_LOCATIONS));
+	const availableLocations = AVAILABLE_LOCATIONS.filter(
+		(location) => !INTERESTING_LOCATIONS.includes(location)
+	);
+	res.send(renderLocationsPage(availableLocations, INTERESTING_LOCATIONS));
 });
 
 app.post('/places', (req, res) => {
-  const locationId = req.body.locationId;
-  const location = AVAILABLE_LOCATIONS.find((loc) => loc.id === locationId);
-  INTERESTING_LOCATIONS.push(location);
+	const locationId = req.body.locationId;
+	const location = AVAILABLE_LOCATIONS.find((loc) => loc.id === locationId);
+	INTERESTING_LOCATIONS.push(location);
 
-  res.send(`
-    TODO
-  `);
+	res.send(renderLocation(location));
 });
 
 app.delete('/places/:id', (req, res) => {
-  const locationId = req.params.id;
-  const locationIndex = INTERESTING_LOCATIONS.findIndex(
-    (loc) => loc.id === locationId
-  );
-  INTERESTING_LOCATIONS.splice(locationIndex, 1);
+	const locationId = req.params.id;
+	const locationIndex = INTERESTING_LOCATIONS.findIndex(
+		(loc) => loc.id === locationId
+	);
+	INTERESTING_LOCATIONS.splice(locationIndex, 1);
 
-  res.send();
+	res.send();
 });
 
 app.listen(3000);
