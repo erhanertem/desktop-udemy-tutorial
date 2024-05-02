@@ -10,8 +10,18 @@ const courseGoals = [];
 function renderGoalListItem(id, text) {
 	return html` <li id="goal-${id}">
 		<span>${text}</span>
-		<button hx-delete="/goals/${id}" hx-target="#goal-${id}">Remove</button>
+		<button
+			hx-delete="/goals/${id}"
+			hx-target="closest li"
+			hx-confirm="Are you sure?"
+		>
+			Remove
+		</button>
 	</li>`;
+	// return html` <li id="goal-${id}">
+	// 	<span>${text}</span>
+	// 	<button hx-delete="/goals/${id}" hx-target="#goal-${id}">Remove</button>
+	// </li>`;
 }
 
 const app = express();
@@ -42,6 +52,8 @@ app.get('/', (req, res) => {
 							hx-post="/goals"
 							hx-target="#goals"
 							hx-swap="beforeend"
+							hx-on::after-request="this.reset()"
+							hx-disabled-elt="form button"
 						>
 							<div>
 								<label htmlFor="goal">Goal</label>
@@ -67,7 +79,10 @@ app.post('/goals', (req, res) => {
 	const goalText = req.body.goal;
 	const id = new Date().getTime().toString(); //should be saved in a string as req.params.id returns a string
 	courseGoals.push({ id: id, text: goalText });
-	res.send(renderGoalListItem(id, goalText));
+	// Simulate a slower backend to test hx-on::after-request="this.reset()" applied @ the form element
+	setTimeout(() => {
+		res.send(renderGoalListItem(id, goalText));
+	}, 4000);
 });
 
 app.delete('/goals/:id', (req, res) => {
