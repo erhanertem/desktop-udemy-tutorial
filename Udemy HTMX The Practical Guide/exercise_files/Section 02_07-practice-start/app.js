@@ -5,7 +5,10 @@ import express from 'express';
  */
 const html = String.raw;
 
-const courseGoals = ['Learn HTMX', 'Learn advanced concepts'];
+const courseGoals = [
+	{ id: 1, text: 'Learn HTMX' },
+	{ id: 2, text: 'Learn advanced concepts' },
+];
 
 const app = express();
 
@@ -47,10 +50,16 @@ app.get('/', (req, res) => {
 						<ul id="goals">
 							${courseGoals
 								.map(
-									(goal, index) => html`
-										<li id="goal-${index}">
-											<span>${goal}</span>
-											<button>Remove</button>
+									(goal, _index) => html`
+										<li id="goal-${goal.id}">
+											<span>${goal.text}</span>
+											<button
+												hx-delete="/goals/${goal.id}"
+												hx-target="#goal-${goal.id}"
+												hx-swap="outerHTML"
+											>
+												Remove
+											</button>
 										</li>
 									`
 								)
@@ -65,14 +74,28 @@ app.get('/', (req, res) => {
 
 app.post('/goals', (req, res) => {
 	const goalText = req.body.goal;
-	courseGoals.push(goalText);
+	const id = new Date().getTime().toString(); //should be saved in a string as req.params.id returns a string
+	courseGoals.push({ id, text: goalText });
 	// res.redirect('/');
 	res.send(html`
-		<li id="goal-${courseGoals.length - 1}">
+		<li id="goal-${id}">
 			<span>${goalText}</span>
-			<button>Remove</button>
+			<button
+				hx-delete="/goals/${id}"
+				hx-target="#goal-${id}"
+				hx-swap="outerHTML"
+			>
+				Remove
+			</button>
 		</li>
 	`);
+});
+
+app.delete('/goals/:id', (req, res) => {
+	const id = req.params.id; //Received as a String type
+	const index = courseGoals.findIndex((goal) => goal.id === id);
+	courseGoals.splice(index, 1);
+	res.send(); //Sends empty object to the targetted element to erase it essentially
 });
 
 app.listen(3000);
