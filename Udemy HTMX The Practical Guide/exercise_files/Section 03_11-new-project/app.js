@@ -3,6 +3,7 @@ import express from 'express';
 import { AVAILABLE_LOCATIONS } from './data/available-locations.js';
 import renderLocationsPage from './views/index.js';
 import renderLocation from './views/components/location.js';
+import { html } from './prettierhtmx.js';
 
 const app = express();
 
@@ -20,10 +21,30 @@ app.get('/', (req, res) => {
 
 app.post('/places', (req, res) => {
 	const locationId = req.body.locationId;
+	// Retrieve the picked location's data from the Available Locations
 	const location = AVAILABLE_LOCATIONS.find((loc) => loc.id === locationId);
+	// Record into the My Dream Locations Data set
 	INTERESTING_LOCATIONS.push(location);
 
-	res.send(renderLocation(location, false)); // When posting the pic to My Dream Locations contaioner marked w/ hx-target="#interesting-locations" , isAvailableLocationList = false so that we know it belongs to my dream locations.
+	// Remove the picked location from Available Locations
+	const availableLocations = AVAILABLE_LOCATIONS.filter(
+		(location) => !INTERESTING_LOCATIONS.includes(location)
+	);
+
+	// --> Perform Out of Band Swaps - Multi Fragment Swap: When adding the item to My Dream Location, we remove it from the Available Locations
+	// VERY IMPORTANT - hx-swap-oob="true" tells that this portion of code is not part of the targeted replacement that initiated the	post req. hx-swap-oob marked element will find id="available-locations" to	replace itself
+	res.send(html`
+		${
+			// -> #1.First Fragment Piece
+			renderLocation(location, false) // When posting the pic to My Dream Locations contaioner marked w/ hx-target="#interesting-locations" , isAvailableLocationList = false so that we know it belongs to my dream locations.
+			// -> #2.Second Fragment Piece - OOBS
+		}
+		<ul id="available-locations" class="locations" hx-swap-oob="true">
+			${availableLocations
+				.map((location) => renderLocation(location))
+				.join('')}
+		</ul>
+	`);
 });
 
 app.delete('/places/:id', (req, res) => {
