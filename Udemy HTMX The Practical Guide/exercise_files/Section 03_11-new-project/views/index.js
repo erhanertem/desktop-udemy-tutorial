@@ -23,7 +23,7 @@ export default function renderLocationsPage(
 					</p>
 				</header>
 				<main>
-					<section class="locations-category">
+					<section class="locations-category" id="int-locations-section">
 						<h2>My Dream Locations</h2>
 						<ul id="interesting-locations" class="locations">
 							${interestingLocations

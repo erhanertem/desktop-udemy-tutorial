@@ -12,7 +12,7 @@ export default function renderLocation(
          hx-post="/places"
 		   hx-vals='{"locationId": "${location.id}"}'
 		   hx-target="#interesting-locations"
-		   hx-swap="beforeend"
+		   hx-swap="beforeend show:#int-locations-section:top"
       `;
 	} else {
 		// If the clicked pic card belongs to 'My Dream Locations' List, send a DELETE req
