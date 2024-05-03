@@ -12,6 +12,7 @@ export default function renderLocationsPage(
 				<link rel="stylesheet" href="/main.css" />
 				<link rel="icon" href="/logo.png" />
 				<script src="/htmx.js" defer></script>
+				<script src="/main.js" defer></script>
 			</head>
 			<body>
 				<header>
