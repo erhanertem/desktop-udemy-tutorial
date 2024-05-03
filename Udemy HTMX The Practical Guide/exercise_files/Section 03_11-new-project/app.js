@@ -31,7 +31,7 @@ app.post('/places', (req, res) => {
 		(location) => !INTERESTING_LOCATIONS.includes(location)
 	);
 
-	// --> Perform Out of Band Swaps - Multi Fragment Swap: When adding the item to My Dream Location, we remove it from the Available Locations
+	// --> Perform Out of Band Swaps in POST fetch - Multi Fragment Swap: When adding the item to My Dream Location, we remove it from the Available Locations
 	// VERY IMPORTANT - hx-swap-oob="true" tells that this portion of code is not part of the targeted replacement that initiated the	post req. hx-swap-oob marked element will find id="available-locations" to	replace itself
 	res.send(html`
 		${
@@ -49,12 +49,29 @@ app.post('/places', (req, res) => {
 
 app.delete('/places/:id', (req, res) => {
 	const locationId = req.params.id;
+	// Remove the item from the My Dream Locations
 	const locationIndex = INTERESTING_LOCATIONS.findIndex(
 		(loc) => loc.id === locationId
 	);
+	// Obtain the revised My Dream Locations Array
 	INTERESTING_LOCATIONS.splice(locationIndex, 1);
+	// Create revised Available Locations Array which do not include the My Dream Locations objects
+	const availableLocations = AVAILABLE_LOCATIONS.filter(
+		(location) => !INTERESTING_LOCATIONS.includes(location)
+	);
 
-	res.send(); // With hx-swap set to 'outerHTML' the entire element is swapped with nothing as res.send() sends nothing
+	// --> Perform Out of Band Swaps - Multi Fragment Swap in DELETE fetch
+	res.send(
+		// -> #1.First Fragment Piece - its empy response - Via hx-swap set to 'outerHTML' the entire element is swapped with nothing as res.send() sends nothing
+		// -> #2.Second Fragment Piece - oobs marked response only affects ul id="available-locations"
+		html`
+			<ul id="available-locations" class="locations" hx-swap-oob="true">
+				${availableLocations
+					.map((location) => renderLocation(location))
+					.join('')}
+			</ul>
+		`
+	);
 });
 
 app.listen(3000);
