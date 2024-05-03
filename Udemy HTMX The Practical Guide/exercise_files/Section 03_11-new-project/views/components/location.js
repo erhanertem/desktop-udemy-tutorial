@@ -1,8 +1,13 @@
 import { html } from '../../prettierhtmx.js';
 
-export default function renderLocation(location, isAvailableLocation = true) {
+export default function renderLocation(
+	location,
+	isAvailableLocationList = true
+) {
 	let attributes;
-	if (isAvailableLocation) {
+
+	// If the clicked pic card belongs to 'Available Locations' List, send a POST req
+	if (isAvailableLocationList) {
 		attributes = `
          hx-post="/places"
 		   hx-vals='{"locationId": "${location.id}"}'
@@ -10,6 +15,7 @@ export default function renderLocation(location, isAvailableLocation = true) {
 		   hx-swap="beforeend"
       `;
 	} else {
+		// If the clicked pic card belongs to 'My Dream Locations' List, send a DELETE req
 		attributes = `
 			hx-delete="/places/${location.id}" 
          hx-confirm="Are you sure?"

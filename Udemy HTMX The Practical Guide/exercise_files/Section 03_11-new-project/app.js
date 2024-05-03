@@ -23,7 +23,7 @@ app.post('/places', (req, res) => {
 	const location = AVAILABLE_LOCATIONS.find((loc) => loc.id === locationId);
 	INTERESTING_LOCATIONS.push(location);
 
-	res.send(renderLocation(location, false));
+	res.send(renderLocation(location, false)); // When posting the pic to My Dream Locations contaioner marked w/ hx-target="#interesting-locations" , isAvailableLocationList = false so that we know it belongs to my dream locations.
 });
 
 app.delete('/places/:id', (req, res) => {
@@ -33,7 +33,7 @@ app.delete('/places/:id', (req, res) => {
 	);
 	INTERESTING_LOCATIONS.splice(locationIndex, 1);
 
-	res.send();
+	res.send(); // With hx-swap set to 'outerHTML' the entire element is swapped with nothing as res.send() sends nothing
 });
 
 app.listen(3000);
