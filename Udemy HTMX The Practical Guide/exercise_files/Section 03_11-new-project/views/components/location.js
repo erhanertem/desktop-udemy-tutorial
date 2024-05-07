@@ -13,15 +13,18 @@ export default function renderLocation(
 		   hx-vals='{"locationId": "${location.id}"}'
 		   hx-target="#interesting-locations"
 		   hx-swap="beforeend show:#int-locations-section:top"
+         data-action="add"
          `;
+		// data-[xxx in this case action]="add" help us attach value to the HTML element - it's a standard html attribute
 		// Replaced w/ main.js event listener
 		// hx-on::before-request="showConfirmationModal()"
 	} else {
 		// If the clicked pic card belongs to 'My Dream Locations' List, send a DELETE req
 		attributes = `
-      hx-delete="/places/${location.id}" 
-      hx-target="closest li"
-      hx-swap="outerHTML"
+         hx-delete="/places/${location.id}" 
+         hx-target="closest li"
+         hx-swap="outerHTML"
+         data-action="remove"
       `;
 		// Replaced w/ main.js event listener
 		// hx-on::before-request="showConfirmationModal()"
