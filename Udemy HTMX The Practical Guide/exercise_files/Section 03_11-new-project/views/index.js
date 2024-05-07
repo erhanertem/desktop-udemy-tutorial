@@ -31,6 +31,7 @@ export default function renderLocationsPage(
 							class="locations"
 							id="suggested-locations"
 							hx-get="/suggested-locations"
+							hx-trigger="every 5s"
 						>
 							${suggestedLocations
 								.map((location) => renderLocation(location))
