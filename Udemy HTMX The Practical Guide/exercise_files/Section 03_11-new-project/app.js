@@ -57,6 +57,7 @@ app.post('/places', (req, res) => {
 		(location) => !INTERESTING_LOCATIONS.includes(location)
 	);
 
+	// Redraw currently suggessted list
 	const suggestedLocations = getSuggestedLocations();
 
 	// --> Perform Out of Band Swaps in POST fetch - Multi Fragment Swap: When adding the item to My Dream Location, we remove it from the Available Locations
