@@ -22,6 +22,11 @@ function showConfirmationModal(event) {
 	document.body.insertAdjacentHTML('beforeend', confirmationModal);
 	// SELECT INSERTED DIALOG MODAL
 	const dialog = document.querySelector('dialog');
+
+	// Handle no btn
+	const noBtn = document.getElementById('action-no');
+	noBtn.addEventListener('click', () => dialog.remove());
+
 	// MAKE DIALOG ELEMENT VISIBLE
 	dialog.showModal(); // showModal() is a built-in function for dialog element
 }
