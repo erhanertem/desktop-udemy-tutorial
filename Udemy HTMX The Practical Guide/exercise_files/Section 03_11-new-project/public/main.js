@@ -1,4 +1,9 @@
 function showConfirmationModal(event) {
+	// GUARD CLAUSE - WE DONT WANT MODAL DISPLAYED INCASE SUGGESTED LOCATIONS ROUTE HIT
+	if (event.detail.path === '/suggested-locations') {
+		return;
+	}
+
 	// Disable default form behaviour
 	event.preventDefault();
 	console.log(event.detail.elt.dataset);

@@ -69,7 +69,7 @@ app.post('/places', (req, res) => {
 			// -> #2.Second Fragment Piece - OOBS
 		}
 
-		<ul id="suggested-locations" class="locations" hx-swap-oob="true">
+		<ul id="suggested-locations" class="locations" hx-swap-oob="innerHTML">
 			${suggestedLocations
 				.map((location) => renderLocation(location))
 				.join('')}
@@ -81,6 +81,18 @@ app.post('/places', (req, res) => {
 				.join('')}
 		</ul>
 	`);
+});
+
+{
+	/* NOTE hx-swap-oob="true" is replaced with "innerHTML" option so that index.js>ul#suggested-locations 's hx-get="/suggested-locations" can replace the content but noit the ul element itself */
+}
+
+app.get('/suggested-locations', (req, res) => {
+	const suggestedLocations = getSuggestedLocations();
+
+	res.send(
+		suggestedLocations.map((location) => renderLocation(location)).join('')
+	);
 });
 
 app.delete('/places/:id', (req, res) => {
