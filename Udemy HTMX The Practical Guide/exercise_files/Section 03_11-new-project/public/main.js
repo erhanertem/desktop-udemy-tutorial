@@ -41,6 +41,6 @@ function showConfirmationModal(event) {
 }
 
 document
-	// beforeRequest do not work with Handling yes btn in the modal so we got to replace it with htmx:confirm event action
+	// VERY IMPORTANT: 'beforeRequest' do not work with Handling yes btn in the modal so we got to replace it with 'htmx:confirm' event action
 	// .addEventListener('htmx:beforeRequest', showConfirmationModal);
 	.addEventListener('htmx:confirm', showConfirmationModal);
