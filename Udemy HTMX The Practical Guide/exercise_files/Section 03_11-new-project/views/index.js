@@ -1,6 +1,7 @@
 import renderLocation from './components/location.js';
 import { html } from '../prettierhtmx.js';
 export default function renderLocationsPage(
+	suggestedLocations,
 	availableLocations,
 	interestingLocations
 ) {
@@ -24,6 +25,14 @@ export default function renderLocationsPage(
 					</p>
 				</header>
 				<main>
+					<section id="suggested-locations-section">
+						<h2>Currently suggested</h2>
+						<ul class="locations" id="suggested-locations">
+							${suggestedLocations
+								.map((location) => renderLocation(location))
+								.join('')}
+						</ul>
+					</section>
 					<section class="locations-category" id="int-locations-section">
 						<h2>My Dream Locations</h2>
 						<ul id="interesting-locations" class="locations">
