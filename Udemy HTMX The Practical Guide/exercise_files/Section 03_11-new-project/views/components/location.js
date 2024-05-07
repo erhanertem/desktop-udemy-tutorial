@@ -14,13 +14,17 @@ export default function renderLocation(
 		   hx-target="#interesting-locations"
 		   hx-swap="beforeend show:#int-locations-section:top"
          `;
+		// Replaced w/ main.js event listener
+		// hx-on::before-request="showConfirmationModal()"
 	} else {
 		// If the clicked pic card belongs to 'My Dream Locations' List, send a DELETE req
 		attributes = `
-			hx-delete="/places/${location.id}" 
-         hx-target="closest li"
-         hx-swap="outerHTML"
-		`;
+      hx-delete="/places/${location.id}" 
+      hx-target="closest li"
+      hx-swap="outerHTML"
+      `;
+		// Replaced w/ main.js event listener
+		// hx-on::before-request="showConfirmationModal()"
 	}
 
 	return html`
