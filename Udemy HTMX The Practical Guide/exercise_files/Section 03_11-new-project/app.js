@@ -57,14 +57,23 @@ app.post('/places', (req, res) => {
 		(location) => !INTERESTING_LOCATIONS.includes(location)
 	);
 
+	const suggestedLocations = getSuggestedLocations();
+
 	// --> Perform Out of Band Swaps in POST fetch - Multi Fragment Swap: When adding the item to My Dream Location, we remove it from the Available Locations
 	// VERY IMPORTANT - hx-swap-oob="true" tells that this portion of code is not part of the targeted replacement that initiated the	post req. hx-swap-oob marked element will find id="available-locations" to	replace itself
 	res.send(html`
 		${
 			// -> #1.First Fragment Piece
-			renderLocation(location, false) // When posting the pic to My Dream Locations contaioner marked w/ hx-target="#interesting-locations" , isAvailableLocationList = false so that we know it belongs to my dream locations.
+			renderLocation(location, false) // When posting the pic to My Dream Locations container marked w/ hx-target="#interesting-locations" , isAvailableLocationList = false so that we know it belongs to my dream locations.
 			// -> #2.Second Fragment Piece - OOBS
 		}
+
+		<ul id="suggested-locations" class="locations" hx-swap-oob="true">
+			${suggestedLocations
+				.map((location) => renderLocation(location))
+				.join('')}
+		</ul>
+
 		<ul id="available-locations" class="locations" hx-swap-oob="true">
 			${availableLocations
 				.map((location) => renderLocation(location))
