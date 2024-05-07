@@ -25,7 +25,16 @@ function showConfirmationModal(event) {
 
 	// Handle no btn
 	const noBtn = document.getElementById('action-no');
-	noBtn.addEventListener('click', () => dialog.remove());
+	noBtn.addEventListener(
+		'click',
+		() => dialog.remove() // Close the dialog
+	);
+	// Handle yes btn
+	const yesBtn = document.getElementById('action-yes');
+	yesBtn.addEventListener('click', () => {
+		event.detail.issueRequest(); // NOTE: issueRequest is given to us by HTMX which compliments htmx:confirm event listener and tells HTMX to go ahead with the INTENDED ACTION while closing the dialog box with the code below - See htmx:comfirm for issueRequest()
+		dialog.remove(); //Close the dialog
+	});
 
 	// MAKE DIALOG ELEMENT VISIBLE
 	dialog.showModal(); // showModal() is a built-in function for dialog element
@@ -33,4 +42,6 @@ function showConfirmationModal(event) {
 
 document
 	.querySelector('li')
-	.addEventListener('htmx:beforeRequest', showConfirmationModal);
+	// beforeRequest do not work with Handling yes btn in the modal so we got to replace it with htmx:confirm event action
+	// .addEventListener('htmx:beforeRequest', showConfirmationModal);
+	.addEventListener('htmx:confirm', showConfirmationModal);
