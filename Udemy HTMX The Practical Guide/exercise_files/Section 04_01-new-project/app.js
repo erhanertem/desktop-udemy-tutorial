@@ -125,34 +125,47 @@ app.post('/login', (req, res) => {
 			</div>
 		`);
 	}
+
+	// Once credentials validated, we redirect to authenticated endpoint
+	// WARNING :  res.redirect('/authenticated'); --> NOT POSSIBLE THIS WAY!!!
+	// -> Prep htmx to respond page redirect in the header
+	res.setHeader('HX-Redirect', '/authenticated');
+	// -> Initiate a redirect w/ the set HX-Redirect headerw embedded within the empty response object
 	res.send();
 });
 
 app.get('/authenticated', (req, res) => {
-	res.send(`
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Learn HTMX</title>
-        <link rel="icon" href="/images/logo.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-          rel="stylesheet"
-        />
-        <link rel="stylesheet" href="/main.css" />
-        <script src="/htmx.js" defer></script>
-      </head>
-      <body>
-        <main>
-          <h1>Authenticated!</h1>
-        </main>
-      </body>
-    </html>
-  `);
+	res.send(html`
+		<!DOCTYPE html>
+		<html lang="en">
+			<head>
+				<meta charset="UTF-8" />
+				<meta
+					name="viewport"
+					content="width=device-width, initial-scale=1.0"
+				/>
+				<title>Learn HTMX</title>
+				<link rel="icon" href="/images/logo.png" />
+				<link rel="preconnect" href="https://fonts.googleapis.com" />
+				<link
+					rel="preconnect"
+					href="https://fonts.gstatic.com"
+					crossorigin="anonymous"
+				/>
+				<link
+					href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+					rel="stylesheet"
+				/>
+				<link rel="stylesheet" href="/main.css" />
+				<script src="/htmx.js" defer></script>
+			</head>
+			<body>
+				<main>
+					<h1>Authenticated!</h1>
+				</main>
+			</body>
+		</html>
+	`);
 });
 
 app.listen(3000);
