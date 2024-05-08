@@ -119,11 +119,23 @@ app.post('/login', (req, res) => {
 			<div id="extra-information">
 				<ul id="form-errors">
 					${Object.keys(errors)
-						.map((key) => `<li>${errors[key]}</li>`)
+						.map((key) => html`<li>${errors[key]}</li>`)
 						.join('')}
 				</ul>
 			</div>
 		`);
+	}
+
+	// Simulate random server-side error
+	// NOTE: WE DO NOT WANT TO DISPALY THIS ERROR MESSAGE @ TARGET hx-target="#extra-information" AS SHOWEN ON THE FORM ELEMENT. SO WE NEED RETARGETTING SPECIFICALLY HERE.
+	if (Math.random() > 0) {
+		res.setHeader('HX-Retarget', '.control'); // Select the first element with 'control' class and override Target to this element.
+		res.setHeader('HX-Reswap', 'beforebegin'); // Place it infront of the 'control' class element.
+		return res.send(
+			html`<p class="error">
+				A server-side error has occured. Please try again.
+			</p>`
+		);
 	}
 
 	// Once credentials validated, we redirect to authenticated endpoint
