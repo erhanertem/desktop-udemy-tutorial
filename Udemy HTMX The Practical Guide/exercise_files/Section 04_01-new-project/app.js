@@ -34,7 +34,12 @@ app.get('/', (req, res) => {
 			</head>
 			<body>
 				<main>
-					<form hx-post="/login" hx-headers='{"x-csrf-token": "abc"}'>
+					<form
+						hx-post="/login"
+						hx-headers='{"x-csrf-token": "abc"}'
+						hx-target="#extra-information"
+						hx-sync="this:replace"
+					>
 						<div>
 							<img src="/images/auth-icon.jpg" alt="A lock icon" />
 						</div>
@@ -66,6 +71,7 @@ app.get('/', (req, res) => {
 							/>
 							<p class="error"></p>
 						</div>
+						<div id="extra-information"></div>
 						<p>
 							<button type="submit">Login</button>
 						</p>
@@ -95,28 +101,29 @@ app.post('/validate', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-	const email = req.body.email;
+	const email = req.body.email_;
+	const password = req.body.pwd_;
 
 	let errors = {};
 
 	if (!email || !email.includes('@')) {
-		errors.email = 'Please enter a valid email address.';
+		errors.email_ = 'Please enter a valid email address.';
 	}
 
 	if (!password || password.trim().length < 8) {
-		errors.password = 'Password must be at least 8 characters long.';
+		errors.pwd_ = 'Password must be at least 8 characters long.';
 	}
 
 	if (Object.keys(errors).length > 0) {
-		res.send(`
-      <div id="extra-information">
-        <ul id="form-errors">
-          ${Object.keys(errors)
-					.map((key) => `<li>${errors[key]}</li>`)
-					.join('')}
-        </ul>
-      </div>
-    `);
+		res.send(html`
+			<div id="extra-information">
+				<ul id="form-errors">
+					${Object.keys(errors)
+						.map((key) => `<li>${errors[key]}</li>`)
+						.join('')}
+				</ul>
+			</div>
+		`);
 	}
 	res.send();
 });
