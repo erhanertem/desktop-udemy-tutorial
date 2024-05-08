@@ -41,22 +41,24 @@ app.get('/', (req, res) => {
 						<div class="control">
 							<label for="email">Email</label>
 							<input
+								type="email"
 								hx-post="/validate"
 								hx-target="next p"
-								type="email"
-								name="email"
+								hx-params="email_"
+								name="email_"
 								id="email"
 							/>
 							<p class="error"></p>
 						</div>
 						<div class="control">
-							<label for="password">Password</label>
+							<label for="pwd">Password</label>
 							<input
+								type="password"
 								hx-post="/validate"
 								hx-target="next p"
-								type="password"
-								name="password"
-								id="password"
+								hx-params="pwd_"
+								name="pwd_"
+								id="pwd"
 							/>
 							<p class="error"></p>
 						</div>
@@ -71,17 +73,18 @@ app.get('/', (req, res) => {
 });
 
 app.post('/validate', (req, res) => {
-	if ('email' in req.body && !req.body.email.includes('@')) {
+	console.log(req.body);
+	if ('email_' in req.body && !req.body.email_.includes('@')) {
 		return res.send(`
       E-Mail address is invalid.
     `);
-	} else if ('email' in req.body && req.body.email.includes('@')) {
+	} else if ('email_' in req.body && req.body.email_.includes('@')) {
 		return res.send();
-	} else if ('password' in req.body && req.body.password.trim().length < 8) {
+	} else if ('pwd_' in req.body && req.body.pwd_.trim().length < 8) {
 		return res.send(`
       Password must be at least 8 characters long.
     `);
-	} else if ('password' in req.body && req.body.password.trim().length >= 8) {
+	} else if ('pwd_' in req.body && req.body.pwd_.trim().length >= 8) {
 		return res.send();
 	}
 	res.send();
@@ -89,7 +92,6 @@ app.post('/validate', (req, res) => {
 
 app.post('/login', (req, res) => {
 	const email = req.body.email;
-	const password = req.body.password;
 
 	let errors = {};
 
