@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 				<link rel="stylesheet" href="/main.css" />
 				<script src="/htmx.js" defer></script>
 			</head>
-			<body>
+			<body hx-boost="true">
 				<header id="main-header">
 					<div id="main-title">
 						<a href="/">
@@ -33,11 +33,7 @@ app.get('/', (req, res) => {
 						${PRODUCTS.map(
 							(product) => html`
 								<article class="product">
-									<a
-										hx-get="/products/${product.id}"
-										hx-target="body"
-										hx-push-url="/products/${product.id}"
-									>
+									<a href="/products/${product.id}">
 										<img
 											src="/images/${product.image}"
 											alt="${product.title}"
