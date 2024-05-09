@@ -33,7 +33,11 @@ app.get('/', (req, res) => {
 						${PRODUCTS.map(
 							(product) => html`
 								<article class="product">
-									<a hx-get="/products/${product.id}" hx-target="body">
+									<a
+										hx-get="/products/${product.id}"
+										hx-target="body"
+										hx-push-url="/products/${product.id}"
+									>
 										<img
 											src="/images/${product.image}"
 											alt="${product.title}"
