@@ -1,36 +1,37 @@
 import express from 'express';
 
+import { html } from './prettierhtmx.js';
 import PRODUCTS from './products.js';
 
 const app = express();
 
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: false })); 
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Shop</title>
-        <link rel="stylesheet" href="/main.css">
-        <script src="/htmx.js" defer></script>
-      </head>
-      <body>
-        <header id="main-header">
-          <div id="main-title">
-            <a href="/">
-              <img src="/logo.png" alt="Elegant model" />
-              <h1>Elegant Clothing</h1>
-            </a>
-          </div>
-        </header>
-        <main id="shop">
-          <h2>Elegant Clothing For Everyone</h2>
+	res.send(html`
+		<!DOCTYPE html>
+		<html>
+			<head>
+				<title>Shop</title>
+				<link rel="stylesheet" href="/main.css" />
+				<script src="/htmx.js" defer></script>
+			</head>
+			<body>
+				<header id="main-header">
+					<div id="main-title">
+						<a href="/">
+							<img src="/logo.png" alt="Elegant model" />
+							<h1>Elegant Clothing</h1>
+						</a>
+					</div>
+				</header>
+				<main id="shop">
+					<h2>Elegant Clothing For Everyone</h2>
 
-          <ul id="products">
-            ${PRODUCTS.map(
-              (product) => `
+					<ul id="products">
+						${PRODUCTS.map(
+							(product) => `
               <article class="product">
                 <a href="/products/${product.id}">
                   <img src="/images/${product.image}" alt="${product.title}" />
@@ -41,18 +42,18 @@ app.get('/', (req, res) => {
                 </a>
               </article>
             `
-            ).join('')}
-          </ul>
-        </main>
-      </body>
-    </html>
-  `);
+						).join('')}
+					</ul>
+				</main>
+			</body>
+		</html>
+	`);
 });
 
 app.get('/products/:id', (req, res) => {
-  const product = PRODUCTS.find((product) => product.id === req.params.id);
+	const product = PRODUCTS.find((product) => product.id === req.params.id);
 
-  res.send(`
+	res.send(`
     <!DOCTYPE html>
     <html>
       <head>
