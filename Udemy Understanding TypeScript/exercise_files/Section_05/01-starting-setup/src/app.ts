@@ -110,3 +110,21 @@ console.log(employee1, Department.fiscalYear);
 // accounting.printEmployeeInformation();
 // const accountingCopy = { name: 'Copy', describe: accounting.describe };
 // accountingCopy.describe();
+
+const profile = {
+	name_: 'alex',
+	age: 20,
+	coords: {
+		lat: 0,
+		lng: 15,
+	},
+	setAge(age: number): void {
+		this.age = age;
+	},
+};
+const { age, name_ }: { age: number; name_: string } = profile;
+console.log('✅', age);
+const {
+	coords: { lat, lng },
+}: { coords: { lat: number; lng: number } } = profile;
+console.log('✅', lat, lng);
