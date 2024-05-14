@@ -217,3 +217,36 @@
 // const userInput = '';
 // const storedData = userInput ?? 'DEFAULT VALUE';
 // console.log(storedData);
+
+// > Type Predicating
+// -> w/ primitive types
+let variable: any = 'hello';
+
+if (isString(variable)) {
+	console.log('The given variable is type of String');
+}
+
+function isString(variable: any): variable is string {
+	return typeof variable === 'string';
+}
+console.log(isString(12));
+// // -> w/Custom types
+// interface Cat {
+// 	name: string;
+// 	numLives: number;
+// }
+// interface Dog {
+// 	name: string;
+// 	breed: string;
+// }
+
+// function isCat(animal: Cat | Dog): animal is Cat {
+// 	return (animal as Cat).numLives !== undefined;
+// }
+
+// function makeNoise(animal: Cat | Dog): string {
+// 	if (isCat(animal)) {
+// 		return 'Meoww';
+// 	}
+// 	return '';
+// }
