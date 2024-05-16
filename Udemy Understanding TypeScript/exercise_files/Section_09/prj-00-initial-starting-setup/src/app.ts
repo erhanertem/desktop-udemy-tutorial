@@ -1,3 +1,21 @@
+// autobind Decorator
+function Autobind(
+	_target: any,
+	_fnName: string,
+	descriptor: PropertyDescriptor
+) {
+	const originalMethod = descriptor.value;
+	const adjDescriptor: PropertyDescriptor = {
+		configurable: true,
+		get() {
+			const boundFn = originalMethod.bind(this);
+			return boundFn;
+		},
+	};
+	return adjDescriptor;
+}
+
+// ProjectInput Class
 class ProjectInput {
 	templateElement: HTMLTemplateElement;
 	hostElement: HTMLDivElement;
@@ -40,6 +58,8 @@ class ProjectInput {
 		this.attach();
 	}
 
+	// Decorator that binds behind the scene
+	@Autobind
 	private submitHandler(event: Event) {
 		// Disable default form behaviour
 		event.preventDefault();
@@ -48,7 +68,8 @@ class ProjectInput {
 
 	// Listen for the submit event on the FORM element
 	private configure() {
-		this.element.addEventListener('submit', this.submitHandler.bind(this));
+		this.element.addEventListener('submit', this.submitHandler);
+		// this.element.addEventListener('submit', this.submitHandler.bind(this));
 	}
 
 	// Private method for copying the form HTML inside the div container
