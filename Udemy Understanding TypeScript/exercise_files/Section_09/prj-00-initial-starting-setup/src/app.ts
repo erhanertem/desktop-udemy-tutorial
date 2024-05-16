@@ -17,6 +17,9 @@ class ProjectInput {
 		);
 		// Select form element inside the copied fragment
 		this.element = importedNode.firstElementChild as HTMLFormElement;
+		// Add custom CSS to the element
+		this.element.id = 'user-input';
+
 		// Call the private method that inserts a copy of the selected form element inside the pointed container div element
 		this.attach();
 	}
