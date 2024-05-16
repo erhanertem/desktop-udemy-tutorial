@@ -58,12 +58,41 @@ class ProjectInput {
 		this.attach();
 	}
 
+	private clearInputs() {
+		this.titleInputElement.value = '';
+		this.descriptionInputElement.value = '';
+		this.peopleInputElement.value = '';
+	}
+
+	// Gathers User inputs for title, description and people fields and expected to return a tuple
+	private gatherUserInput(): [string, string, number] | void {
+		const enteredTitle = this.titleInputElement.value;
+		const enteredDescription = this.descriptionInputElement.value;
+		const enteredPeople = this.peopleInputElement.value;
+
+		if (
+			enteredTitle.trim().length === 0 ||
+			enteredDescription.trim().length === 0 ||
+			enteredPeople.trim().length === 0
+		) {
+			alert('Invalid input, please try again!');
+			return; //Returns undefined so it be addressed @ return type
+		} else {
+			return [enteredTitle, enteredDescription, Number(enteredPeople)];
+		}
+	}
+
 	// Decorator that binds behind the scene
 	@Autobind
 	private submitHandler(event: Event) {
 		// Disable default form behaviour
 		event.preventDefault();
-		console.log(this.titleInputElement.value);
+		const userInput = this.gatherUserInput();
+		if (Array.isArray(userInput)) {
+			const [title, desc, people] = userInput;
+			console.log(title, desc, people);
+			this.clearInputs();
+		}
 	}
 
 	// Listen for the submit event on the FORM element
