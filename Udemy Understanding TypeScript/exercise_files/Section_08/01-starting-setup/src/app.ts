@@ -186,40 +186,56 @@ interface ValidatorConfig {
 const registeredValidators: ValidatorConfig = {};
 
 function Required(target: any, propName: string) {
+	// console.log(target); // target.constructor.name corresponds to Course as target yields class where this decorator is called from
+	// Projected structure => registeredValidators : {  Course: {'postive', 'required'} }
 	registeredValidators[target.constructor.name] = {
+		// Keep already registered items and overwrite as necessary w/ the next index assigment
 		...registeredValidators[target.constructor.name],
 		// Dynamic assignment of object key/value pairs
 		[propName]: [
+			// Extracts all additional validators - does not check repitative validators
 			...(registeredValidators[target.constructor.name]?.[propName] ?? []),
 			'required',
 		],
 	};
 }
 function PositiveNumber(target: any, propName: string) {
+	// console.log(target); // target.constructor.name corresponds to Course as target yields class where this decorator is called from
+	// Projected structure => registeredValidators : {  Course: {'postive', 'required'} }
 	registeredValidators[target.constructor.name] = {
+		// Keep already registered items and overwrite as necessary w/ the next index assigment
 		...registeredValidators[target.constructor.name],
 		// Dynamic assignment of object key/value pairs
 		[propName]: [
+			// Extracts all additional validators - does not check repitative validators
 			...(registeredValidators[target.constructor.name]?.[propName] ?? []),
 			'positive',
 		],
 	};
 }
 function validate(obj: any) {
+	// Take in object as argument, Object's name is Course.
+	// Lookup Course index inside registeredValidators object.
 	const objValidatorConfig = registeredValidators[obj.constructor.name];
+	console.log('⚠️objValidatorConfig :', objValidatorConfig);
 	if (!objValidatorConfig) {
 		return true;
 	}
+	// Common truhty check bridging variable
 	let isValid = true;
+	// Look up every property
 	for (const prop in objValidatorConfig) {
-		console.log(prop);
+		console.log('$$', prop);
+		// Look up every validator inside the validagtor list provided for the property
 		for (const validator of objValidatorConfig[prop]) {
 			switch (validator) {
 				case 'required':
 					isValid = isValid && !!obj[prop]; //test truthiness
+					console.log('!!obj[prop] :', !!obj[prop]);
 					break;
 				case 'positive':
 					isValid = isValid && obj[prop] > 0;
+					console.log('obj[prop] > 0 :', obj[prop] > 0);
 					break;
 				default:
 					console.log('There is no such validator');
@@ -252,7 +268,6 @@ courseForm.addEventListener('submit', (e) => {
 
 	const createdCourse = new Course(title, price);
 
-	console.log('✳️registeredValidators :', registeredValidators);
 	if (!validate(createdCourse)) {
 		alert('Invalid input, please try again!');
 		return;
