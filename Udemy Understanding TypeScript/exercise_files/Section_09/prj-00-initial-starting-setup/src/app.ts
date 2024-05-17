@@ -64,7 +64,47 @@ function Autobind(
 	return adjDescriptor;
 }
 
-// ProjectInput Class
+// ->ProjectList Class
+class ProjectList {
+	templateElement: HTMLTemplateElement;
+	hostElement: HTMLDivElement;
+	// NOTE <section> element do not have corresponding type in TS, so we go by generic type
+	element: HTMLElement;
+
+	constructor(private type: 'active' | 'finished') {
+		// Select template fragment
+		this.templateElement = document.getElementById(
+			'project-list'
+		)! as HTMLTemplateElement;
+		//Select container
+		this.hostElement = document.getElementById('app')! as HTMLDivElement;
+
+		// Make a copy of the selected template fragment to be used later
+		const importedNode = document.importNode(
+			this.templateElement.content,
+			true
+		);
+		// Select section element inside the copied fragment
+		this.element = importedNode.firstElementChild as HTMLElement;
+		// Add custom CSS to the section element
+		this.element.id = `${this.type}-projects`;
+		this.attach();
+		this.renderContent();
+	}
+
+	private renderContent() {
+		const listId = `${this.type}-projects-list`;
+		this.element.querySelector('ul')!.id = listId;
+		this.element.querySelector('h2')!.textContent =
+			this.type.toUpperCase() + ' PROJECTS';
+	}
+
+	// Private method for copying the section HTML inside the div container
+	private attach() {
+		this.hostElement.insertAdjacentElement('beforeend', this.element);
+	}
+}
+// ->ProjectInput Class
 class ProjectInput {
 	templateElement: HTMLTemplateElement;
 	hostElement: HTMLDivElement;
@@ -74,10 +114,11 @@ class ProjectInput {
 	peopleInputElement: HTMLInputElement;
 
 	constructor() {
-		// Select container and template fragment
+		// Select template fragment
 		this.templateElement = document.getElementById(
 			'project-input'
 		)! as HTMLTemplateElement;
+		//Select container
 		this.hostElement = document.getElementById('app')! as HTMLDivElement;
 
 		// Make a copy of the selected template fragment to be used later
@@ -191,3 +232,5 @@ class ProjectInput {
 }
 
 const prjInput = new ProjectInput();
+const activePrjList = new ProjectList('active');
+const finishedPrjList = new ProjectList('finished');
