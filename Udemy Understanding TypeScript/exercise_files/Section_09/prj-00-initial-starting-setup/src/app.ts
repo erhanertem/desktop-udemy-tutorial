@@ -50,7 +50,7 @@ function validate(validatableInput: Validatable) {
 function Autobind(
 	_target: any,
 	_fnName: string,
-	descriptor: PropertyDescriptor
+	descriptor: PropertyDescriptor,
 ) {
 	const originalMethod = descriptor.value;
 	const adjDescriptor: PropertyDescriptor = {
@@ -63,13 +63,31 @@ function Autobind(
 	return adjDescriptor;
 }
 
+// Project Type
+enum ProjectStatus {
+	Active,
+	Finished,
+}
+
+class Project {
+	constructor(
+		public id: string,
+		public title: string,
+		public description: string,
+		public people: number,
+		public status: ProjectStatus,
+	) {}
+}
+
+type Listener = (items: Project[]) => void;
+
 // --> Project State Management Class - Singleton Class (Unique not instantiated more than once!)
 // Keeps track of registered projects, event listeners as well as registering them.
 class ProjectState {
 	// Holds array of event listeners
-	private listeners: any[] = [];
+	private listeners: Listener[] = [];
 	// Holds array of projects
-	private projects: any[] = [];
+	private projects: Project[] = [];
 	// Holds reference to Project state object for singularity check
 	private static instance: ProjectState;
 	// Private constructor for Singleton class creation
@@ -85,23 +103,25 @@ class ProjectState {
 	}
 
 	// ->Add Event Listener
-	addListener(listenerFn: Function) {
+	addListener(listenerFn: Listener) {
 		this.listeners.push(listenerFn);
 	}
 	// ->Add Project
 	addProject(title: string, description: string, numOfPeople: number) {
-		const newProject = {
-			id: Math.random().toString(),
-			title: title,
-			description: description,
-			people: numOfPeople,
-		};
+		const newProject = new Project(
+			Math.random().toString(),
+			title,
+			description,
+			numOfPeople,
+			ProjectStatus.Active,
+		);
+
 		this.projects.push(newProject);
 		// WHENEVER A NEW PROJECT IS CREATED, WE CALL FOR ALL LISTENER FUNCTIONS
 		for (const listenerFn of this.listeners) {
 			listenerFn(
 				// EVERY LISTENER GETS A BRAND NEW COPY OF THE PROJECTS ARRAY
-				this.projects.slice()
+				this.projects.slice(),
 			);
 		}
 	}
@@ -112,12 +132,12 @@ class ProjectList {
 	templateElement: HTMLTemplateElement;
 	hostElement: HTMLDivElement; // Target element is still the render container
 	element: HTMLElement; // NOTE <section> element do not have corresponding type in TS, so we go by generic type
-	assignedProjects: any[] = []; // Depending on the context, either a collection of active or finished projects
+	assignedProjects: Project[] = []; // Depending on the context, either a collection of active or finished projects
 
 	constructor(private type: 'active' | 'finished') {
 		// Select template fragment for creating active|finsihed projects list
 		this.templateElement = document.getElementById(
-			'project-list'
+			'project-list',
 		)! as HTMLTemplateElement;
 		//Select container
 		this.hostElement = document.getElementById('app')! as HTMLDivElement;
@@ -125,7 +145,7 @@ class ProjectList {
 		// Make a copy of the selected template fragment to be used later
 		const importedNode = document.importNode(
 			this.templateElement.content,
-			true
+			true,
 		);
 		// Select section element inside the copied fragment
 		this.element = importedNode.firstElementChild as HTMLElement;
@@ -136,10 +156,10 @@ class ProjectList {
 		// NOTE: When first run, this would not run. RenderContent will be run ONCE and prepare the HTML skeleton in which these project lists will be dumped in. So it may look awkward at first sight.
 		projectState.addListener(
 			// LISTENER IS A FUNCTION
-			(projects: any[]) => {
+			(projects: Project[]) => {
 				this.assignedProjects = projects;
 				this.renderProjects();
-			}
+			},
 		);
 
 		// Insert <section> into the div container
@@ -151,7 +171,7 @@ class ProjectList {
 	// Create HTML project <li> elements inside active|finished projects
 	private renderProjects() {
 		const listEl = document.getElementById(
-			`${this.type}-projects-list`
+			`${this.type}-projects-list`,
 		)! as HTMLUListElement;
 		for (const prjItem of this.assignedProjects) {
 			const listItem = document.createElement('li');
@@ -187,7 +207,7 @@ class ProjectInput {
 	constructor() {
 		// Select template fragment
 		this.templateElement = document.getElementById(
-			'project-input'
+			'project-input',
 		)! as HTMLTemplateElement;
 		// Select Render Container
 		this.hostElement = document.getElementById('app')! as HTMLDivElement;
@@ -195,7 +215,7 @@ class ProjectInput {
 		// Make a copy of the selected template fragment to be used later
 		const importedNode = document.importNode(
 			this.templateElement.content, // Get access to HTML body within the <template> elements
-			true // Enable deep nested content copy
+			true, // Enable deep nested content copy
 		);
 		// Select form element inside the copied fragment
 		this.element = importedNode.firstElementChild as HTMLFormElement;
@@ -204,13 +224,13 @@ class ProjectInput {
 
 		// Selects for all input fields with their respective ids in the FORM element
 		this.titleInputElement = this.element.querySelector(
-			'#title'
+			'#title',
 		) as HTMLInputElement;
 		this.descriptionInputElement = this.element.querySelector(
-			'#description'
+			'#description',
 		) as HTMLInputElement;
 		this.peopleInputElement = this.element.querySelector(
-			'#people'
+			'#people',
 		) as HTMLInputElement;
 
 		// Listen for Form Submission
