@@ -79,19 +79,27 @@ class Project {
 	) {}
 }
 
-type Listener = (items: Project[]) => void;
-
 // --> Project State Management Class - Singleton Class (Unique not instantiated more than once!)
+type Listener<T> = (items: T[]) => void;
+
+// -> State Base Class
+class State<T> {
+	protected listeners: Listener<T>[] = [];
+	addListener(listenerFn: Listener<T>) {
+		this.listeners.push(listenerFn);
+	}
+}
+
 // Keeps track of registered projects, event listeners as well as registering them.
-class ProjectState {
-	// Holds array of event listeners
-	private listeners: Listener[] = [];
+class ProjectState extends State<Project> {
 	// Holds array of projects
 	private projects: Project[] = [];
 	// Holds reference to Project state object for singularity check
 	private static instance: ProjectState;
 	// Private constructor for Singleton class creation
-	private constructor() {}
+	private constructor() {
+		super();
+	}
 	// static property executes right away with the class creation
 	// NOTE - Disallow instatiation more than once
 	static getSingleInstance() {
@@ -102,10 +110,6 @@ class ProjectState {
 		return this.instance;
 	}
 
-	// ->Add Event Listener
-	addListener(listenerFn: Listener) {
-		this.listeners.push(listenerFn);
-	}
 	// ->Add Project
 	addProject(title: string, description: string, numOfPeople: number) {
 		const newProject = new Project(
@@ -127,20 +131,25 @@ class ProjectState {
 	}
 }
 
-// -->ProjectList Class - Flexible active or finished projects list creator
-class ProjectList {
+// --> Component Base Class
+// NOTE: Marked as Abstract so that it should never be directly instantiated and only used for inheritance
+abstract class Component<T extends HTMLElement, U extends HTMLElement> {
 	templateElement: HTMLTemplateElement;
-	hostElement: HTMLDivElement; // Target element is still the render container
-	element: HTMLElement; // NOTE <section> element do not have corresponding type in TS, so we go by generic type
-	assignedProjects: Project[] = []; // Depending on the context, either a collection of active or finished projects
+	hostElement: T;
+	element: U;
 
-	constructor(private type: 'active' | 'finished') {
+	constructor(
+		templateId: string, // Template that holds the HTML to be copied over
+		hostElementId: string, //Hosting container in the DOM
+		newElementId?: string, // Assign Id for the copied over stuff
+		insertAtStart?: boolean,
+	) {
 		// Select template fragment for creating active|finsihed projects list
 		this.templateElement = document.getElementById(
-			'project-list',
+			templateId,
 		)! as HTMLTemplateElement;
 		//Select container
-		this.hostElement = document.getElementById('app')! as HTMLDivElement;
+		this.hostElement = document.getElementById(hostElementId)! as T;
 
 		// Make a copy of the selected template fragment to be used later
 		const importedNode = document.importNode(
@@ -148,30 +157,39 @@ class ProjectList {
 			true,
 		);
 		// Select section element inside the copied fragment
-		this.element = importedNode.firstElementChild as HTMLElement;
-		// Add custom CSS to the section elements of active|finished projects lists
-		this.element.id = `${this.type}-projects`;
+		this.element = importedNode.firstElementChild as U;
+
+		if (newElementId) {
+			// Add custom CSS to the section elements of active|finished projects lists
+			this.element.id = newElementId;
+		}
+
+		this.attachToDivContainer(insertAtStart as boolean);
+	}
+
+	// Private method for copying the form HTML inside the div container
+	private attachToDivContainer(insertAtStart: boolean) {
+		this.hostElement.insertAdjacentElement(
+			insertAtStart ? 'afterbegin' : 'beforeend',
+			this.element,
+		);
+	}
+
+	// NOTE: Abstract marked functions needs to be deliniated further by the classes inheriting this abstract class
+	protected abstract configure(): void;
+	protected abstract renderContent?(): void;
+}
+
+// -->ProjectList Class - Flexible active or finished projects list creator
+class ProjectList extends Component<HTMLDivElement, HTMLElement> {
+	assignedProjects: Project[] = []; // Depending on the context, either a collection of active or finished projects
+
+	constructor(private type: 'active' | 'finished') {
+		super('project-list', 'app', `${type}-projects`, false);
 
 		// Before rendering elements(projects), register event listeners
 		// NOTE: When first run, this would not run. RenderContent will be run ONCE and prepare the HTML skeleton in which these project lists will be dumped in. So it may look awkward at first sight.
-		projectState.addListener(
-			// LISTENER IS A FUNCTION
-			(projects: Project[]) => {
-				// Filter out type not belonging to the current type
-				const relevantProjects = projects.filter((prj) => {
-					if (this.type === 'active') {
-						return prj.status === ProjectStatus.Active;
-					}
-					return prj.status === ProjectStatus.Finished;
-				});
-				this.assignedProjects = relevantProjects;
-				// Render filtered out project
-				this.renderProjects();
-			},
-		);
-
-		// Insert <section> into the div container
-		this.attachToDivContainer();
+		this.configure();
 		// Render active/finished projects <section></section>
 		this.renderContent();
 	}
@@ -191,7 +209,25 @@ class ProjectList {
 		}
 	}
 
-	private renderContent() {
+	protected configure() {
+		projectState.addListener(
+			// LISTENER IS A FUNCTION
+			(projects: Project[]) => {
+				// Filter out type not belonging to the current type
+				const relevantProjects = projects.filter((prj) => {
+					if (this.type === 'active') {
+						return prj.status === ProjectStatus.Active;
+					}
+					return prj.status === ProjectStatus.Finished;
+				});
+				this.assignedProjects = relevantProjects;
+				// Render filtered out project
+				this.renderProjects();
+			},
+		);
+	}
+
+	protected renderContent() {
 		// Provide <ul id="active-projects-list"></ul> like id on ul tag element respective of the type
 		const listId = `${this.type}-projects-list`;
 		this.element.querySelector('ul')!.id = listId;
@@ -199,39 +235,15 @@ class ProjectList {
 		this.element.querySelector('h2')!.textContent =
 			this.type.toUpperCase() + ' PROJECTS';
 	}
-
-	// Private method for copying the section HTML inside the div container
-	private attachToDivContainer() {
-		this.hostElement.insertAdjacentElement('beforeend', this.element);
-	}
 }
 // -->ProjectInput Class: Furnishes the Form Element
-class ProjectInput {
-	templateElement: HTMLTemplateElement;
-	hostElement: HTMLDivElement;
-	element: HTMLFormElement;
-
+class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
 	titleInputElement: HTMLInputElement;
 	descriptionInputElement: HTMLInputElement;
 	peopleInputElement: HTMLInputElement;
 
 	constructor() {
-		// Select template fragment
-		this.templateElement = document.getElementById(
-			'project-input',
-		)! as HTMLTemplateElement;
-		// Select Render Container
-		this.hostElement = document.getElementById('app')! as HTMLDivElement;
-
-		// Make a copy of the selected template fragment to be used later
-		const importedNode = document.importNode(
-			this.templateElement.content, // Get access to HTML body within the <template> elements
-			true, // Enable deep nested content copy
-		);
-		// Select form element inside the copied fragment
-		this.element = importedNode.firstElementChild as HTMLFormElement;
-		// Add custom CSS to the FORM element
-		this.element.id = 'user-input';
+		super('project-input', 'app', 'user-input', true);
 
 		// Selects for all input fields with their respective ids in the FORM element
 		this.titleInputElement = this.element.querySelector(
@@ -245,15 +257,7 @@ class ProjectInput {
 		) as HTMLInputElement;
 
 		// Listen for Form Submission
-		this.submitFormListener();
-		// Call the private method that inserts a copy of the selected form element inside the pointed container div element
-		this.attachToDivContainer();
-	}
-
-	// ->Locate form into the DOM
-	// Private method for copying the form HTML inside the div container
-	private attachToDivContainer() {
-		this.hostElement.insertAdjacentElement('afterbegin', this.element);
+		this.configure();
 	}
 
 	// ->Submit EventListener
@@ -274,11 +278,14 @@ class ProjectInput {
 		}
 	}
 	// Listen for the submit event on the FORM element
-	private submitFormListener() {
+	protected configure() {
 		this.element.addEventListener('submit', this.submitHandler);
 		// NOTE: Opted to go for a bind decorator for submithandler
 		// this.element.addEventListener('submit', this.submitHandler.bind(this));
 	}
+
+	// protected renderContent(): void {}
+	protected renderContent: undefined;
 
 	// ->Gather user input from the form
 	private clearInputs() {
