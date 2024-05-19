@@ -135,6 +135,19 @@ class ProjectState extends State<Project> {
 		);
 
 		this.projects.push(newProject);
+		this.updateListeners();
+	}
+
+	// ->Move Project - switches project states after drag and drop
+	moveProject(projectId: string, newStatus: ProjectStatus) {
+		const project = this.projects.find((prj) => prj.id === projectId);
+		if (project) {
+			project.status = newStatus;
+			this.updateListeners();
+		}
+	}
+
+	private updateListeners() {
 		// WHENEVER A NEW PROJECT IS CREATED, WE CALL FOR ALL LISTENER FUNCTIONS
 		for (const listenerFn of this.listeners) {
 			listenerFn(
@@ -220,6 +233,8 @@ class ProjectItem
 	@Autobind
 	dragStartHandler(event: DragEvent) {
 		console.log(event);
+		event.dataTransfer!.setData('text/plain', this.project.id);
+		event.dataTransfer!.effectAllowed = 'move';
 	}
 	@Autobind
 	dragEndHandler(_event: DragEvent) {
@@ -239,7 +254,10 @@ class ProjectItem
 }
 
 // --> ProjectList Class - Flexible active or finished projects list creator
-class ProjectList extends Component<HTMLDivElement, HTMLElement> {
+class ProjectList
+	extends Component<HTMLDivElement, HTMLElement>
+	implements DragTarget
+{
 	assignedProjects: Project[] = []; // Depending on the context, either a collection of active or finished projects
 
 	constructor(private type: 'active' | 'finished') {
@@ -252,20 +270,35 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
 		this.renderContent();
 	}
 
-	// Create HTML project <li> elements inside active|finished projects
-	private renderProjects() {
-		const listEl = document.getElementById(
-			`${this.type}-projects-list`,
-		)! as HTMLUListElement;
-		// Reset HTML content
-		listEl.innerHTML = '';
-		// Add HTML content
-		for (const prjItem of this.assignedProjects) {
-			new ProjectItem(this.element.querySelector('ul')!.id, prjItem);
+	@Autobind
+	dragOverHandler(event: DragEvent) {
+		if (event.dataTransfer && event.dataTransfer.types[0] === 'text/plain') {
+			event.preventDefault();
+			const listEl = this.element.querySelector('ul')!;
+			listEl.classList.add('droppable');
 		}
+	}
+	@Autobind
+	dragLeaveHandler(event: DragEvent) {
+		event.preventDefault();
+		const listEl = this.element.querySelector('ul')!;
+		listEl.classList.remove('droppable');
+	}
+	@Autobind
+	dropHandler(event: DragEvent) {
+		event.preventDefault();
+		const prjId = event.dataTransfer!.getData('text/plain');
+		projectState.moveProject(
+			prjId,
+			this.type === 'active' ? ProjectStatus.Active : ProjectStatus.Finished,
+		);
 	}
 
 	protected configure() {
+		this.element.addEventListener('dragover', this.dragOverHandler);
+		this.element.addEventListener('dragleave', this.dragLeaveHandler);
+		this.element.addEventListener('drop', this.dropHandler);
+
 		projectState.addListener(
 			// LISTENER IS A FUNCTION
 			(projects: Project[]) => {
@@ -290,6 +323,19 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
 		// Provide headline text for the rendered list
 		this.element.querySelector('h2')!.textContent =
 			this.type.toUpperCase() + ' PROJECTS';
+	}
+
+	// Create HTML project <li> elements inside active|finished projects
+	private renderProjects() {
+		const listEl = document.getElementById(
+			`${this.type}-projects-list`,
+		)! as HTMLUListElement;
+		// Reset HTML content
+		listEl.innerHTML = '';
+		// Add HTML content
+		for (const prjItem of this.assignedProjects) {
+			new ProjectItem(this.element.querySelector('ul')!.id, prjItem);
+		}
 	}
 }
 // -->ProjectInput Class: Furnishes the Form Element
