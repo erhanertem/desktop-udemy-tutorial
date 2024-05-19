@@ -180,7 +180,28 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
 	protected abstract renderContent?(): void;
 }
 
-// -->ProjectList Class - Flexible active or finished projects list creator
+// --> Project Item Class
+class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
+	private project: Project;
+
+	constructor(hostId: string, project: Project) {
+		super('single-project', hostId, project.id, false);
+		this.project = project;
+
+		this.configure();
+		this.renderContent();
+	}
+
+	protected configure() {}
+	protected renderContent() {
+		this.element.querySelector('h2')!.textContent = this.project.title;
+		this.element.querySelector('h3')!.textContent =
+			this.project.people.toString();
+		this.element.querySelector('p')!.textContent = this.project.description;
+	}
+}
+
+// --> ProjectList Class - Flexible active or finished projects list creator
 class ProjectList extends Component<HTMLDivElement, HTMLElement> {
 	assignedProjects: Project[] = []; // Depending on the context, either a collection of active or finished projects
 
@@ -203,9 +224,7 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
 		listEl.innerHTML = '';
 		// Add HTML content
 		for (const prjItem of this.assignedProjects) {
-			const listItem = document.createElement('li');
-			listItem.textContent = prjItem.title;
-			listEl.appendChild(listItem);
+			new ProjectItem(this.element.querySelector('ul')!.id, prjItem);
 		}
 	}
 
