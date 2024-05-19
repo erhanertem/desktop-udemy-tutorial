@@ -88,10 +88,15 @@ button:active {
 }
 
 .projects li {
+	background: white;
 	box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.26);
 	padding: 1rem;
 	margin: 1rem;
-	background: white;
+}
+
+/* Avoids flickering */
+.projects li > * {
+	pointer-events: none;
 }
 
 .projects li h2 {
