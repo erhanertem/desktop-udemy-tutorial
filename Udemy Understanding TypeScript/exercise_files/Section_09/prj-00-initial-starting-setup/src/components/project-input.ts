@@ -1,7 +1,7 @@
-import Component from './base-component.js';
-import { Autobind } from '../decorators/autobind.js';
-import { Validatable, validate } from '../util/validation.js';
-import { projectState } from '../state/project.js';
+import Component from './base-component';
+import { Autobind } from '../decorators/autobind';
+import { Validatable, validate } from '../util/validation';
+import { projectState } from '../state/project';
 
 // -->ProjectInput Class: Furnishes the Form Element
 

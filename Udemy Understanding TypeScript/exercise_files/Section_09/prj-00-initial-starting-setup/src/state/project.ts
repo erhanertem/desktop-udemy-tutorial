@@ -1,4 +1,4 @@
-import { Project, ProjectStatus } from '../models/project.js';
+import { Project, ProjectStatus } from '../models/project';
 
 // --> Project State Management Class - Singleton Class (Unique not instantiated more than once!)
 

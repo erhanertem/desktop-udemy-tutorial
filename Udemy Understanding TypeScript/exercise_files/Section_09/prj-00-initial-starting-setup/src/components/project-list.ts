@@ -1,10 +1,10 @@
-import { ProjectItem } from './project-item.js';
-import Component, { something } from './base-component.js';
-import { Autobind as autobind } from '../decorators/autobind.js';
-import { DragTarget } from '../models/drag-drop.js';
-// import { Project, ProjectStatus } from '../models/project.js';
-import * as ProjectModel from '../models/project.js';
-import { projectState } from '../state/project.js';
+import { ProjectItem } from './project-item';
+import Component, { something } from './base-component';
+import { Autobind as autobind } from '../decorators/autobind';
+import { DragTarget } from '../models/drag-drop';
+// import { Project, ProjectStatus } from '../models/project';
+import * as ProjectModel from '../models/project';
+import { projectState } from '../state/project';
 
 console.log(something);
 // --> ProjectList Class - Flexible active or finished projects list creator
