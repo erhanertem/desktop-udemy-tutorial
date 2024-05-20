@@ -1,12 +1,9 @@
-// Importing
-/// <reference path="components/project-list.ts" />
-/// <reference path="components/project-input.ts" />
+import { ProjectInput } from './components/project-input.js';
+import { ProjectList } from './components/project-list.js';
 
-namespace App {
-	// -> Render project input form
-	new ProjectInput();
-	// -> Render Active Projects List
-	new ProjectList('active');
-	// -> Render AFinished Projects List
-	new ProjectList('finished');
-}
+// -> Render project input form
+new ProjectInput();
+// -> Render Active Projects List
+new ProjectList('active');
+// -> Render AFinished Projects List
+new ProjectList('finished');
