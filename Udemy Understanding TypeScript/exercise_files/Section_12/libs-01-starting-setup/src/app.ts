@@ -2,6 +2,7 @@
 import _ from 'lodash';
 import 'reflect-metadata';
 import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
 
 import { Product } from './product.model';
 
@@ -29,3 +30,13 @@ for (const product of products) {
 
 const p1 = new Product('A Book', 12.99);
 console.log(p1.getInformation());
+
+const newProduct = new Product('', -5.99);
+validate(newProduct).then((errors) => {
+  if (errors.length > 0) {
+    console.log('VALIDATION ERRORS!');
+    console.log(errors);
+  } else {
+    console.log(newProduct.getInformation());
+  }
+});
