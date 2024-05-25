@@ -1,10 +1,12 @@
+import { Sorter } from './Sorter';
+
 class Node {
 	// NOTE LinkedList node comprises of data and the pointer adress - next Node if exists. If its the only node then the next is null.
 	next: Node | null = null;
 	constructor(public data: number) {}
 }
 
-export class LinkedList {
+export class LinkedList extends Sorter {
 	head: Node | null = null;
 
 	get length(): number {
