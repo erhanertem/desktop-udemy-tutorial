@@ -1,6 +1,8 @@
-import { MatchResult } from './MatchResult';
 import { MatchReader } from './MatchReader';
 import { CsvFileReader } from './CsvFileReader';
+import { ConsoleReport } from './reporters/ConsoleReport';
+import { WinsAnalysis } from './analyzers/WinsAnalysis';
+import { Summary } from './Summary';
 
 // > Path #2 Interface-composition solution
 // Create an object that satisfies the 'DataReader' interface
@@ -9,9 +11,13 @@ const csvFileReader = new CsvFileReader('football.csv');
 const matchReader = new MatchReader(csvFileReader);
 matchReader.load();
 
-console.log(`Man United won ${manUnitedWins} games`);
+const summary = new Summary(
+	new WinsAnalysis('Man United'),
+	new ConsoleReport(), //Report to HTML | console.log
+);
+summary.buildAndPrintReport(matchReader.matches);
 
-// > Path #1 . Inheritance Solution
+// // > Path #1 . Inheritance Solution
 // const reader = new MatchReader('football.csv');
 // reader.read();
 
