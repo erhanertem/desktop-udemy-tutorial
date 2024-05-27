@@ -1,15 +1,13 @@
 import { MatchReader } from './MatchReader';
-import { CsvFileReader } from './CsvFileReader';
-import { ConsoleReport } from './reporters/ConsoleReport';
-import { WinsAnalysis } from './analyzers/WinsAnalysis';
 import { Summary } from './Summary';
-import { HtmlReport } from './reporters/HtmlReport';
 
 // > Path #2 Interface-composition solution
-// Create an object that satisfies the 'DataReader' interface
-const csvFileReader = new CsvFileReader('football.csv');
-// Create an instance of the customized reader setup
-const matchReader = new MatchReader(csvFileReader);
+// // Create an object that satisfies the 'DataReader' interface
+// const csvFileReader = new CsvFileReader('football.csv');
+// // Create an instance of the customized reader setup
+// const matchReader = new MatchReader(csvFileReader);
+// matchReader.load();
+const matchReader = MatchReader.fromCsv('football.csv');
 matchReader.load();
 
 // const summary = new Summary(
