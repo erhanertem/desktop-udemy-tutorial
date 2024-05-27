@@ -3,6 +3,7 @@ import { CsvFileReader } from './CsvFileReader';
 import { ConsoleReport } from './reporters/ConsoleReport';
 import { WinsAnalysis } from './analyzers/WinsAnalysis';
 import { Summary } from './Summary';
+import { HtmlReport } from './reporters/HtmlReport';
 
 // > Path #2 Interface-composition solution
 // Create an object that satisfies the 'DataReader' interface
@@ -13,7 +14,8 @@ matchReader.load();
 
 const summary = new Summary(
 	new WinsAnalysis('Man United'),
-	new ConsoleReport(), //Report to HTML | console.log
+	// new ConsoleReport(), //Report to HTML | console.log
+	new HtmlReport(),
 );
 summary.buildAndPrintReport(matchReader.matches);
 
