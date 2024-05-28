@@ -1,12 +1,22 @@
 {
-  "name": "web",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start": "npx parcel index.html"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+	"name": "web",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"start": "concurrently \"npm run start:*\"",
+		"start:parcel": "npx parcel index.html",
+		"start:jsondb": "json-server -w db.json"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"axios": "^1.7.2",
+		"json-server": "^0.17.4"
+	},
+	"devDependencies": {
+		"concurrently": "^8.2.2",
+		"typescript": "^5.4.5"
+	}
 }
