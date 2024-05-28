@@ -4,7 +4,7 @@ interface UserProps {
 }
 
 // Type Alias
-type CallbackFn = () => {};
+type CallbackFn = () => void;
 
 export class User {
 	private events: { [key: string]: CallbackFn[] } = {};
@@ -19,5 +19,5 @@ export class User {
 		Object.assign(this.data, update);
 	}
 
-	on(eventName: string, callbackFn: CallbackFn) {}
+	on(eventName: string, callbackFn: CallbackFn): void {}
 }
