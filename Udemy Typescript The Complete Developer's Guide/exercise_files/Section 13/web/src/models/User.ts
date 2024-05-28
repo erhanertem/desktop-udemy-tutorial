@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { Eventing } from './User.Eventing';
 
 const DB_URL = 'http://localhost:3000/users/';
 
@@ -8,11 +9,8 @@ interface UserProps {
 	age?: number;
 }
 
-// Type Alias
-type CallbackFn = () => void;
-
 export class User {
-	private events: { [key: string]: CallbackFn[] } = {};
+	public events: Eventing = new Eventing();
 
 	constructor(private data: UserProps) {}
 
@@ -22,25 +20,6 @@ export class User {
 
 	set(update: UserProps): void {
 		Object.assign(this.data, update);
-	}
-
-	// Register and Store Events/EventListener
-	on(eventName: string, callbackFn: CallbackFn): void {
-		const handlers = this.events[eventName] || []; // If the key exists = CallbackFn[] else returns undefined because none assigned yet so we got to define by default empty[] to inser in the upcoming callbackFn
-		handlers.push(callbackFn);
-		this.events[eventName] = handlers;
-	}
-
-	// Event Triggerer
-	trigger(eventName: string): void {
-		const handlers = this.events[eventName];
-
-		// GUARD CLAUSE
-		if (!handlers || handlers.length === 0) {
-			return;
-		}
-
-		handlers.forEach((callbackFn) => callbackFn());
 	}
 
 	fetch(): void {
