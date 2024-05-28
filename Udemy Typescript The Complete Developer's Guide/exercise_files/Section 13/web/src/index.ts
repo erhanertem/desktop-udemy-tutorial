@@ -13,9 +13,9 @@ import { User } from './models/User';
 // 	console.log(user);
 // }, 2000);
 
-const user = new User({ name: 'new record', age: 0 });
-user.events.on('change', () => {
-	console.log('change!!');
-});
+// const user = new User({ name: 'new record', age: 0 });
+// user.events.on('change', () => {
+// 	console.log('change!!');
+// });
 
-user.events.trigger('change');
+// user.events.trigger('change');
