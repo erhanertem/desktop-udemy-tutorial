@@ -27,8 +27,8 @@ import { User } from './models/User';
 // });
 // user.set({ name: 'New name' });
 
-const user = new User({ id: 1 });
-user.on('change', () => {
+const user = new User({ id: 1, name: 'newer name', age: 1234567890 });
+user.on('save', () => {
 	console.log(user);
 });
-user.fetch();
+user.save();
