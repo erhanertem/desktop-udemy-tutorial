@@ -24,5 +24,6 @@ const user = new User({ name: 'new record', age: 0 });
 user.get('name');
 console.log("user.get('name') :", user.get('name'));
 user.on('change', () => {
-	console.log('I am eventing');
+	console.log('User was changed');
 });
+user.trigger('change');
