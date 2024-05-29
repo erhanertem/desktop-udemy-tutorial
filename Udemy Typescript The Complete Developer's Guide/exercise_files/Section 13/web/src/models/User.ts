@@ -29,7 +29,10 @@ export class User {
 	get get() {
 		return this.attributes.get;
 	}
-	set() {}
+	set(update: UserProps): void {
+		this.attributes.set(update);
+		this.events.trigger('change');
+	}
 	fetch() {}
 	save() {}
 }
