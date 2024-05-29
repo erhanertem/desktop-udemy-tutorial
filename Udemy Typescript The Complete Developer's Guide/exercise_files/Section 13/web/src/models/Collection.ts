@@ -3,11 +3,11 @@ import axios, { AxiosResponse } from 'axios';
 import { User, UserProps } from './User';
 import { Eventing } from './User.Eventing';
 
-export class Collection {
-	models: User[] = [];
+export class Collection<T, K> {
+	models: T[] = [];
 	events: Eventing = new Eventing();
 
-	constructor(public rootUrl: string) {}
+	constructor(public rootUrl: string, public deserialize: (json: K) => T) {}
 	// Shorter syntax is not available as we do not initialize the property inside a constructor function
 	get on() {
 		return this.events.on;
@@ -19,10 +19,9 @@ export class Collection {
 
 	fetch(): void {
 		axios.get(this.rootUrl).then((res: AxiosResponse) => {
-			// Registers the items to User[]
-			res.data.forEach((value: UserProps) => {
-				const user = User.buildUser(value);
-				this.models.push(user);
+			// Registers the deserialized items(Converted from JSON to {}) to User[]
+			res.data.forEach((value: K) => {
+				this.models.push(this.deserialize(value));
 			});
 
 			this.trigger('change');

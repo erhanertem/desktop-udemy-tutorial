@@ -1,4 +1,4 @@
-import { User } from './models/User';
+import { User, UserProps } from './models/User';
 import { Collection } from './models/Collection';
 // const user = new User({ id: 1 });
 // user.fetch();
@@ -39,7 +39,12 @@ import { Collection } from './models/Collection';
 // });
 // user.fetch();
 
-const collection = new Collection('http://localhost:3000/users');
+const collection = new Collection<User, UserProps>(
+	// Fetch Url
+	'http://localhost:3000/users',
+	// Deserializer function
+	(json: UserProps) => User.buildUser(json),
+);
 collection.on('change', () => {
 	console.log(collection);
 });
