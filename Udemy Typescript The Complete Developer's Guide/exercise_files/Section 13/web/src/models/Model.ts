@@ -27,16 +27,21 @@ export class Model<T extends HasId> {
 		private attributes: ModelAttributes<T>,
 	) {}
 
-	get on() {
-		// IMPORTANT! Create a reference to on function inside the Eventing object to access directly - its like creating a shortcut
-		return this.events.on;
-	}
-	get trigger() {
-		return this.events.trigger;
-	}
-	get get() {
-		return this.attributes.get;
-	}
+	// Shorter Syntax for getters
+	on = this.events.on;
+	trigger = this.events.trigger;
+	get = this.attributes.get;
+	// // Regualr Syntax for getters
+	// get on() {
+	// 	// IMPORTANT! Create a reference to on function inside the Eventing object to access directly - its like creating a shortcut
+	// 	return this.events.on;
+	// }
+	// get trigger() {
+	// 	return this.events.trigger;
+	// }
+	// get get() {
+	// 	return this.attributes.get;
+	// }
 	set(update: T): void {
 		this.attributes.set(update);
 		this.events.trigger('change');
