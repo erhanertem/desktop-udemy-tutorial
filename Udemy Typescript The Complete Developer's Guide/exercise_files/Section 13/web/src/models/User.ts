@@ -5,7 +5,7 @@ import { Sync } from './User.Sync';
 
 const DB_URL = 'http://localhost:3000/users';
 
-interface UserProps {
+export interface UserProps {
 	id?: number;
 	name?: string;
 	age?: number;

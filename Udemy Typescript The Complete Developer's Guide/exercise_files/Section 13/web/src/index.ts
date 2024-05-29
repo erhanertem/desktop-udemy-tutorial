@@ -1,5 +1,5 @@
 import { User } from './models/User';
-
+import { Collection } from './models/Collection';
 // const user = new User({ id: 1 });
 // user.fetch();
 // user.set({ name: 'New Name' });
@@ -33,8 +33,14 @@ import { User } from './models/User';
 // });
 // user.save();
 
-const user = User.buildUser({ id: 2 });
-user.on('change', () => {
-	console.log(user);
+// const user = User.buildUser({ id: 2 });
+// user.on('change', () => {
+// 	console.log(user);
+// });
+// user.fetch();
+
+const collection = new Collection('http://localhost:3000/users');
+collection.on('change', () => {
+	console.log(collection);
 });
-user.fetch();
+collection.fetch();
