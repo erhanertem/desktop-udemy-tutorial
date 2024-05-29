@@ -1,5 +1,4 @@
 import axios, { AxiosPromise } from 'axios';
-import { UserProps } from './User';
 
 interface HasId {
 	id?: number;
@@ -8,7 +7,7 @@ interface HasId {
 export class Sync<T extends HasId> {
 	constructor(public rootUrl: string) {}
 
-	fetch = (id: HasId): AxiosPromise => {
+	fetch = (id: T): AxiosPromise => {
 		// axios
 		// 	.get(`${this.rootUrl}/${id}`)
 		// 	.then((res: AxiosResponse): void => this.set(res.data));
