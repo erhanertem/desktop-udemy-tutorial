@@ -1,3 +1,5 @@
+import axios, { AxiosResponse } from 'axios';
+
 import { Eventing } from './User.Eventing';
 import { Sync } from './User.Sync';
 import { Attributes } from './User.Attributes';
@@ -33,6 +35,17 @@ export class User {
 		this.attributes.set(update);
 		this.events.trigger('change');
 	}
-	fetch() {}
+	fetch(): void {
+		const id = this.get('id');
+
+		// GUARD CLAUSE - TYPE GUARD
+		if (typeof id !== 'number') {
+			throw new Error('Cannot fetch without an id');
+		}
+
+		this.sync.fetch(id as UserProps).then((res: AxiosResponse): void => {
+			this.set(res.data);
+		});
+	}
 	save() {}
 }

@@ -19,11 +19,16 @@ import { User } from './models/User';
 // });
 // user.events.trigger('change');
 
-const user = new User({ name: 'new record', age: 0 });
+// const user = new User({ name: 'new record', age: 0 });
+// user.get('name');
+// console.log("user.get('name') :", user.get('name'));
+// user.on('change', () => {
+// 	console.log('User was changed');
+// });
+// user.set({ name: 'New name' });
 
-user.get('name');
-console.log("user.get('name') :", user.get('name'));
+const user = new User({ id: 1 });
 user.on('change', () => {
-	console.log('User was changed');
+	console.log(user);
 });
-user.set({ name: 'New name' });
+user.fetch();
