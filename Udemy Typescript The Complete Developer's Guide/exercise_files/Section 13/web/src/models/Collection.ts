@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { User, UserProps } from './User';
 import { Eventing } from './User.Eventing';
 
 export class Collection<T, K> {
@@ -8,7 +7,8 @@ export class Collection<T, K> {
 	events: Eventing = new Eventing();
 
 	constructor(public rootUrl: string, public deserialize: (json: K) => T) {}
-	// Shorter syntax is not available as we do not initialize the property inside a constructor function
+
+	// Pass-thru functions - IMPORTANT!! Shorter syntax is not available as we do not initialize the property inside a constructor function
 	get on() {
 		return this.events.on;
 	}

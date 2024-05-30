@@ -27,7 +27,7 @@ export class Model<T extends HasId> {
 		private attributes: ModelAttributes<T>,
 	) {}
 
-	// Shorter Syntax for getters
+	// Shorter Syntax for getters - IMPORTANT!! only if the parameters are initialized inside the constructor
 	on = this.events.on;
 	trigger = this.events.trigger;
 	get = this.attributes.get;
