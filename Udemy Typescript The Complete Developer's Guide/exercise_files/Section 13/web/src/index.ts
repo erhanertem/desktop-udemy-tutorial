@@ -48,9 +48,10 @@ import { User } from './models/User';
 const user = User.buildUser({ name: 'NAME', age: 20 });
 
 import { UserForm } from './views/UserForm';
-const useForm = new UserForm(
-	document.getElementById('root') as HTMLDivElement,
-	user,
-);
-
-useForm.render();
+const root = document.getElementById('root');
+if (root) {
+	const useForm = new UserForm(root, user);
+	useForm.render();
+} else {
+	throw new Error('Root element not found');
+}
