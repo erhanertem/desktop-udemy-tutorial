@@ -1,4 +1,4 @@
-import { User } from './models/User';
+// import { User } from './models/User';
 // const user = new User({ id: 1 });
 // user.fetch();
 // user.set({ name: 'New Name' });
@@ -38,8 +38,13 @@ import { User } from './models/User';
 // });
 // user.fetch();
 
-const collection = User.buildUserCollection();
-collection.on('change', () => {
-	console.log(collection);
-});
-collection.fetch();
+// const collection = User.buildUserCollection();
+// collection.on('change', () => {
+// 	console.log(collection);
+// });
+// collection.fetch();
+
+import { UserForm } from './views/UserForm';
+const useForm = new UserForm(document.getElementById('root')!);
+
+useForm.render();
