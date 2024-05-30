@@ -44,7 +44,13 @@
 // });
 // collection.fetch();
 
+import { User } from './models/User';
+const user = User.buildUser({ name: 'NAME', age: 20 });
+
 import { UserForm } from './views/UserForm';
-const useForm = new UserForm(document.getElementById('root')!);
+const useForm = new UserForm(
+	document.getElementById('root') as HTMLDivElement,
+	user,
+);
 
 useForm.render();

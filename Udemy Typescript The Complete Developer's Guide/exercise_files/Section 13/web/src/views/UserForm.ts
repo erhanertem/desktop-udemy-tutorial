@@ -1,29 +1,29 @@
 import { html } from 'code-tag';
 
+import { User } from './../models/User';
+
 export class UserForm {
-	constructor(public parent: Element) {}
+	constructor(public parent: Element, public model: User) {}
 
 	eventsMap(): { [key: string]: () => void } {
 		return {
-			'click:button': this.onButtonClick,
-			'mouseenter:h1': this.onHeaderHover,
+			'click:.set-age': this.onSetAgeClick,
 		};
 	}
 
-	onButtonClick(): void {
-		console.log('Say Hi!!!⚠️⚠️⚠️⚠️');
-	}
-
-	onHeaderHover(): void {
-		console.log('I am on Hover!!!👉👉👉');
+	onSetAgeClick(): void {
+		console.log('Button was clicked');
 	}
 
 	template(): string {
 		return html`
 			<div>
 				<h1>User Form</h1>
+				<div>User name: ${this.model.get('name')!}</div>
+				<div>User age: ${String(this.model.get('age'))!}</div>
 				<input />
 				<button>Click Me!</button>
+				<button class="set-age">Set Random Age</button>
 			</div>
 		`;
 	}
