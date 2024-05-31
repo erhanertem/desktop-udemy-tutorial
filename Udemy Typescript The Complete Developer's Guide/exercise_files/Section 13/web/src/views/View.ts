@@ -6,8 +6,11 @@ export abstract class View<T extends Model<K>, K extends HasId> {
 	}
 
 	// Promise to be implemented on the extending class
-	abstract eventsMap(): { [key: string]: () => void };
 	abstract template(): string;
+
+	eventsMap(): { [key: string]: () => void } {
+		return {};
+	}
 
 	bindModel(): void {
 		// NOTE: @model.ts set() update function, when its called, we trigger a change notification event. This change trigger will help us re-render the UserForm.
