@@ -54,6 +54,9 @@ export abstract class View<T extends Model<K>, K extends HasId> {
 		}
 	}
 
+	// Declare a default implementation to be customized per views
+	nestViewTemplate(): void {}
+
 	render(): void {
 		// #1. Remove any previously renderered content inside the div container to render
 		this.parent.innerHTML = '';
@@ -66,7 +69,9 @@ export abstract class View<T extends Model<K>, K extends HasId> {
 		this.bindEvents(templateElement.content);
 		// #5. Render the regions based on the regionsMap object list provided within UserEdits view container class
 		this.mapRegions(templateElement.content);
-		// #6. Make template element content visible
+		// #6. Start nesting templates into mapped regions
+		this.nestViewTemplate();
+		// #7. Make template element content visible
 		this.parent.append(templateElement.content);
 	}
 }
