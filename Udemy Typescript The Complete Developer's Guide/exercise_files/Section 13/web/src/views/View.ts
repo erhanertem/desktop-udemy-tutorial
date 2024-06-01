@@ -1,6 +1,9 @@
 import { Model, HasId } from '../models/Model';
 
 export abstract class View<T extends Model<K>, K extends HasId> {
+	// Define region object
+	regions: { [key: string]: Element } = {};
+
 	constructor(public parent: Element, public model: T) {
 		this.bindModel();
 	}
@@ -8,6 +11,11 @@ export abstract class View<T extends Model<K>, K extends HasId> {
 	// Promise to be implemented on the extending class
 	abstract template(): string;
 
+	// Base implementation - extending class will provide
+	regionsMap(): { [key: string]: string } {
+		return {};
+	}
+	// Base implementation - extending class will provide
 	eventsMap(): { [key: string]: () => void } {
 		return {};
 	}
@@ -33,6 +41,19 @@ export abstract class View<T extends Model<K>, K extends HasId> {
 		}
 	}
 
+	mapRegions(fragment: DocumentFragment): void {
+		const regionsMap = this.regionsMap();
+
+		for (let key in regionsMap) {
+			const selector = regionsMap[key];
+			const element = fragment.querySelector(selector);
+
+			if (element) {
+				this.regions[key] = element;
+			}
+		}
+	}
+
 	render(): void {
 		// #1. Remove any previously renderered content inside the div container to render
 		this.parent.innerHTML = '';
@@ -43,7 +64,9 @@ export abstract class View<T extends Model<K>, K extends HasId> {
 		templateElement.innerHTML = this.template();
 		// #4. Bind Event handlers on the template string
 		this.bindEvents(templateElement.content);
-		// #5. Make template element content visible
+		// #5. Render the regions based on the regionsMap object list provided within UserEdits view container class
+		this.mapRegions(templateElement.content);
+		// #6. Make template element content visible
 		this.parent.append(templateElement.content);
 	}
 }
