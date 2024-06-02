@@ -1,5 +1,5 @@
 import { html } from 'code-tag';
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 
 const router = Router();
 
@@ -21,12 +21,24 @@ router.get('/login', (req: Request, res: Response) => {
 });
 
 // When hit post request on this end point, do....
-
 interface HttpBody extends Request {
 	body: {
 		[key: string]: string | undefined;
 	};
 }
+
+// Protected route handler middleware
+function requireAuth(req: Request, res: Response, next: NextFunction): void {
+	if (req.session?.loggedIn) {
+		next();
+		return;
+	}
+	res.status(403).send('Not permitted');
+}
+
+router.get('/protected', requireAuth, (req: Request, res: Response) => {
+	res.send('Welcome to protected route, logged in user');
+});
 
 router.post(
 	'/login',
