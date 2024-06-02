@@ -21,9 +21,26 @@ router.get('/login', (req: Request, res: Response) => {
 });
 
 // When hit post request on this end point, do....
-router.post('/login', (req: Request, res: Response) => {
-	const { email, password } = req.body;
-	res.send(email + password);
-});
+
+interface HttpBody extends Request {
+	body: {
+		[key: string]: string | undefined;
+	};
+}
+
+router.post(
+	'/login',
+	(
+		// Manupulate type definition provided
+		req: HttpBody,
+		res: Response,
+	) => {
+		const { email, password } = req.body;
+
+		if (email !== undefined) {
+			res.status(200).send(email.toUpperCase());
+		} else res.send('You must provide an email property');
+	},
+);
 
 export { router };
