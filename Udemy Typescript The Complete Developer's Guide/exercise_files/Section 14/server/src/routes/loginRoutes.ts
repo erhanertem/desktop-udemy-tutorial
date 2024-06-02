@@ -37,10 +37,39 @@ router.post(
 	) => {
 		const { email, password } = req.body;
 
-		if (email !== undefined) {
-			res.status(200).send(email.toUpperCase());
-		} else res.send('You must provide an email property');
+		// GUARD CLAUSE
+		if (email && password && email === 'e@e.com' && password === '1234') {
+			// Mark this person as logged in
+			req.session = { loggedIn: true };
+			// Redirect the user to the root route
+			res.redirect('/');
+		} else res.send('Invalid email or password');
 	},
 );
 
+router.get('/', (req: Request, res: Response) => {
+	//Read req.session
+	if (req.session?.loggedIn) {
+		res.send(html`
+			<div>
+				<div>You are logged in</div>
+				<a href="/logout">Logout</a>
+			</div>
+		`);
+	} else {
+		res.send(html`
+			<div>
+				<div>You are not logged in</div>
+				<a href="/login">Login</a>
+			</div>
+		`);
+	}
+});
+
+router.get('/logout', (req: Request, res: Response) => {
+	// Reset cookiesession
+	req.session = undefined;
+	// Redirect to root route
+	res.redirect('/');
+});
 export { router };
