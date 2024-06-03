@@ -24,6 +24,7 @@ import 'reflect-metadata';
 // console.log(note);
 // console.log(height);
 
+@PrintMetadata
 class Plane {
 	color: string = 'red';
 
@@ -46,5 +47,13 @@ function MarkFunctionFactory(secretInfo: string) {
 		Reflect.defineMetadata('secret', secretInfo, target, key);
 	};
 }
-const secret = Reflect.getMetadata('secret', Plane.prototype, 'fly');
-console.log(secret);
+// const secret = Reflect.getMetadata('secret', Plane.prototype, 'fly');
+// console.log(secret);
+
+// typeof Plane targets the class constructor
+function PrintMetadata(target: typeof Plane) {
+	for (let key in target.prototype) {
+		const secret = Reflect.getMetadata('secret', target.prototype, key);
+		console.log(secret);
+	}
+}
