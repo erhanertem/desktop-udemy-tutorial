@@ -1,3 +1,4 @@
+@ClassDecorator
 class Boat {
 	// @TestDecorator
 	color: string = 'red';
@@ -21,7 +22,11 @@ class Boat {
 	}
 }
 
-function TestAccessor(target: any, key: string) {
+function ClassDecorator(constructor: typeof Boat) {
+	console.log(constructor);
+}
+
+function TestAccessor(target: Boat, key: string) {
 	console.log('👉', target, key);
 }
 
