@@ -1,22 +1,38 @@
 class Boat {
-	@TestDecorator
+	// @TestDecorator
 	color: string = 'red';
 
+	// @TestAccessor
 	get formattedColor(): string {
 		return `This boasts color is ${this.color}`;
 	}
 
 	@LogError('Oops boat was sunk in ocean')
-	pilot(): void {
-		throw new Error();
-		// console.log('swish');
+	pilot(
+		@ParameterDecorator
+		speed: string,
+		@ParameterDecorator
+		generateWake: boolean,
+	): void {
+		if (speed === 'fast') {
+			console.log('swish');
+		} else console.log('nothing');
+		// throw new Error();
 	}
 }
 
-function TestDecorator(target: any, key: string) {
-	console.log(target);
-	console.log(key);
+function TestAccessor(target: any, key: string) {
+	console.log('👉', target, key);
 }
+
+function ParameterDecorator(target: any, key: string, index: number) {
+	console.log('👉👉', key, index);
+}
+
+// function TestDecorator(target: any, key: string) {
+// 	console.log(target);
+// 	console.log(key);
+// }
 
 function LogError(errorMessage: string) {
 	return function (
