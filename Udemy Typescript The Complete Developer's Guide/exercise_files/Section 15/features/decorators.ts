@@ -1,4 +1,5 @@
 class Boat {
+	@TestDecorator
 	color: string = 'red';
 
 	get formattedColor(): string {
@@ -10,6 +11,11 @@ class Boat {
 		throw new Error();
 		// console.log('swish');
 	}
+}
+
+function TestDecorator(target: any, key: string) {
+	console.log(target);
+	console.log(key);
 }
 
 function LogError(errorMessage: string) {
@@ -31,4 +37,4 @@ function LogError(errorMessage: string) {
 	};
 }
 
-const boat = new Boat().pilot();
+// const boat = new Boat().pilot();
