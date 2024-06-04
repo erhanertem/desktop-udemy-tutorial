@@ -1,9 +1,9 @@
 import express from 'express';
 import cookieSession from 'cookie-session';
 
-import { router } from './routes/loginRoutes';
 import { AppRouter } from './AppRouter';
 import './controllers/LoginController';
+import './controllers/RootController';
 
 const app = express();
 
@@ -14,7 +14,6 @@ app.use(express.json());
 // Like req.body, req.session property is provided via cookiesession middleware
 app.use(cookieSession({ keys: ['erhanertem'] }));
 
-app.use(router);
 app.use(AppRouter.getInstance());
 
 app.listen(3000, () => {

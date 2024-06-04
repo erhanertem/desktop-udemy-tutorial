@@ -38,6 +38,14 @@ class LoginController {
 			res.redirect('/');
 		} else res.send('Invalid email or password');
 	}
+
+	@get('/logout')
+	getLogout(req: Request, res: Response) {
+		// Reset cookiesession
+		req.session = undefined;
+		// Redirect to root route
+		res.redirect('/');
+	}
 }
 // function logger(req: Request, res: Response, next: NextFunction): void {
 // 	console.log('Request was made');
