@@ -3,23 +3,6 @@ import { Router, Request, Response, NextFunction } from 'express';
 
 const router = Router();
 
-// When hit this endpoint, provide this layout
-router.get('/login', (req: Request, res: Response) => {
-	res.send(html`
-		<form method="POST">
-			<div>
-				<label>Email</label>
-				<input name="email" />
-			</div>
-			<div>
-				<label>Password</label>
-				<input name="password" type="password" />
-			</div>
-			<button>Submit</button>
-		</form>
-	`);
-});
-
 // When hit post request on this end point, do....
 interface HttpBody extends Request {
 	body: {
