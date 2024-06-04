@@ -23,25 +23,6 @@ router.get('/protected', requireAuth, (req: Request, res: Response) => {
 	res.send('Welcome to protected route, logged in user');
 });
 
-router.post(
-	'/login',
-	(
-		// Manupulate type definition provided
-		req: HttpBody,
-		res: Response,
-	) => {
-		const { email, password } = req.body;
-
-		// GUARD CLAUSE
-		if (email && password && email === 'e@e.com' && password === '1234') {
-			// Mark this person as logged in
-			req.session = { loggedIn: true };
-			// Redirect the user to the root route
-			res.redirect('/');
-		} else res.send('Invalid email or password');
-	},
-);
-
 router.get('/', (req: Request, res: Response) => {
 	//Read req.session
 	if (req.session?.loggedIn) {

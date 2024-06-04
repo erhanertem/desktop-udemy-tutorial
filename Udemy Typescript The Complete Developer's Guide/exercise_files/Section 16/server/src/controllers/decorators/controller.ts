@@ -2,6 +2,29 @@ import 'reflect-metadata';
 import { AppRouter } from '../../AppRouter';
 import { Methods } from './Methods';
 import { MetadataKeys } from './MetadataKeys';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
+
+// req.body validator middleware
+function bodyValidators(keys: string[]): RequestHandler {
+	return function (req: Request, res: Response, next: NextFunction) {
+		// GUARD CLAUSE -if there is no body, we can't proceed firther with this middleware
+		if (!req.body) {
+			res.status(422).send('Invalid request');
+			return;
+		}
+
+		// GUARD CLAUSE - if any of the keys do not exist we can't proceed further with this middleware
+		for (let key of keys) {
+			if (!(key in req.body)) {
+				res.status(422).send('Invalid request');
+				return;
+			}
+		}
+
+		// Proceed w/ the next middleware
+		next();
+	};
+}
 
 // Factory decorator
 export function controller(routePrefix: string) {
@@ -29,12 +52,21 @@ export function controller(routePrefix: string) {
 					constructor.prototype,
 					key,
 				) || []; // Incase it is undefined return empty []
+			const requiredReqBodyProps =
+				Reflect.getMetadata(
+					MetadataKeys.validator,
+					constructor.prototype,
+					key,
+				) || []; // Incase it is undefined return empty []
+
+			const validatorMiddleware = bodyValidators(requiredReqBodyProps);
 
 			// Get a hold of the key that only bears the path metadata
 			if (path) {
 				router[method](
 					`${routePrefix}${path}`,
 					...middlewares,
+					validatorMiddleware,
 					routeHandler,
 				);
 			}
