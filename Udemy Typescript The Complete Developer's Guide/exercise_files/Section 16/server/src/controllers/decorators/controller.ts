@@ -11,7 +11,7 @@ export function controller(routePrefix: string) {
 		const router = AppRouter.getInstance();
 		// > ES5
 		for (let key in constructor.prototype) {
-			console.log(key, constructor);
+			// console.log(key, constructor);
 			const routeHandler = constructor.prototype[key];
 			const path = Reflect.getMetadata(
 				MetadataKeys.path,
@@ -23,20 +23,38 @@ export function controller(routePrefix: string) {
 				constructor.prototype,
 				key,
 			);
+			const middlewares =
+				Reflect.getMetadata(
+					MetadataKeys.middleware,
+					constructor.prototype,
+					key,
+				) || []; // Incase it is undefined return empty []
 
 			// Get a hold of the key that only bears the path metadata
 			if (path) {
-				router[method](`${routePrefix}${path}`, routeHandler);
+				router[method](
+					`${routePrefix}${path}`,
+					...middlewares,
+					routeHandler,
+				);
 			}
 		}
 
 		// // > ES2016
 		// Object.getOwnPropertyNames(constructor.prototype).forEach((key) => {
 		// 	const routeHandler = constructor.prototype[key];
-		//    const path = Reflect.getMetadata(MetadataKeys.path, constructor.prototype, key);
-
+		// 	const path = Reflect.getMetadata(
+		// 		MetadataKeys.path,
+		// 		constructor.prototype,
+		// 		key,
+		// 	);
+		// 	const method: Methods = Reflect.getMetadata(
+		// 		MetadataKeys.method,
+		// 		constructor.prototype,
+		// 		key,
+		// 	);
 		// 	if (path) {
-		// 		router.get(`${routePrefix}${path}`, routeHandler);
+		// 		router[method](`${routePrefix}${path}`, routeHandler);
 		// 	}
 		// });
 	};
