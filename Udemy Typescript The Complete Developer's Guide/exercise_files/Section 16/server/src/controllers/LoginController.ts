@@ -7,6 +7,12 @@ import { get, controller, post, bodyValidator } from './decorators/index';
 
 @controller('/auth')
 class LoginController {
+	// NOTE: Test for handling none-express function
+	// @get('/')
+	// getJiggyWithIt(a: number, b: number): number {
+	// 	return a + b;
+	// }
+
 	@get('/login')
 	// @use(logger)
 	getLogin(_req: Request, res: Response): void {
