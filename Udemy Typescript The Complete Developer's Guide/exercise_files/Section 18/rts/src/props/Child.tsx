@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface ChildProps {
 	color: string;
 }
@@ -10,3 +12,12 @@ interface ChildProps {
 export function Child({ color }: ChildProps) {
 	return <div>{color}</div>;
 }
+
+export const ChildAsFC: React.FC<ChildProps> = ({ color }) => {
+	return <div>{color}</div>;
+};
+export const ChildAsFC_alt: React.FunctionComponent<ChildProps> = ({
+	color,
+}) => {
+	return <div>{color}</div>;
+};
