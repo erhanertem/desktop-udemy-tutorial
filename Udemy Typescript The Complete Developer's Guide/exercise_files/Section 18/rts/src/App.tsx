@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import Parent from './props/Parent';
 import GuestList from './state/GuestList';
 import UserSearch from './state/UserSearch';
+import { UserSearch as Ref } from './refs/UserSearch';
 import EventComponent from './events/EventComponent';
 
 function App(): ReactElement {
@@ -16,6 +17,8 @@ function App(): ReactElement {
 			<UserSearch />
 			<br />
 			<EventComponent />
+			<br />
+			<Ref />
 		</div>
 	);
 }
