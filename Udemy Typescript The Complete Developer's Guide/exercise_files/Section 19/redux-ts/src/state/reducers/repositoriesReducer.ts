@@ -10,7 +10,7 @@ interface RepositoriesState {
 // Define state object type for the reducer
 // Define action object type for the reducer
 // Define return object type from the reducer action types
-const reducer = (
+const repositoriesReducer = (
 	state: RepositoriesState,
 	action: Action,
 ): RepositoriesState => {
@@ -29,4 +29,4 @@ const reducer = (
 	}
 };
 
-export default reducer;
+export default repositoriesReducer;
