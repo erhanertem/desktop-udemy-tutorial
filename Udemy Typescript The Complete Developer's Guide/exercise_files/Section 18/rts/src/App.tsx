@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import Parent from './props/Parent';
 import GuestList from './state/GuestList';
 import UserSearch from './state/UserSearch';
+import EventComponent from './events/EventComponent';
 
 function App(): ReactElement {
 	return (
@@ -13,6 +14,8 @@ function App(): ReactElement {
 			<GuestList />
 			<br />
 			<UserSearch />
+			<br />
+			<EventComponent />
 		</div>
 	);
 }
