@@ -7,11 +7,17 @@ interface RepositoriesState {
 	data: string[];
 }
 
+const initialState = {
+	loading: false,
+	error: null,
+	data: [],
+};
+
 // Define state object type for the reducer
 // Define action object type for the reducer
 // Define return object type from the reducer action types
 const repositoriesReducer = (
-	state: RepositoriesState,
+	state: RepositoriesState = initialState,
 	action: Action,
 ): RepositoriesState => {
 	switch (action.type) {
