@@ -4,9 +4,26 @@ interface RepositoriesState {
 	data: string[];
 }
 
-interface Action {
-	type: string;
-	payload?: any; //optional payload
+interface SearchRepositoriesAction {
+	type: ActionType.SEARCH;
+}
+interface SearchRepositoriesSuccessAction {
+	type: ActionType.SUCCESS;
+	payload: string[];
+}
+interface SearchRepositoriesErrorAction {
+	type: ActionType.ERROR;
+	payload: string;
+}
+type Action =
+	| SearchRepositoriesAction
+	| SearchRepositoriesSuccessAction
+	| SearchRepositoriesErrorAction;
+
+enum ActionType {
+	SEARCH = 'search_repositories',
+	SUCCESS = 'search_repositories_success',
+	ERROR = 'search_repositories_error',
 }
 
 // Define state object type for the reducer
@@ -17,13 +34,13 @@ const reducer = (
 	action: Action,
 ): RepositoriesState => {
 	switch (action.type) {
-		case 'search_repositories':
+		case ActionType.SEARCH:
 			// In the event of a new search, initiate loading, reset error, reset data list
 			return { loading: true, error: null, data: [] };
-		case 'search_repositories_success':
+		case ActionType.SUCCESS:
 			// In the event of a successfull fetch, terminate loading, reset error,
 			return { loading: false, error: null, data: action.payload };
-		case 'search_repositories_error':
+		case ActionType.ERROR:
 			// In the event of an error, terminate loading, publish error, reset data list
 			return { loading: false, error: action.payload, data: [] };
 		default:
