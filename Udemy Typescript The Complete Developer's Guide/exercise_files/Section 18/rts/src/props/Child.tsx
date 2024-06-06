@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-interface ChildProps {
+// interface ChildProps {
+// 	color: string;
+// 	onClick: () => void;
+// 	children?: React.ReactNode; //VERY IMPORTANT! as of React 18, children is removed from React.FC so this needs to be provided within props
+// }
+interface ChildPropswoutChildren {
 	color: string;
 	onClick: () => void;
-	children?: React.ReactNode; //VERY IMPORTANT! as of React 18, children is removed from React.FC so this needs to be provided within props
 }
 
 // // > Via props arg
@@ -11,7 +15,11 @@ interface ChildProps {
 // 	return <div>props.color</div>;
 // }
 // > Via destructuring on-the-go
-export function Child({ color, onClick, children }: ChildProps) {
+export function Child({
+	color,
+	onClick,
+	children,
+}: PropsWithChildren<ChildPropswoutChildren>): React.ReactElement {
 	return (
 		<div>
 			{color}
@@ -19,19 +27,27 @@ export function Child({ color, onClick, children }: ChildProps) {
 		</div>
 	);
 }
+// export function Child({ color, onClick, children }: ChildProps) {
+// 	return (
+// 		<div>
+// 			{color}
+// 			<button onClick={onClick}>{children}</button>
+// 		</div>
+// 	);
+// }
 
-export const ChildAsFC: React.FC<ChildProps> = ({
-	color,
-	onClick,
-	children,
-}) => {
-	return (
-		<div>
-			{color}
-			<button onClick={onClick}>{children}</button>
-		</div>
-	);
-};
+// export const ChildAsFC: React.FC<ChildProps> = ({
+// 	color,
+// 	onClick,
+// 	children,
+// }) => {
+// 	return (
+// 		<div>
+// 			{color}
+// 			<button onClick={onClick}>{children}</button>
+// 		</div>
+// 	);
+// };
 // export function Child(props: ChildProps) {
 // 	return (
 // 		<div>

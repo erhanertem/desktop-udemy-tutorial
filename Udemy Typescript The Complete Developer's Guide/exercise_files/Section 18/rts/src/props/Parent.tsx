@@ -1,4 +1,4 @@
-import { Child, ChildAsFC } from './Child';
+import { Child } from './Child';
 
 function onClick() {
 	console.log('Clicked me');
