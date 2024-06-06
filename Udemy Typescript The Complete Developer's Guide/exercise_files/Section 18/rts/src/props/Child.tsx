@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactElement } from 'react';
 
 // interface ChildProps {
 // 	color: string;
@@ -19,7 +19,7 @@ export function Child({
 	color,
 	onClick,
 	children,
-}: PropsWithChildren<ChildPropswoutChildren>): React.ReactElement {
+}: PropsWithChildren<ChildPropswoutChildren>): ReactElement {
 	return (
 		<div>
 			{color}
