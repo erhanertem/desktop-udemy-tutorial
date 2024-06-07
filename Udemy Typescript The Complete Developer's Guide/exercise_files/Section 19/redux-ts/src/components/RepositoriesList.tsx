@@ -1,15 +1,19 @@
 import { FormEvent, ReactElement, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { actionCreators } from '../state';
+// import { actionCreators } from '../state';
+// Custom hook to simplify calling actionCreators
+import { useActions } from '../hooks/useActions';
 
 function RepositoriesList(): ReactElement {
 	const [term, setTerm] = useState('');
-	const dispatch: Function = useDispatch();
+	// const dispatch: Function = useDispatch();
+	const { searchRepositories } = useActions();
 
 	function onSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		dispatch(actionCreators.searchRepositories(term));
+		// dispatch(actionCreators.searchRepositories(term));
+		searchRepositories(term);
 	}
 
 	return (
