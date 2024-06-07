@@ -1,3 +1,14 @@
-export default function App() {
-  return <h1>Let's get started!</h1>;
+import CourseGoal from './components/CourseGoal';
+
+function App() {
+	return (
+		<main>
+			<CourseGoal
+				title="Learn React + TS"
+				description="Learn it from the ground up"
+			/>
+		</main>
+	);
 }
+
+export default App;
