@@ -1,10 +1,15 @@
 import { FormEvent, ReactElement, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { actionCreators } from '../state';
 
 function RepositoriesList(): ReactElement {
 	const [term, setTerm] = useState('');
+	const dispatch: Function = useDispatch();
 
 	function onSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
+		dispatch(actionCreators.searchRepositories(term));
 	}
 
 	return (

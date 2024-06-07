@@ -4,13 +4,13 @@ import { Dispatch } from 'redux';
 import { ActionType } from '../action-types';
 import { Action } from '../actions';
 
-function searchRepositories(term: string) {
+export function searchRepositories(term: string) {
 	return async (dispatch: Dispatch<Action>) => {
 		// Set state to Search Action Type State Composition
 		dispatch({ type: ActionType.SEARCH });
 		try {
 			const { data } = await axios.get(
-				'https"//registry.npmjs.ord/-/v1/search',
+				'https://registry.npmjs.org/-/v1/search',
 				{ params: { text: term } },
 			);
 			// Filter out the reduntant data
@@ -27,5 +27,3 @@ function searchRepositories(term: string) {
 		}
 	};
 }
-
-export default searchRepositories;
