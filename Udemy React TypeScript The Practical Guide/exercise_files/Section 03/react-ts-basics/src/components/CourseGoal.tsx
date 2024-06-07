@@ -1,14 +1,23 @@
-interface CourseGoalProps {
-	title: string;
-	description: string;
-}
+// > Option #1 for passing children prop
+// import { type ReactNode } from 'react';
+// interface CourseGoalProps {
+// 	title: string;
+// 	children?: ReactNode;
+// }
 
-function CourseGoal({ title, description }: CourseGoalProps) {
+// > Option #2 for passing children prop
+import { type PropsWithChildren } from 'react';
+type CourseGoalProps = PropsWithChildren<{
+	title: string;
+}>;
+
+// function CourseGoal({ title, children }: CourseGoalProps) {
+function CourseGoal({ title, children }: CourseGoalProps) {
 	return (
 		<article>
 			<div>
 				<h2>{title}</h2>
-				<p>{description}</p>
+				{children}
 			</div>
 			<button>Delete</button>
 		</article>
