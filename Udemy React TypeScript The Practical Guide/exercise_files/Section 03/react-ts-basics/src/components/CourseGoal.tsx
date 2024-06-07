@@ -11,7 +11,7 @@ type CourseGoalProps = PropsWithChildren<{
 	title: string;
 }>;
 
-// function CourseGoal({ title, children }: CourseGoalProps) {
+// > Option #1 React Component via Function Declaration
 function CourseGoal({ title, children }: CourseGoalProps) {
 	return (
 		<article>
@@ -23,5 +23,18 @@ function CourseGoal({ title, children }: CourseGoalProps) {
 		</article>
 	);
 }
+// > Option #2 React Component via Function Expression
+// import { type FC, type PropsWithChildren } from 'react';
+// const CourseGoal: FC<CourseGoalProps> = ({ title, children }) => {
+// 	return (
+// 		<article>
+// 			<div>
+// 				<h2>{title}</h2>
+// 				{children}
+// 			</div>
+// 			<button>Delete</button>
+// 		</article>
+// 	);
+// };
 
 export default CourseGoal;
