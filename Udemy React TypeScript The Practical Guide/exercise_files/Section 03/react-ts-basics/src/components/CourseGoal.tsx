@@ -8,18 +8,20 @@
 // > Option #2 for passing children prop
 import { type PropsWithChildren } from 'react';
 type CourseGoalProps = PropsWithChildren<{
+	id: number;
 	title: string;
+	onDelete: (id: number) => void;
 }>;
 
 // > Option #1 React Component via Function Declaration
-function CourseGoal({ title, children }: CourseGoalProps) {
+function CourseGoal({ id, title, onDelete, children }: CourseGoalProps) {
 	return (
 		<article>
 			<div>
 				<h2>{title}</h2>
 				{children}
 			</div>
-			<button>Delete</button>
+			<button onClick={() => onDelete(id)}>Delete</button>
 		</article>
 	);
 }
