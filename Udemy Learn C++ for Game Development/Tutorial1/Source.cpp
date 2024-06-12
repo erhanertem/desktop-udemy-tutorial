@@ -842,71 +842,633 @@
 // }
 
 // > ACCESS MODIFIERS
+// #include <iostream>
+// #include <string>
+// using namespace std;
+
+// // PARENT CLASS
+// class Creature {
+// public:
+//    Creature(); //Constructor
+
+//    void Setname(string _name);
+//    string Getname();
+
+//    float Gethealth();
+
+//    void TakeDamage(float damage);
+
+// private:
+//    string name;
+//    float health;
+
+// protected:
+//    int NumberOfLimbs;
+
+// };
+
+// // INHERITING CHILD CLASS
+// class Goblin :public Creature {
+// public:
+//    Goblin(); //Constructor
+
+//    int GetNumberOfLimbs();
+// };
+
+// Goblin::Goblin() {
+//    NumberOfLimbs = 5;
+// }
+// int Goblin::GetNumberOfLimbs() {
+//    return NumberOfLimbs;
+// }
+
+// Creature::Creature() { cout << "A creature has been created!" << endl; };
+// void Creature::Setname(string _name) { name = _name; }
+// string Creature::Getname() { return name; }
+// float Creature::Gethealth() { return health; }
+
+// void Creature::TakeDamage(float damage) {
+//    float Total;
+//    Total = health - damage;
+
+//    if (Total <= 0.f) {
+//       cout << Getname() << "has died\n";
+//    }
+//    else {
+//       health -= damage;
+//    }
+//    cout << "health: " << Gethealth() << endl;
+// }
+
+// int main()
+// {
+//    Creature Igor;
+//    Igor.Setname("Maxi");
+//    cout << Igor.Getname() << endl;
+
+//    Goblin Gobby;
+//    Gobby.Setname("Gobby");
+//    cout << Gobby.Getname() << " " << Gobby.GetNumberOfLimbs() << endl;
+// }
+
+// Section 5
+// > STACK & HEAP & POINTERS
+// #include <iostream>
+// #include <string>
+// using namespace std;
+
+// struct Character {
+
+//    // Externally Provided Constructor
+//    Character();
+//    // Internally Priovided Constructor
+//    // Character() {
+//    //    Name = "Default Name";
+//    //    Health = 100.f;
+//    // }; // Constructor
+
+//    string Name;
+//    float Health;
+// };
+
+// Character::Character() {
+//    Name = "Default Name";
+//    Health = 100.f;
+// }
+
+// int main() {
+//    Character Char; // Goes into STACK
+//    Character* PtrToChar = new Character(); // Goes into HEAP
+//    PtrToChar->Name = "Neo";
+//    PtrToChar->Health = 100.f;
+//    cout << PtrToChar->Name << endl;
+//    cout << PtrToChar->Health << endl;
+//    delete PtrToChar; //Removes the Dynamically allocated memory from the HEAP 
+// }
+
+// > DESTRUCTORS
+// #include <iostream>
+// #include <string>
+// using namespace std;
+
+// class Weapon {
+// public:
+//    // Constructor
+//    Weapon() {
+//       cout << "A new weapon is created" << endl;
+//    };
+//    // Destructor
+//    ~Weapon() {
+//       cout << "A new weapon is destroyed" << endl;
+//    }
+// };
+
+// int main() {
+//    // Create a dynamic memory allocated object @ HEAP
+//    Weapon* gun = new Weapon;
+//    // 
+//    delete gun;
+// }
+
+// #include <iostream>
+// #include <string>
+// using namespace std;
+
+// class Character {
+// public:
+//    Character() {
+//       cout << "A new character is created \n";
+//       CharacterAge = new int(1); // Initialize Dynamically Allocated variables 
+//       CharacterHealth = new float(100.f); //Initialize Dynamically Allocated variables 
+//    };
+//    ~Character() {
+//       cout << "A new character was destroyed \n";
+//       delete CharacterAge; //Dispose Dynamically Allocated Memory
+//       delete CharacterHealth; //Dispose Dynamically Allocated Memory
+//    };
+
+//    int* CharacterAge; //Declare Dynamically Allocated variables 
+//    float* CharacterHealth; //Declare Dynamically Allocated variables 
+// };
+
+// int main() {
+//    Character* Char = new Character;
+//    delete Char;
+// }
+
+// > STATIC KEYWORD
+// -> STATIC VARIABLES IN FUNCTIONS
+// #include <iostream>
+// #include <string>
+// using namespace std;
+
+// void update_count() {
+//    static int count = 0;
+//    count++;
+//    cout << count << endl;
+// };
+// int main() {
+//    update_count();
+//    update_count();
+// }
+
+// -> STATIC KEYED CLASS
+// #include <iostream>
+// #include <string>
+// using namespace std;
+// // Create a class called Dog
+// class Dog {};
+// int main() {
+//    // Create a Dog class with static key - Singleton
+//    if (true) { static Dog; };
+// }
+
+// #include <iostream>
+// #include <string>
+// using namespace std;
+// class Item {
+// public:
+//    Item() {
+//       cout << "An item has been created \n";
+//    }
+//    ~Item() {
+//       cout << "An item has been destroyed \n";
+//    }
+// };
+// int main() {
+//    { static Item item; }
+// }
+
+// -> STATIC VARIABLES INSIDE A CLASSE
+// #include <iostream>
+// #include <string>
+// using namespace std;
+
+// class Creature {
+// public:
+//    static int creature_count; //Declare a static variable inside a class
+
+//    Creature() {
+//       creature_count++;
+//       cout << creature_count << endl;
+//    }
+// };
+// // Cannot re-define, but make operations on it - Initialize the static variable of a class
+// int Creature::creature_count = 0;
+
+// int main() {
+//    Creature cre_1; // 1
+//    Creature cre_2; // 2
+//    Creature cre_3; // 3
+// }
+
+// #include <iostream>
+// #include <string>
+// using namespace std;
+// class Critter {
+// public:
+//    Critter() {
+//       cout << "A critter is born \n";
+//       CritterCount++;
+//    };
+//    static int CritterCount;
+// };
+// int Critter::CritterCount = 0;
+// int main() {
+//    // Critter::CritterCount = 13;
+//    // cout << Critter::CritterCount << endl;
+
+//    Critter crit;
+//    cout << Critter::CritterCount << endl;
+//    Critter crit_;
+//    cout << Critter::CritterCount << endl;
+// }
+
+// -> STATIC FUNCTIONS INSIDE A CLASS
+// #include <iostream>
+// #include <string>
+// using namespace std;
+
+// class Announcer {
+// public:
+//    static void Announce() { cout << "Welcome!" << endl; }
+// };
+
+// int main() {
+//    Announcer::Announce();
+// }
+
+// > VIRTUAL FUNCTIONS
+// #include <iostream>
+// #include <string>
+// using namespace std;
+// class Parent {
+// public:
+//    virtual void Greet() {
+//       cout << "Hello\n";
+//    }
+// };
+// class Child : public Parent {
+// public:
+//    void Greet() {
+//       cout << "Ciao\n";
+//    }
+// };
+// class GrandChild : public Child {
+// public:
+//    void Greet() override {
+//       cout << "Mamamia\n";
+//    }
+// };
+// int main() {
+//    Parent parent;
+//    Child child;
+//    GrandChild grand_child;
+//    parent.Greet();
+//    child.Greet();
+//    grand_child.Greet();
+// }
+
+// #include <iostream>
+// #include <string>
+// using namespace std;
+
+// class Object {
+// public:
+//    virtual void BeginPlay();
+// };
+
+
+// class Actor : public Object {
+// public:
+//    void BeginPlay() override;
+// };
+
+// int main() {
+//    Object* objPtr = new Object;
+//    objPtr->BeginPlay();
+
+//    Actor* actPtr = new Actor;
+//    actPtr->BeginPlay();
+
+//    delete objPtr;
+//    delete actPtr;
+// }
+
+// void Object::BeginPlay() {
+//    cout << "Object BeginPlay() called \n";
+// };
+// void Actor::BeginPlay() {
+//    cout << "Actor BeginPlay() called \n";
+// };
+
+// > POLYMORPHISM
+// #include <iostream>
+// #include <string>
+// using namespace std;
+// class Object {
+// public:
+//    virtual void BeginPlay();
+// };
+// class Actor : public Object {
+// public:
+//    void BeginPlay() override;
+// };
+// class Pawn : public Actor {
+// public:
+//    void BeginPlay() override;
+// };
+
+// int main() {
+//    Object* objPtr = new Object;
+//    Actor* actorPtr = new Actor;
+//    Pawn* pawnPtr = new Pawn;
+
+//    Object* ObjectArray[] = { objPtr, actorPtr, pawnPtr };
+
+//    delete objPtr;
+//    delete actorPtr;
+//    delete pawnPtr;
+// }
+
+// void Object::BeginPlay() {
+//    cout << "Object BeginPlay() called.\n";
+// }
+// void Actor::BeginPlay() {
+//    cout << "Actor BeginPlay() called.\n";
+// }
+// void Pawn::BeginPlay() {
+//    cout << "Pawn BeginPlay() called.\n";
+// }
+
+// > MULTI INHERITANCE
+// class P {
+// public:
+//    void f() {};
+// };
+// class A : public P {};
+// class B : public P {};
+// class C : public A, public B {};
+
+// int main() {
+//    C c;
+//    c.B::f();
+// }
+
+// class P {
+// public:
+//    void fn() {};
+// };
+// class A : virtual public P {};
+// class B : virtual public P {};
+// class C : public A, public B {};
+
+// int main() {
+//    C c;
+//    // c.B::f();
+//    c.fn();
+// }
+
+// > TYPE CASTING
+// ---> Implicit Type Casting
+// float f = 50.f;
+// int i = f;
+
+// ---> Explicit Type Casting
+// --> C TYPE TYPE-CASTING
+// int main()
+// {
+//    double x = 1.2;
+
+//    // Explicit conversion from double to int 
+//    int sum = (int)x + 1;
+
+//    cout << "Sum = " << sum;
+
+//    return 0;
+// }
+// --> C++ TYPE TYPE-CASTING
+// -> Static Casting
+// #include <iostream>
+// using namespace std;
+
+// int main()
+// {
+//    float f = 3.5;
+
+//    // Implicit type case
+//    // float to int
+//    int a = f;
+//    cout << "The Value of a: " << a;
+
+//    // using static_cast for float to int
+//    int b = static_cast<int>(f);
+//    cout << "\nThe Value of b: " << b;
+// }
+
+// -> Dynamic Casting
+// #include <iostream>
+// #include <string>
+// using namespace std;
+// class Object {
+// public:
+//    virtual void BeginPlay();
+
+//    void ObjectFn() {
+//       cout << "Object Function called.\n\n";
+//    }
+// };
+// class Actor : public Object {
+// public:
+//    void BeginPlay() override;
+
+//    void ActorFn() {
+//       cout << "Actor Function called.\n\n";
+//    }
+// };
+// class Pawn : public Actor {
+// public:
+//    void BeginPlay() override;
+
+//    void PawnFn() {
+//       cout << "Pawn Function called.\n\n";
+//    }
+// };
+
+// int main() {
+//    Object* objPtr = new Object;
+//    Actor* actorPtr = new Actor;
+//    Pawn* pawnPtr = new Pawn;
+
+//    Object* ObjectArray[] = { objPtr, actorPtr, pawnPtr };
+
+//    for (int i = 0; i < 3; i++) {
+//       // ObjectArray[i]->BeginPlay();
+//       // ObjectArray[i]->ObjectFn();
+//       // ObjectArray[i]->ActorFn();
+
+//       Object* obj = ObjectArray[i]; // Make a addreesable copy of the array element @ index i
+//       Actor* act = dynamic_cast<Actor*>(obj);
+//       if (act) {
+//          act->ActorFn();
+//       }
+//       Pawn* pawn = dynamic_cast<Pawn*>(obj);
+//       if (pawn) {
+//          pawn->PawnFn();
+//       }
+//    }
+
+//    delete objPtr;
+//    delete actorPtr;
+//    delete pawnPtr;
+// }
+
+// void Object::BeginPlay() {
+//    cout << "Object BeginPlay() called.\n";
+// }
+// void Actor::BeginPlay() {
+//    cout << "Actor BeginPlay() called.\n";
+// }
+// void Pawn::BeginPlay() {
+//    cout << "Pawn BeginPlay() called.\n";
+// }
+
+// // C++ program to illustrate the dynamic_cast
+// #include <iostream>
+// using namespace std;
+
+// // Base Class
+// class Animal {
+// public:
+//    virtual void speak()
+//    {
+//       cout << "Animal speaks." << endl;
+//    }
+// };
+
+// // Derived Class
+// class Dog : public Animal {
+// public:
+//    void speak() override
+//    {
+//       cout << "Dog barks." << endl;
+//    }
+// };
+
+// // Derived Class
+// class Cat : public Animal {
+// public:
+//    void speak() override
+//    {
+//       cout << "Cat meows." << endl;
+//    }
+// };
+
+// int main()
+// {
+//    // base class pointer to derived class object
+//    Animal* animalPtr = new Dog;
+
+//    // downcasting
+//    Dog* dogPtr = dynamic_cast<Dog*>(animalPtr);
+
+//    // checking if the typecasting is successfull
+//    if (dogPtr) {
+//       dogPtr->speak();
+//    }
+//    else {
+//       cout << "Failed to cast to Dog." << endl;
+//    }
+
+//    // typecasting to other dervied class
+//    Cat* catPtr = dynamic_cast<Cat*>(animalPtr);
+//    if (catPtr) {
+//       catPtr->speak();
+//    }
+//    else {
+//       cout << "Failed to cast to Cat." << endl;
+//    }
+
+//    delete animalPtr;
+//    delete catPtr;
+//    delete dogPtr;
+//    return 0;
+// }
+
+// -> Const Casting
+// // C++ program to illustrate the const_cast
+// #include <iostream>
+// using namespace std;
+
+// int main()
+// {
+
+//    const int number = 5;
+//    // Pointer to a const int
+//    const int* ptr = &number;
+
+//    // int* nonConstPtr = ptr; if we use this
+//    // instead of without using const_cast
+//    // we will get error of invalid conversion
+//    int* nonConstPtr = const_cast<int*>(ptr);
+//    *nonConstPtr = 10;
+
+//    cout << "Modified number: " << *nonConstPtr;
+
+//    return 0;
+// }
+
+// -> Reinterpreted Casting
+// // C++ program to illustrate the reinterpret_cast
+// #include <iostream>
+// using namespace std;
+
+// int main()
+// {
+//    int number = 10;
+//    // Store the address of number in numberPointer
+//    int* numberPointer = &number;
+
+//    // Reinterpreting the pointer as a char pointer
+//    char* charPointer
+//       = reinterpret_cast<char*>(numberPointer);
+
+//    // Printing the memory addresses and values
+//    cout << "Integer Address: " << numberPointer << endl;
+//    cout << "Char Address: "
+//       << reinterpret_cast<void*>(charPointer) << endl;
+
+//    return 0;
+// }
+
+// > HEADER /SOURCE FILE PRACTICE
 #include <iostream>
-#include <string>
+#include "./Headers/Object.h"
+#include "./Headers/Actor.h"
+#include "./Headers/Pawn.h"
 using namespace std;
 
-// PARENT CLASS
-class Creature {
-public:
-   Creature(); //Constructor
+int main() {
+   Object* objPtr = new Object;
+   Actor* actorPtr = new Actor;
+   Pawn* pawnPtr = new Pawn;
 
-   void Setname(string _name);
-   string Getname();
+   Object* ObjectArray[] = { objPtr, actorPtr, pawnPtr };
 
-   float Gethealth();
-
-   void TakeDamage(float damage);
-
-private:
-   string name;
-   float health;
-
-protected:
-   int NumberOfLimbs;
-
-};
-
-// INHERITING CHILD CLASS
-class Goblin :public Creature {
-public:
-   Goblin(); //Constructor
-
-   int GetNumberOfLimbs();
-};
-
-Goblin::Goblin() {
-   NumberOfLimbs = 5;
-}
-int Goblin::GetNumberOfLimbs() {
-   return NumberOfLimbs;
-}
-
-Creature::Creature() { cout << "A creature has been created!" << endl; };
-void Creature::Setname(string _name) { name = _name; }
-string Creature::Getname() { return name; }
-float Creature::Gethealth() { return health; }
-
-void Creature::TakeDamage(float damage) {
-   float Total;
-   Total = health - damage;
-
-   if (Total <= 0.f) {
-      cout << Getname() << "has died\n";
+   for (int i = 0; i < 3; i++) {
+      Object* obj = ObjectArray[i]; // Make a addreesable copy of the array element @ index i
+      Actor* act = dynamic_cast<Actor*>(obj);
+      if (act) {
+         act->ActorFn();
+      }
+      Pawn* pawn = dynamic_cast<Pawn*>(obj);
+      if (pawn) {
+         pawn->PawnFn();
+      }
    }
-   else {
-      health -= damage;
-   }
-   cout << "health: " << Gethealth() << endl;
+
+   delete objPtr;
+   delete actorPtr;
+   delete pawnPtr;
 }
 
-int main()
-{
-   Creature Igor;
-   Igor.Setname("Maxi");
-   cout << Igor.Getname() << endl;
-
-   Goblin Gobby;
-   Gobby.Setname("Gobby");
-   cout << Gobby.Getname() << " " << Gobby.GetNumberOfLimbs() << endl;
-}
