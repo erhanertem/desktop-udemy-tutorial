@@ -1,17 +1,18 @@
-import { ComponentPropsWithRef } from 'react';
+import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 
 type InputProps = {
 	label: string;
 	id: string;
-} & ComponentPropsWithRef<'input'>; // Provides all attribute props related to input tag element
+} & ComponentPropsWithoutRef<'input'>; // Provides all attribute props related to input tag element
 
-function Input({ label, id, ...props }: InputProps) {
+const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ label, id, ...props }: InputProps, ref) {
 	return (
 		<p>
 			<label htmlFor={id}>{label}</label>
-			<input id={id} {...props} />
+			<input id={id} name={id} {...props} ref={ref} />
+			{/* NOTE: FormData @ Form.tsx requires name attribute on input elements to create this FormData object */}
 		</p>
 	);
-}
+});
 
 export default Input;
