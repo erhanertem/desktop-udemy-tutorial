@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer, type ReactNode } from 'react';
 
 // ContextAPI Types
-type Timer = { name: string; duration: number };
+export type Timer = { name: string; duration: number };
 type TimersState = { isRunning: boolean; timers: Timer[] };
 type TimersContextValue = TimersState & {
 	addTimer: (timerData: Timer) => void;
@@ -59,7 +59,7 @@ const TimersContext = createContext<TimersContextValue | null>(null);
 // Create custom hook utilizing timerscontext
 export function useTimersContext() {
 	const timersCtx = useContext(TimersContext);
-
+	// console.log(timersCtx);
 	if (timersCtx === null) {
 		throw new Error("TimersContext can't be null");
 	}
