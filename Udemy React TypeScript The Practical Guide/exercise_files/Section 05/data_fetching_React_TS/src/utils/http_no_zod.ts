@@ -12,7 +12,7 @@ export async function get<T>(url: string) {
 	return data as T;
 }
 
-// > http_no_zod w/as type precursor solution
+// > http_no_zod w/as type predicating solution
 // export async function get(url: string) {
 // 	const response = await fetch(url);
 

@@ -23,7 +23,7 @@ function App() {
 			try {
 				// > http_no_zod w/Generic get function solution
 				const data = await get<RawDataBlogPost>('https://jsonplaceholder.typicode.com/posts');
-				// > http_no_zod w/as type precursor solution
+				// > http_no_zod w/as type predicating solution
 				// const data = (await get('https://jsonplaceholder.typicode.com/podsts')) as RawDataBlogPost[];
 
 				const blogPosts: BlogPost[] = data.map((rawPost: RawDataBlogPost) => {
