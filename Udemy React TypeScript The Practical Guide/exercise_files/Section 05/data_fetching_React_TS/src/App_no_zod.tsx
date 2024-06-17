@@ -5,7 +5,6 @@ import fetchingImg from './assets/data-fetching.png';
 import ErrorMessage from './components/ErrorMessage';
 
 type RawDataBlogPost = {
-	[x: string]: any;
 	id: number;
 	userId: number;
 	title: string;
@@ -22,7 +21,7 @@ function App() {
 			setIsFetching(true);
 			try {
 				// > http_no_zod w/Generic get function solution
-				const data = await get<RawDataBlogPost>('https://jsonplaceholder.typicode.com/posts');
+				const data = await get<RawDataBlogPost[]>('https://jsonplaceholder.typicode.com/posts');
 				// > http_no_zod w/as type predicating solution
 				// const data = (await get('https://jsonplaceholder.typicode.com/podsts')) as RawDataBlogPost[];
 
