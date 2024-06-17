@@ -24,16 +24,20 @@ function App() {
 		(async function fetchPosts() {
 			setIsFetching(true);
 			try {
-				const data = await get('https://jsonplaceholder.typicode.com/posts');
+				// > generic Type get function with internally handled parsed data solution
+				const data = await get('https://jsonplaceholder.typicode.com/posts', expectedResponseDataSchema);
 
-				const parsedData = expectedResponseDataSchema.parse(data);
-				/* 
+				// > Generic Type get function solution
+				// const data = await get('https://jsonplaceholder.typicode.com/posts');
+				// const parsedData = expectedResponseDataSchema.parse(data);
+
+				/*
             No more type casting via "as" needed!
 				Instead, here, TypeScript "knows" that parsedData will be an array
 				full with objects as defined by the above schema 
             */
 
-				const blogPosts: BlogPost[] = parsedData.map((rawPost) => {
+				const blogPosts: BlogPost[] = data.map((rawPost) => {
 					return { id: rawPost.id, title: rawPost.title, text: rawPost.body };
 				});
 
