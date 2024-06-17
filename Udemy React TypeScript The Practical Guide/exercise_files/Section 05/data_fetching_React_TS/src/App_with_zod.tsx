@@ -1,16 +1,9 @@
 import { z } from 'zod';
 import { useEffect, useState } from 'react';
-import { get } from './utils/http';
+import { get } from './utils/http_zod.ts';
 import BlogPosts, { type BlogPost } from './components/BlogPosts';
 import fetchingImg from './assets/data-fetching.png';
 import ErrorMessage from './components/ErrorMessage';
-
-type RawDataBlogPost = {
-	id: number;
-	userId: number;
-	title: string;
-	body: string;
-};
 
 const rawDataBlogPostSchema = z.object({
 	id: z.number(),
@@ -31,7 +24,7 @@ function App() {
 		(async function fetchPosts() {
 			setIsFetching(true);
 			try {
-				const data = await get('https://jsonplaceholder.typicode.com/podsts');
+				const data = await get('https://jsonplaceholder.typicode.com/posts');
 
 				const parsedData = expectedResponseDataSchema.parse(data);
 				/* 

@@ -1,3 +1,4 @@
+// > http_no_zod w/Generic get function solution
 export async function get<T>(url: string) {
 	const response = await fetch(url);
 
@@ -11,6 +12,7 @@ export async function get<T>(url: string) {
 	return data as T;
 }
 
+// > http_no_zod w/as type precursor solution
 // export async function get(url: string) {
 // 	const response = await fetch(url);
 
