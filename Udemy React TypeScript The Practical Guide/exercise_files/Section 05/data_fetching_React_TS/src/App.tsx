@@ -1,7 +1,8 @@
-import { type ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { get } from './utils/http';
 import BlogPosts, { type BlogPost } from './components/BlogPosts';
 import fetchingImg from './assets/data-fetching.png';
+import ErrorMessage from './components/ErrorMessage';
 
 type RawDataBlogPost = {
 	id: number;
@@ -12,16 +13,28 @@ type RawDataBlogPost = {
 
 function App() {
 	const [fetchedPosts, setFetchedPosts] = useState<BlogPost[]>();
+	const [isFetching, setIsFetching] = useState(false);
+	const [error, setError] = useState<string>();
 
 	useEffect(() => {
 		(async function fetchPosts() {
-			const data = (await get('https://jsonplaceholder.typicode.com/posts')) as RawDataBlogPost[];
+			setIsFetching(true);
+			try {
+				const data = (await get('https://jsonplaceholder.typicode.com/podsts')) as RawDataBlogPost[];
 
-			const blogPosts: BlogPost[] = data.map((rawPost) => {
-				return { id: rawPost.id, title: rawPost.title, text: rawPost.body };
-			});
+				const blogPosts: BlogPost[] = data.map((rawPost) => {
+					return { id: rawPost.id, title: rawPost.title, text: rawPost.body };
+				});
 
-			setFetchedPosts(blogPosts);
+				setFetchedPosts(blogPosts);
+			} catch (err) {
+				// Opt#1 - type checking error object via type predicator
+				// setError((err as Error).message);
+				// Opt#2 - type checking erro object via instanceof type narrowing
+				err instanceof Error && setError(err.message);
+			} finally {
+				setIsFetching(false);
+			}
 		})();
 	}, []);
 
@@ -29,6 +42,8 @@ function App() {
 		<main>
 			<img src={fetchingImg} alt="An abstract image depicting a data fetching process" />
 			{fetchedPosts && <BlogPosts posts={fetchedPosts} />}
+			{isFetching && <p id="loading-fallback">Fetching posts...</p>}
+			{error && <ErrorMessage text={error} />}
 		</main>
 	);
 }
