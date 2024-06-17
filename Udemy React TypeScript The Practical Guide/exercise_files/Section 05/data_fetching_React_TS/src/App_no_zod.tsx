@@ -20,7 +20,8 @@ function App() {
 		(async function fetchPosts() {
 			setIsFetching(true);
 			try {
-				const data = (await get('https://jsonplaceholder.typicode.com/podsts')) as RawDataBlogPost[];
+				const data = await get<RawDataBlogPost>('https://jsonplaceholder.typicode.com/podsts');
+				// const data = (await get('https://jsonplaceholder.typicode.com/podsts')) as RawDataBlogPost[];
 
 				const blogPosts: BlogPost[] = data.map((rawPost) => {
 					return { id: rawPost.id, title: rawPost.title, text: rawPost.body };
