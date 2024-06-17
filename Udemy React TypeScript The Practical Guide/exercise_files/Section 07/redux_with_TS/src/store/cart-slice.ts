@@ -36,3 +36,6 @@ export const cartSlice = createSlice({
 		},
 	},
 });
+
+// MAKE SLICER DISPATCH ACTION FUNCTIONS AVAILABLE TO COMPONENTS' USE
+export const { addToCart, removeFromCart } = cartSlice.actions;
