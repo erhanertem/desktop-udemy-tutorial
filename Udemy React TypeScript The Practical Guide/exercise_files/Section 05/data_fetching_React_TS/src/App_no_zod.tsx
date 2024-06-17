@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { get } from './utils/http';
+import { get } from './utils/http_no_zod.ts';
 import BlogPosts, { type BlogPost } from './components/BlogPosts';
 import fetchingImg from './assets/data-fetching.png';
 import ErrorMessage from './components/ErrorMessage';
 
 type RawDataBlogPost = {
+	[x: string]: any;
 	id: number;
 	userId: number;
 	title: string;
@@ -20,10 +21,12 @@ function App() {
 		(async function fetchPosts() {
 			setIsFetching(true);
 			try {
-				const data = await get<RawDataBlogPost>('https://jsonplaceholder.typicode.com/podsts');
+				// > http_no_zod w/Generic get function solution
+				const data = await get<RawDataBlogPost>('https://jsonplaceholder.typicode.com/posts');
+				// > http_no_zod w/as type precursor solution
 				// const data = (await get('https://jsonplaceholder.typicode.com/podsts')) as RawDataBlogPost[];
 
-				const blogPosts: BlogPost[] = data.map((rawPost) => {
+				const blogPosts: BlogPost[] = data.map((rawPost: RawDataBlogPost) => {
 					return { id: rawPost.id, title: rawPost.title, text: rawPost.body };
 				});
 
