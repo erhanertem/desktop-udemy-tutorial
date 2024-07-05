@@ -1,0 +1,22 @@
+Build an app using the following specifications:
+
+Project description: A web app where users can solve quizzes and get the results at the end.
+Project Requirements:
+- It should be a multiple choice quiz.
+- The quiz should have four questions in total.
+- Each question should have four alternatives.
+- All questions should show on the same page.
+- There is a Submit button at the end of the page.
+- The submit button should calculate the number of correct answers given and show the results in another page
+- Use some dummy questions as data.
+
+Technology requirements:
+- Use Flask and Bootstrap
+- Use a JSON file to store the questions.
+ 
+Create a virtual environment:
+ python3 -m venv venv
+ source venv/bin/activate
+Install Frameworks:
+ pip install flask
+ pip install flask-bootstrap

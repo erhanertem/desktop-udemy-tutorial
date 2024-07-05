@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
+		<title>Quiz App</title>
+	</head>
+	<body>
+		<div class="container mt-5">
+			<h1 class="mb-4">Quiz</h1>
+			<form action="{{ url_for('submit') }}" method="post">
+				{% for question in questions %}
+				<div class="mb-4">
+					<h4>{{ question.question }}</h4>
+					{% for option in question.options %}
+					<div class="form-check">
+						<input
+							class="form-check-input"
+							type="radio"
+							name="question-{{ question.id }}"
+							id="question-{{ question.id }}-{{ loop.index }}"
+							value="{{ option }}"
+						/>
+						<label class="form-check-label" for="question-{{ question.id }}-{{ loop.index }}">
+							{{ option }}
+						</label>
+					</div>
+					{% endfor %}
+				</div>
+				{% endfor %}
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	</body>
+</html>

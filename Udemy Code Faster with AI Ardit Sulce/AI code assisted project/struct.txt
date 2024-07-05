@@ -1,0 +1,10 @@
+quiz_app/
+├── app.py
+├── templates/
+│   ├── index.html
+│   ├── result.html
+├── static/
+│   └── css/
+│       └── style.css (if needed)
+├── questions.json
+└── __init__.py
