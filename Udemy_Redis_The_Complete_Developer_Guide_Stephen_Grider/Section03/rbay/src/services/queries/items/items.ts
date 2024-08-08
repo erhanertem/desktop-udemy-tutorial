@@ -11,10 +11,28 @@ export const getItem = async (id: string) => {
 	if (Object.keys(item).length === 0) {
 		return null;
 	}
+	// Deserialize results
 	return deserialize(id, item);
 };
 
-export const getItems = async (ids: string[]) => {};
+// NOTE: REDIS PIPING FOR MULTIPLE QUERIES
+export const getItems = async (ids: string[]) => {
+	// PIPELINE FERTCH RESULTS
+	const commands = ids.map((id) => {
+		return client.hGetAll(itemsKey(id));
+	});
+	const results = await Promise.all(commands);
+
+	// EVALUATE RESULTS
+	return results.map((result, index) => {
+		// GUARD CLAUSE - Check if each result returns empty {}
+		if (Object.keys(result).length === 0) {
+			return null;
+		}
+		// Deserialize results
+		return deserialize(ids[index], result);
+	});
+};
 
 export const createItem = async (attrs: CreateItemAttrs, userId: string) => {
 	const id = genId();
