@@ -2,7 +2,7 @@ import type { CreateItemAttrs } from '$services/types';
 import { client } from '$services/redis';
 import { serialize } from './serialize';
 import { genId } from '$services/utils';
-import { itemsKey } from '$services/keys';
+import { itemsByViewsKey, itemsKey } from '$services/keys';
 import { deserialize } from './deserialize';
 
 export const getItem = async (id: string) => {
@@ -37,7 +37,19 @@ export const getItems = async (ids: string[]) => {
 export const createItem = async (attrs: CreateItemAttrs, userId: string) => {
 	const id = genId();
 	const serialized = serialize(attrs);
-	await client.hSet(itemsKey(id), serialized);
+
+	// // INDIVIDUAL REDIS OPERATIONS
+	// // Create items hash redis table
+	// await client.hSet(itemsKey(id), serialized);
+	// // Add items:views sorted hash redis table the intiial score
+	// await client.zAdd(itemsByViewsKey(), { value: id, score: 0 });
+	// PIPELINING REDIS OPERATIONS
+	await Promise.all([
+		// Create items hash redis table
+		client.hSet(itemsKey(id), serialized),
+		// Add items:views sorted hash redis table the intiial score
+		client.zAdd(itemsByViewsKey(), { value: id, score: 0 })
+	]);
 
 	return id;
 };
