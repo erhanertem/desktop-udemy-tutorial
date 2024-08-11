@@ -1,5 +1,6 @@
 export const pageCacheKeys = (id: string) => `pagecache#${id}`;
 export const sessionsKey = (sessionId: string) => `sessions#${sessionId}`;
+export const bidHistoryKey = (itemId: string) => `history#${itemId}`;
 
 // Users
 export const usersKey = (userId: string) => `users#${userId}`;
