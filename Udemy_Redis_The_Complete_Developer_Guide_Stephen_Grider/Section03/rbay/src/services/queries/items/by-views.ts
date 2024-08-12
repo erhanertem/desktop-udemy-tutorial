@@ -17,7 +17,7 @@ export const itemsByViews = async (order: 'DESC' | 'ASC' = 'DESC', offset = 0, c
 		DIRECTION: order,
 		LIMIT: { offset, count }
 	});
-	console.log(results);
+	// console.log(results);
 
 	const items = [];
 	while (results.length) {
