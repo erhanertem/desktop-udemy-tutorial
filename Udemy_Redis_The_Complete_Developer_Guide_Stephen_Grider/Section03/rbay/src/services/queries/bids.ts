@@ -2,9 +2,22 @@ import type { CreateBidAttrs, Bid } from '$services/types';
 import { client } from '$services/redis';
 import { bidHistoryKey } from '$services/keys';
 import { DateTime } from 'luxon';
+import { getItem } from './items';
 
 // Adds a bid to bid histogram redis list
 export const createBid = async (attrs: CreateBidAttrs) => {
+	// GUARD CLAUSE Validation Stack
+	const item = await getItem(attrs.itemId);
+	if (!item) {
+		throw new Error('Item does not exist');
+	}
+	if (item.price >= attrs.amount) {
+		throw new Error('Bid too low');
+	}
+	if (item.endingAt.diff(DateTime.now()).toMillis() < 0) {
+		throw new Error('Item closed to bidding');
+	}
+
 	// Serialize bid for inserting into redis list
 	const serializedBid = serializeHistory(attrs.amount, attrs.createdAt.toMillis());
 
