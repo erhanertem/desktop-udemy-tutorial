@@ -1,6 +1,6 @@
 import type { CreateBidAttrs, Bid } from '$services/types';
 import { client } from '$services/redis';
-import { bidHistoryKey, itemsKey } from '$services/keys';
+import { bidHistoryKey, itemsByPriceKey, itemsKey } from '$services/keys';
 import { DateTime } from 'luxon';
 import { getItem } from './items';
 
@@ -32,6 +32,7 @@ export const createBid = async (attrs: CreateBidAttrs) => {
       Call multi
       Insert serialized bid into redis list to the right hand
 		Update the item hash table attributes
+      Update 'items:price' sorted hash table for max bid the item received
       Call exec
       */
 		return isolatedClient
@@ -42,6 +43,7 @@ export const createBid = async (attrs: CreateBidAttrs) => {
 				price: attrs.amount, // Update the current biddign amount`
 				highestBidUserId: attrs.userId // New biddign user is always the higher
 			})
+			.zAdd(itemsByPriceKey(), { value: item.id, score: attrs.amount })
 			.exec();
 	});
 };
