@@ -1,6 +1,6 @@
 import type { CreateBidAttrs, Bid } from '$services/types';
 import { client } from '$services/redis';
-import { bidHistoryKey } from '$services/keys';
+import { bidHistoryKey, itemsKey } from '$services/keys';
 import { DateTime } from 'luxon';
 import { getItem } from './items';
 
@@ -21,8 +21,16 @@ export const createBid = async (attrs: CreateBidAttrs) => {
 	// Serialize bid for inserting into redis list
 	const serializedBid = serializeHistory(attrs.amount, attrs.createdAt.toMillis());
 
-	// Insert serialized bid into redis list to the right hand
-	return client.rPush(bidHistoryKey(attrs.itemId), serializedBid);
+	return await Promise.all([
+		// Insert serialized bid into redis list to the right hand
+		client.rPush(bidHistoryKey(attrs.itemId), serializedBid),
+		// Update the item hash table attributes
+		client.hSet(itemsKey(item.id), {
+			bids: item.bids + 1, //Increment bid count
+			price: attrs.amount, // Update the current biddign amount`
+			highestBidUserId: attrs.userId // New biddign user is always the higher
+		})
+	]);
 };
 
 // Retrieves the bid history for a given item in the redis list and retuns to app with proper time stamp format and onyl the items within certain range
