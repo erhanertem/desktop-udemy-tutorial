@@ -15,7 +15,8 @@ import { getItem } from './items';
 export const createBid = async (attrs: CreateBidAttrs) => {
 	// --> CONCURRENCY ISSUE : Solving via locks
 	// NOTE: attrs.itemId is the item we want to apply lock onto, cb fn as the second arg in the withLock is logic we want to implement with the locked item
-	return withLock(attrs.itemId, async (signal: any) => {
+	// return withLock(attrs.itemId, async (lockedClient: typeof client, signal: any) => {
+	return withLock(attrs.itemId, async (lockedClient: typeof client) => {
 		// 1. Fetching the item
 		const item = await getItem(attrs.itemId);
 
@@ -36,20 +37,20 @@ export const createBid = async (attrs: CreateBidAttrs) => {
 		// Serialize bid for inserting into redis list
 		const serializedBid = serializeHistory(attrs.amount, attrs.createdAt.toMillis());
 
-		// GUARD CLAUSE - Check for expired signal
-		if (signal.expired) {
-			throw new Error("Lock expired, can't proceed");
-		}
+		// // GUARD CLAUSE - Check for expired signal
+		// if (signal.expired) {
+		// 	throw new Error("Lock expired, can't proceed");
+		// }
 
 		// 3. Writing some data
 		return Promise.all([
-			client.rPush(bidHistoryKey(attrs.itemId), serializedBid),
-			client.hSet(itemsKey(item.id), {
+			lockedClient.rPush(bidHistoryKey(attrs.itemId), serializedBid),
+			lockedClient.hSet(itemsKey(item.id), {
 				bids: item.bids + 1, //Increment bid count
 				price: attrs.amount, // Update the current biddign amount`
 				highestBidUserId: attrs.userId // New biddign user is always the higher
 			}),
-			client.zAdd(itemsByPriceKey(), { value: item.id, score: attrs.amount })
+			lockedClient.zAdd(itemsByPriceKey(), { value: item.id, score: attrs.amount })
 		]);
 	});
 
