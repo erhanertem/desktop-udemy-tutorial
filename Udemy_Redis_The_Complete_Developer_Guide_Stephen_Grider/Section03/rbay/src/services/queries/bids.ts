@@ -4,13 +4,24 @@ import { bidHistoryKey, itemsByPriceKey, itemsKey } from '$services/keys';
 import { DateTime } from 'luxon';
 import { getItem } from './items';
 
+// FOR TESTING PURPOSES ONLY
+// const pause = (duration: number) => {
+// 	return new Promise((resolve) => {
+// 		setTimeout(resolve, duration);
+// 	});
+// };
+
 // Adds a bid to bid histogram redis list
 export const createBid = async (attrs: CreateBidAttrs) => {
 	// --> CONCURRENCY ISSUE : Solving via locks
 	// NOTE: attrs.itemId is the item we want to apply lock onto, cb fn as the second arg in the withLock is logic we want to implement with the locked item
-	return withLock(attrs.itemId, async () => {
+	return withLock(attrs.itemId, async (signal: any) => {
 		// 1. Fetching the item
 		const item = await getItem(attrs.itemId);
+
+		// // force processing session pass the expired signal threshold for testing purposes
+		// await pause(5000);
+
 		// 2. Doing Validation
 		// GUARD CLAUSE Validation Stack
 		if (!item) {
@@ -24,6 +35,11 @@ export const createBid = async (attrs: CreateBidAttrs) => {
 		}
 		// Serialize bid for inserting into redis list
 		const serializedBid = serializeHistory(attrs.amount, attrs.createdAt.toMillis());
+
+		// GUARD CLAUSE - Check for expired signal
+		if (signal.expired) {
+			throw new Error("Lock expired, can't proceed");
+		}
 
 		// 3. Writing some data
 		return Promise.all([
