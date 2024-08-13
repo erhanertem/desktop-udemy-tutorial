@@ -1,19 +1,18 @@
 import type { CreateBidAttrs, Bid } from '$services/types';
-import { client } from '$services/redis';
+import { client, withLock } from '$services/redis';
 import { bidHistoryKey, itemsByPriceKey, itemsKey } from '$services/keys';
 import { DateTime } from 'luxon';
 import { getItem } from './items';
 
 // Adds a bid to bid histogram redis list
 export const createBid = async (attrs: CreateBidAttrs) => {
-	// CONCURRENCY ISSUE : Solving via transaction
-	// Crete a new connection just for the transaction
-	return client.executeIsolated(async (isolatedClient) => {
-		// Add a watch statement on a property
-		await isolatedClient.watch(itemsKey(attrs.itemId));
-
-		// GUARD CLAUSE Validation Stack
+	// --> CONCURRENCY ISSUE : Solving via locks
+	// NOTE: attrs.itemId is the item we want to apply lock onto, cb fn as the second arg in the withLock is logic we want to implement with the locked item
+	return withLock(attrs.itemId, async () => {
+		// 1. Fetching the item
 		const item = await getItem(attrs.itemId);
+		// 2. Doing Validation
+		// GUARD CLAUSE Validation Stack
 		if (!item) {
 			throw new Error('Item does not exist');
 		}
@@ -23,29 +22,61 @@ export const createBid = async (attrs: CreateBidAttrs) => {
 		if (item.endingAt.diff(DateTime.now()).toMillis() < 0) {
 			throw new Error('Item closed to bidding');
 		}
-
 		// Serialize bid for inserting into redis list
 		const serializedBid = serializeHistory(attrs.amount, attrs.createdAt.toMillis());
 
-		// Execute the transaction
-		/* 
-      Call multi
-      Insert serialized bid into redis list to the right hand
-		Update the item hash table attributes
-      Update 'items:price' sorted hash table for max bid the item received
-      Call exec
-      */
-		return isolatedClient
-			.multi()
-			.rPush(bidHistoryKey(attrs.itemId), serializedBid)
-			.hSet(itemsKey(item.id), {
+		// 3. Writing some data
+		return Promise.all([
+			client.rPush(bidHistoryKey(attrs.itemId), serializedBid),
+			client.hSet(itemsKey(item.id), {
 				bids: item.bids + 1, //Increment bid count
 				price: attrs.amount, // Update the current biddign amount`
 				highestBidUserId: attrs.userId // New biddign user is always the higher
-			})
-			.zAdd(itemsByPriceKey(), { value: item.id, score: attrs.amount })
-			.exec();
+			}),
+			client.zAdd(itemsByPriceKey(), { value: item.id, score: attrs.amount })
+		]);
 	});
+
+	// // --> CONCURRENCY ISSUE : Solving via transaction
+	// // Crete a new connection just for the transaction
+	// return client.executeIsolated(async (isolatedClient) => {
+	// 	// Add a watch statement on a property
+	// 	await isolatedClient.watch(itemsKey(attrs.itemId));
+
+	// 	// GUARD CLAUSE Validation Stack
+	// 	const item = await getItem(attrs.itemId);
+	// 	if (!item) {
+	// 		throw new Error('Item does not exist');
+	// 	}
+	// 	if (item.price >= attrs.amount) {
+	// 		throw new Error('Bid too low');
+	// 	}
+	// 	if (item.endingAt.diff(DateTime.now()).toMillis() < 0) {
+	// 		throw new Error('Item closed to bidding');
+	// 	}
+
+	// 	// Serialize bid for inserting into redis list
+	// 	const serializedBid = serializeHistory(attrs.amount, attrs.createdAt.toMillis());
+
+	// 	// Execute the transaction
+	// 	/*
+	//    Call multi
+	//    Insert serialized bid into redis list to the right hand
+	// 	Update the item hash table attributes
+	//    Update 'items:price' sorted hash table for max bid the item received
+	//    Call exec
+	//    */
+	// 	return isolatedClient
+	// 		.multi()
+	// 		.rPush(bidHistoryKey(attrs.itemId), serializedBid)
+	// 		.hSet(itemsKey(item.id), {
+	// 			bids: item.bids + 1, //Increment bid count
+	// 			price: attrs.amount, // Update the current biddign amount`
+	// 			highestBidUserId: attrs.userId // New biddign user is always the higher
+	// 		})
+	// 		.zAdd(itemsByPriceKey(), { value: item.id, score: attrs.amount })
+	// 		.exec();
+	// });
 };
 
 // Retrieves the bid history for a given item in the redis list and retuns to app with proper time stamp format and onyl the items within certain range
