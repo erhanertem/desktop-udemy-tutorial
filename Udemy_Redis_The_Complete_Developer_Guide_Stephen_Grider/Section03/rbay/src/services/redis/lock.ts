@@ -27,7 +27,9 @@ export const withLock = async (key: string, cb: () => any) => {
 			return result;
 		} finally {
 			// Unset the lock key
-			await client.del(lockKey);
+			// NOTE: This may cause accidental unlock so we need to replace this with Lua script which checks the lock token first, if its a match allows deleting the lockkey
+			// await client.del(lockKey);
+			await client.unlock(lockKey, token);
 		}
 	}
 };
