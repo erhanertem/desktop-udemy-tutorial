@@ -14,18 +14,21 @@ export const withLock = async (key: string, cb: () => any) => {
 	while (retries >= 0) {
 		retries--;
 		// Try to do a SET NX operation
-		const acquired = await client.set(lockKey, token, { NX: true });
+		const acquired = await client.set(lockKey, token, { NX: true, PX: 2000 });
 		// GUARD CLAUSE - If not able to set, brief pause(retryDelayMs) and then retry
 		if (!acquired) {
 			await pause(retryDelayMs);
 			continue;
 		}
 		// If the set is succesfull, then run the callback
-		const result = await cb();
-		// Unset the lock key
-		await client.del(lockKey);
-		// If the callback finished successfully, return the result
-		return result;
+		try {
+			const result = await cb();
+			// If the callback finished successfully, return the result
+			return result;
+		} finally {
+			// Unset the lock key
+			await client.del(lockKey);
+		}
 	}
 };
 
