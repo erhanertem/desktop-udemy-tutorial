@@ -1,0 +1,30 @@
+# REST addon for vscode config file
+http://localhost:3005/users
+
+###
+
+http://localhost:3005/users/1
+
+###
+# VERY IMPORTANT! SECURITY ISSUE EXAMPLE - SQL INJECTION EXPLOIT SAMPLE
+http://localhost:3005/users/2;DROP TABLE users;
+
+###
+POST http://localhost:3005/users HTTP/1.1
+content-type: application/json
+
+{
+  "username": "p1232rop12",
+  "bio": "I am a real prop"
+}
+
+###
+PUT http://localhost:3005/users/6 HTTP/1.1
+content-type: application/json
+
+{
+  "username": "p1232rop12",
+  "bio": "I am a zinc"
+}
+###
+DELETE http://localhost:3005/users/5 HTTP/1.1

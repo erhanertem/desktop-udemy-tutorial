@@ -1,0 +1,1489 @@
+// LESSON 1 INTRODUCTION
+
+show dbs
+use shop
+show collections
+db.products.insertOne({name: "AAAAA Book",price: 13.99})
+db.products.insertOne({name: "Another dummy Book",descp: "Wiizard OZ's memoirs", price: 52.99})
+db.products.find()
+db.products.find().pretty()
+db.products.insertOne({name: "A T-shirt",descp: "This is an expensive wizzard shirt", price: 13.99})
+db.products.insertOne({name: "A Computer",descp: "A very fast computer with RTX 4090ti", price: 1213.99, details: {cpu: "Intel i7xxx", ram: "100GB"}})
+
+// LESSON 2 BASICS & CRUD OPERATIONS
+
+show dbs
+// CREATE DB
+use flights
+// CREATE COLLECTION
+// IMPORTANT! if keys do not have any spacing between the key names, no quatations are needed.
+db.flightData.insertOne(
+  {
+    departureAirport: "MUC",
+    arrivalAirport: "SFO",
+    aircraft: "Airbus A380",
+    distance: 12000,
+    intercontinental: true
+  }
+)
+db.flightData.insertOne(
+   {
+    "departureAirport": "LHR",
+    "arrivalAirport": "TXL",
+    "aircraft": "Airbus A320",
+    "distance": 950,
+    "intercontinental": false
+  }
+)
+db.flightData.insertMany([
+  {
+    departureAirport: "MUC",
+    arrivalAirport: "SFO",
+    aircraft: "Airbus A380",
+    distance: 12000,
+    intercontinental: true
+  }, 
+  {
+    departureAirport: "LHR",
+    arrivalAirport: "TXL",
+    aircraft: "Airbus A320",
+    distance: 950,
+    intercontinental: false
+  }]
+)
+
+//Search all documents
+db.flightData.find()
+// Search all matching documents
+db.flightData.find({distance: 12000})
+db.flightData.find({distance: {$gt: 900}})
+db.flightData.find({intercontinental: true})
+//Search a single matching document
+db.flightData.findOne({distance: {$gt: 900}})
+// Delete a specific document in the collection
+db.flightData.deleteOne({_id:ObjectId("63f86936760367c4a39eb999")})
+// Delete multiple specific documents in the collection
+db.flightData.updateMany({distance: 12000}, {$set: {marker: "delete"}})
+db.flightData.updateMany({}, {$set: {marker: "toDelete"}})
+db.flightData.deleteMany({marker: "toDelete"})
+// Delete all documents in the collection
+db.flightData.deleteMany({})
+//Update a single document
+db.flightData.updateOne({_id:ObjectId("63f86d787301421e8f4c8c4d")}, {$set: {delayed: true}})
+//Update many document
+db.flightData.updateMany({departureAirport: 'LHR'}, {$set: {delayed: true}})
+//Replace a document entirely
+db.flightData.replaceOne({_id:ObjectId("63f8733ea42f489e8918f0ad")}, { 
+    "departureAirport": "MUC",
+    "arrivalAirport": "SFO",
+    "aircraft": "Airbus A380",
+    "distance": 12000,
+    "intercontinental": true
+  })
+
+
+db.passangers.insertMany([
+  {
+    "name": "Max Schwarzmueller",
+    "age": 29
+  },
+  {
+    "name": "Manu Lorenz",
+    "age": 30
+  },
+  {
+    "name": "Chris Hayton",
+    "age": 35
+  },
+  {
+    "name": "Sandeep Kumar",
+    "age": 28
+  },
+  {
+    "name": "Maria Jones",
+    "age": 30
+  },
+  {
+    "name": "Alexandra Maier",
+    "age": 27
+  },
+  {
+    "name": "Dr. Phil Evans",
+    "age": 47
+  },
+  {
+    "name": "Sandra Brugge",
+    "age": 33
+  },
+  {
+    "name": "Elisabeth Mayr",
+    "age": 29
+  },
+  {
+    "name": "Frank Cube",
+    "age": 41
+  },
+  {
+    "name": "Karandeep Alun",
+    "age": 48
+  },
+  {
+    "name": "Michaela Drayer",
+    "age": 39
+  },
+  {
+    "name": "Bernd Hoftstadt",
+    "age": 22
+  },
+  {
+    "name": "Scott Tolib",
+    "age": 44
+  },
+  {
+    "name": "Freddy Melver",
+    "age": 41
+  },
+  {
+    "name": "Alexis Bohed",
+    "age": 35
+  },
+  {
+    "name": "Melanie Palace",
+    "age": 27
+  },
+  {
+    "name": "Armin Glutch",
+    "age": 35
+  },
+  {
+    "name": "Klaus Arber",
+    "age": 53
+  },
+  {
+    "name": "Albert Twostone",
+    "age": 68
+  },
+  {
+    "name": "Gordon Black",
+    "age": 38
+  }
+]
+)
+//List all with stop cursor
+db.flightData.find()
+db.passangers.find()
+db.passangers.find().pretty()
+//List all without stop
+db.passangers.find().toArray()
+//only works in shell
+db.passangers.find().forEach((passangerData)=>{printjson(passangerData)})
+//List all with projection
+db.passangers.find({},{name:1})
+
+
+db.flightData.updateMany({}, {$set: {status: {description: "on-time", lastUpdated: "1 hour ago", details: {responsible: "Erhan ERTEM"}}}})
+
+db.passangers.updateOne({name: "Albert Twostone"},{$set: {hobbies: ["sports", "cooking"]}})
+
+//List a specific document and its sub key
+db.passangers.findOne({name: "Albert Twostone"})
+db.passangers.findOne({name: "Albert Twostone"}).hobbies
+db.passangers.findOne({hobbies: "sports"})
+db.passangers.findOne({hobbies: "sports"}, {hobbies:1})
+
+db.flightData.find({"status.description": "on-time"})
+
+
+db.patients.insertMany([
+  {firstName: "Max", lastName: "Schwarzmueller", age: 29, history: [{disease: "cold", treatment: "heart surgery"}]}, 
+  {firstName: "Erhan", lastName: "Ertem", age: 43, history: [{disease: "fever", treatment: "cold drugs"}]}, 
+  {firstName: "Tim", lastName: "Tenour", age: 12, history: [{disease: "alergy", treatment: "alergy drug"}]}
+])
+
+db.patients.updateOne({firstName: "Max", lastName: "Schwarzmueller"}, {$set:{firstName: "Maxi", lastName: "Schwarz", age: 30, history: [{disease: "cold", treatment: "fever pills"}]}})
+
+db.patients.find({age: {$gt: 30}})
+
+db.patients.deleteMany({"history.disease": "cold"})
+
+db.patients.drop()
+// LESSON 3 SCHEMAS & RELATIONS: HOW TO STRUCTURE DOCUMENTS
+db.products.drop()
+db.products.insertOne({name: "A horrible book", price: 12.99})
+db.products.insertOne({name: "T-Shirt", seller: {name: "Max Payne", age: 29}})
+db.products.insertOne({name: "A Super PC", price: 1300, details: {cpu: "Xeon 8770x", ram: "32gb jigsaw ECC"}, seller: {name: "Terry White", age: 32}})
+db.products.find()
+db.products.deleteMany({})
+db.products.insertOne({name: "A horrible book", price: 12.99, details: null})
+db.products.insertOne({name: "A computer", price: 12.99, details: {cpu: "Intel i7"}})
+
+db.companies.drop()
+db.companies.insertOne({name: "Fresh Apples Inc", isStartup: true, employees: 33, funding: 1234567890123456789, details: {ceo: "Mark Zuckerzuck"}, tags: [{title: "super"}, {title: "perfect"}], foundingDate: new Date(), insertedAt: new Timestamp()})
+db.companies.find()
+db.stats()
+
+// SCHEMA RELATIONS
+// 1-1 relationship
+db.patients.drop()
+db.diseaseSummaries.drop()
+db.patients.insertOne({name: "Max", age: 29, dieseaseSummary: "summary-max-1"})
+db.patients.findOne()
+db.diseaseSummaries.insertOne({_id: "summary-max-1", diseases: ["cold", "broken leg"]})
+db.diseaseSummaries.findOne()
+
+db.patients.insertOne({name: "Max", age: 29, dieseaseSummary:  { diseases: ["cold", "broken leg"]}})
+db.patients.find()
+
+// 1-MANY relationship
+db.questionThreads.insertOne({creator: "Max", question: "How does that all work?", answers: ["q1a1", "q1a2"]})
+db.questionThreads.findOne()
+db.answers.insertMany([
+  {_id: "q1a1", text: "It works like that"},
+  {_id: "q1a2", text: "Thanks! "}
+])
+
+db.cities.insertOne({name: "New York City", coordinates: {lat: 21, lng: 55}})
+db.cities.find()
+db.citizens.insertMany([{name: "Max Payne", cityId: ObjectId("63f8dbd8c0c175430afff786")}, {name: "Mix Wyne", cityId: ObjectId("63f8dbd8c0c175430afff786")}])
+db.citizens.find()
+
+// MANY-MANY relationship
+//Referencing
+use test
+db.products.insertOne({title: "A Book", price: 12.99})
+db.customers.insertOne({name: "Max", age: 29})
+db.orders.insertOne({productId: ObjectId("63f9b9a2db54c3c421e30205"), customerId: ObjectId("63f9b96a1c7418c0afa69910")})
+db.customers.find()
+db.products.find()
+db.orders.drop()
+db.customers.updateOne({}, {$set: {orders: [{productId: ObjectId("63f9b9a2db54c3c421e30205"), quantity: 2}]}})
+
+db.books.insertOne({}, {name: "My favorite Book", authors: [{name: "Max Schwarz", age: 29}, {name: "Manuel Lordsa", age: 23}]})
+db.authors.insertMany([{name: "Max Schwarz", age: 29, address:{street: "Main"}}, {name: "Manuel Lordsa", age: 23, address: {street: "Tree"}}])
+db.authors.find()
+db.books.drop()
+db.books.insertOne({name: "My favorite Book", authors: [ObjectId("63f9bdf01c73cd94facbfb9e"), ObjectId("63f9bdf01c73cd94facbfb9f")]})
+db.books.find()
+//Embedding
+db.customers.updateOne({}, {$set: {orders: [{title: "A Book", price: 12.99, quantity: 2}]}})
+//Aggregate
+db.books.aggregate([{/**
+ * from: The target collection.
+ * localField: The local join field.
+ * foreignField: The target join field.
+ * as: The name for the results.
+ * pipeline: Optional pipeline to run on the foreign collection.
+ * let: Optional variables to use in the pipeline field stages.
+ */
+$lookup: {
+  from: "authors",
+  localField: "authors",
+  foreignField: "_id",
+  as: "creators"
+}}])
+
+// Implementing an example exercise
+db.dropDatabase()
+db.users.insertMany([
+  {name: "Max Ertem", age: 29, email: "max@test.com"},
+  {name: "Manuel Lorenz", age: 30, email: "manu@test.com"}
+])
+db.posts.insertOne({title: "My first post!", text: "This is my first post, I hope you will like it!", tags:["new", "tech"], creator: ObjectId("63f9d8f8d8e75cfb047657de"), comments: [{text: "I like this post!", author: ObjectId("63f9d8f8d8e75cfb047657dd")}]})
+db.posts.find()
+db.posts.drop()
+db.posts.findOne()
+
+//Enforced Schema Creation
+db.posts.drop()
+db.createCollection('posts', {
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['title', 'text', 'creator', 'comments'],
+      properties: {
+        title: {
+          bsonType: 'string',
+          description: 'must be a string and is required',
+        },
+        text: {
+          bsonType: 'string',
+          description: 'must be a string and is required',
+        },
+        creator: {
+          bsonType: 'objectId',
+          description: 'must be an objectid and is required',
+        },
+        comments: {
+          bsonType: 'array',
+          description: 'must be an array and is required',
+          items: {
+            bsonType: 'object',
+            required: ['text', 'author'],
+            properties: {
+              text: {
+                bsonType: 'string',
+                description: 'must be a string and is required',
+              },
+              author: {
+                bsonType: 'objectId',
+                description: 'must be an objectid and is required',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+});
+
+db.posts.insertOne({
+  title: 'My first post!',
+  text: 'This is my first post, I hope you will like it!',
+  tags: ['new', 'tech'],
+  creator: ObjectId('63f9d8f8d8e75cfb047657de'),
+  comments: [
+    { text: 'I like this post!', author: ObjectId('63f9d8f8d8e75cfb047657dd') }
+  ]
+});
+db.posts.insertOne({
+  title: 'My first post!',
+  text: 'This is my first post, I hope you will like it!',
+  tags: ['new', 'tech'],
+  creator: ObjectId('63f9d8f8d8e75cfb047657de'),
+  comments: [
+    { text: 'I like this post!', author: ObjectId('12') }
+  ]
+});
+
+db.posts.find();
+
+//Modify enforced schema design
+db.runCommand({
+  collMod: 'posts',
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['title', 'text', 'creator', 'comments'],
+      properties: {
+        title: {
+          bsonType: 'string',
+          description: 'must be a string and is required'
+        },
+        text: {
+          bsonType: 'string',
+          description: 'must be a string and is required'
+        },
+        creator: {
+          bsonType: 'objectId',
+          description: 'must be an objectid and is required'
+        },
+        comments: {
+          bsonType: 'array',
+          description: 'must be an array and is required',
+          items: {
+            bsonType: 'object',
+            required: ['text', 'author'],
+            properties: {
+              text: {
+                bsonType: 'string',
+                description: 'must be a string and is required'
+              },
+              author: {
+                bsonType: 'objectId',
+                description: 'must be an objectid and is required'
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  validationAction: 'warn'
+  //by default  validationAction: 'error'
+});
+db.posts.insertOne({
+  title: 'My first post!',
+  text: 'This is my first post, I hope you will like it!',
+  tags: ['new', 'tech'],
+  creator: ObjectId('63f9d8f8d8e75cfb047657de'),
+  comments: [
+    { text: 'I like this post!', author: 12 }
+  ]
+});
+
+// LESSON 4 EXPLORING THE SHELL & THE SERVER
+// LESSON 5 USING MONGODB COMPASS TO EXPLORE DATAT VISUALLY
+// LESSON 6 DIVING INTO CREATE OPERATIONS
+use test;
+db.dropDatabase();
+db.persons.insertOne({ name: "Max", age: 30, hobbies: ["Sports", "Cooking"] });
+db.persons.insertOne({ name: "Manuel", age: 31, hobbies: ["Cars", "Cooking"] });
+db.persons.insertMany([{ name: "Anna", age: 29, hobbies: ["Sports", "Yoga"] }]);
+db.persons.insertMany([
+  { name: "Maria", age: 31 },
+  { name: "Chris", age: 25 }
+]);
+db.persons.find();
+
+// Errornous operations example
+db.hobbies.insertMany([
+  {_id:"Sports", name:"Sports"},
+  {_id:"Cooking", name:"Cooking"},
+  {_id:"Cars", name:"Cars"}
+  ])
+db.hobbies.insertMany([
+  {_id:"Yoga", name:"Yoga"},
+  {_id:"Cooking", name:"Cooking"},
+  {_id:"Hiking", name:"Hiking"}
+  ], {ordered: true})
+db.hobbies.insertMany([
+  {_id:"Yoga", name:"Yoga"},
+  {_id:"Cooking", name:"Cooking"},
+  {_id:"Hiking", name:"Hiking"}
+  ], {ordered: false})
+
+db.hobbies.find();
+db.persons.insertOne({name:"Chrissy", age: 41},{writeConcern: {w: 0}});
+db.persons.insertOne({name:"Marty", age: 31},{writeConcern: {w: 1, j: false}});
+db.persons.insertOne({name:"Marty", age: 31},{writeConcern: {w: 1, j: true}});
+db.persons.insertOne({name:"Marty", age: 31},{writeConcern: {w: 1, j: true, wtimeout: 200}});
+db.persons.find();
+
+db.companies.insertOne({_id:"Bosch", name:"Bosch", industry:"Circuitry"})
+db.companies.insertMany([
+  {_id:"Vestel", name:"Vestel", industry: "Domestic electronics"},
+  {_id:"Ugur", name:"Ugur", industry: "Industrial Refrigeration"},
+  {_id:"Bosch", name:"Bosch", industry: "Circuitry"},
+  {_id: "Samsung", name:"Samsung", industry: "OLED screens"}
+],  {ordered: false})
+db.companies.insertOne({_id:"Apple", name:"Apple", industry:"Phones"}, {writeConcern: {j:false}})
+db.companies.insertOne({_id:"Apple", name:"Apple", industry:"Phones"}, {writeConcern: {j:true}})
+
+db.companies.find();
+db.companies.drop();
+
+// MongoDB CLI Import Command 
+// mongoimport tv-shows.json -d movieData -c movies --jsonArray --drop
+
+// LESSON 7 READ OPERATIONS
+
+//Brings the first document in the collection
+use test
+db.movies.findOne()
+db.movies.findOne({})
+//Brings all documents in the collection
+db.movies.find().pretty()
+db.movies.find({})
+db.movies.find()
+
+db.movies.find({name: "The Last Ship"})
+db.movies.find({runtime: 60})
+db.movies.findOne({runtime: 60})
+db.movies.find({runtime: {$eq: 60}})
+db.movies.find({runtime: {$ne: 60}})
+db.movies.find({runtime: {$gte: 60}})
+db.movies.find({runtime: {$gt: 60}})
+db.movies.find({runtime: {$lte: 60}})
+db.movies.find({runtime: {$lt: 60}})
+
+db.movies.find({"rating.average": {$gt: 9.3}})
+//Find genres that has drama inside
+db.movies.find({genres: "Drama"})
+// Find genres that strictly include only drama
+db.movies.find({genres: ["Drama"]})
+
+db.movies.find({runtime: {$in: [30,42]}})
+db.movies.find({runtime: {$nin: [30,42]}})
+
+//Multiple condition logical operators
+db.movies.find({"rating.average": {$lt: 5}}).count()
+db.movies.find({"rating.average": {$gt: 9.3}}).count()
+
+db.movies.find({$or: [{"rating.average": {$lt: 5}}, {"rating.average": {$gt: 9.3}}]}).count()
+db.movies.find({$nor: [{"rating.average": {$lt: 5}}, {"rating.average": {$gt: 9.3}}]}).count()
+db.movies.find().count()
+
+
+db.movies.find({
+  $and: [{ 'rating.average': { $gt: 9 } }, { genres: 'Drama' }],
+}).count();
+// as long as both key names are not same mongoDB concatenation style could be used in place of $and operator.
+db.movies.find({
+  'rating.average': { $gt: 9 }, genres: 'Drama' }
+).count();
+
+db.users.insertMany([{name: "Max", hobbies: [{title: "Sports", frequency: 3}, {title: "Cooking", frequency: 6}], phone: 02322461767 }, {name: "Manuel", hobbies: [{title: "Cooking", frequency: 5}, {title: "Cars", frequency: 2}], phone: "02122461767", age: 30}])
+db.users.insertOne({name: "Anna", hobbies: [{title: "Sports", frequency: 2}, {title: "Yoga", frequency: 3}], phone: "90914545454", age: null})
+db.users.find({age: {$exists: true}})
+db.users.find({age: {$exists: false}})
+db.users.find({age: {$exists: true, $eq: 30}})
+db.users.find({age: {$exists: true, $ne: null}})
+db.users.find({phone: {$type: "number"}})
+db.users.find({phone: {$type: "double"}})
+db.users.find({phone: {$type: "int"}})
+db.users.find({phone: {$type: ["number", "string"]}})
+
+db.movies.find({summary: "musical"})
+db.movies.find({summary: {$regex: /musical/}})
+db.sales.insertMany([
+  {volume: 100, target:120},
+  {volume: 89, target:80},
+  {volume: 200, target:177}
+])
+db.sales.find({$expr: {$gt: ["$volume", "$target"]}})
+db.sales.find({$expr: {$gt: [
+      {$cond: {if:{$gte:['$volume', 190]}, then:{$subtract:['$volume',30]},else:'$volume'}},
+      '$target'
+      ]}});
+      
+//Assignment
+db.movieStarts.find()
+// mongoimport boxoffice.json -d test -c movieStarts --jsonArray --drop
+db.movieStarts.find({'meta.rating': {$gt: 9.2}, 'meta.runtime': {$lt: 100}})
+db.movieStarts.find({genre: {$in: ['drama', 'action']}})
+db.movieStarts.find({$or: [{genre: 'drama'}, {genre:'action'}]})
+db.movieStarts.find({$expr: {$gt:['$visitors' , '$expectedVisitors'] }})
+
+db.users.find()
+db.users.find({},{name: 1, age: 1, _id:0})
+db.users.find({'hobbies.frequency': {$mod:[2,0]}})
+db.users.find({'hobbies.title': "Sports"})
+db.users.insertOne({name: "Chris", hobbies: ["Sports", "Cooking", "Hiking"]})
+db.users.find({hobbies: {$size: 3}})
+
+db.movieStarts.find()
+db.movieStarts.find({genre: ['action', 'thriller']})
+db.movieStarts.find({genre: {$all: ['action', 'thriller']}})
+
+db.users.find()
+db.users.find({$and: [{"hobbies.title": "Sports"},{"hobbies.frequency": {$gte: 2}}]})
+db.users.find({$and: [{"hobbies.title": "Sports"},{"hobbies.frequency": {$gte: 3}}]})
+db.users.find({hobbies: {$elemMatch: {title: "Sports", frequency: {$gte: 3}}}})
+
+//Assigment
+db.exmovieStarts.find()
+// mongoimport boxoffice-extended.json -d test -c exmovieStarts --jsonArray --drop
+db.exmovieStarts.find({genre: {$size: 2}})
+db.exmovieStarts.find({'meta.aired': 2018})
+db.exmovieStarts.find({$and: [{'meta.rating': {$gt: 8}}, {'meta.rating': {$lt: 10}}]})
+db.exmovieStarts.find({'meta.rating': {$gt:8, $lt:10}})
+db.exmovieStarts.find({ratings: {$elemMatch: {$gt:8, $lt:10}}})
+
+db.movies.find()
+db.movies.find().count()
+db.movies.find().sort({'rating.average':1, runtime: -1})
+db.movies.find().sort({'rating.average':1}).sort({runtime: -1})
+db.movies.find().sort({runtime: -1}).skip(100).limit(1)
+
+db.movies.find({}, {name:1, genres:1, runtime:1, 'schedule.time':1, _id:0})
+db.movies.find({genres: "Drama"}, {genres:1})
+db.movies.find({genres: "Drama"}, {'genres.$':1})
+db.movies.find({genres: "Drama"}, {'genres.$':1}).count()
+db.movies.find({genres: "Drama"}).count()
+db.movies.find({genres: "Drama"}, {genres: {$elemMatch: {$eq: "Horror"}}})
+db.movies.find({$and:[{'rating.average': {$gt:9}}, {genres: {$elemMatch: {$eq: "Horror"}}}]})
+db.movies.find({'rating.average': {$gt:9}}, {genres: {$elemMatch: {$eq: "Horror"}}})
+db.movies.find({'rating.average': {$gt:9}}, {genres: {$elemMatch: {$eq: "Horror2"}}})
+db.movies.find({'rating.average': {$gt:9}})
+db.movies.find({'rating.average': {$gt:9}}, {genres: {$slice: 2}, name:1, type:1})
+db.movies.find({'rating.average': {$gt:9}}, {genres: {$slice: [1,2]}, name:1, type:1})
+
+db.players.insertOne( {
+   name: "player1",
+   games: [ { game: "abc", score: 8 }, { game: "xyz", score: 5 } ],
+   joined: new Date("2020-01-01"),
+   lastLogin: new Date("2020-05-01")
+} )
+db.players.insertOne( {
+   name: "player2",
+   games: [ { game: "abc", score: 5.5 }, { game: "xyz", score: 5 } ],
+   joined: new Date("2020-01-01"),
+   lastLogin: new Date("2020-05-01")
+} )
+db.players.insertOne( {
+   name: "player3",
+   games: [ { game: "abc", score: 6 }, { game: "xyz", score: 5 } ],
+   joined: new Date("2020-01-01"),
+   lastLogin: new Date("2020-05-01")
+} )
+db.players.find( {}, { games: { $elemMatch: { score: { $gt: 5} } }, joined: 1, lastLogin: 1 } )
+
+
+// LESSON 8 UPDATE OPERATIONS
+db.users.find()
+db.users.updateOne({_id: ObjectId("63fc702a514c460d79e159af")}, {$set: {hobbies: [{title: "Sports", frequency: 5}, {title: "Cooking", frequency: 3}, {title: "Hiking", frequency: 1}]}})
+db.users.updateOne({_id: ObjectId("63fc702a514c460d79e159af")}, {$set: {hobbies: ["Hiking", "Sports", "Cooking"]}})
+db.users.updateOne({_id: ObjectId("63fc702a514c460d79e159af")}, {$set: {hobbies: "Hiking"}})
+db.users.updateMany({'hobbies.title': 'Sports'}, {$set: {isSporty: true}})
+db.users.updateMany({'hobbies.title': 'Sports'}, {$set: {isHandy: false, isFeasible: true}})
+db.users.updateOne({_id: ObjectId("63fc702a514c460d79e159af")}, {$set: {age: 40, phone: 37463763}})
+
+db.users.updateOne({name: "Manuel"}, {$inc: {age: 1}, $set: {isSporty: false}})
+db.users.updateOne({name: "Manuel"}, {$inc: {age: 1}, $set: {age: 30}})
+db.users.updateOne({name: "Manuel"}, {$inc: {age: -1}})
+
+db.users.updateOne({name: "Chris"}, {$min: {age:35}})
+db.users.updateOne({name: "Chris"}, {$min: {age:38}})
+db.users.updateOne({name: "Chris"}, {$max: {age:34}})
+db.users.updateOne({name: "Chris"}, {$mul: {age:1.1}})
+
+db.users.updateMany({isSporty: true}, {$set: {phone: null}})
+db.users.updateMany({isSporty: true}, {$unset: {phone: ""}})
+
+db.users.updateMany({}, {$rename: {age: "totalage"}})
+
+db.users.updateOne({name: "Maria"}, {$set: {age:29, hobbies: [{title: "Good Food", frequency: 3}], isSporty: true}}, {upsert: true})
+
+// Assigment
+db.sports.find()
+db.sports.updateOne({title: "Reds"}, {$set: {title: "Reds", requiresTeam: true}}, {upsert: true})
+db.sports.updateOne({title: "Blues"}, {$set: {title: "Blues", requiresTeam: false}}, {upsert: true})
+db.sports.updateOne({requiresTeam: true}, {$set: {minPlayersRequired: 4}})
+db.sports.updateOne({requiresTeam: true}, {$inc: {minPlayersRequired: 10}})
+
+db.users.find()
+db.users.find({$and: [{"hobbies.title": "Sports"}, {"hobbies.frequency": {$gte: 3}}]})
+db.users.find({hobbies: {$elemMatch: {title: "Sports", frequency: {$gte: 3}}}})
+db.users.updateMany({hobbies: {$elemMatch: {title: "Sports", frequency: {$gte: 3}}}}, {$set: {"hobbies.$.highFrequency": true}})
+
+db.users.find({'hobbies.frequency': {$gt: 2}})
+db.users.updateMany({'hobbies.frequency': {$gt: 2}}, {$set: {'hobbies.$.goodFrequency': true}})
+db.users.updateMany({'hobbies.frequency': {$gt: 2}}, {$set: {'hobbies.$[].goodFrequency': true}})
+
+db.users.find({totalage: {$gt:30}})
+db.users.updateMany({totalage: {$gt:30}}, {$inc: {'hobbies.$[].frequency': -10}})
+
+db.users.find()
+db.users.find({'hobbies.frequency': {$gt:2}})
+db.users.updateMany({'hobbies.frequency': {$gt:2}}, {$set: {'hobbies.$[].goodFrequency': true}})
+db.users.updateMany({'hobbies.frequency': {$gt:2}}, {$set: {'hobbies.$[el].goodFrequency': false}}, {arrayFilters: [{'el.frequency': {$gt:2}}]})
+
+db.users.updateOne({name: 'Maria'}, {$push: {hobbies: {title: 'Sports', frequency: 2}}})
+db.users.updateOne({name: 'Maria'}, {$push: {hobbies: {$each: [{title: 'Sports', frequency: 2}, {title:'Yogaa', frequency: 10}]}}})
+db.users.updateOne({name: 'Maria'}, {$push: {hobbies: {$each: [{title: 'ZSports', frequency: 2}, {title:'Zogaa', frequency: 10}], $sort:{frequency: -1}, $slice:1}}})
+db.users.updateOne({name: 'Maria'}, {$addToSet: {hobbies: {$each: [{title: 'Sports', frequency: 2}, {title:'Yogaa', frequency: 10}]}}})
+db.users.updateOne({name: 'Maria'}, {$addToSet: {hobbies: {$each: [{title: 'ASports', frequency: 2}, {title:'AYogaa', frequency: 10}]}}})
+db.users.updateOne({name: 'Maria'}, {$pull: {hobbies: {title: 'ASports'}}})
+
+
+
+db.users.updateOne({name: 'Chris'}, {$pull: {hobbies: {goodFrequency: true}}})
+db.users.updateOne({name: 'Maria'}, {$pop: {hobbies: 1}})
+db.users.updateOne({name: 'Maria'}, {$pop: {hobbies: -1}})
+
+db.survey.insertOne( { _id: 1, scores: [ 0, 2, 5, 5, 1, 0 ] } )
+db.survey.find()
+db.survey.updateOne( { _id: 1 }, { $pull: { scores: 0 } } )
+db.survey.updateOne( { _id: 1 }, { $pullAll: { scores: [ 0, 5 ] } } )
+
+db.test.insertOne({
+  name: 'Manuel',
+  hobbies: [
+    {
+      title: 'Cooking',
+      frequency: 4,
+      goodFrequency: true,
+    },
+    {
+      title: 'Cars',
+      frequency: 1,
+      goodFrequency: true,
+    },
+  ],
+  phone: '02122461767',
+  isSporty: false,
+  totalage: 32,
+})
+db.test.updateOne({name: 'Manuel'}, {$pull: {hobbies: {title: {$in: ['Cars', 'Cooking']}}}})
+db.test.find()
+
+// LESSON 9 DELETE OPERATIONS
+db.users.find()
+db.users.deleteOne({name: "Chris"})
+db.users.deleteMany({age: {$gt:30}, isSporty:true})
+db.users.deleteMany({$or: [{age: {$gt:30}}, {isSporty:true}]})
+db.users.deleteMany({})
+db.users.drop()
+
+// LESSON 10 WORKING WITH INDEXES
+// @CLI
+// mongoimport persons.json -d test -c contacts -- jsonArray --drop
+
+db.contacts.find().count()
+db.contacts.findOne()
+db.contacts.find({"dob.age": {$gt: 60}})
+db.contacts.explain().find({"dob.age": {$gt: 60}})
+db.contacts.explain('executionStats').find({"dob.age": {$gt: 60}})
+
+db.contacts.createIndex({'dob.age': -1})
+db.contacts.createIndex({'dob.age': 1})
+db.contacts.createIndex({gender: 1})
+db.contacts.dropIndex({'dob.age': 1})
+db.contacts.dropIndex({gender: 1})
+
+db.contacts.createIndex({'dob.age':1, gender:1})
+db.contacts.explain("executionStats").find({'dob.age':35, gender: 'male'})
+
+db.contacts.explain().find({'dob.age': 35}).sort({gender: 1})
+
+db.contacts.getIndexes()
+
+db.contacts.createIndex({email: 1}, {unique: true})
+
+db.contacts.dropIndex({'dob.age': 1})
+db.contacts.dropIndex({
+      "dob.age": 1,
+      "gender": 1
+    })
+
+db.contacts.createIndex({'dob.age': 1}, {partialFilterExpression: {gender: 'male'}})
+db.contacts.explain().find({'dob.age': {$gt: 60}})
+db.contacts.explain().find({'dob.age': {$gt: 60}, gender: 'male' })
+db.contacts.dropIndex({'dob.age': 1})
+db.contacts.createIndex({'dob.age': 1}, {partialFilterExpression: {'dob.age': {$gt:60}}})
+db.contacts.explain().find({'dob.age': {$gt: 60}})
+
+db.users.insertMany([{name: 'Max', email: 'max@test.com'}, {name: 'Manu'}])
+db.users.createIndex({email: 1})
+db.users.dropIndex({email: 1})
+db.users.createIndex({email: 1}, {unique: true})
+db.users.dropIndex({email: 1})
+db.users.createIndex({email: 1}, {unique: true, partialFilterExpression: {email: {$exists: true}}})
+db.users.insertOne({name: 'Anna'})
+
+db.sessions.insertOne({data: '111111111', createdAt: new Date()})
+db.sessions.find()
+db.sessions.createIndex({createdAt: 1}, {expireAfterSeconds: 10})
+db.sessions.insertOne({data: '4', createdAt: new Date()})
+db.sessions.getIndexes()
+db.sessions.dropIndex({createdAt: 1})
+
+db.customers.insertMany([{name: 'Max', age: 29, salary: 3000}, {name: 'Manu', age: 30, salary:4000}])
+db.customers.createIndex({name: 1})
+db.customers.explain('executionStats').find({name: 'Max'})
+db.customers.explain('executionStats').find({name: 'Max'}, {_id:0, name:1})
+db.customers.createIndex({age:1, name:1})
+db.customers.getIndexes()
+db.customers.explain().find({name: 'Max', age: 30})
+
+db.contacts.insertOne({
+  name: 'Max',
+  hobbies: ['Cooking', 'Sports'],
+  addresses: [{ street: 'Main Street' }, { street: 'Second Street' }],
+});
+db.contacts.createIndex({hobbies: 1})
+db.contacts.explain('executionStats').find({hobbies: 'Sports'})
+db.contacts.explain('executionStats').find({'addresses.street': 'Main Street'})
+db.contacts.createIndex({'addresses.street': 1})
+db.contacts.explain('executionStats').find({'addresses.street': 'Main Street'})
+
+db.products.createIndex({description:'text'}) 
+db.products.find({$text: {$search: 'cpu'}})
+db.products.find({$text: {$search: '\"help me\"'}})
+db.products.find({$text: {$search: 'awesome t-shirt'}})
+db.products.find({$text: {$search: 'awesome -t-shirt'}})
+db.products.find({$text: {$search: 'awesome t-shirt', {score: {$meta: 'textScore'}}}})
+
+db.products.createIndex({title: 'text', description: 'text'}, {default_language: 'turkish'})
+db.products.find({$text: {$search: 'nike', $caseSensitive: true}})
+
+show dbs
+show collections
+db.ratings.countDocuments()
+db.ratings.createIndex({age: 1})
+db.ratings.explain('executionStats').find({age: {$gt: 80}})
+db.ratings.dropIndex({age: 1})
+db.ratings.explain('executionStats').find({age: {$gt: 80}})
+
+db.ratings.createIndex({age: 1}, {background: true})
+
+// LESSON 11 WORKING WITH GEOJSON DATA
+db.places.insertOne({
+  name: 'California Academy of Sciences',
+  location: { type: 'Point', coordinates: [-122.4724356, 37.7672544] },
+});
+
+db.places.find({location: {$near: {$geometry: {type: 'Point', coordinates: [-122.471114, 37.771104]}}}})
+
+db.places.createIndex({location: '2dsphere'})
+db.places.find({
+  location: {
+    $near: {
+      $geometry: { type: 'Point', coordinates: [-122.471114, 37.771104] },
+      $maxDistance: 400,
+      $minDistance: 10,
+    },
+  },
+});
+db.places.find({
+  location: {
+    $near: {
+      $geometry: { type: 'Point', coordinates: [-122.471114, 37.771104] },
+      $maxDistance: 500,
+      $minDistance: 10,
+    },
+  },
+});
+
+db.places.insertOne({
+  name: 'Conservatory of Flowers',
+  location: { type: 'Point', coordinates: [-122.4615748, 37.7701756] },
+});
+db.places.insertOne({
+  name: 'Golden Gate Tennis Court',
+  location: { type: 'Point', coordinates: [-122.4593702, 37.7705046] },
+});
+db.places.insertOne({
+  name: 'Nopa',
+  location: { type: 'Point', coordinates: [-122.4389058, 37.7747415] },
+});
+db.places.find()
+p1=[-122.4547,37.77473]
+p2=[-122.45303,37.76641]
+p3=[-122.51026,37.76411]
+p3=[-122.51088,37.77131]
+db.places.find({
+  location: {
+    $geoWithin: {
+      $geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [-122.4547, 37.77473],
+            [-122.45303, 37.76641],
+            [-122.51026, 37.76411],
+            [-122.51088, 37.77131],
+            [-122.4547, 37.77473],
+          ],
+        ],
+      },
+    },
+  },
+});
+
+
+db.areas.insertOne({
+  name: 'Golden Gate Park',
+  area: {
+    type: 'Polygon',
+    coordinates: [
+      [
+        [-122.4547, 37.77473],
+        [-122.45303, 37.76641],
+        [-122.51026, 37.76411],
+        [-122.51088, 37.77131],
+        [-122.4547, 37.77473],
+      ],
+    ],
+  },
+});
+db.areas.createIndex({area: "2dsphere"})
+db.areas.find()
+db.areas.find({
+  area: {
+    $geoIntersects: {
+      $geometry: { type: 'Point', coordinates: [-122.49089, 37.76992] },
+    },
+  },
+});
+db.places.find({
+  location: {
+    $geoWithin: { $centerSphere: [[-122.46203, 37.77286], 1 / 6378.1] },
+  },
+});
+
+// Assignment
+db.myloc.insertMany([
+  {
+    name: 'First Pin',
+    location: { type: 'Point', coordinates: [26.927827, 38.37963] },
+  },
+  {
+    name: 'Second Pin',
+    location: { type: 'Point', coordinates: [26.927685, 38.380235] },
+  },
+  {
+    name: 'Third Pin',
+    location: { type: 'Point', coordinates: [26.929152, 38.379871] },
+  },
+]);
+
+db.myloc.createIndex({ location: '2dsphere' });
+
+db.myloc.find({
+  location: {
+    $near: {
+      $geometry: { type: 'Point', coordinates: [26.928425, 38.379989] },
+      $maxDistance: 70,
+      $minDistance: 10,
+    },
+  },
+});
+
+db.myloc.find({
+  location: {
+    $geoWithin: {
+      $geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [26.92769, 38.38003],
+            [26.92904, 38.380633],
+            [26.929344, 38.379856],
+            [26.927829, 38.379393],
+            [26.92769, 38.38003],
+          ],
+        ],
+      },
+    },
+  },
+});
+
+db.myareas.insertMany([
+  {
+    name: 'My Perimeter 1',
+    area: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [26.92769, 38.38003],
+          [26.92904, 38.380633],
+          [26.929344, 38.379856],
+          [26.927829, 38.379393],
+          [26.92769, 38.38003],
+        ],
+      ],
+    },
+  },
+  {
+    name: 'My Perimeter 2',
+    area: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [26.928535, 38.379413],
+          [26.928135, 38.379979],
+          [26.928472, 38.380457],
+          [26.929395, 38.380277],
+          [26.928535, 38.379413],
+        ],
+      ],
+    },
+  },
+]);
+
+db.myareas.createIndex({ area: '2dsphere' });
+
+db.myareas.find({
+  area: {
+    $geoIntersects: {
+      $geometry: { type: 'Point', coordinates: [26.928425, 38.379989] },
+    },
+  },
+});
+
+// LESSON 12 UNDERSTANDING AGGREGATION FRAMEWORK
+db.persons.aggregate([
+  {$match:  {gender: 'female'}}
+
+])
+
+db.persons.aggregate([
+  { $match: { gender: 'female' } },
+  { $group: { _id: { state: '$location.state' }, totalPersons: { $sum: 1 } } },
+  { $sort: { totalPersons: -1 } },
+]);
+
+//ASSIGNMENT
+db.persons.aggregate([
+  {$match: {'dob.age': {$gt:50}}},
+  {$group: {
+    _id: {gender: '$gender'},
+    numPersonPerGender: {$sum: 1},
+    avgAge: {$avg: '$dob.age'}
+  }},
+  {$sort: {numPersonPerGender: -1}}
+])
+
+db.persons.aggregate([
+  {
+    $project: {
+      _id: 0,
+      gender: 1,
+      fullName: { $concat: ['$name.first', ' ', '$name.last'] },
+    },
+  },
+]);
+db.persons.aggregate([
+  {
+    $project: {
+      _id: 0,
+      gender: 1,
+      fullName: {
+        $concat: [{ $toUpper: '$name.first' }, ' ', { $toLower: '$name.last' }],
+      },
+    },
+  },
+]);
+
+db.persons.aggregate([
+  {
+    $project: {
+      _id: 0,
+      gender: 1,
+      fullName: {
+        $concat: [
+          { $toUpper: { $substrCP: ['$name.first', 0, 1] } },
+          {
+            $substrCP: [
+              '$name.first',
+              1,
+              { $subtract: [{ $strLenCP: '$name.first' }, 1] },
+            ],
+          },
+          ' ',
+          { $toUpper: { $substrCP: ['$name.last', 0, 1] } },
+          {
+            $substrCP: [
+              '$name.last',
+              1,
+              { $subtract: [{ $strLenCP: '$name.last' }, 1] },
+            ],
+          },
+        ],
+      },
+    },
+  },
+]);
+
+db.persons.aggregate([
+  {
+    $project: {
+      _id: 0,
+      name: 1,
+      gender: 1,
+      email: 1,
+      // birthdate: {$convert: {input: '$dob.date', to: 'date'}},
+      birthdate: {$toDate: '$dob.date'}, //Shortcut for above code
+      age: '$dob.age',
+      location: {
+        type: 'Point',
+        coordinates: [
+          {
+            $convert: {
+              input: '$location.coordinates.longitude',
+              to: 'double',
+              onError: 0.0,
+              onNull: 0.0,
+            },
+          },
+          {
+            $convert: {
+              input: '$location.coordinates.latitude',
+              to: 'double',
+              onError: 0.0,
+              onNull: 0.0,
+            },
+          },
+        ],
+      },
+    },
+  },
+  {
+    $project: {
+      gender: 1,
+      email: 1,
+      location: 1,
+      birthdate: 1,
+      age: 1,
+      fullName: {
+        $concat: [
+          { $toUpper: { $substrCP: ['$name.first', 0, 1] } },
+          {
+            $substrCP: [
+              '$name.first',
+              1,
+              { $subtract: [{ $strLenCP: '$name.first' }, 1] },
+            ],
+          },
+          ' ',
+          { $toUpper: { $substrCP: ['$name.last', 0, 1] } },
+          {
+            $substrCP: [
+              '$name.last',
+              1,
+              { $subtract: [{ $strLenCP: '$name.last' }, 1] },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  {$group: {_id: {birthYear: {$isoWeekYear: '$birthdate'}}, numPersons: {$sum: 1}}},
+  {$sort: {numPersons: -1}}
+]);
+
+db.friends.insertMany([
+  {
+    "name": "Max",
+    "hobbies": ["Sports", "Cooking"],
+    "age": 29,
+    "examScores": [
+      { "difficulty": 4, "score": 57.9 },
+      { "difficulty": 6, "score": 62.1 },
+      { "difficulty": 3, "score": 88.5 }
+    ]
+  },
+  {
+    "name": "Manu",
+    "hobbies": ["Eating", "Data Analytics"],
+    "age": 30,
+    "examScores": [
+      { "difficulty": 7, "score": 52.1 },
+      { "difficulty": 2, "score": 74.3 },
+      { "difficulty": 5, "score": 53.1 }
+    ]
+  },
+  {
+    "name": "Maria",
+    "hobbies": ["Cooking", "Skiing"],
+    "age": 29,
+    "examScores": [
+      { "difficulty": 3, "score": 75.1 },
+      { "difficulty": 8, "score": 44.2 },
+      { "difficulty": 6, "score": 61.5 }
+    ]
+  }
+])
+
+db.friends.aggregate([
+  {
+    $group: {
+      _id: { age: '$age' },
+      totalPersons: { $sum: 1 },
+      allHobbies: { $push: '$hobbies' },
+    },
+  },
+]);
+
+db.friends.aggregate([
+  { $unwind: '$hobbies' }, //flattten arrays
+  {
+    $group: {
+      _id: { age: '$age' },
+      totalPersons: { $sum: 1 },
+      allHobbies: { $push: '$hobbies' },
+    },
+  },
+])
+
+db.friends.aggregate([
+  { $unwind: '$hobbies' }, //flattten arrays
+  {
+    $group: {
+      _id: { age: '$age' },
+      totalPersons: { $sum: 1 },
+      allHobbies: { $addToSet: '$hobbies' }, //addToSet takes only unique entries
+    },
+  },
+])
+
+db.friends.find()
+db.friends.aggregate([
+  {$project: {_id: 0, examScore: {$slice: ['$examScores', 1]}}}
+])
+db.friends.aggregate([
+  {$project: {_id: 0, examScore: {$slice: ['$examScores', -2]}}}
+])
+db.friends.aggregate([
+  {$project: {_id: 0, examScore: {$slice: ['$examScores', 2,1]}}}
+])
+
+db.friends.aggregate([
+  {$project: {_id:0, numScores: {$size: '$examScores'}}}
+])
+
+
+db.friends.find();
+db.friends.aggregate([
+  {
+    $project: {
+      _id: 0,
+      name: 1,
+      examScores: { scores: { $gte: ['$score', 75] } },
+    },
+  },
+]);
+db.friends.aggregate([
+  {
+    $project: {
+      _id: 0,
+      examScores: {
+        $filter: {
+          input: '$examScores',
+          as: 'sc',
+          cond: { $gt: ['$$sc.score', 60] },
+        },
+      },
+    },
+  },
+]);
+
+db.friends.aggregate([
+  { $unwind: '$examScores' },
+  { $project: { _id: 1, name: 1, age: 1, score: '$examScores.score' } },
+  {
+    $group: {
+      _id: '$_id',
+      name: { $first: '$name' },
+      age: { $first: '$age' },
+      allScores: { $push: '$score' },
+    },
+  },
+  { $project: { _id: 1, maxScore: { $max: '$allScores' } } },
+  { $sort: { maxScore: -1 } },
+]);
+
+db.persons
+  .aggregate([
+    {
+      $bucket: {
+        groupBy: '$dob.age',
+        boundaries: [21, 32, 43, 54, 65, 80],
+        output: {
+          numPersons: { $sum: 1 },
+          averageAge: { $avg: '$dob.age' }
+        }
+      }
+    }
+  ])
+
+db.persons.aggregate([
+    {
+      $bucketAuto: {
+        groupBy: '$dob.age',
+        buckets: 5,
+        output: {
+          numPersons: { $sum: 1 },
+          averageAge: { $avg: '$dob.age' }
+        }
+      }
+    }
+  ])
+
+db.persons.aggregate([
+    { $match: { gender: "male" } },
+    { $project: { _id: 0, gender: 1, name: { $concat: ["$name.first", " ", "$name.last"] }, birthdate: { $toDate: "$dob.date" } } },
+    { $sort: { birthdate: 1 } },
+    { $skip: 10 }, //order matters in the pipeline
+    { $limit: 10 }
+  ])
+
+db.persons.aggregate([
+    {
+      $project: {
+        _id: 0,
+        name: 1,
+        email: 1,
+        birthdate: { $toDate: '$dob.date' },
+        age: "$dob.age",
+        location: {
+          type: 'Point',
+          coordinates: [
+            {
+              $convert: {
+                input: '$location.coordinates.longitude',
+                to: 'double',
+                onError: 0.0,
+                onNull: 0.0
+              }
+            },
+            {
+              $convert: {
+                input: '$location.coordinates.latitude',
+                to: 'double',
+                onError: 0.0,
+                onNull: 0.0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      $project: {
+        gender: 1,
+        email: 1,
+        location: 1,
+        birthdate: 1,
+        age: 1,
+        fullName: {
+          $concat: [
+            { $toUpper: { $substrCP: ['$name.first', 0, 1] } },
+            {
+              $substrCP: [
+                '$name.first',
+                1,
+                { $subtract: [{ $strLenCP: '$name.first' }, 1] }
+              ]
+            },
+            ' ',
+            { $toUpper: { $substrCP: ['$name.last', 0, 1] } },
+            {
+              $substrCP: [
+                '$name.last',
+                1,
+                { $subtract: [{ $strLenCP: '$name.last' }, 1] }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    { $out: "transformedPersons" }
+  ])
+show collections
+db.transformedPersons.find()
+db.transformedPersons.createIndex({location: '2dsphere'})
+db.transformedPersons.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [-18.4, -42.8]
+        },
+        maxDistance: 1000000,
+        query: { age: { $gt: 40 }, fullName: {$regex: /^G/} },
+        distanceField: "distance"
+      }
+    },
+    {$limit: 2}
+  ])
+
+// LESSON 13 WORKING WITH NUMERIC DATA
+db.persons.insertOne({name: 'Max', age: 29})
+db.persons.find()
+db.persons.stats()
+db.persons.deleteMany({})
+db.persons.insertOne({age: 29})
+db.persons.insertOne({age: NumberInt(29)})
+db.persons.insertOne({age: NumberInt('29')})
+
+db.companies.insertOne({valuation: NumberInt('5000000000')})
+db.companies.find()
+db.companies.insertOne({valuation: 5000000000})
+db.companies.find()
+db.companies.insertOne({valuation: NumberLong('15000000000')})
+db.companies.find()
+db.companies.insertOne({valuation: NumberLong('9999999999999999998')})
+db.companies.find()
+
+db.accounts.insertOne({name: 'Max', amount: '121281263645664636367237272772887282'})
+db.accounts.find()
+db.accounts.deleteMany({})
+db.accounts.insertOne({name: 'Max', amount: NumberInt('10')})
+
+db.companies.drop({})
+db.companies.insertOne({valuation: NumberLong('12345678912345678')})
+db.companies.insertOne({valuation: 12345678912345678})
+db.companies.insertOne({valuation: NumberLong('15000000000')})
+db.companies.find()
+db.companies.updateMany({}, {$inc: {valuation: NumberLong('1')}})
+db.companies.updateMany({}, {$inc: {valuation: 1}})
+
+db.sciences.insertOne({a:0.3, b:0.1})
+db.sciences.find()
+db.sciences.aggregate([{$project: {result: {$subtract:['$a', '$b']}}}])
+
+db.sciences.drop({})
+db.sciences.insertOne({a:NumberDecimal('0.3'), b:NumberDecimal('0.1')})
+db.sciences.aggregate([{$project: {result: {$subtract:['$a', '$b']}}}])
+
+// LESSON 14 MONGODB & SECURITY
+use admin
+db.createUser({user: 'erhanertem', pwd: 'password', roles: ['userAdminAnyDatabase']})
+db.auth('erhanertem', 'password')
+db.getUser('erhanertem')
+db.updateUser('erhanertem', {
+  pwd: 'pass',
+  roles: ['readWrite', { role: 'readWrite', db: 'movies' }],
+});
+
+use sales
+db.createUser({user: 'dbadmin', pwd: 'password', roles: ['dbAdmin']})
+db.createUser({user: 'useradmin', pwd: 'password', roles: ['userAdmin']})
+db.createUser({user: 'dev', pwd: 'password', roles: ['readWrite', {role: 'readWrite', db: 'customers'}]})
+db.getUsers()
+
+// --->SSL TRANSPORT ENCRYPTION
+//-->#1.Create SSL certificates
+// openssl req -newkey rsa:2048 -new -x509 -days 365 -nodes -out mongodb-cert.crt -keyout mongodb-cert.key
+//-->#2.Create pem file from SSL certs
+// cat mongodb-cert.key mongodb-cert.crt > mongodb.pem
+//-->#3.Set mondgoDB driver to use sslCert
+// mongod --sslMode requireSSL --sslPEMKeyFile " C:\Data\db\mongodb.pem" --sslCAFile "C:\Data\db\caToValidateClientCertificates.pem" --dbpath "C:\Data\db"
+//-->#4.Execute mongoshell in ssl mode
+// mongosh --tls --tlsCAFile mongodb.pem --host localhost 
+// -->#5.OR ALTERNATELY create a mongodb.cfg file
+// # mongod.conf
+ 
+// # for documentation of all options, see:
+// #   http://docs.mongodb.org/manual/reference/configuration-options/
+ 
+// # Where and how to store data.
+// storage:
+//   dbPath: C:\Data\db
+//   journal:
+//     enabled: true
+// # where to write logging data.
+// systemLog:
+//   destination: file
+//   logAppend: true
+//   path:  C:\Program Files\MongoDB\Server\6.0\log\mongod.log
+ 
+// # network interfaces
+// net:
+//   bindIp: localhost
+//   port: 27017
+//   tls:
+//     mode: requireTLS
+//     disabledProtocols: TLS1_0,TLS1_1
+//     certificateKeyFile: C:\Data\db\mongodb.pem
+//     # CAFile: C:\Data\db\caToValidateClientCertificates.pem
+
+//--->ENCRYPTION AT REST
+
+// LESSON 15 PERFORMANCE, FAULT TOLERANCE & DEPLOYMENT
+// Capped collections
+db.createCollection('capped', {capped: true, size: 10000, max: 3})
+db.capped.insertOne({name: 'Max'})
+db.capped.insertOne({name: 'Menu'})
+db.capped.insertOne({name: 'Mad'})
+db.capped.insertOne({name: 'Anna'})
+db.capped.find()
+db.capped.find().sort({$natural: -1})
+
+// LESSON 16 TRANSACTIONS
+use temp
+db.users.insertOne({name: 'Max'})
+db.users.find()
+db.posts.insertMany([{title: 'First Post', userId: ObjectId('6403755af99e98c4705ab5aa')}, {title: 'Second Post', userId:ObjectId('6403755af99e98c4705ab5aa')}])
+
+// Manually remove related docs on distinct collections 
+db.users.deleteOne({_id: ObjectId('6403755af99e98c4705ab5aa')})
+db.posts.deleteMany({userId: ObjectId('6403755af99e98c4705ab5aa')})
+
+//Remove all related docs in a transaction session 
+const session = db.getMongo().startSession()
+session.startTransaction()
+const usersCol = session.getDatabase('test').users
+const postsCol = session.getDatabase('test').posts
+db.users.find()
+usersCol.deleteOne({_id: ObjectId('6403755af99e98c4705ab5aa')})
+postsCol.deleteMany({userId: ObjectId('6403755af99e98c4705ab5aa')})
+session.commitTransaction()
+session.abortTransaction()
+
+// LESSON 17 FROM SHELL TO DRIVER
+db.products.createIndex({price: 1})
+db.users.createIndex({email: 1}, {unique: true})

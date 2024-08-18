@@ -1,8 +1,0 @@
-{
-  "editor.tokenColorCustomizations": {
-    "comments": "",
-    "textMateRules": []
-  },
-  "dotnet.defaultSolution": "Ultimate C# Masterclass 2023/exercise_files/TodoList/TodoList.sln",
-  "FSharp.suggestGitignore": false
-}

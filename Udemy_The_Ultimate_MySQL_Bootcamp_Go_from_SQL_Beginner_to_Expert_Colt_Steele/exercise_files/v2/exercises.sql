@@ -1,0 +1,2490 @@
+-- -- NOTE: ESCAPE CHARACTERS WITH A ' OR "
+-- SELECT
+--   'it'' s escaped ';
+-- -- LESSON 3: CREATE DATABASES & TABLES
+-- SHOW DATABASES;
+-- CREATE DATABASE pet_shop;
+-- USE pet_shop;
+-- SELECT
+--      DATABASE();
+-- CREATE TABLE cats (name VARCHAR(50), age INT);
+-- CREATE TABLE dogs (name VARCHAR(50), breed VARCHAR(50), age INT);
+-- SHOW TABLES;
+-- DESC dogs;
+-- DESCRIBE dogs;
+-- DROP TABLE dogs;
+-- CREATE TABLE pastries (name VARCHAR(50), quantity INT);
+-- DROP TABLE pastries;
+-- -- LESSON 4: INSERT DATA
+-- INSERT INTO
+--      cats (name, age)
+-- VALUES
+--      ("Blue Steele", 5);
+-- INSERT INTO
+--      cats (name, age)
+-- VALUES
+--      ("Jenkins", 7);
+-- SELECT
+--      *
+-- FROM
+--      cats;
+-- INSERT INTO
+--      cats (age, name)
+-- VALUES
+--      (2, "Beth");
+-- INSERT INTO
+--      cats (name, age)
+-- VALUES
+--      ("Meatball", 5),
+--      ("Thera", 1),
+--      ("Jerky", 3);
+-- CREATE TABLE people (
+--      first_name VARCHAR(50),
+--      last_name VARCHAR(50),
+--      age INT
+-- );
+-- INSERT INTO
+--      people (first_name, last_name, age)
+-- VALUES
+-- ("Tina", "Blecher", 13);
+-- INSERT INTO
+--      people (first_name, last_name, age)
+-- VALUES
+-- ("Linda", "Belcher", 45),
+--      ("Philip", "Frond", 38),
+--      ("Calvin", "Fischoeder", 50);
+-- SELECT
+--      *
+-- FROM
+--      people;
+-- CREATE TABLE cats2 (name VARCHAR(50) NOT NULL, age INT NOT NULL);
+-- INSERT INTO
+--      cats2 (name)
+-- VALUES
+--      ('Bilbo');
+-- INSERT INTO
+--      cats2 (name, age)
+-- VALUES
+--      ('Jeksciw', 5);
+-- DESC cats2;
+-- CREATE TABLE shops (shop_name VARCHAR(50));
+-- INSERT INTO
+--      shops (shop_name)
+-- VALUES
+--      ("marios's pizza");
+-- CREATE TABLE cats3 (
+--      name VARCHAR(50) DEFAULT 'unnamed',
+--      age INT DEFAULT 99
+-- );
+-- INSERT INTO
+--      cats3(age)
+-- VALUES
+--      (2);
+-- CREATE TABLE cats4 (
+--      name VARCHAR(50) NOT NULL DEFAULT 'unnamed',
+--      age INT NOT NULL DEFAULT 99
+-- );
+-- DESC cats4;
+-- INSERT INTO
+--      cats4()
+-- VALUES
+-- ();
+-- SELECT
+--      *
+-- FROM
+--      cats4;
+-- CREATE TABLE unique_cats(
+--      cart_id INT NOT NULL PRIMARY KEY,
+--      name VARCHAR(50),
+--      age INT
+-- );
+-- DESC unique_cats;
+-- INSERT INTO
+--      unique_cats(cart_id, name, age)
+-- VALUES
+-- (1, 'bongo', 23);
+-- INSERT INTO
+--      unique_cats(cart_id, name, age)
+-- VALUES
+-- (1, 'zongo', 23);
+-- SELECT
+--      *
+-- FROM
+--      unique_cats;
+-- DROP TABLE unique_cats;
+-- CREATE TABLE unique_cats (
+--      cat_id INT,
+--      name VARCHAR(100),
+--      age INT,
+--      PRIMARY KEY(cat_id)
+-- );
+-- INSERT INTO
+--      unique_cats(cat_id, name, age)
+-- VALUES
+--      (1, 'Oingo', 2);
+-- INSERT INTO
+--      unique_cats(name, age)
+-- VALUES
+--      ('Oingo', 2);
+-- DROP TABLE unique_cats;
+-- CREATE TABLE unique_cats (
+--      cat_id INT AUTO_INCREMENT,
+--      name VARCHAR(50),
+--      age INT,
+--      PRIMARY KEY(cat_id)
+-- );
+-- INSERT INTO
+--      unique_cats(name, age)
+-- VALUES
+-- ('Oingo', 2);
+-- SELECT
+--      *
+-- FROM
+--      unique_cats;
+-- DESC unique_cats;
+-- CREATE TABLE employees (
+--      id INT AUTO_INCREMENT PRIMARY KEY,
+--      last_name VARCHAR(50) NOT NULL,
+--      first_name VARCHAR(50) NOT NULL,
+--      middle_name VARCHAR(50),
+--      age INT NOT NULL,
+--      current_status VARCHAR(100) NOT NULL DEFAULT 'employed'
+-- );
+-- INSERT INTO
+--      employees (first_name, last_name, age)
+-- VALUES
+-- ('thomas', 'chickenman', 87);
+-- SELECT
+--      *
+-- FROM
+--      employees;
+-- DROP TABLE cats,
+-- cats2,
+-- cats3,
+-- cats4,
+-- people,
+-- shops,
+-- unique_cats,
+-- employees;
+-- -- LESSON 5: CRUD OPERATIONS
+-- CREATE TABLE cats(
+--      cat_id INT AUTO_INCREMENT PRIMARY KEY,
+--      name VARCHAR(100),
+--      breed VARCHAR(100),
+--      age INT
+-- );
+-- DESC cats;
+-- INSERT INTO
+--      cats(name, breed, age)
+-- VALUES
+--      ('Ringo', 'Tabby', 4),
+--      ('Cindy', 'Maine Coon', 10),
+--      ('Dumbledore', 'Maine Coon', 11),
+--      ('Egg', 'Persian', 4),
+--      ('Misty', 'Tabby', 13),
+--      ('George Michael', 'Ragdoll', 9),
+--      ('Jackson', 'Sphynx', 7);
+-- SELECT
+--      *
+-- FROM
+--      cats;
+-- -- --> CRUD - READ DATA
+-- SELECT
+--      age
+-- FROM
+--      cats;
+-- -- -> FILTER BY COLUMN/FIELD
+-- SELECT
+--      age,
+--      breed
+-- FROM
+--      cats;
+-- SELECT
+--      *
+-- FROM
+--      cats
+-- WHERE
+--      breed = "Maine Coon"
+--      AND age >= 11;
+-- SELECT
+--      cat_id
+-- FROM
+--      cats;
+-- SELECT
+--      name,
+--      breed
+-- FROM
+--      cats;
+-- SELECT
+--      name,
+--      age
+-- FROM
+--      cats
+-- WHERE
+--      breed = 'Tabby';
+-- SELECT
+--      cat_id,
+--      age
+-- FROM
+--      cats
+-- WHERE
+--      cat_id = age;
+-- SELECT
+--      cat_id AS id,
+--      age AS kitty_age
+-- FROM
+--      cats
+-- WHERE
+--      cat_id = age;
+-- -- --> CRUD - UPDATE DATA
+-- UPDATE
+--      cats
+-- SET
+--      breed = 'Shorthair'
+-- WHERE
+--      breed = 'Tabby';
+-- UPDATE
+--      cats
+-- SET
+--      breed = 'Shorthair',
+--      age = 5
+-- WHERE
+--      breed = 'Tabby';
+-- UPDATE
+--      cats
+-- SET
+--      breed = 'Shorthair',
+--      age = 5
+-- WHERE
+--      name = 'Georgy';
+-- UPDATE
+--      cats
+-- SET
+--      name = 'Jack'
+-- WHERE
+--      name = 'Jackson';
+-- UPDATE
+--      cats
+-- SET
+--      breed = 'British Shorthair'
+-- WHERE
+--      name = 'Ringo';
+-- UPDATE
+--      cats
+-- SET
+--      age = '12'
+-- WHERE
+--      breed = 'Maine Coon';
+-- SELECT
+--      *
+-- FROM
+--      cats;
+-- -- --> CRUD - DELETE DATA
+-- DELETE FROM
+--      cats
+-- WHERE
+--      name = 'Egg';
+-- DELETE FROM
+--      cats
+-- WHERE
+--      age = 4;
+-- DELETE FROM
+--      cats
+-- WHERE
+--      cat_id = age;
+-- DELETE FROM
+--      cats;
+-- -- LESSON 6 CRUD CHALLANGE 
+-- CREATE DATABASE shirts_db;
+-- SHOW DATABASES;
+-- USE shirts_db;
+-- SELECT
+--      DATABASE();
+-- CREATE TABLE shirts (
+--      shirt_id INT AUTO_INCREMENT PRIMARY KEY,
+--      article VARCHAR(50) NOT NULL,
+--      color VARCHAR(50) NOT NULL,
+--      shirt_size VARCHAR(4) NOT NULL,
+--      last_worn INT NOT NULL DEFAULT 0
+-- );
+-- INSERT INTO
+--      shirts (article, color, shirt_size, last_worn)
+-- VALUES
+--      ('t-shirt', 'white', 'S', 10),
+--      ('t-shirt', 'green', 'S', 200),
+--      ('polo shirt', 'black', 'M', 10),
+--      ('tank top', 'blue', 'S', 50),
+--      ('t-shirt', 'pink', 'S', 0),
+--      ('polo shirt', 'red', 'M', 5),
+--      ('tank top', 'white', 'S', 200),
+--      ('tank top', 'blue', 'M', 15);
+-- INSERT INTO
+--      shirts (article, color, shirt_size, last_worn)
+-- VALUES
+--      ('polo shirt', 'purple', 'M', 50);
+-- SELECT
+--      article,
+--      color
+-- FROM
+--      shirts;
+-- SELECT
+--      article,
+--      color,
+--      shirt_size,
+--      last_worn
+-- FROM
+--      shirts
+-- WHERE
+--      shirt_size = 'M';
+-- UPDATE
+--      shirts
+-- SET
+--      shirt_size = 'L'
+-- WHERE
+--      article = 'polo shirt';
+-- UPDATE
+--      shirts
+-- SET
+--      last_worn = 0
+-- WHERE
+--      last_worn = 15;
+-- UPDATE
+--      shirts
+-- SET
+--      shirt_size = 'XS',
+--      color = 'off white'
+-- WHERE
+--      color = 'white';
+-- DELETE FROM
+--      shirts
+-- WHERE
+--      last_worn = 200;
+-- DELETE FROM
+--      shirts
+-- WHERE
+--      article = 'tank top';
+-- DELETE FROM
+--      shirts;
+-- SELECT
+--      *
+-- FROM
+--      shirts;
+-- DROP TABLE shirts;
+-- DROP DATABASE shirts_db;
+-- -- LESSON 7 STRING FUNCTIONS 
+-- CREATE DATABASE book_shop;
+-- USE book_shop;
+-- CREATE TABLE books (
+--      book_id INT NOT NULL AUTO_INCREMENT,
+--      title VARCHAR(100),
+--      author_fname VARCHAR(100),
+--      author_lname VARCHAR(100),
+--      released_year INT,
+--      stock_quantity INT,
+--      pages INT,
+--      PRIMARY KEY(book_id)
+-- );
+-- INSERT INTO
+--      books (
+--           title,
+--           author_fname,
+--           author_lname,
+--           released_year,
+--           stock_quantity,
+--           pages
+--      )
+-- VALUES
+--      (
+--           'The Namesake',
+--           'Jhumpa',
+--           'Lahiri',
+--           2003,
+--           32,
+--           291
+--      ),
+--      (
+--           'Norse Mythology',
+--           'Neil',
+--           'Gaiman',
+--           2016,
+--           43,
+--           304
+--      ),
+--      ('American Gods', 'Neil', 'Gaiman', 2001, 12, 465),
+--      (
+--           'Interpreter of Maladies',
+--           'Jhumpa',
+--           'Lahiri',
+--           1996,
+--           97,
+--           198
+--      ),
+--      (
+--           'A Hologram for the King: A Novel',
+--           'Dave',
+--           'Eggers',
+--           2012,
+--           154,
+--           352
+--      ),
+--      ('The Circle', 'Dave', 'Eggers', 2013, 26, 504),
+--      (
+--           'The Amazing Adventures of Kavalier & Clay',
+--           'Michael',
+--           'Chabon',
+--           2000,
+--           68,
+--           634
+--      ),
+--      ('Just Kids', 'Patti', 'Smith', 2010, 55, 304),
+--      (
+--           'A Heartbreaking Work of Staggering Genius',
+--           'Dave',
+--           'Eggers',
+--           2001,
+--           104,
+--           437
+--      ),
+--      ('Coraline', 'Neil', 'Gaiman', 2003, 100, 208),
+--      (
+--           'What We Talk About When We Talk About Love: Stories',
+--           'Raymond',
+--           'Carver',
+--           1981,
+--           23,
+--           176
+--      ),
+--      (
+--           "Where I'm Calling From: Selected Stories",
+--           'Raymond',
+--           'Carver',
+--           1989,
+--           12,
+--           526
+--      ),
+--      ('White Noise', 'Don', 'DeLillo', 1985, 49, 320),
+--      (
+--           'Cannery Row',
+--           'John',
+--           'Steinbeck',
+--           1945,
+--           95,
+--           181
+--      ),
+--      (
+--           'Oblivion: Stories',
+--           'David',
+--           'Foster Wallace',
+--           2004,
+--           172,
+--           329
+--      ),
+--      (
+--           'Consider the Lobster',
+--           'David',
+--           'Foster Wallace',
+--           2005,
+--           92,
+--           343
+--      );
+-- SELECT
+--      *
+-- FROM
+--      `book_shop`.`books`
+-- LIMIT
+--      1000;
+-- SELECT
+--      title
+-- FROM
+--      books;
+-- -- -->SUBSTRING()/SUBSTR()
+-- SELECT
+--      SUBSTRING(title, 1, 15)
+-- FROM
+--      books;
+-- SELECT
+--      SUBSTR(author_fname, 1, 1) AS 'Initial',
+--      author_lname
+-- FROM
+--      books;
+-- -- -->CONCAT()
+-- SELECT
+--      CONCAT(SUBSTR(title, 1, 10), '...') AS 'Crippled Title'
+-- FROM
+--      books;
+-- SELECT
+--      CONCAT(
+--           SUBSTR(author_fname, 1, 1),
+--           '.',
+--           SUBSTR(author_lname, 1, 1),
+--           '.'
+--      ) AS 'Initials'
+-- FROM
+--      books;
+-- --> REPLACE()
+-- SELECT
+--      REPLACE('cheese bread coffee milk', ' ', ' and ');
+-- SELECT
+--      REPLACE('I am ERTEM!', 'Ertem', 'Mr.ERTEM');
+-- Case sensitive
+-- SELECT
+--      REPLACE('I am ERTEM!', 'ERTEM', 'Mr.ERTEM');
+-- SELECT
+--      REPLACE(title, ' ', '-')
+-- FROM
+--      books;
+-- -- ->Persisting the replace changes to table
+-- UPDATE
+--      books
+-- SET
+--      title = REPLACE(title, ' ', '-');
+-- -- -->REVERSE()
+-- SELECT
+--      REVERSE(author_fname)
+-- FROM
+--      books;
+-- SELECT
+--      CONCAT(author_fname, REVERSE(author_fname))
+-- FROM
+--      books;
+-- -- -->LENGTH(),CHAR_LENGTH()
+-- -> Not good with chinese or other non latin alphabets with symbols
+-- SELECT
+--      LENGTH('Hey!');
+-- -> Properly displays the character length no matter what!
+-- SELECT
+--      CHAR_LENGTH('Hey!');
+-- -- -->UPPER(),LOWER()
+-- SELECT
+--      UPPER('hello');
+-- SELECT
+--      LOWER('FGGFGFGGFGHDUxvxcxcvcxgdgdAAAAA');
+-- SELECT
+--      CONCAT('I LOVE ', UPPER(title), ' !!!!') AS 'custom output'
+-- FROM
+--      books;
+-- -- -->INSERT()
+-- -- -> Adding to...
+-- SELECT
+-- INSERT
+--      (title, 1, 0, "What's ")
+-- FROM
+--      books;
+-- -- -> Replace certain number of characters before adding...
+-- SELECT
+-- INSERT
+--      (title, 1, 1, "What's ")
+-- FROM
+--      books;
+-- -- -->LEFT(),RIGHT(),REPEAT(),TRIM()
+-- SELECT
+--      LEFT(title, 5)
+-- FROM
+--      books;
+-- SELECT
+--      RIGHT(title, 5)
+-- FROM
+--      books;
+-- SELECT
+--      REPEAT('HA', 4);
+-- SELECT
+--      TRIM('   ERHAN GONE FOREVER!      ');
+-- SELECT
+--      TRIM('   ...........ERHAN GONE FOREVER!  ...    ');
+-- SELECT
+--      TRIM(
+--           LEADING '.'
+--           FROM
+--                '...........ERHAN GONE FOREVER!  ...    '
+--      );
+-- SELECT
+--      TRIM(
+--           TRAILING '.'
+--           FROM
+--                '...........ERHAN GONE FOREVER!  ...'
+--      );
+-- SELECT
+--      TRIM(
+--           BOTH '.'
+--           FROM
+--                '...........ERHAN GONE FOREVER!  |...'
+--      );
+-- -- CODING CHALLENGE
+-- SELECT
+--      author_lname AS 'forwards',
+--      REVERSE(author_lname) AS 'backwards'
+-- FROM
+--      books;
+-- SELECT
+--      UPPER(CONCAT(author_fname, ' ', author_lname)) AS 'full name in caps'
+-- FROM
+--      books;
+-- SELECT
+--      CONCAT(title, ' was released in ', released_year) AS 'blurb'
+-- FROM
+--      books;
+-- SELECT
+--      title AS 'title',
+--      CHAR_LENGTH(title) AS 'character count'
+-- FROM
+--      books;
+-- SELECT
+--      CONCAT(LEFT(title, 10), '...') AS 'short title',
+--      CONCAT(author_lname, ',', author_fname) AS 'author',
+--      CONCAT(stock_quantity, ' in stock') AS 'quantity'
+-- FROM
+--      books;
+-- INSERT INTO
+--      books (
+--           title,
+--           author_fname,
+--           author_lname,
+--           released_year,
+--           stock_quantity,
+--           pages
+--      )
+-- VALUES
+--      ('10% Happier', 'Dan', 'Harris', 2014, 29, 256),
+--      ('fake_book', 'Freida', 'Harris', 2001, 287, 428),
+--      (
+--           'Lincoln In The Bardo',
+--           'George',
+--           'Saunders',
+--           2017,
+--           1000,
+--           367
+--      );
+-- INSERT INTO
+--      books (
+--           title,
+--           author_fname,
+--           author_lname,
+--           released_year,
+--           stock_quantity,
+--           pages
+--      )
+-- VALUES
+--      ('100% Happier', 'Dan', 'HARRIS', 2014, 29, 256);
+-- -- -->DISTINCT, DISCTINCT ...combinator
+-- SELECT
+--      author_lname,
+--      author_fname
+-- FROM
+--      books;
+-- SELECT
+--      DISTINCT author_lname,
+--      author_fname
+-- FROM
+--      books;
+-- SELECT
+--      *
+-- FROM
+--      books;
+-- -- -->ORDER BY
+-- NOTE: BY DEFAULT ITS ASC ORDER
+-- SELECT
+--      book_id,
+--      author_fname,
+--      author_lname
+-- FROM
+--      books
+-- ORDER BY
+--      author_lname;
+-- SELECT
+--      book_id,
+--      author_fname,
+--      author_lname
+-- FROM
+--      books
+-- ORDER BY
+--      author_lname DESC;
+-- SELECT
+--      title,
+--      pages,
+--      released_year
+-- FROM
+--      books
+-- ORDER BY
+--      pages;
+-- -- -> ORDER BY 2 TAKES THE SECOND FIELD LISTED IN SELECT
+-- SELECT
+--      title,
+--      pages,
+--      released_year
+-- FROM
+--      books
+-- ORDER BY
+--      2;
+-- SELECT
+--      author_lname,
+--      released_year,
+--      title
+-- FROM
+--      books
+-- ORDER BY
+--      1 ASC,
+--      2 DESC;
+-- -- ->ORDER BY FIELD ALIAS
+-- SELECT
+--      CONCAT(author_fname, ' ', author_lname) AS authors
+-- FROM
+--      books
+-- ORDER BY
+--      authors;
+-- -- -->LIMIT
+-- SELECT
+--      book_id,
+--      title,
+--      released_year
+-- FROM
+--      books
+-- ORDER BY
+--      released_year DESC
+-- LIMIT
+--      10;
+-- -- -> SELECTIVE LIMIT START @ 1 AND CUT OFF @ 10+1
+-- SELECT
+--      book_id,
+--      title,
+--      released_year
+-- FROM
+--      books
+-- ORDER BY
+--      released_year DESC
+-- LIMIT
+--      1, 10;
+-- SELECT
+--      title
+-- FROM
+--      books
+-- ORDER BY
+--      title
+-- LIMIT
+--      18;
+-- -- -->LIKE(%***%) LIKE(%***) LIKE(***%) LIKE(____)
+-- -- where requires exact match!!!
+-- SELECT
+--      title,
+--      author_fname,
+--      author_lname
+-- FROM
+--      books
+-- WHERE
+--      author_fname = 'David';
+-- where with LIKE following a certain wild card !!!
+-- SELECT
+--      title,
+--      author_fname,
+--      author_lname
+-- FROM
+--      books
+-- WHERE
+--      author_fname LIKE '%da%';
+-- SELECT
+--      *
+-- FROM
+--      books
+-- WHERE
+--      title LIKE '%:%';
+-- SELECT
+--      *
+-- FROM
+--      books
+-- WHERE
+--      author_fname LIKE '____';
+-- SELECT
+--      *
+-- FROM
+--      books
+-- WHERE
+--      author_fname LIKE '_a_';
+-- SELECT
+--      *
+-- FROM
+--      books
+-- WHERE
+--      title LIKE '%\%%';
+-- -- CODING CHALLENGE
+-- SELECT
+--      title
+-- FROM
+--      books
+-- WHERE
+--      title LIKE '%stories%';
+-- SELECT
+--      title,
+--      pages
+-- FROM
+--      books
+-- ORDER BY
+--      pages DESC
+-- LIMIT
+--      1;
+-- SELECT
+--      CONCAT(LEFT(title, 15), ' - ', released_year) AS summary
+-- FROM
+--      books
+-- ORDER BY
+--      released_year DESC
+-- LIMIT
+--      3;
+-- SELECT
+--      title,
+--      author_lname
+-- FROM
+--      books
+-- WHERE
+--      author_lname LIKE ('% %');
+-- SELECT
+--      title,
+--      released_year,
+--      stock_quantity
+-- FROM
+--      books
+-- ORDER BY
+--      stock_quantity ASC,
+--      released_year DESC
+-- LIMIT
+--      3;
+-- SELECT
+--      title,
+--      author_lname
+-- FROM
+--      books
+-- ORDER BY
+--      author_lname,
+--      title;
+-- SELECT
+--      UPPER(
+--           CONCAT(
+--                'my favorite author is ',
+--                author_fname,
+--                ' ',
+--                author_lname,
+--                '!'
+--           )
+--      )
+-- FROM
+--      books
+-- ORDER BY
+--      author_lname;
+-- -- LESSON 9 AGGREGATE FUNCTIONS
+-- -- -->COUNT()
+-- SELECT
+--      COUNT(*)
+-- FROM
+--      books;
+-- SELECT
+--      COUNT(author_lname)
+-- FROM
+--      books;
+-- SELECT
+--      COUNT(DISTINCT author_fname)
+-- FROM
+--      books;
+-- SELECT
+--      title
+-- FROM
+--      books
+-- WHERE
+--      title LIKE '%the%';
+-- SELECT
+--      COUNT(*)
+-- FROM
+--      books
+-- WHERE
+--      title LIKE '%the%';
+-- -- -->GROUPBY
+-- SELECT
+--      author_lname
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname;
+-- SELECT
+--      author_lname,
+--      COUNT(*) AS books_written
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname
+-- ORDER BY
+--      books_written DESC;
+-- SELECT
+--      released_year,
+--      COUNT(*) AS how_many_times
+-- FROM
+--      books
+-- GROUP BY
+--      released_year
+-- ORDER BY
+--      how_many_times DESC;
+-- -- -->MIX MAX
+-- SELECT
+--      MIN(released_year)
+-- FROM
+--      books;
+-- SELECT
+--      MAX(pages)
+-- FROM
+--      books;
+-- SELECT
+--      MIN(author_lname),
+--      MAX(author_lname)
+-- FROM
+--      books;
+-- SELECT
+--      MIN(author_lname),
+--      title
+-- FROM
+--      books;
+-- -- -->MIX MAX SUBQUERIES
+-- SELECT
+--      title,
+--      pages
+-- FROM
+--      books
+-- ORDER BY
+--      pages DESC
+-- LIMIT
+--      1;
+-- INSERT INTO
+--      books (title, pages)
+-- VALUES
+--      ('my life in words', 634);
+-- SELECT
+--      title,
+--      pages
+-- FROM
+--      books
+-- WHERE
+--      pages = (
+--           SELECT
+--                MAX(pages)
+--           FROM
+--                books
+--      );
+-- SELECT
+--      MIN(released_year)
+-- FROM
+--      books;
+-- SELECT
+--      title,
+--      released_year
+-- FROM
+--      books
+-- WHERE
+--      released_year = (
+--           SELECT
+--                MIN(released_year)
+--           FROM
+--                books
+--      );
+-- -- -->GROUP BY
+-- SELECT
+--      author_fname,
+--      author_lname
+-- FROM
+--      books
+-- ORDER BY
+--      author_lname;
+-- SELECT
+--      author_lname,
+--      COUNT(*)
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname;
+-- SELECT
+--      author_fname,
+--      author_lname,
+--      COUNT(*)
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname,
+--      author_fname;
+-- SELECT
+--      CONCAT(author_fname, ' ', author_lname) AS author,
+--      COUNT(*)
+-- FROM
+--      books
+-- GROUP BY
+-- author;
+-- -- -->MIN MAX GROUP BY
+-- SELECT
+--      author_fname AS author_first_name,
+--      author_lname AS author_last_name,
+--      COUNT(*) AS books_written,
+--      MIN(released_year) AS first_publication_year,
+--      MAX(released_year) AS last_publication_year,
+--      MAX(pages) AS max_page_count
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname,
+--      author_fname;
+-- -- -->SUM
+-- SELECT
+--      SUM(pages)
+-- FROM
+--      books;
+-- SELECT
+--      author_lname,
+--      SUM(pages)
+-- FROM
+--      books
+-- GROUP BY
+--      author_lname;
+-- -- -->AVG
+-- SELECT
+--      AVG(pages)
+-- FROM
+--      books;
+-- SELECT
+--      released_year,
+--      AVG(stock_quantity),
+--      COUNT(*)
+-- FROM
+--      books
+-- GROUP BY
+--      released_year;
+-- -- CODING CHALLENGE
+-- SELECT
+--      COUNT(*)
+-- FROM
+--      books;
+-- SELECT
+--      released_year,
+--      SUM(stock_quantity) AS book_count
+-- FROM
+--      books
+-- GROUP BY
+--      released_year
+-- ORDER BY
+--      released_year DESC;
+-- SELECT
+--      SUM(stock_quantity) AS 'number of books'
+-- FROM
+--      books;
+-- SELECT
+--      author_fname,
+--      author_lname,
+--      AVG(released_year) AS avg_release_year
+-- FROM
+--      books
+-- GROUP BY
+--      author_fname,
+--      author_lname
+-- SELECT
+--      CONCAT(author_fname, ' ', author_lname) AS author_name,
+--      pages
+-- FROM
+--      books
+-- WHERE
+--      pages = (
+--           SELECT
+--                MAX(pages)
+--           FROM
+--                books
+--      );
+-- SELECT
+--      released_year AS year,
+--      COUNT(*) AS '# books',
+--      AVG(pages) AS 'avg pages'
+-- FROM
+--      books
+-- GROUP BY
+--      1
+-- ORDER BY
+--      1;
+-- -- LESSON 10 REVISITING DATA TYPES
+-- -- -->VARCHAR/VAR
+-- CREATE TABLE friends (name VARCHAR(10));
+-- INSERT INTO
+--   friends (name)
+-- VALUES
+--   ('tom'),
+--   ('juan pablo'), ('james');
+-- -- -->INT TYPES
+-- CREATE TABLE parent (children TINYINT UNSIGNED);
+-- NOTE: UNSIGNED MEANS ONLY POSITIVE NUMBERS ARE ALLOWED.
+-- INSERT INTO
+--   parent
+-- VALUES
+--   ('-1');
+-- NOTE: The decimal is rounded off when being registered to table
+-- INSERT INTO
+--   parent
+-- VALUES
+--   ('1.5');
+-- INSERT INTO
+--   parent
+-- VALUES
+--   ('91.001');
+-- -- -->DEC
+-- CREATE TABLE products (price DECIMAL(5, 2));
+-- INSERT INTO
+--   products
+-- VALUES
+--   (222.1),
+--   (516.99);
+-- -- -->FLOAT/DOUBLE
+-- CREATE TABLE nums(x FLOAT, y DOUBLE);
+-- INSERT INTO
+--   nums (x, y)
+-- VALUES
+--   (1.12345678, 1.1234567898786868866);
+-- -- -->DATE
+-- CREATE TABLE people (
+--   name VARCHAR(100),
+--   birthdate DATE,
+--   birthtime TIME,
+--   birthdt DATETIME
+-- );
+-- INSERT INTO
+--   people (name, birthdate, birthtime, birthdt)
+-- VALUES
+--   (
+--     'Elton',
+--     '2000-12-25',
+--     '11:00:00',
+--     '2000-12-25 11:00:00'
+--   );
+-- INSERT INTO
+--   people (name, birthdate, birthtime, birthdt)
+-- VALUES
+--   (
+--     'Lulu',
+--     '1985-04-11',
+--     '9:45:10',
+--     '1985-04-11 9:45:10'
+--   ),
+--   (
+--     'Juan',
+--     '2020-08-15',
+--     '23:59:00',
+--     '2020-08-15 23:59:00'
+--   );
+-- -- -->DATE FUNCTIONS
+-- SELECT
+--   CURDATE(),
+--   CURRENT_DATE(),
+--   CURTIME(),
+--   CURRENT_TIME(),
+--   NOW(),
+--   CURRENT_TIMESTAMP;
+-- INSERT INTO
+--   people (name, birthdate, birthtime, birthdt)
+-- VALUES
+--   ('Hazel', CURDATE(), CURTIME(), NOW());
+-- SELECT
+--   birthdate,
+--   DAY(birthdate),
+--   DAYOFWEEK(birthdate) -1,
+--   DAYOFYEAR(birthdate),
+--   MONTHNAME(birthdate),
+--   YEAR(birthdate),
+--   WEEK(birthdate),
+--   YEARWEEK(birthdate)
+-- FROM
+--   people;
+-- SELECT
+--   name,
+--   birthdt,
+--   YEAR(birthdt),
+--   MONTHNAME(birthdt)
+-- FROM
+--   people;
+-- -- -->TIME FUNCTIONS
+-- SELECT
+--   name,
+--   birthtime,
+--   HOUR(birthtime),
+--   HOUR(birthdt),
+--   MINUTE(birthtime),
+--   MINUTE(birthdt),
+--   SECOND(birthtime),
+--   SECOND(birthdt)
+-- FROM
+--   people;
+-- SELECT
+--   birthdt,
+--   DATE(birthdt),
+--   TIME(birthdt)
+-- FROM
+--   people;
+-- SELECT
+--   *
+-- FROM
+--   people;
+-- -- -->FORMATTING DATES
+-- SELECT
+--   CONCAT_WS(
+--     (' '),
+--     MONTHNAME(birthdate),
+--     DAY(birthdate),
+--     YEAR(birthdate)
+--   )
+-- FROM
+--   people;
+-- SELECT
+--   DATE_FORMAT(birthdate, '%a %b %D')
+-- FROM
+--   people;
+-- SELECT
+--   DATE_FORMAT(birthdt, '%a,%b,%D at %r')
+-- FROM
+--   people;
+-- -- -->DATE MATH
+-- SELECT
+--   name,
+--   birthdate
+-- FROM
+--   people;
+-- SELECT
+--   DATEDIFF(CURDATE(), birthdate)
+-- FROM
+--   people;
+-- SELECT
+--   DATE_ADD(CURDATE(), INTERVAL 1 YEAR);
+-- SELECT
+--   DATE_ADD(CURDATE(), INTERVAL 1 MONTH);
+-- SELECT
+--   DATE_ADD(NOW(), INTERVAL 1 MONTH);
+-- SELECT
+--   birthdt,
+--   birthdt - INTERVAL 1 MONTH
+-- FROM
+--   people;
+-- SELECT
+--   NOW() - INTERVAL 14 YEAR;
+-- SELECT
+--   name,
+--   birthdate,
+--   YEAR(birthdate + INTERVAL 21 YEAR) AS will_be_21
+-- FROM
+-- people;
+-- -- -->TIME MATH
+-- SELECT
+--   TIMEDIFF(CURTIME(), '7:00:00');
+-- SELECT
+--   CURTIME() - INTERVAL 1 HOUR;
+-- -- -->TIMESTAMP
+-- CREATE TABLE captions (
+--   text VARCHAR(50),
+--   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
+-- INSERT INTO
+--   captions (text)
+-- VALUES
+--   ('beautiful sunset');
+-- CREATE TABLE captions2 (
+--   text VARCHAR(50),
+--   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--   updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+-- );
+-- INSERT INTO
+--   captions2 (text)
+-- VALUES
+--   ('i love life!!!!');
+-- UPDATE
+--   captions2
+-- SET
+--   text = 'i love life!';
+-- -- CODING CHALLENGE
+-- CREATE TABLE inventory (
+--   item_name VARCHAR(100),
+--   price DECIMAL(8, 2),
+--   quantity INT
+-- );
+-- SELECT
+--   CURTIME();
+-- SELECT
+--   CURDATE();
+-- SELECT
+--   DAYOFWEEK(CURDATE()) -1 AS CURRENT_DAY_OF_THE_WEEK;
+-- SELECT
+--   DAYOFWEEK(NOW()) -1 AS CURRENT_DAY_OF_THE_WEEK;
+-- SELECT
+--   DATE_FORMAT(NOW(), '%w');
+-- SELECT
+--   DATE_FORMAT(CURDATE(), '%m/%d/%Y');
+-- SELECT
+--   DATE_FORMAT(CURTIME(), '%M %D at %H:%i');
+-- CREATE TABLE tweets(
+--   content VARCHAR(140),
+--   username VARCHAR(20),
+--   created_at TIMESTAMP DEFAULT NOW()
+-- );
+-- -- LESSON 11  COMPARISON & LOGICAL OPERATORS
+-- -- -->NOT EQUAL
+-- SELECT
+--   title,
+--   author_lname
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Gaiman';
+-- SELECT
+--   title,
+--   author_lname
+-- FROM
+--   books
+-- WHERE
+--   author_lname != 'Gaiman';
+-- -- -->NOT LIKE
+-- SELECT
+--   title
+-- FROM
+--   books
+-- WHERE
+--   title LIKE '% %';
+-- SELECT
+--   title
+-- FROM
+--   books
+-- WHERE
+--   title NOT LIKE '% %';
+-- SELECT
+--   title,
+--   author_fname
+-- FROM
+--   books
+-- WHERE
+--   author_fname LIKE 'da%';
+-- SELECT
+--   title,
+--   author_fname
+-- FROM
+--   books
+-- WHERE
+--   author_fname NOT LIKE 'da%';
+-- -- -->GREATER THAN
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   released_year > 2010;
+-- -- -->LESS THAN OR EQUAL
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   released_year <= 2005;
+-- -- -->LOGICAL AND 
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Eggers'
+--   AND author_fname = 'Dave'
+--   AND released_year > 2010
+--   AND title LIKE '%novel%';
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year >= 2000
+--   AND released_year % 2 != 0;
+-- -- -->LOGICAL OR
+-- SELECT
+--   title,
+--   author_lname,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Eggers' || released_year > 2010;
+-- SELECT
+--   title,
+--   author_lname,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Eggers'
+--   OR released_year > 2010;
+-- SELECT
+--   title,
+--   pages
+-- FROM
+--   books
+-- WHERE
+--   pages < 200
+--   OR title LIKE '%stories%';
+-- -- -->BETWEEN
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year <= 2015
+--   AND released_year >= 2014;
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year BETWEEN 2014
+--   AND 2015;
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year NOT BETWEEN 2014
+--   AND 2015;
+-- -- -->COMPARING DATES
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   birthdate < '2005-01-01';
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   YEAR(birthdate) < 2005;
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   birthtime > '12:00:00';
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   HOUR(birthtime) > 12;
+-- SELECT
+--   CAST('09:00:00' AS TIME);
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   birthtime BETWEEN '10:00:00'
+--   AND '16:00:00';
+-- SELECT
+--   *
+-- FROM
+--   people
+-- WHERE
+--   birthtime BETWEEN CAST('10:00:00' AS TIME)
+--   AND CAST('16:00:00' AS TIME);
+-- -- -->IN
+-- SELECT
+--   title,
+--   author_lname
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Carver'
+--   OR author_lname = 'Lahiri'
+--   OR author_lname = 'Smith';
+-- SELECT
+--   title,
+--   author_lname
+-- FROM
+--   books
+-- WHERE
+--   author_lname IN ('Carver', 'Lahiri', 'Smith');
+-- SELECT
+--   title,
+--   author_lname
+-- FROM
+--   books
+-- WHERE
+--   author_lname NOT IN ('Carver', 'Lahiri', 'Smith');
+-- -- -->MODULO
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year >= 2000
+--   AND released_year % 2 = 1;
+-- SELECT
+--   title,
+--   released_year
+-- FROM
+--   books
+-- WHERE
+--   released_year >= 2000
+--   AND released_year % 2 = 0;
+-- -- -->CASE
+-- SELECT
+--   title,
+--   released_year,
+--   CASE
+--     WHEN released_year >= 2000 THEN 'modern lit'
+--     ELSE '20th century lit'
+--   END AS genre
+-- FROM
+--   books;
+-- SELECT
+--   title,
+--   stock_quantity,
+--   CASE
+--     WHEN stock_quantity <= 40 THEN '*'
+--     WHEN stock_quantity <= 70 THEN '**'
+--     WHEN stock_quantity <= 100 THEN '***'
+--     WHEN stock_quantity <= 140 THEN '****'
+--     ELSE '*****'
+--   END AS stock_range
+-- FROM
+--   books;
+-- -- -->IS NULL
+-- SELECT
+--   *
+-- FROM
+--   books;
+-- INSERT INTO
+--   books
+-- SET
+--   title = '';
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname IS NULL;
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname IS NOT NULL;
+-- DELETE FROM
+--   books
+-- WHERE
+--   author_fname IS NULL;
+-- -- CODING CHALLENGE
+-- SELECT
+--   10 != 10;
+-- RETURNS 0 - FALSY
+-- SELECT
+--   15 > 14
+--   AND 99 -5 <= 94;
+-- 1 && 1 RETURNS 1
+-- SELECT
+--   1 IN (5, 3)
+--   OR 9 BETWEEN 8
+--   AND 10;
+-- 0 || 1 RETURNS 1
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   released_year < 1980;
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname IN ('Eggers', 'Chabon');
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname = 'Lahiri'
+--   AND released_year > 2000;
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   pages BETWEEN 100
+--   AND 200;
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   author_lname LIKE 'C%'
+--   OR author_lname LIKE 'S%';
+-- SELECT
+--   *
+-- FROM
+--   books
+-- WHERE
+--   SUBSTR(author_lname, 1, 1) IN ('C', 'S');
+-- SELECT
+--   title,
+--   author_lname,
+--   CASE
+--     WHEN title LIKE '%stories%' THEN 'Short Stories'
+--     WHEN title LIKE 'Just%' THEN 'Memoir'
+--     WHEN title LIKE 'A-Heartbreaking%' THEN 'Memoir'
+--     ELSE 'Novel'
+--   END AS type
+-- FROM
+--   books;
+-- SELECT
+--   author_fname,
+--   author_lname,
+--   CASE
+--     WHEN COUNT(*) = 1 THEN CONCAT(COUNT(*), ' book')
+--     ELSE CONCAT(COUNT(*), ' books')
+--   END AS COUNT
+-- FROM
+--   books
+-- GROUP BY
+--   author_lname,
+--   author_fname;
+-- -- LESSON 12  CONSTRAINTS ALTER TABLE
+-- -- -->UNIQUE
+-- CREATE TABLE contacts (
+--   name VARCHAR(100) NOT NULL,
+--   phone VARCHAR(15) NOT NULL UNIQUE
+-- );
+-- INSERT INTO
+--   contacts (name, phone)
+-- VALUES
+--   ('billybob', '87878787787');
+-- INSERT INTO
+--   contacts (name, phone)
+-- VALUES
+--   ('timmytimtim', '87878787787');
+-- -- -->CHECK
+-- CREATE TABLE users (
+--   username VARCHAR(20) NOT NULL,
+--   age INT CHECK (age > 0)
+-- );
+-- INSERT INTO
+--   users (username, age)
+-- VALUES
+--   ('bluecat', 50);
+-- INSERT INTO
+--   users (username, age)
+-- VALUES
+--   ('MISTY', -3);
+-- INSERT INTO
+--   users (username, age)
+-- VALUES
+--   ('MISTY', 0);
+-- INSERT INTO
+--   users (username, age)
+-- VALUES
+--   ('MISTY', 1);
+-- CREATE TABLE palindromes (word VARCHAR(100) CHECK(REVERSE(word) = word));
+-- INSERT INTO
+--   palindromes (word)
+-- VALUES
+--   (' ');
+-- INSERT INTO
+--   palindromes (word)
+-- VALUES
+--   ('XOMA');
+-- -- -->NAMED CHECK
+-- CREATE TABLE users2 (
+--   username VARCHAR(20) NOT NULL,
+--   age INT,
+--   CONSTRAINT age_not_negative CHECK (age >= 0),
+--   CONSTRAINT age_exclude_elderly CHECK (age <= 100)
+-- );
+-- INSERT INTO
+--   users2 (username, age)
+-- VALUES
+--   ('TINA', -1);
+-- INSERT INTO
+--   users2 (username, age)
+-- VALUES
+--   ('TINA', 0);
+-- INSERT INTO
+--   users2 (username, age)
+-- VALUES
+--   ('TINA', 100);
+-- INSERT INTO
+--   users2 (username, age)
+-- VALUES
+--   ('TINA', 101);
+-- CREATE TABLE companies (
+--   name VARCHAR(255) NOT NULL,
+--   address VARCHAR(255) NOT NULL,
+--   CONSTRAINT name_address UNIQUE (name, address)
+-- );
+-- INSERT INTO
+--   companies (name, address)
+-- VALUES
+--   ('blackbird auto', '123 spurce');
+-- INSERT INTO
+--   companies (name, address)
+-- VALUES
+--   ('blackbird auto', '1123 spurce');
+-- CREATE TABLE houses (
+--   purchase_price INT NOT NULL,
+--   sale_price INT NOT NULL,
+--   CONSTRAINT sale_price_bottom_limit CHECK (purchase_price <= sale_price)
+-- );
+-- INSERT INTO
+--   houses (purchase_price, sale_price)
+-- VALUES
+--   (100, 200);
+-- INSERT INTO
+--   houses (purchase_price, sale_price)
+-- VALUES
+--   (400, 200);
+-- -- -->ALTER TABLE
+-- ALTER TABLE
+--   companies
+-- ADD
+--   COLUMN phone VARCHAR(15);
+-- ALTER TABLE
+--   companies
+-- ADD
+--   COLUMN employee_count INT NOT NULL;
+-- ALTER TABLE
+--   companies
+-- ADD
+--   COLUMN superviser_count INT NOT NULL DEFAULT 1;
+-- ALTER TABLE
+--   companies DROP COLUMN phone;
+-- ALTER TABLE
+--   companies DROP COLUMN employee_count;
+-- RENAME TABLE companies TO suppliers;
+-- ALTER TABLE
+--   suppliers RENAME TO companies;
+-- ALTER TABLE
+--   companies RENAME COLUMN name TO company_name;
+-- ALTER TABLE
+--   companies
+-- MODIFY
+--   company_name VARCHAR(100) DEFAULT 'unknown';
+-- -- -->ALTER TABLE CONSTRAINTS
+-- SELECT
+--   *
+-- FROM
+--   houses;
+-- ALTER TABLE
+--   houses
+-- ADD
+--   CONSTRAINT positive_price CHECK (purchase_price >= 0);
+-- ALTER TABLE
+--   houses DROP CONSTRAINT sale_price_bottom_limit;
+-- INSERT INTO
+--   houses (purchase_price, sale_price)
+-- VALUES
+--   (-1, 4);
+-- INSERT INTO
+--   houses (purchase_price, sale_price)
+-- VALUES
+--   (10, 4);
+-- DESC houses;
+-- -- LESSON 13  ONE TO MANY & JOINS
+-- USE book_shop;
+-- CREATE TABLE customers (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   first_name VARCHAR(50) NOT NULL,
+--   last_name VARCHAR(50) NOT NULL,
+--   email VARCHAR(50) NOT NULL
+-- );
+-- -- -->ON DELETE CASCADE
+-- CREATE TABLE orders (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   order_date DATE,
+--   amount DECIMAL(8, 2),
+--   customer_id INT,
+--   FOREIGN KEY(customer_id) REFERENCES customers(id) ON DELETE CASCADE
+-- );
+-- INSERT INTO
+--   customers (first_name, last_name, email)
+-- VALUES
+--   ('Boy', 'George', 'george@gmail.com'),
+--   ('George', 'Michael', 'gm@gmail.com'),
+--   ('David', 'Bowie', 'david@gmail.com'),
+--   ('Blue', 'Steele', 'blue@gmail.com'),
+--   ('Bette', 'Davis', 'bette@aol.com');
+-- INSERT INTO
+--   orders (order_date, amount, customer_id)
+-- VALUES
+--   ('2016-02-10', 99.99, 1),
+--   ('2017-11-11', 35.50, 1),
+--   ('2014-12-12', 800.67, 2),
+--   ('2015-01-03', 12.50, 2),
+-- --   ('1999-04-11', 450.25, 5);
+-- DELETE FROM
+--   customers
+-- WHERE
+--   last_name = 'George';
+-- SELECT
+--   *
+-- FROM
+--   customers;
+-- -- -->CROSS JOIN
+-- SELECT
+--   *
+-- FROM
+--   orders,
+--   customers;
+-- SELECT
+--   *
+-- FROM
+--   orders
+--   CROSS JOIN customers;
+-- -- -->INNER JOIN / JOIN - OVERLAPPING JOINS
+-- SELECT
+--   first_name,
+--   last_name,
+--   order_date,
+--   amount
+-- FROM
+--   customers
+--   JOIN orders ON orders.customer_id = customers.id;
+-- -- SAME AS ABOVE JOIN VS INNER JOIN
+-- SELECT
+--   first_name,
+--   last_name,
+--   order_date,
+--   amount
+-- FROM
+--   customers
+--   INNER JOIN orders ON orders.customer_id = customers.id;
+-- -- -->INNER JOIN - GROUP BY
+-- SELECT
+--   first_name,
+--   last_name,
+--   order_date,
+--   SUM(amount) AS total
+-- FROM
+--   customers
+--   JOIN orders ON orders.customer_id = customers.id
+-- GROUP BY
+--   first_name,
+--   last_name
+-- ORDER BY
+--   total DESC;
+-- -->LEFT JOIN 
+-- -->IFNULL
+-- SELECT
+--   first_name,
+--   last_name,
+--   order_date,
+--   IFNULL(SUM(amount), 0) AS total
+-- FROM
+--   customers
+--   LEFT JOIN orders ON orders.customer_id = customers.id
+-- GROUP BY
+--   first_name,
+--   last_name;
+-- -->RIGHT JOIN
+-- SELECT
+--   *
+-- FROM
+--   customers
+--   RIGHT JOIN orders ON customers.id = orders.customer_id;
+-- SELECT
+--   first_name,
+--   last_name,
+--   order_date,
+--   amount
+-- FROM
+--   customers
+--   RIGHT JOIN orders ON customers.id = orders.customer_id;
+-- -- CODING CHALLENGE
+-- CREATE TABLE students (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   first_name VARCHAR(50) NOT NULL
+-- );
+-- CREATE TABLE papers (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   title VARCHAR(250) NOT NULL,
+--   grade INT NOT NULL,
+--   student_id INT,
+--   FOREIGN KEY(student_id) REFERENCES students(id) ON DELETE CASCADE
+-- );
+-- INSERT INTO
+--   students (first_name)
+-- VALUES
+--   ('Caleb'),
+--   ('Samantha'),
+--   ('Raj'),
+--   ('Carlos'),
+--   ('Lisa');
+-- INSERT INTO
+--   papers (student_id, title, grade)
+-- VALUES
+--   (1, 'My First Book Report', 60),
+--   (1, 'My Second Book Report', 75),
+--   (2, 'Russian Lit Through The Ages', 94),
+--   (2, 'De Montaigne and The Art of The Essay', 98),
+--   (4, 'Borges and Magical Realism', 89);
+-- SELECT
+--   first_name,
+--   title,
+--   grade
+-- FROM
+--   students
+--   JOIN papers ON papers.student_id = students.id
+-- ORDER BY
+--   grade DESC;
+-- SELECT
+--   first_name,
+--   title,
+--   grade
+-- FROM
+--   students
+--   LEFT JOIN papers ON papers.student_id = students.id;
+-- SELECT
+--   first_name,
+--   IFNULL(title, 'MISSING'),
+--   IFNULL(grade, 0)
+-- FROM
+--   students
+--   LEFT JOIN papers ON papers.student_id = students.id;
+-- SELECT
+--   first_name,
+--   IFNULL(AVG(grade), 0) AS average
+-- FROM
+--   students
+--   LEFT JOIN papers ON papers.student_id = students.id
+-- GROUP BY
+--   first_name
+-- ORDER BY
+--   average DESC;
+-- SELECT
+--   first_name,
+--   IFNULL(ROUND(AVG(grade), 2), 0) AS average,
+--   CASE
+--     WHEN AVG(grade) >= 75 THEN 'PASSING'
+--     ELSE 'FAILING'
+--   END AS passing_status
+-- FROM
+--   students
+--   LEFT JOIN papers ON papers.student_id = students.id
+-- GROUP BY
+--   first_name
+-- ORDER BY
+--   average DESC;
+-- -- LESSON 14  MANY TO MANY
+-- CREATE TABLE reviewers (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   first_name VARCHAR(50) NOT NULL,
+--   last_name VARCHAR(50) NOT NULL
+-- );
+-- CREATE TABLE series (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   title VARCHAR(100),
+--   released_year YEAR,
+--   genre VARCHAR(100)
+-- );
+-- CREATE TABLE reviews (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   rating DECIMAL(2, 1),
+--   series_id INT,
+--   reviewer_id INT,
+--   FOREIGN KEY (series_id) REFERENCES series(id),
+--   FOREIGN KEY (reviewer_id) REFERENCES reviewers(id)
+-- );
+-- SHOW TABLES;
+-- INSERT INTO
+--   series (title, released_year, genre)
+-- VALUES
+--   ('Archer', 2009, 'Animation'),
+--   ('Arrested Development', 2003, 'Comedy'),
+--   ("Bob's Burgers", 2011, 'Animation'),
+--   ('Bojack Horseman', 2014, 'Animation'),
+--   ("Breaking Bad", 2008, 'Drama'),
+--   ('Curb Your Enthusiasm', 2000, 'Comedy'),
+--   ("Fargo", 2014, 'Drama'),
+--   ('Freaks and Geeks', 1999, 'Comedy'),
+--   ('General Hospital', 1963, 'Drama'),
+--   ('Halt and Catch Fire', 2014, 'Drama'),
+--   ('Malcolm In The Middle', 2000, 'Comedy'),
+--   ('Pushing Daisies', 2007, 'Comedy'),
+--   ('Seinfeld', 1989, 'Comedy'),
+--   ('Stranger Things', 2016, 'Drama');
+-- INSERT INTO
+--   reviewers (first_name, last_name)
+-- VALUES
+--   ('Thomas', 'Stoneman'),
+--   ('Wyatt', 'Skaggs'),
+--   ('Kimbra', 'Masters'),
+--   ('Domingo', 'Cortes'),
+--   ('Colt', 'Steele'),
+--   ('Pinkie', 'Petit'),
+--   ('Marlon', 'Crafford');
+-- INSERT INTO
+--   reviews(series_id, reviewer_id, rating)
+-- VALUES
+--   (1, 1, 8.0),
+--   (1, 2, 7.5),
+--   (1, 3, 8.5),
+--   (1, 4, 7.7),
+--   (1, 5, 8.9),
+--   (2, 1, 8.1),
+--   (2, 4, 6.0),
+--   (2, 3, 8.0),
+--   (2, 6, 8.4),
+--   (2, 5, 9.9),
+--   (3, 1, 7.0),
+--   (3, 6, 7.5),
+--   (3, 4, 8.0),
+--   (3, 3, 7.1),
+--   (3, 5, 8.0),
+--   (4, 1, 7.5),
+--   (4, 3, 7.8),
+--   (4, 4, 8.3),
+--   (4, 2, 7.6),
+--   (4, 5, 8.5),
+--   (5, 1, 9.5),
+--   (5, 3, 9.0),
+--   (5, 4, 9.1),
+--   (5, 2, 9.3),
+--   (5, 5, 9.9),
+--   (6, 2, 6.5),
+--   (6, 3, 7.8),
+--   (6, 4, 8.8),
+--   (6, 2, 8.4),
+--   (6, 5, 9.1),
+--   (7, 2, 9.1),
+--   (7, 5, 9.7),
+--   (8, 4, 8.5),
+--   (8, 2, 7.8),
+--   (8, 6, 8.8),
+--   (8, 5, 9.3),
+--   (9, 2, 5.5),
+--   (9, 3, 6.8),
+--   (9, 4, 5.8),
+--   (9, 6, 4.3),
+--   (9, 5, 4.5),
+--   (10, 5, 9.9),
+--   (13, 3, 8.0),
+--   (13, 4, 7.2),
+--   (14, 2, 8.5),
+--   (14, 3, 8.9),
+--   (14, 4, 8.9);
+-- SELECT
+--   title,
+--   rating
+-- FROM
+--   reviews
+--   JOIN series ON series.id = reviews.series_id;
+-- SELECT
+--   title,
+--   ROUND(AVG(rating), 2) AS avg_rating
+-- FROM
+--   series
+--   JOIN reviews ON series.id = reviews.series_id
+-- GROUP BY
+--   title
+-- ORDER BY
+--   avg_rating ASC,
+--   title DESC;
+-- SELECT
+--   first_name,
+--   last_name,
+--   rating
+-- FROM
+--   reviewers
+--   JOIN reviews ON reviewers.id = reviews.reviewer_id
+-- WHERE
+--   first_name IN ('Thomas', 'Wyatt', 'Kimbra');
+-- SELECT
+--   title AS unreviewed_series
+-- FROM
+--   series
+--   LEFT JOIN reviews ON series.id = reviews.series_id
+-- WHERE
+--   rating IS NULL;
+-- SELECT
+--   genre,
+--   ROUND(AVG(rating), 2) AS avg_rating
+-- FROM
+--   series
+--   JOIN reviews ON series.id = reviews.series_id
+-- GROUP BY
+--   genre;
+-- SELECT
+--   first_name,
+--   last_name,
+--   COUNT(rating) AS COUNT,
+--   IFNULL(MIN(rating), 0) AS MIN,
+--   IFNULL(MAX(rating), 0) AS MAX,
+--   IFNULL(AVG(rating), 0) AS AVG,
+--   CASE
+--     WHEN COUNT(rating) = 0 THEN 'INACTIVE'
+--     ELSE 'ACTIVE'
+--   END AS STATUS
+-- FROM
+--   reviewers
+--   LEFT JOIN reviews ON reviews.reviewer_id = reviewers.id
+-- GROUP BY
+--   first_name,
+--   last_name;
+-- SELECT
+--   title,
+--   rating,
+--   CONCAT(first_name, ' ', last_name) AS reviewer
+-- FROM
+--   reviews
+--   JOIN series ON series.id = reviews.series_id
+--   JOIN reviewers ON reviewers.id = reviews.reviewer_id
+-- ORDER BY
+--   title ASC
+-- LIMIT
+--   14;
+-- -- LESSON 15  VIEWS, MODES, ....
+-- -- -->VIEWS - a virtual baseline table
+-- -- ->CREATE VIEWS
+-- CREATE VIEW full_reviews AS
+-- SELECT
+--   title,
+--   released_year,
+--   genre,
+--   rating,
+--   first_name,
+--   last_name
+-- FROM
+--   reviews
+--   JOIN series ON series.id = reviews.series_id
+--   JOIN reviewers ON reviewers.id = reviews.reviewer_id;
+-- -- -> USE VIEWS
+-- SELECT
+--   *
+-- FROM
+--   full_reviews
+-- WHERE
+--   genre = 'Animation';
+-- SELECT
+--   genre,
+--   AVG(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   genre;
+-- -- ->ALTER VIEW
+-- CREATE VIEW ordered_series AS
+-- SELECT
+--   *
+-- FROM
+--   series
+-- ORDER BY
+--   released_year;
+-- -- #1.method for altering
+-- CREATE
+-- OR REPLACE VIEW ordered_series AS
+-- SELECT
+--   *
+-- FROM
+--   series
+-- ORDER BY
+--   released_year DESC;
+-- -- #2.method for altering
+-- ALTER VIEW ordered_series AS
+-- SELECT
+--   *
+-- FROM
+--   series
+-- ORDER BY
+--   released_year;
+-- SELECT
+--   *
+-- FROM
+--   ordered_series;
+-- -- -- -->GROUP BY ...HAVING CLAUSE
+-- SELECT
+--   title,
+--   AVG(rating) AS rate
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title
+-- HAVING
+--   rate > 9;
+-- SELECT
+--   title,
+--   AVG(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title
+-- HAVING
+--   COUNT(rating) > 2;
+-- -- -- -->GROUP BY....WITH ROLLUP CLAUSE
+-- SELECT
+--   AVG(rating)
+-- FROM
+--   full_reviews;
+-- SELECT
+--   title,
+--   AVG(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title;
+-- SELECT
+--   title,
+--   AVG(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title WITH ROLLUP;
+-- SELECT
+--   title,
+--   COUNT(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title;
+-- SELECT
+--   title,
+--   COUNT(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   title WITH ROLLUP;
+-- SELECT
+--   released_year,
+--   genre,
+--   AVG(rating)
+-- FROM
+--   full_reviews
+-- GROUP BY
+--   released_year,
+--   genre WITH ROLLUP;
+-- -- -- -->SQL MODES
+-- SET
+--   GLOBAL sql_mode = 'modes';
+-- SET
+--   SESSION sql_mode = 'modes';
+-- SELECT
+--   @@GLOBAL.sql_mode;
+-- SELECT
+--   @@SESSION.sql_mode;
+-- -- LESSON 16  WINDOW FUNCTIONS
+-- CREATE TABLE employees (
+--   emp_no INT PRIMARY KEY AUTO_INCREMENT,
+--   department VARCHAR(20),
+--   salary INT
+-- );
+-- INSERT INTO
+--   employees (department, salary)
+-- VALUES
+--   ('engineering', 80000),
+--   ('engineering', 69000),
+--   ('engineering', 70000),
+--   ('engineering', 103000),
+--   ('engineering', 67000),
+--   ('engineering', 89000),
+--   ('engineering', 91000),
+--   ('sales', 59000),
+--   ('sales', 70000),
+--   ('sales', 159000),
+--   ('sales', 72000),
+--   ('sales', 60000),
+--   ('sales', 61000),
+--   ('sales', 61000),
+--   ('customer service', 38000),
+--   ('customer service', 45000),
+--   ('customer service', 61000),
+--   ('customer service', 40000),
+--   ('customer service', 31000),
+--   ('customer service', 56000),
+--   ('customer service', 55000);
+-- -- -->OVER() FUNCTION
+-- SELECT
+--   *
+-- FROM
+--   employees;
+-- SELECT
+--   AVG(salary) OVER()
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   AVG(salary) OVER()
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   MIN(salary) OVER(),
+--   MAX (salary) OVER()
+-- FROM
+--   employees;
+-- -- -- -->OVER(PARTITION BY....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   AVG(salary) OVER(PARTITION BY department) AS dept_average,
+--   AVG(salary) OVER() AS company_average
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   SUM(salary) OVER() AS total_payroll,
+--   SUM(salary) OVER(PARTITION BY department) AS dept_payroll
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   COUNT(*) OVER (PARTITION BY department) AS dept_count
+-- FROM
+--   employees;
+-- -- -->OVER(ORDER BY....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   SUM(salary) OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary DESC
+--   ) AS rolling_dept_payroll,
+--   SUM(salary) OVER(PARTITION BY department) AS dept_salary
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   MIN(salary) OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary
+--   ) AS rolling_MIN
+-- FROM
+--   employees;
+-- -- -->RANK() OVER(....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   RANK() OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary DESC
+--   ) AS Dept_salary_rank,
+--   RANK() OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS Overal_salary_rank
+-- FROM
+--   employees
+-- ORDER BY
+--   department DESC;
+-- -- -->DENSE_RANK() OVER(....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   DENSE_RANK() OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary DESC
+--   ) AS Dept_salary_rank,
+--   RANK() OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS Overal_salary_rank
+-- FROM
+--   employees
+-- ORDER BY
+--   department DESC;
+-- -- -->ROW_NUMBER() OVER(....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   ROW_NUMBER() OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary DESC
+--   ) AS dept_row_number
+-- FROM
+--   employees
+-- ORDER BY
+--   department;
+-- -- -->NTILE() OVER(....) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   NTILE(4) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS salary_quartile
+-- FROM
+--   employees;
+-- -- -->FIRST_VALUE() OVER(...) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   FIRST_VALUE(emp_no) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS hi_paid_id_overall,
+--   FIRST_VALUE(emp_no) OVER(
+--     PARTITION BY department
+--     ORDER BY
+--       salary DESC
+--   ) AS hi_paid_id_dept
+-- FROM
+--   employees;
+-- -- -->LAG() OVER(...) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   LAG(salary) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS diff_from_previous
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   salary - LAG(salary) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS diff_from_previous
+-- FROM
+--   employees;
+-- -- -->LEAD() OVER(...) FUNCTION
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   LEAD(salary) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS diff_from_previous
+-- FROM
+--   employees;
+-- SELECT
+--   emp_no,
+--   department,
+--   salary,
+--   salary - LEAD(salary) OVER(
+--     ORDER BY
+--       salary DESC
+--   ) AS diff_from_previous
+-- FROM
+--   employees;
