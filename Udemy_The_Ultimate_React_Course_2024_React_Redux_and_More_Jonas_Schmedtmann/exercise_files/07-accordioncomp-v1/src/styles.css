@@ -8,7 +8,6 @@ body {
 	font-family: sans-serif;
 	color: #343a40;
 	line-height: 1;
-	overflow-y: scroll;
 }
 
 .accordion {
@@ -68,7 +67,6 @@ body {
 }
 
 .open .number,
-.open .title,
-.open .icon {
+.open .title {
 	color: #087f5b;
 }
