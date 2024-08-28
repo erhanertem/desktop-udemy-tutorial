@@ -1,71 +1,71 @@
 // `https://api.frankfurter.app/latest?amount=100&from=EUR&to=USD`
 
 import { useEffect, useState } from 'react';
-import './styles.css';
 
 export default function App() {
-	const [amount, setAmount] = useState(1);
-	const [fromCur, setFromCur] = useState('USD');
-	const [toCur, setToCur] = useState('EUR');
-	const [output, setOutput] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
+  const [amount, setAmount] = useState(1);
+  const [fromCurrency, setFromCurrency] = useState('EUR');
+  const [toCurrency, setToCurrency] = useState('USD');
+  const [output, setOutput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-	useEffect(
-		function () {
-			if (fromCur === toCur) {
-				setOutput(amount + ` ${toCur}`);
-			}
-			(async function () {
-				try {
-					setIsLoading(true);
+  useEffect(
+    function () {
+      async function convert() {
+        setIsLoading(true);
+        fetch(`https://api.frankfurter.app/latest?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`)
+          .then((response) => response.json())
+          .then((data) => setOutput(data.rates[toCurrency]))
+          .catch((err) => console.log(err.message))
+          .finally(setIsLoading(false));
+      }
 
-					const res = await fetch(
-						`https://api.frankfurter.app/latest?amount=${amount}&from=${fromCur}&to=${toCur}`,
-					);
+      if (amount && !isNaN(Number(amount)) && fromCurrency && toCurrency && fromCurrency !== toCurrency) convert();
+    },
+    [fromCurrency, toCurrency, amount]
+  );
 
-					if (!res.ok) throw new Error('Problem fetching currency conversion data');
-
-					const data = await res.json();
-
-					console.log(data);
-
-					if (!data.rates) throw new Error(`Received incompatible data from server`);
-
-					// console.log(Object.values({ ...data.rates })[0]);
-					// setOutput(Object.values({ ...data.rates })[0] + ` ${toCur}`);
-					// console.log(data.rates[toCur]);
-					setOutput(data.rates[toCur] + ` ${toCur}`);
-				} catch (err) {
-					console.log(err.message);
-				} finally {
-					setIsLoading(false);
-				}
-			})();
-		},
-		[amount, fromCur, toCur],
-	);
-
-	return (
-		<div>
-			<input
-				type="text"
-				value={amount}
-				onChange={(e) => setAmount(+e.target.value)}
-				disabled={isLoading}
-			/>
-			<select value={fromCur} onChange={(e) => setFromCur(e.target.value)} disabled={isLoading}>
-				<option value="USD">USD</option>
-				<option value="EUR">EUR</option>
-				<option value="CAD">CAD</option>
-				<option value="INR">INR</option>
-			</select>
-			<select value={toCur} onChange={(e) => setToCur(e.target.value)} disabled={isLoading}>
-				<option value="USD">USD</option>
-				<option value="EUR">EUR</option>
-				<option value="CAD">CAD</option>
-				<option value="INR">INR</option>
-			</select>
-			<p>{output}</p>
-		</div>
-	);
+  return (
+    <div>
+      <input
+        type="text"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        disabled={isLoading}
+      />
+      <select
+        value={fromCurrency}
+        disabled={isLoading}
+        onChange={(e) => {
+          setFromCurrency(e.target.value);
+        }}
+      >
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="CAD">CAD</option>
+        <option value="INR">INR</option>
+      </select>
+      <select
+        value={toCurrency}
+        disabled={isLoading}
+        onChange={(e) => {
+          setToCurrency(e.target.value);
+        }}
+      >
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="CAD">CAD</option>
+        <option value="INR">INR</option>
+      </select>
+      <p>
+        {!amount || (amount && isNaN(Number(amount)))
+          ? 'Please enter a valid amount'
+          : amount && !isNaN(Number(amount)) && fromCurrency === toCurrency
+          ? 'Please choose a different currency to convert to'
+          : output
+          ? `Converted amount is ${Number(output).toFixed(2)} ${toCurrency}`
+          : ''}
+      </p>
+    </div>
+  );
 }

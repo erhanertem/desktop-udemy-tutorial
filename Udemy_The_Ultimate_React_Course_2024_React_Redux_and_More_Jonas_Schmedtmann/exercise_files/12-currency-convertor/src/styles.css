@@ -1,9 +1,10 @@
 .App {
-	font-family: sans-serif;
-	text-align: center;
+  font-family: sans-serif;
+  text-align: center;
 }
+
 *:disabled {
-	background-color: dimgrey;
-	color: linen;
-	opacity: 1;
+  background-color: rgb(222, 16, 16);
+  color: linen;
+  opacity: 1;
 }
