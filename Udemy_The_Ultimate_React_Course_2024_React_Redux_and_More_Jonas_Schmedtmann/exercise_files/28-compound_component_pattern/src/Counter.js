@@ -1,40 +1,45 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react';
 
-//> #1.Create a context
+// > #1.CREATE CONTEXT API
 const CounterContext = createContext();
 
-//> #2.Create a Parent Component
+// > #2.CREATE PARENT COMPONENT W/STANDARD CONTEXT PROVIDER IMPLEMENTATION
 function Counter({ children }) {
   const [count, setCount] = useState(0);
-  const increase = () => setCount((count) => ++count);
-  const decrease = () => setCount((count) => --count);
+  const handleIncrement = () => setCount((prevCount) => prevCount + 1);
+  const handleDecrement = () => setCount((prevCount) => prevCount - 1);
 
   return (
-    <CounterContext.Provider value={{ count, increase, decrease }}>
+    <CounterContext.Provider
+      value={{ count, handleIncrement, handleDecrement }}
+    >
       <span>{children}</span>
     </CounterContext.Provider>
   );
 }
 
-//> #3.Create Child Components to help implement the common tasks
+// > #3.CREATE CHILD COMPONENT TO HELP IMPLEMENT THE COMMON TASK
 function Count() {
   const { count } = useContext(CounterContext);
   return <span>{count}</span>;
 }
-function Label({ children }) {
-  return <span>{children}</span>;
+function Label() {
+  const { label } = useContext(CounterContext);
+  return <span>{label}</span>;
 }
 function Increase({ icon }) {
-  const { increase } = useContext(CounterContext);
-  return <button onClick={increase}>{icon}</button>;
+  const { handleIncrement } = useContext(CounterContext);
+  return <button onClick={handleIncrement}>{icon}</button>;
 }
 function Decrease({ icon }) {
-  const { decrease } = useContext(CounterContext);
-  return <button onClick={decrease}>{icon}</button>;
+  const { handleDecrement } = useContext(CounterContext);
+  return <button onClick={handleDecrement}>{icon}</button>;
 }
-//> #4.Add Child Components as Custom properties to Parent component
+
+// > #4.ADD CHILD COMPONENTS AS PROPERTIES TO PARENT COMPONENT
 Counter.Count = Count;
 Counter.Label = Label;
 Counter.Increase = Increase;
 Counter.Decrease = Decrease;
+
 export default Counter;
