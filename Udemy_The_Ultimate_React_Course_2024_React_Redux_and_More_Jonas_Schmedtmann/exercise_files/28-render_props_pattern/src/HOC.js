@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export default function withToggles(WrappedComponent) {
   return function List(props) {
@@ -13,17 +13,20 @@ export default function withToggles(WrappedComponent) {
     }
 
     return (
-      <div className="list-container">
-        <div className="heading">
+      <div className='list-container'>
+        <div className='heading'>
           <h2>{props.title}</h2>
-          <button onClick={toggleOpen}>
-            {isOpen ? <span>&or;</span> : <span>&and;</span>}
-          </button>
+          <button onClick={toggleOpen}>{isOpen ? <span>&or;</span> : <span>&and;</span>}</button>
         </div>
-        {isOpen && <WrappedComponent {...props} items={displayItems} />}
+        {isOpen && (
+          <WrappedComponent
+            {...props}
+            items={displayItems}
+          />
+        )}
 
         <button onClick={() => setIsCollapsed((isCollapsed) => !isCollapsed)}>
-          {isCollapsed ? `Show all ${props.items.length}` : "Show less"}
+          {isCollapsed ? `Show all ${props.items.length}` : 'Show less'}
         </button>
       </div>
     );

@@ -1,46 +1,44 @@
-import { useState } from "react";
-import { faker } from "@faker-js/faker";
-import "./styles.css";
-import withToggles from "./HOC";
+import { useState } from 'react';
+import { faker } from '@faker-js/faker';
+import './styles.css';
 
-// DATA
 const products = Array.from({ length: 20 }, () => {
   return {
     productName: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
-    price: faker.commerce.price()
+    price: faker.commerce.price(),
   };
 });
 
 const companies = Array.from({ length: 15 }, () => {
   return {
     companyName: faker.company.name(),
-    phrase: faker.company.catchPhrase()
+    phrase: faker.company.catchPhrase(),
   };
 });
 
-//COMPONENTS
 function ProductItem({ product }) {
   return (
-    <li className="product">
-      <p className="product-name">{product.productName}</p>
-      <p className="product-price">${product.price}</p>
-      <p className="product-description">{product.description}</p>
+    <li className='product'>
+      <p className='product-name'>{product.productName}</p>
+      <p className='product-price'>${product.price}</p>
+      <p className='product-description'>{product.description}</p>
     </li>
   );
 }
 
 function CompanyItem({ company, defaultVisibility }) {
   const [isVisible, setIsVisisble] = useState(defaultVisibility);
+
   return (
     <li
-      className="company"
+      className='company'
       onMouseEnter={() => setIsVisisble(true)}
       onMouseLeave={() => setIsVisisble(false)}
     >
-      <p className="company-name">{company.companyName}</p>
+      <p className='company-name'>{company.companyName}</p>
       {isVisible && (
-        <p className="company-phrase">
+        <p className='company-phrase'>
           <strong>About:</strong> {company.phrase}
         </p>
       )}
@@ -60,39 +58,46 @@ function List({ title, items, render }) {
   }
 
   return (
-    <div className="list-container">
-      <div className="heading">
+    <div className='list-container'>
+      <div className='heading'>
         <h2>{title}</h2>
         <button onClick={toggleOpen}>
           {isOpen ? <span>&or;</span> : <span>&and;</span>}
         </button>
       </div>
-      {isOpen && <ul className="list">{displayItems.map(render)}</ul>}
+      {isOpen && (
+        <ul className='list'>
+          {displayItems.map(
+            render // Functionalized render content
+          )}
+        </ul>
+      )}
 
       <button onClick={() => setIsCollapsed((isCollapsed) => !isCollapsed)}>
-        {isCollapsed ? `Show all ${items.length}` : "Show less"}
+        {isCollapsed ? `Show all ${items.length}` : 'Show less'}
       </button>
     </div>
   );
 }
 
-const ProductListWithToggles = withToggles(ProductList);
-
 export default function App() {
   return (
     <div>
       <h1>Render Props Demo</h1>
-      {/* EXAMPLES FOR RENDER PROPS PATTERN */}
-      {/* <div className="col-2">
+
+      <div className='col-2'>
         <List
-          title="Products"
+          title='Products'
           items={products}
           render={(product) => (
-            <ProductItem key={product.productName} product={product} />
+            <ProductItem
+              key={product.productName}
+              product={product}
+            />
           )}
         />
         <List
-          title="Companies"
+          title='Companies'
           items={companies}
           render={(company) => (
             <CompanyItem
@@ -102,11 +107,6 @@ export default function App() {
             />
           )}
         />
-      </div> */}
-      {/* EXAMPLE FOR HOC PATTERN */}
-      <div className="col-2">
-        <ProductList title="Products HOC" items={products} />
-        <ProductListWithToggles title="Products HOC" items={products} />
       </div>
     </div>
   );
@@ -115,12 +115,13 @@ export default function App() {
 // LATER: Let's say we got this component from a 3rd-party library, and can't change it. But we still want to add the 2 toggle functionalities to it
 function ProductList({ title, items }) {
   return (
-    <>
-      <ul className="list">
-        {items.map((product) => (
-          <ProductItem key={product.productName} product={product} />
-        ))}
-      </ul>
-    </>
+    <ul className='list'>
+      {items.map((product) => (
+        <ProductItem
+          key={product.productName}
+          product={product}
+        />
+      ))}
+    </ul>
   );
 }
