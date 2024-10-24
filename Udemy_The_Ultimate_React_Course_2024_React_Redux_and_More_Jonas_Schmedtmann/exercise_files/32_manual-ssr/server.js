@@ -4,16 +4,27 @@ const { createServer } = require('http');
 const { parse } = require('url');
 const { renderToString } = require('react-dom/server');
 
+// >#1.READ CONTENT FILES FOR SERVING
+// >#1.A.READ INDEX.HTML CONTENT - SEND WITHIN / ROUTE.
 const htmlTemplate = readFileSync(`${__dirname}/index.html`, 'utf8');
+// >#1.B.READ CLIENT.JS CONTENT - SEND WITHIN /client.js ENDPOINT
+const clientJS = readFileSync(`${__dirname}/client.js`, 'utf8');
 
 const server = createServer((req, res) => {
 	const pathName = parse(req.url, true).pathname;
+	// >#2.A.SERVE STATIC HTML CONTENT W/ STRIPPED (STATIC) REACT CONTENT INJECTED
 	if (pathName === '/') {
 		const renderedHTML = renderToString(<Home />);
 		const html = htmlTemplate.replace('%%%CONTENT%%%', renderedHTML);
 
 		res.writeHead(200, { 'Content-type': 'text/html' });
 		res.end(html);
+	}
+	// >#2.B.SERVE FULL (DYNAMIC) REACT CONTENT SCRIPT FILE TO BE CROSS CHECKED ON CLIENT SIDE WITH STATIC DOM CONTENT RECEIVED @ / ENDPOINT
+	// NOTE: SEE HTML index.html BEING SERVED WITH SCRIPT LOAD
+	else if (pathName === '/client.js') {
+		res.writeHead(200, { 'Content-type': 'application/javascript' });
+		res.end(clientJS);
 	} else if (pathName === '/file') {
 		// READ A FILE AND RENDER IT @ /FILE ENDPOINT
 		res.end(htmlTemplate);

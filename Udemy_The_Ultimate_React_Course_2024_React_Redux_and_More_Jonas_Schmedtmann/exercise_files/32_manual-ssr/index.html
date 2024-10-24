@@ -10,5 +10,24 @@
 	</head>
 	<body style="background-color: rgb(96, 95, 94)">
 		<div id="root">%%%CONTENT%%%</div>
+
+		<!-- Provide babel support on the client side manually -->
+		<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+		<!-- Provide react and react-dom on the client side manually -->
+		<script
+			crossorigin
+			src="https://unpkg.com/react@18/umd/react.development.js"
+		></script>
+		<script
+			crossorigin
+			src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+		></script>
+		<!-- This file request has to have a matching endpoint established on the server side to access this file -->
+		<!-- The attribute type="text/babel" in the <script> tag is used to specify that the script file is written in JSX (JavaScript XML) and needs to be transpiled by Babel on the client-side. -->
+		<!-- Using Babel in the browser (text/babel) is generally discouraged for production environments because transpiling on the client-side can slow down page load times. It's primarily used in development or for learning purposes. In production environments, you'd typically use a build tool like Webpack to precompile your JSX and ES6+ code to standard JavaScript before deployment. This avoids runtime transpilation overhead. -->
+		<script
+			type="text/babel"
+			src="/client.js"
+		></script>
 	</body>
 </html>
