@@ -1,0 +1,18 @@
+{
+	"name": "03",
+	"version": "1.0.0",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node --watch app.js",
+		"start-ex": "node --watch exercise.js",
+    "start-nodemon":  "nodemon app.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"devDependencies": {
+		"nodemon": "^3.1.7"
+	}
+}
