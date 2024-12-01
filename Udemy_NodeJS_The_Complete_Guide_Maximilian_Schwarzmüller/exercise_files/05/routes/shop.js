@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 
 // THIS IS A MINI EXPRESS APP TIOED TO MAIN APP ROUTER
@@ -11,8 +12,8 @@ function html(strings, ...values) {
 }
 
 router.get('/', (req, res, next) => {
-	// console.log('In another middleware');
-	res.send(html`<h1>Hello from Express!</h1>`);
+	// SERVE STATIC HTML FILE CONTENT
+	res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
 });
 
 module.exports = router;
