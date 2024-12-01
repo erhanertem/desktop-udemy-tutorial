@@ -8,10 +8,7 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
 function html(strings, ...values) {
-	return strings.reduce(
-		(result, string, i) => result + string + (values[i] || ''),
-		''
-	);
+	return strings.reduce((result, string, i) => result + string + (values[i] || ''), '');
 }
 
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
