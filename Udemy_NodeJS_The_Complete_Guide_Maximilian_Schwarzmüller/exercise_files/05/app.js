@@ -16,6 +16,9 @@ app.use(express.urlencoded({ extended: false }));
 // Middleware to parse application/json data (expressjs)
 app.use(express.json());
 
+// Serve static content folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // EXPRESSJS MIDDLEWARE
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
