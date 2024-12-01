@@ -2,6 +2,7 @@ const path = require('path');
 
 const express = require('express');
 
+const rootDir = require('../util/path');
 // THIS IS A MINI EXPRESS APP TIOED TO MAIN APP ROUTER
 const router = express.Router();
 
@@ -16,7 +17,10 @@ function html(strings, ...values) {
 // GET /admin/add-product
 router.get('/add-product', (req, res, next) => {
 	// SERVE STATIC HTML FILE CONTENT
-	res.sendFile(path.join(__dirname, '../', 'views', 'add-product.html'));
+	// // SPECIFY FOLDER MANUALLY
+	// res.sendFile(path.join(__dirname, '..', 'views', 'add-product.html'));
+	// SPECIFY FOLDER AUTOMATICALLY
+	res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
 });
 
 // POST /admin/add-product
