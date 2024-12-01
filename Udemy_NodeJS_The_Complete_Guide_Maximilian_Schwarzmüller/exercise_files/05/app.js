@@ -1,3 +1,5 @@
+const path = require('path');
+
 const express = require('express');
 
 const app = express();
@@ -21,15 +23,23 @@ app.use(express.json());
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
+// ERROR HANDLING
+// > 404 Middleware for non-existent routes
+app.use((req, res, next) => {
+	// RESPOND NON-EXISTING ROUTES`
+	res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+});
+
+// > Error-handling middleware
 app.use((err, req, res, next) => {
-	// RESPOND INVALID/MALFORNED JSON REQ BODY
-	console.log(err);
-	if (err) {
-		res.status(400).send('Invalid Request Body');
+	console.error(err.stack); // Log the error
+
+	// Check for specific errors, like JSON parsing issues
+	if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+		return res.status(400).send('Invalid Request Body');
 	}
 
-	// RESPOND NON-EXISTING ROUTES`
-	res.status(404).send(html`<h1>Page not found</h1>`);
+	res.status(500).send('Internal Server Error'); // Generic error response
 });
 
 app.listen(3000, () => {
