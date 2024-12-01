@@ -21,7 +21,14 @@ app.use(express.json());
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
-app.use((req, res, next) => {
+app.use((err, req, res, next) => {
+	// RESPOND INVALID/MALFORNED JSON REQ BODY
+	console.log(err);
+	if (err) {
+		res.status(400).send('Invalid Request Body');
+	}
+
+	// RESPOND NON-EXISTING ROUTES`
 	res.status(404).send(html`<h1>Page not found</h1>`);
 });
 

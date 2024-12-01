@@ -11,6 +11,7 @@ function html(strings, ...values) {
 }
 
 // > THIS MIDDLEWARE ONLY RUNS @ /add-product ROUTE AND STOPS FURTHER EXECUTION
+// GET /admin/add-product
 router.get('/add-product', (req, res, next) => {
 	// console.log('In another middleware');
 	res.send(
@@ -27,6 +28,7 @@ router.get('/add-product', (req, res, next) => {
 	);
 });
 
+// POST /admin/add-product
 router.post('/add-product', (req, res, next) => {
 	console.log(req.body);
 
