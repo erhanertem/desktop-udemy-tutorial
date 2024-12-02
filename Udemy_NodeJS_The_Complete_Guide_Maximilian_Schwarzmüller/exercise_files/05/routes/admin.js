@@ -10,6 +10,8 @@ function html(strings, ...values) {
 	return strings.reduce((result, string, i) => result + string + (values[i] || ''), '');
 }
 
+const products = [];
+
 // > THIS MIDDLEWARE ONLY RUNS @ /add-product ROUTE AND STOPS FURTHER EXECUTION
 // GET /admin/add-product
 router.get('/add-product', (req, res, next) => {
@@ -22,9 +24,11 @@ router.get('/add-product', (req, res, next) => {
 
 // POST /admin/add-product
 router.post('/add-product', (req, res, next) => {
-	console.log(req.body);
+	// console.log(req.body);
+	products.push({ title: req.body.title });
 
 	res.redirect('/'); // Redirect from /add-product to / route
 });
 
-module.exports = router;
+module.exports.routes = router;
+module.exports.products = products;

@@ -4,7 +4,7 @@ const express = require('express');
 
 const app = express();
 
-const adminRoutes = require('./routes/admin');
+const adminData = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
 function html(strings, ...values) {
@@ -12,7 +12,7 @@ function html(strings, ...values) {
 }
 
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 // Middleware to parse application/json data (expressjs)
 app.use(express.json());
 
@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // EXPRESSJS MIDDLEWARE
-app.use('/admin', adminRoutes);
+app.use('/admin', adminData.routes);
 app.use(shopRoutes);
 
 // ERROR HANDLING
