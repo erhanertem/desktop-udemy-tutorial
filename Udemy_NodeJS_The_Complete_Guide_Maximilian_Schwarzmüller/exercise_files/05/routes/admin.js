@@ -7,10 +7,7 @@ const rootDir = require('../util/path');
 const router = express.Router();
 
 function html(strings, ...values) {
-	return strings.reduce(
-		(result, string, i) => result + string + (values[i] || ''),
-		''
-	);
+	return strings.reduce((result, string, i) => result + string + (values[i] || ''), '');
 }
 
 // > THIS MIDDLEWARE ONLY RUNS @ /add-product ROUTE AND STOPS FURTHER EXECUTION
