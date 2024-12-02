@@ -1,15 +1,11 @@
-const path = require('path');
+// const path = require('path');
 const express = require('express');
 
-const rootDir = require('../util/path');
+// const rootDir = require('../util/path');
 // THIS IS A MINI EXPRESS APP TIOED TO MAIN APP ROUTER
 const router = express.Router();
 
 const { products } = require('./admin');
-
-function html(strings, ...values) {
-	return strings.reduce((result, string, i) => result + string + (values[i] || ''), '');
-}
 
 router.get('/', (req, res, next) => {
 	console.log(products);
@@ -17,7 +13,14 @@ router.get('/', (req, res, next) => {
 	// res.sendFile(path.join(rootDir, 'views', 'shop.html'));
 	// SERVE DYNAMIC HTML TEMPLATE FILE BASED ON DEFAULT TEMPLATE ENGINE
 	// w/ PUG
-	res.render('shop', { prods: products, pageTitle: 'My Shop', path: '/' });
+	res.render('shop', {
+		prods: products,
+		pageTitle: 'My Shop',
+		hasProducts: products.length > 0,
+		// path: '/',
+		pathRoot: true,
+		styles: '<link rel="stylesheet" href="/css/main.css" ><link rel="stylesheet" href="/css/forms.css" >',
+	});
 });
 
 module.exports = router;
