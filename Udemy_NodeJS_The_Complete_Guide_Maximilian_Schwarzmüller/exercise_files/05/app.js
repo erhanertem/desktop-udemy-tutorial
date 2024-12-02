@@ -4,6 +4,11 @@ const express = require('express');
 
 const app = express();
 
+// Desiginate a template engine to use
+app.set('view engine', 'pug');
+// Tell where the template engine files are located
+app.set('views', path.join(__dirname, 'views'));
+
 const adminData = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
@@ -27,7 +32,9 @@ app.use(shopRoutes);
 // > 404 Middleware for non-existent routes
 app.use((req, res, next) => {
 	// RESPOND NON-EXISTING ROUTES`
-	res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+	// res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+	// w/PUG
+	res.render('404', { pageTitle: 'Page Not Found' });
 });
 
 // > Error-handling middleware

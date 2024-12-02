@@ -14,7 +14,10 @@ function html(strings, ...values) {
 router.get('/', (req, res, next) => {
 	console.log(products);
 	// SERVE STATIC HTML FILE CONTENT
-	res.sendFile(path.join(rootDir, 'views', 'shop.html'));
+	// res.sendFile(path.join(rootDir, 'views', 'shop.html'));
+	// SERVE DYNAMIC HTML TEMPLATE FILE BASED ON DEFAULT TEMPLATE ENGINE
+	// w/ PUG
+	res.render('shop', { prods: products, pageTitle: 'My Shop', path: '/' });
 });
 
 module.exports = router;

@@ -18,8 +18,11 @@ router.get('/add-product', (req, res, next) => {
 	// SERVE STATIC HTML FILE CONTENT
 	// // SPECIFY FOLDER MANUALLY
 	// res.sendFile(path.join(__dirname, '..', 'views', 'add-product.html'));
-	// SPECIFY FOLDER AUTOMATICALLY
-	res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
+	// // SPECIFY FOLDER AUTOMATICALLY
+	// res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
+	// SERVE DYNAMIC HTML TEMPLATE FILE BASED ON DEFAULT TEMPLATE ENGINE
+	// w/ PUG
+	res.render('add-product', { pageTitle: 'Add Product', path: '/admin/add-product' });
 });
 
 // POST /admin/add-product
