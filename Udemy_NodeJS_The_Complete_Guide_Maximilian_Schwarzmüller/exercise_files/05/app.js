@@ -1,7 +1,7 @@
 const path = require('path');
 
 const express = require('express');
-const { engine } = require('express-handlebars');
+// const { engine } = require('express-handlebars');
 
 const app = express();
 
@@ -10,14 +10,19 @@ const app = express();
 // app.set('view engine', 'pug');
 // // Tell where the template engine files are located
 // app.set('views', path.join(__dirname, 'views'));
-// >#2. W/HANDLEBARS
-// NOTE: We define the engine manually, as its is not supported by express like pug right out of the box
-app.engine(
-	'hbs', //name of the engine - whatever you want
-	engine({ extname: 'hbs', layoutsDir: 'views/layouts', defaultLayout: 'main-layout' }) // node module for hbs
-);
+// // >#2. W/HANDLEBARS
+// // NOTE: We define the engine manually, as its is not supported by express like pug right out of the box
+// app.engine(
+// 	'hbs', //name of the engine - whatever you want
+// 	engine({ extname: 'hbs', layoutsDir: 'views/layouts', defaultLayout: 'main-layout' }) // node module for hbs
+// );
+// // Desiginate a template engine to use
+// app.set('view engine', 'hbs');
+// // Tell where the template engine files are located
+// app.set('views', path.join(__dirname, 'views'));
+// >#3. W/HANDLEBARS
 // Desiginate a template engine to use
-app.set('view engine', 'hbs');
+app.set('view engine', 'ejs');
 // Tell where the template engine files are located
 app.set('views', path.join(__dirname, 'views'));
 
@@ -47,6 +52,7 @@ app.use((req, res, next) => {
 	res.render('404', {
 		pageTitle: 'Page Not Found',
 		layout: false,
+		path: '',
 		styles: '<link rel="stylesheet" href="/css/main.css" >',
 	});
 });

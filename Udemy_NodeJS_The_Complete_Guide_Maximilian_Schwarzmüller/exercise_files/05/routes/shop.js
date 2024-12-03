@@ -17,7 +17,7 @@ router.get('/', (req, res, next) => {
 		prods: products,
 		pageTitle: 'My Shop',
 		hasProducts: products.length > 0,
-		// path: '/',
+		path: '/',
 		pathRoot: true,
 		styles: '<link rel="stylesheet" href="/css/main.css" ><link rel="stylesheet" href="/css/forms.css" >',
 	});
