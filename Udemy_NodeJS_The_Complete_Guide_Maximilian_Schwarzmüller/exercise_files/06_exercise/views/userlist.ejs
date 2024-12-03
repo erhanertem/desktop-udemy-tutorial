@@ -1,0 +1,26 @@
+<%- include('layouts/layout_head.ejs') %>
+<style>
+  body {
+    background-color: #d7a266;
+  }
+
+  ul {
+    list-style: none;
+    color: blue;
+  }
+</style>
+</head>
+
+<body>
+  <%- include('layouts/layout_content.ejs') %>
+  <p>User List</p>
+  <% if (users.length>0)  { %>
+  <% for (let user of users) { %>
+  <ul>
+    <li><%=user%></li>
+  </ul>
+  <% } %>
+  <% } else { %>
+  <p>No users found.</p>
+  <% } %>
+  <%- include('layouts/layout_end.ejs') %>

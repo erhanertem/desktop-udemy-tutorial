@@ -1,0 +1,19 @@
+<%- include('layouts/layout_head.ejs') %>
+<style>
+ :root {
+    --background-color: <%- background %>;
+  }
+  body {
+    background-color: var(--background-color);
+  }
+</style>
+</head>
+
+<body>
+  <%- include('layouts/layout_content.ejs') %>
+  <form action='/' method='POST'>
+    <label for='username'>Username</label>
+    <input id='username' type='text' name='username' />
+    <button type='submit'>Submit</button>
+  </form>
+  <%- include('layouts/layout_end.ejs') %>
