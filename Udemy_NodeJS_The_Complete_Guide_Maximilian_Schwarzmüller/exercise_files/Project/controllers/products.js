@@ -1,4 +1,4 @@
-const products = [];
+const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
 	res.render('add-product', {
@@ -16,12 +16,15 @@ exports.postAddProduct = (req, res, next) => {
 		return res.status(400).render('400', { pageTitle: 'Error', path: '' });
 	}
 
-	products.push({ title: req.body.title });
+	const product = new Product(req.body.title);
+	product.save();
 
 	res.redirect('/'); // Redirect from /add-product to / route
 };
 
 exports.getProducts = (req, res, next) => {
+	const products = Product.fetchAll();
+
 	res.render('shop', {
 		prods: products,
 		pageTitle: 'My Shop',
