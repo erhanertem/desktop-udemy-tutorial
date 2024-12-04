@@ -22,9 +22,8 @@ exports.postAddProduct = (req, res, next) => {
 	res.redirect('/'); // Redirect from /add-product to / route
 };
 
-exports.getProducts = (req, res, next) => {
-	const products = Product.fetchAll();
-
+exports.getProducts = async (req, res, next) => {
+	const products = await Product.fetchAll();
 	res.render('shop', {
 		prods: products,
 		pageTitle: 'My Shop',
