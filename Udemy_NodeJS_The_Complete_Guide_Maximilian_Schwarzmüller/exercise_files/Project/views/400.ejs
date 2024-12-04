@@ -1,0 +1,13 @@
+<%- include('includes/head')%>
+</head>
+
+<body>
+  <%- include('includes/navigation')%>
+  <h1>Username is required</h1>
+  <p>You will be redirected shortly...</p>
+  <script>
+    setTimeout(() => {
+      window.location.href = '/admin/add-product';
+    }, 1500);
+  </script>
+  <%- include('includes/end')%>
