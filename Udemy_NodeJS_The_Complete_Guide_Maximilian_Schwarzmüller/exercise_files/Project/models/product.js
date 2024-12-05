@@ -23,7 +23,7 @@ module.exports = class Product {
 					console.warn('File not found, creating a new one...');
 					products = [this];
 					try {
-						await fs.writeFile(Product.ROOTPATH, JSON.stringify([this]), 'utf-8');
+						await fs.writeFile(Product.ROOTPATH, JSON.stringify(products), 'utf-8');
 						console.log('Product saved to new file');
 						return; // Prevent further execution
 					} catch (writeError) {
@@ -41,7 +41,6 @@ module.exports = class Product {
 
 			// Write the updated products back to the file
 			try {
-				console.log(Product.ROOTPATH);
 				await fs.writeFile(Product.ROOTPATH, JSON.stringify(products), 'utf-8');
 				console.log('Product saved to file');
 			} catch (writeError) {

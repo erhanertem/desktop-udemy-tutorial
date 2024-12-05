@@ -1,8 +1,8 @@
-<%- include('includes/head')%>
+<%- include('../layout/head')%>
 <%- styles %>
 	</head>
 	<body>
-    <%- include('includes/navigation')%>
+    <%- include('../layout/navigation')%>
 		<main>
 			<form class="product-form" action="/admin/add-product" method="POST">
 				<div class="form-control">
@@ -12,4 +12,4 @@
 				<button type="submit">Add Product</button>
 			</form>
 		</main>
-<%- include('includes/end')%>
+<%- include('../layout/end')%>

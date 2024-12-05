@@ -1,7 +1,7 @@
 const html = require('../util/html');
 
 exports.get404 = (req, res, next) => {
-	res.render('404', {
+	res.render('errors/404', {
 		pageTitle: 'Page Not Found',
 		layout: false,
 		path: '',
