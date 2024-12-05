@@ -13,7 +13,7 @@ exports.postAddProduct = (req, res, next) => {
 	// console.log(req.body);
 	// GUARD CLAUSE
 	if (!req.body.title) {
-		return res.status(400).render('400', { pageTitle: 'Error', path: '' });
+		return res.status(400).render('400', { pageTitle: 'Error', path: '', message: 'Username is required' });
 	}
 
 	const product = new Product(req.body.title);

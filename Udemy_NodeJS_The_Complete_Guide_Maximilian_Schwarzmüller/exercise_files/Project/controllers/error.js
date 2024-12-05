@@ -1,5 +1,3 @@
-const html = require('../util/html');
-
 exports.get404 = (req, res, next) => {
 	res.render('errors/404', {
 		pageTitle: 'Page Not Found',
@@ -14,22 +12,7 @@ exports.get500 = (err, req, res, next) => {
 
 	// Check for specific errors, like JSON parsing issues
 	if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-		return res.status(400).send(html`
-			<html>
-				<head>
-					<title>Error</title>
-				</head>
-				<body>
-					<h1>Invalid Request Body</h1>
-					<p>You will be redirected shortly...</p>
-					<script>
-						setTimeout(() => {
-							window.location.href = '/';
-						}, 1500);
-					</script>
-				</body>
-			</html>
-		`);
+		return res.status(400).render('400', { pageTitle: 'Error', path: '', message: 'Invalid Request Body' });
 	}
 
 	res.status(500).send('Internal Server Error'); // Generic error response
