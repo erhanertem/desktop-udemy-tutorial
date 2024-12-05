@@ -6,8 +6,20 @@
 		<main>
 			<form class="product-form" action="/admin/add-product" method="POST">
 				<div class="form-control">
-					<label for="title">Title</label>
-					<input id="title" type="text" name="title" />
+          <label for="title">Title</label>
+					<input id="title" name="title" type="text"  />
+				</div>
+        <div class="form-control">
+					<label for="imageUrl">Image URL</label>
+					<input id="imageUrl" name="imageUrl" type="text"  />
+				</div>
+        <div class="form-control">
+					<label for="price">Price</label>
+					<input id="price" name="price" type="number"  />
+				</div>
+        <div class="form-control">
+					<label for="description">Description</label>
+					<textarea id="description" name="description" rows="6"></textarea>
 				</div>
 				<button type="submit">Add Product</button>
 			</form>
