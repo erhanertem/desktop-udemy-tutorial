@@ -13,6 +13,8 @@ module.exports = class Product {
 	static ROOTPATH = path.join(pathRoot, 'data', 'products.json');
 
 	async save() {
+		this.id = Math.random().toString();
+
 		try {
 			let products = [];
 

@@ -22,6 +22,8 @@
 						<p class="product__description"><%=product.description%></p>
 					</div>
 					<div class="card__actions">
+            <a href='/products/<%=product.id%>' class='btn'>Detail</a>
+             <!-- IMPORTANT Older browser support for method DELETE is not present so POST is used -->
 						<form action='/add-to-cart' method='POST'>
               <button class="btn">Add to Cart</button>
             </form>
