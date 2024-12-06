@@ -4,7 +4,7 @@ exports.getAllProducts = async (req, res, next) => {
 	const products = await Product.fetchAll();
 	res.render('shop/product-list', {
 		prods: products,
-		path: '/',
+		path: '/product-list',
 		pageTitle: 'All products',
 	});
 };
