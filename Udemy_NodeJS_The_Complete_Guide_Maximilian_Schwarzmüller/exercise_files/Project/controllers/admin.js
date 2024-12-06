@@ -5,7 +5,6 @@ exports.getAddProduct = (req, res, next) => {
 		pageTitle: 'Add Product',
 		path: '/admin/add-product',
 		pathAddProduct: true,
-		styles: '<link rel="stylesheet" href="/css/product.css" ><link rel="stylesheet" href="/css/forms.css" >',
 	});
 };
 
@@ -19,13 +18,42 @@ exports.getAllProducts = async (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-	// console.log(req.body);
-	// GUARD CLAUSE
-	if (!req.body.title) {
-		return res.status(400).render('errors/400', { pageTitle: 'Error', path: '', message: 'Username is required' });
-	}
+	const { title, imageUrl, description, price } = req.body;
 
-	const product = new Product(req.body.title);
+	// REPALCED WITH FORM REQURIED - JUST AN EXERCISE
+	// // GUARD CLAUSE - Dynamic absense check
+	// for (const [key, value] of Object.entries(req.body))
+	// 	switch (key) {
+	// 		case 'title':
+	// 			if (!value)
+	// 				return res.status(400).render('errors/400', { pageTitle: 'Error', path: '', message: 'Title is required' });
+	// 			break;
+	// 		case 'imageUrl':
+	// 			if (!value) {
+	// 				return res
+	// 					.status(400)
+	// 					.render('errors/400', { pageTitle: 'Error', path: '', message: 'Image URL is required' });
+	// 			}
+	// 			break;
+	// 		case 'description':
+	// 			if (!value) {
+	// 				return res
+	// 					.status(400)
+	// 					.render('errors/400', { pageTitle: 'Error', path: '', message: 'Description is required' });
+	// 			}
+	// 			break;
+	// 		case 'price':
+	// 			if (!value || isNaN(parseFloat(value))) {
+	// 				return res
+	// 					.status(400)
+	// 					.render('errors/400', { pageTitle: 'Error', path: '', message: 'Valid price is required' });
+	// 			}
+	// 			break;
+	// 		default:
+	// 			break; // Ignore extra keys in the request body
+	// 	}
+
+	const product = new Product(title, imageUrl, description, price);
 	product.save();
 
 	res.redirect('/'); // Redirect from /add-product to / route

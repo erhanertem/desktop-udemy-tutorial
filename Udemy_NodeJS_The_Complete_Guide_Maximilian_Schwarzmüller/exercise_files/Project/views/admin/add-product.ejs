@@ -1,27 +1,29 @@
 <%- include('../layout/head')%>
-<%- styles %>
-	</head>
-	<body>
-    <%- include('../layout/navigation')%>
-		<main>
-			<form class="product-form" action="/admin/add-product" method="POST">
-				<div class="form-control">
-          <label for="title">Title</label>
-					<input id="title" name="title" type="text"  />
-				</div>
-        <div class="form-control">
-					<label for="imageUrl">Image URL</label>
-					<input id="imageUrl" name="imageUrl" type="text"  />
-				</div>
-        <div class="form-control">
-					<label for="price">Price</label>
-					<input id="price" name="price" type="number"  />
-				</div>
-        <div class="form-control">
-					<label for="description">Description</label>
-					<textarea id="description" name="description" rows="6"></textarea>
-				</div>
-				<button type="submit">Add Product</button>
-			</form>
-		</main>
-<%- include('../layout/end')%>
+<link rel="stylesheet" href="/css/product.css">
+<link rel="stylesheet" href="/css/forms.css">
+</head>
+
+<body>
+  <%- include('../layout/navigation')%>
+  <main>
+    <form class="product-form" action="/admin/add-product" method="POST">
+      <div class="form-control">
+        <label for="title">Title</label>
+        <input id="title" name="title" type="text" required />
+      </div>
+      <div class="form-control">
+        <label for="imageUrl">Image URL</label>
+        <input id="imageUrl" name="imageUrl" type="text" value='https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png' required />
+      </div>
+      <div class="form-control">
+        <label for="price">Price</label>
+        <input id="price" name="price" type="number" step="0.01" required />
+      </div>
+      <div class="form-control">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="6" required></textarea>
+      </div>
+      <button type="submit">Add Product</button>
+    </form>
+  </main>
+  <%- include('../layout/end')%>
