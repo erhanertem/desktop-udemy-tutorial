@@ -1,0 +1,16 @@
+<%- include('../layout/head')%>
+</head>
+
+<body>
+  <%- include('../layout/navigation')%>
+  <main class='centered'>
+    <h1><%=product.title%></h1>
+    <hr>
+    <div>
+      <img src="<%=product.imageUrl%>" alt="<%=product.title%>" width="300">
+    </div>
+    <h2>Price: $<%=product.price%></h2>
+    <p><%=product.description%></p>
+    <%- include('../layout/add-to-cart')%>
+  </main>
+  <%- include('../layout/end')%>

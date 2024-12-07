@@ -11,10 +11,13 @@ exports.getProducts = async (req, res, next) => {
 
 exports.getProduct = async (req, res, next) => {
 	const productId = req.params.productId;
-	console.log(productId);
 	const product = await Product.findById(productId);
 	console.log(product);
-	res.redirect('/');
+	res.render('shop/product-detail', {
+		product,
+		path: '/product-list',
+		pageTitle: product.title,
+	});
 };
 
 exports.getIndex = async (req, res, next) => {
@@ -31,6 +34,16 @@ exports.getCart = (req, res, next) => {
 		path: '/cart',
 		pageTitle: 'Your Cart',
 	});
+};
+
+exports.postCart = (req, res, next) => {
+	// ProductId info is passed thriu input field submission as POST req.
+	const productId = req.body.productId;
+	console.log(productId);
+	res.redirect('/cart');
+	// Add the product to the user's cart
+
+	// Redirect to the cart page
 };
 
 exports.getOrders = (req, res, next) => {
