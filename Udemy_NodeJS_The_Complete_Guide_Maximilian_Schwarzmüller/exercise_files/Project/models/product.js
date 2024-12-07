@@ -63,6 +63,12 @@ module.exports = class Product {
 		}
 	}
 
+	static async findById(productId) {
+		const products = await this.fetchAll();
+		const product = products.find((product) => product.id === productId);
+		return product;
+	}
+
 	static async fetchAll() {
 		try {
 			const fileContent = await fs.readFile(Product.ROOTPATH, 'utf-8');

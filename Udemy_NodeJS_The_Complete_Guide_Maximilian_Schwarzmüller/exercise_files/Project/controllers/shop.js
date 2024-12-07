@@ -12,6 +12,8 @@ exports.getProducts = async (req, res, next) => {
 exports.getProduct = async (req, res, next) => {
 	const productId = req.params.productId;
 	console.log(productId);
+	const product = await Product.findById(productId);
+	console.log(product);
 	res.redirect('/');
 };
 
