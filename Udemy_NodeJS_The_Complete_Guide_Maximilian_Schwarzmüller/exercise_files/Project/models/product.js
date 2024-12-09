@@ -33,7 +33,7 @@ module.exports = class Product {
 						return; // Prevent further execution
 					} catch (writeError) {
 						console.error('Error writing file:', writeError.message);
-						throw readError; // Re-throw if not a "file not found" error
+						throw writeError; // Re-throw if not a "file not found" error
 					}
 				} else {
 					console.error('Error reading file:', readError.message);
@@ -59,7 +59,7 @@ module.exports = class Product {
 			}
 		} catch (error) {
 			// General fallback for unexpected errors
-			console.error('An Unexpected error occured:', err.message);
+			console.error('An Unexpected error occured:', error.message);
 		}
 	}
 

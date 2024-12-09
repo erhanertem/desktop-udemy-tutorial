@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const Cart = require('../models/cart');
 
 exports.getProducts = async (req, res, next) => {
 	const products = await Product.fetchAll();
@@ -12,7 +13,7 @@ exports.getProducts = async (req, res, next) => {
 exports.getProduct = async (req, res, next) => {
 	const productId = req.params.productId;
 	const product = await Product.findById(productId);
-	console.log(product);
+	// console.log(product);
 	res.render('shop/product-detail', {
 		product,
 		path: '/product-list',
@@ -36,10 +37,13 @@ exports.getCart = (req, res, next) => {
 	});
 };
 
-exports.postCart = (req, res, next) => {
+exports.postCart = async (req, res, next) => {
 	// ProductId info is passed thriu input field submission as POST req.
 	const productId = req.body.productId;
-	console.log(productId);
+	const product = await Product.findById(productId);
+	// console.log('product :', product);
+	// console.log(productId);
+	await Cart.addProduct(productId, product.price);
 	res.redirect('/cart');
 	// Add the product to the user's cart
 
