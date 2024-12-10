@@ -4,19 +4,45 @@ exports.getAddProduct = (req, res, next) => {
 	res.render('admin/edit-product', {
 		pageTitle: 'Add Product',
 		path: '/admin/add-product',
+		editing: false,
 	});
 };
 
-exports.getEditProduct = (req, res, next) => {
-	// Query parameters are checke din the controllers
-	const editMode = req.query.edit; // fallback is undefined
-	if (!editMode) res.redirect('/');
+exports.getEditProduct = async (req, res, next) => {
+	try {
+		// Check for the `edit` query parameter
+		const editMode = req.query.edit;
+		// Redirect if not in edit mode
+		if (!editMode) res.redirect('/');
 
-	res.render('admin/edit-product', {
-		pageTitle: 'Edit Product',
-		path: '/admin/edit-product',
-		editing: editMode, // /admin/edit-product/12345?edit=true&title=new_product
-	});
+		// Get the `productId` from route parameters
+		const productId = req.params.productId;
+
+		// Fetch the product by ID
+		const product = await Product.findById(productId);
+
+		// Handle case where product is not found
+		if (!product) {
+			return res.status(404).render('404', {
+				pageTitle: 'Product Not Found',
+				path: '',
+				message: `Product with ID "${productId}" not found.`,
+			});
+		}
+
+		// Render the edit page if product exists
+		res.render('admin/edit-product', {
+			pageTitle: 'Edit Product',
+			path: '/admin/edit-product',
+			editing: editMode, // /admin/edit-product/12345?edit=true&title=new_product
+			product: product,
+		});
+	} catch (error) {
+		console.error('Error fetching product:', error.message);
+
+		// Pass the error to the 500 error-handling middleware
+		throw error;
+	}
 };
 
 exports.getAllProducts = async (req, res, next) => {
