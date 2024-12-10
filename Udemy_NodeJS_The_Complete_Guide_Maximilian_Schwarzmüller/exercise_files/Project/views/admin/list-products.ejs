@@ -20,7 +20,7 @@
         </div>
         <div class="card__actions">
           <!-- Used <a> link here instead of button because we want to redirect to a new route and no server-side request is involved so wrapping by form is not required -->
-          <a href="/admin/edit-product" class="btn">Edit</a>
+          <a href="/admin/edit-product/<%=product.id%>?edit=true" class="btn">Edit</a>
           <!-- Wrapped this with a form element - reason: Sends request to delete the product to the server @ /admin/delete-product endpoint. Method POST ensures that server-side data mutation is being requested. PLus <a> tags are not fitted for destructive actions like delete because uses GET reqwuest by default and is less secure -->
           <!-- IMPORTANT Older browser support for method DELETE is not present so POST is used -->
           <form action='/admin/delete-product' method='POST'>

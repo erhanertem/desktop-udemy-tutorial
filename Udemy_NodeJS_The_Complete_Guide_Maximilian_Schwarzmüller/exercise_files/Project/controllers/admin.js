@@ -1,10 +1,21 @@
 const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
-	res.render('admin/add-product', {
+	res.render('admin/edit-product', {
 		pageTitle: 'Add Product',
 		path: '/admin/add-product',
-		pathAddProduct: true,
+	});
+};
+
+exports.getEditProduct = (req, res, next) => {
+	// Query parameters are checke din the controllers
+	const editMode = req.query.edit; // fallback is undefined
+	if (!editMode) res.redirect('/');
+
+	res.render('admin/edit-product', {
+		pageTitle: 'Edit Product',
+		path: '/admin/edit-product',
+		editing: editMode, // /admin/edit-product/12345?edit=true&title=new_product
 	});
 };
 
