@@ -8,6 +8,11 @@ exports.getAddProduct = (req, res, next) => {
 	});
 };
 
+exports.postEditProduct = async (req, res, next) => {
+	// Construct a new product
+	// Replace the old one with the new one
+};
+
 exports.getEditProduct = async (req, res, next) => {
 	try {
 		// Check for the `edit` query parameter
