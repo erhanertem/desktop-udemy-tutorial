@@ -3,7 +3,8 @@ const path = require('path');
 const pathRoot = require('../util/path');
 
 module.exports = class Product {
-	constructor(title, imageUrl, description, price) {
+	constructor(id, title, imageUrl, description, price) {
+		this.id = id;
 		this.title = title;
 		this.imageUrl = imageUrl;
 		this.description = description;
@@ -13,8 +14,6 @@ module.exports = class Product {
 	static ROOTPATH = path.join(pathRoot, 'data', 'products.json');
 
 	async save() {
-		this.id = Math.random().toString();
-
 		try {
 			let products = [];
 
@@ -41,8 +40,16 @@ module.exports = class Product {
 				}
 			}
 
-			// Add new product to the list
-			products.push(this);
+			// If editing the product and saving it, use the existing provided id...
+			if (this.id) {
+				const existingProductIndex = products.findIndex((product) => product.id === this.id);
+				products[existingProductIndex] = this;
+			} else {
+				// If its a newly created product assign a brand new id
+				this.id = Math.random().toString();
+				// Add new product to the list
+				products.push(this);
+			}
 
 			// Write the updated products back to the file
 			try {

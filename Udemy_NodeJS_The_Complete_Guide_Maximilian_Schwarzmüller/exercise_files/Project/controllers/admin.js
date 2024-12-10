@@ -10,7 +10,14 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postEditProduct = async (req, res, next) => {
 	// Construct a new product
+	// POST req includes req.body
+	// console.log(req.body);
+	const { productId, description, price, imageUrl, title } = req.body;
+	const updatedProduct = new Product(productId, title, imageUrl, description, price);
 	// Replace the old one with the new one
+	// console.log(updatedProduct);
+	await updatedProduct.save();
+	res.status(200).redirect('/admin/list-products');
 };
 
 exports.getEditProduct = async (req, res, next) => {
@@ -95,7 +102,7 @@ exports.postAddProduct = (req, res, next) => {
 	// 			break; // Ignore extra keys in the request body
 	// 	}
 
-	const product = new Product(title, imageUrl, description, price);
+	const product = new Product(null, title, imageUrl, description, price);
 	product.save();
 
 	res.redirect('/'); // Redirect from /add-product to / route

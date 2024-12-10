@@ -6,7 +6,7 @@
 <body>
   <%- include('../layout/navigation')%>
   <main>
-    <form class="product-form" action="/admin/<%= editing ? 'edit-product' : 'add-product'%>" method="POST">
+    <form class="product-form" action="/admin/<%= editing ? 'edit-product' : 'add-product' %>" method="POST">
       <div class="form-control">
         <label for="title">Title</label>
         <input id="title" name="title" type="text" value='<%= editing ? product.title : ''%>' required />
@@ -23,6 +23,9 @@
         <label for="description">Description</label>
         <textarea id="description" name="description" rows="6" required><%= editing ? product.description : ''%></textarea>
       </div>
+      <% if(editing) { %>
+        <input type="hidden" name="productId" value="<%= product.id %>">
+      <% } %>
       <button type="submit"><%= editing ? 'Edit' : 'Add' %> Product</button>
     </form>
   </main>
