@@ -1,5 +1,11 @@
 const Product = require('../models/product');
 
+exports.postDeleteProduct = async (req, res, next) => {
+	const productId = req.body.productId;
+	await Product.deleteById(productId);
+	res.redirect('/admin/list-products');
+};
+
 exports.getAddProduct = (req, res, next) => {
 	res.render('admin/edit-product', {
 		pageTitle: 'Add Product',
@@ -17,7 +23,7 @@ exports.postEditProduct = async (req, res, next) => {
 	// Replace the old one with the new one
 	// console.log(updatedProduct);
 	await updatedProduct.save();
-	res.status(200).redirect('/admin/list-products');
+	res.redirect('/admin/list-products');
 };
 
 exports.getEditProduct = async (req, res, next) => {
@@ -105,5 +111,5 @@ exports.postAddProduct = (req, res, next) => {
 	const product = new Product(null, title, imageUrl, description, price);
 	product.save();
 
-	res.redirect('/'); // Redirect from /add-product to / route
+	res.redirect('/admin/list-products');
 };

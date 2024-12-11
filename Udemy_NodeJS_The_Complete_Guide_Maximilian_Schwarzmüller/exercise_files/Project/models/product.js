@@ -1,6 +1,7 @@
 const fs = require('fs').promises; // Promises extension leverages readfile use async
 const path = require('path');
 const pathRoot = require('../util/path');
+const Cart = require('../models/cart');
 
 module.exports = class Product {
 	constructor(id, title, imageUrl, description, price) {
@@ -12,6 +13,46 @@ module.exports = class Product {
 	}
 
 	static ROOTPATH = path.join(pathRoot, 'data', 'products.json');
+
+	static async deleteById(productId) {
+		try {
+			let products = [];
+
+			// Try reading the file
+			try {
+				const fileContent = await fs.readFile(Product.ROOTPATH, 'utf-8');
+				products = JSON.parse(fileContent); // Parse existing products
+			} catch (readError) {
+				console.error('Error reading file:', readError.message);
+				throw readError; // Re-throw if not a "file not found" error}
+			}
+
+			// Remove the ID product from the list of products
+			const product = products.find((product) => product.id === productId);
+			products = products.filter((product) => product.id !== productId);
+
+			// Write the updated products back to the file
+			try {
+				await fs.writeFile(Product.ROOTPATH, JSON.stringify(products), 'utf-8');
+				console.log('Product saved to file');
+			} catch (writeError) {
+				if (error.code === 'EACCES') {
+					console.error('Write permission denied:', err.path);
+				} else if (err.code === 'ENOSPC') {
+					console.error('No space left on device');
+				}
+				console.error('Error writing file:', writeError);
+				throw writeError;
+			}
+
+			// Remove the deleted item from the cart
+			console.log(`I am deleting ${productId} + price: ${product.price}`);
+			await Cart.deleteProduct(productId, product.price);
+		} catch (error) {
+			// General fallback for unexpected errors
+			console.error('An Unexpected error occured:', error.message);
+		}
+	}
 
 	async save() {
 		try {

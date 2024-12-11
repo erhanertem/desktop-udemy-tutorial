@@ -7,6 +7,43 @@ module.exports = class Cart {
 	// Define the path the DB file to be written @
 	static ROOTPATH = path.join(pathRoot, 'data', 'cart.json');
 
+	static async deleteProduct(id, productPrice) {
+		let cart;
+
+		// Fetch the current cart
+		try {
+			const fileContent = await fs.readFile(Cart.ROOTPATH, 'utf-8');
+
+			cart = JSON.parse(fileContent); // Parse existing cart products
+			console.log(cart);
+		} catch (readError) {
+			return; // Do nothing
+		}
+
+		// Update the cart
+		const updatedCart = { ...cart };
+		const deletedProductIndex = updatedCart.products.findIndex((product) => product.id === id);
+
+		console.log('deletedProductIndex :', deletedProductIndex);
+		let deletedProductQty;
+
+		if (deletedProductIndex !== -1) {
+			deletedProductQty = updatedCart.products[deletedProductIndex].qty;
+			updatedCart.products.splice(deletedProductIndex, 1);
+			updatedCart.totalPrice = updatedCart.totalPrice - Number(productPrice) * deletedProductQty;
+
+			// Write the new cart to file
+			try {
+				await fs.writeFile(Cart.ROOTPATH, JSON.stringify(updatedCart), 'utf-8');
+				console.log('New cart saved to file');
+				return; // Prevent further execution
+			} catch (writeError) {
+				console.error('Error writing file:', writeError.message);
+				throw writeError;
+			}
+		} else return;
+	}
+
 	static async addProduct(id, productPrice) {
 		let cart = { products: [], totalPrice: 0 };
 		let updatedProduct;

@@ -24,6 +24,7 @@
           <!-- Wrapped this with a form element - reason: Sends request to delete the product to the server @ /admin/delete-product endpoint. Method POST ensures that server-side data mutation is being requested. PLus <a> tags are not fitted for destructive actions like delete because uses GET reqwuest by default and is less secure -->
           <!-- IMPORTANT Older browser support for method DELETE is not present so POST is used -->
           <form action='/admin/delete-product' method='POST'>
+            <input type='hidden' name='productId' value='<%=product.id%>'>
             <button class="btn" type='submit'>Delete</button>
           </form>
         </div>
