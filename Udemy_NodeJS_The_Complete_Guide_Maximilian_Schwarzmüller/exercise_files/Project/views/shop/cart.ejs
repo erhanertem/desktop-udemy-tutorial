@@ -1,5 +1,27 @@
 <%- include('../layout/head')%>
-	</head>
-	<body>
-    <%- include('../layout/navigation')%>
-<%- include('../layout/end')%>
+</head>
+
+<body>
+  <%- include('../layout/navigation') %>
+
+  <main>
+    <% if (products.length >0) { %>
+    <ul>
+      <% products.forEach(product => { %>
+      <li>
+        <p> <%=product.title%> (<%=product.quantity%>) </p>
+        <p><%=product.id%></p>
+        <form action='/cart-delete-item' method='POST'>
+          <input type='hidden' name='productId' value='<%=product.id%>'>
+          <button class='btn' type='submit'>
+            DELETE
+          </button></form>
+      </li>
+      <% }) %>
+    </ul>
+    <% } else { %>
+    <p>Empty Cart. Please try some shopping</p>
+    <% } %>
+  </main>
+
+  <%- include('../layout/end')%>

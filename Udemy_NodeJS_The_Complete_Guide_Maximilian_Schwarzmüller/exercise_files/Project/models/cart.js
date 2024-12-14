@@ -7,6 +7,17 @@ module.exports = class Cart {
 	// Define the path the DB file to be written @
 	static ROOTPATH = path.join(pathRoot, 'data', 'cart.json');
 
+	static async getCart() {
+		// Fetch the current cart
+		try {
+			const fileContent = await fs.readFile(Cart.ROOTPATH, 'utf-8');
+
+			return JSON.parse(fileContent); // Parse existing cart
+		} catch (readError) {
+			return; // Do nothing
+		}
+	}
+
 	static async deleteProduct(id, productPrice) {
 		let cart;
 
@@ -24,7 +35,6 @@ module.exports = class Cart {
 		const updatedCart = { ...cart };
 		const deletedProductIndex = updatedCart.products.findIndex((product) => product.id === id);
 
-		console.log('deletedProductIndex :', deletedProductIndex);
 		let deletedProductQty;
 
 		if (deletedProductIndex !== -1) {
