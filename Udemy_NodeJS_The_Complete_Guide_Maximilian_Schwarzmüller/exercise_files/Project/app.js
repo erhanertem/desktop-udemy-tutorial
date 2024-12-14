@@ -1,22 +1,36 @@
 const path = require('path');
 
-const express = require('express');
+const dotenv = require('dotenv');
+// Load appropriate .env file based on NODE_ENV
+const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
+dotenv.config({ path: path.resolve(__dirname, envFile) });
 
+const express = require('express');
 const app = express();
 
-// Desiginate a template engine to use
-app.set('view engine', 'ejs');
-// Tell where the template engine files are located
-app.set('views', path.join(__dirname, 'views'));
-
+const db_pool = require('./util/sqldatabase');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
+
+db_pool
+	.execute('SELECT * FROM products')
+	.then((result) => {
+		console.log(result);
+	})
+	.catch((err) => {
+		console.log(err);
+	});
 
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
 app.use(express.urlencoded({ extended: true }));
 // Middleware to parse application/json data (expressjs)
 app.use(express.json());
+
+// Desiginate a template engine to use
+app.set('view engine', 'ejs');
+// Tell where the template engine files are located
+app.set('views', path.join(__dirname, 'views'));
 
 // Serve static content folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -32,6 +46,10 @@ app.use(errorController.get404);
 // > Error-handling middleware
 app.use(errorController.get500);
 
-app.listen(3000, () => {
-	console.log('Listening on port 3000');
+app.listen(3000, 'localhost', () => {
+	console.log(
+		`Listening on port ${process.env.PORT}, running on DB_HOST:${process.env.DB_HOST} in ${
+			process.env.NODE_ENV || 'development'
+		} mode`
+	);
 });
