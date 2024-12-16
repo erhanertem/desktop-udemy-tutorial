@@ -27,11 +27,12 @@
   - Query params
   - Hidden input field within POST forms
 - DB handling in Nodejs
-  - DB based on file read/write
+  - DB handling based on file read/write
+  - DB handling based on core mysql
 
 Aside from curriculum:
 
-- Implement nodejs controllers in async/await instead of cb form
+- Implement nodejs controllers in async/await instead of cb style
 - Slightly different approach of implementing functions w/ detailed error checking
 
 &emsp;

@@ -8,19 +8,33 @@ dotenv.config({ path: path.resolve(__dirname, envFile) });
 const express = require('express');
 const app = express();
 
-const db_pool = require('./util/sqldatabase');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 
-db_pool
-	.execute('SELECT * FROM products')
-	.then((result) => {
-		console.log(result);
-	})
-	.catch((err) => {
-		console.log(err);
-	});
+// const db_pool = require('./util/sqldatabase');
+// #1. THEN CATCH VERSION
+// db_pool
+// 	.execute('SELECT * FROM products')
+// 	.then((result) => {
+// 		console.log(result[0][0]);
+// 	})
+// 	.catch((err) => {
+// 		console.log(err);
+// 	});
+// #2. TRY-CATCH VERSION
+// (async () => {
+// 	try {
+// 		// Execute the SQL query
+// 		const [rows] = await db_pool.execute('SELECT * FROM products');
+
+// 		// Log the first row or all results as needed
+// 		console.log(rows[0]); // Logs the first product
+// 	} catch (err) {
+// 		// Handle any errors that occur during execution
+// 		console.error('Error fetching products:', err);
+// 	}
+// })();
 
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
 app.use(express.urlencoded({ extended: true }));
@@ -46,7 +60,7 @@ app.use(errorController.get404);
 // > Error-handling middleware
 app.use(errorController.get500);
 
-app.listen(3000, 'localhost', () => {
+app.listen(process.env.PORT, process.env.DB_HOST, () => {
 	console.log(
 		`Listening on port ${process.env.PORT}, running on DB_HOST:${process.env.DB_HOST} in ${
 			process.env.NODE_ENV || 'development'
