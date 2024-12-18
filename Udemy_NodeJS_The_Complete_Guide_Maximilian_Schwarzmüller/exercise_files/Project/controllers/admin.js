@@ -56,8 +56,16 @@ exports.getAllProducts = async (req, res, next) => {
 
 exports.postDeleteProduct = async (req, res, next) => {
 	const productId = req.body.productId;
-	await Product.deleteById(productId);
-	res.redirect('/admin/list-products');
+	try {
+		// Fetch the product by ID
+		const product = await Product.findByPk(productId);
+
+		await product.destroy();
+
+		res.redirect('/admin/list-products');
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 exports.postEditProduct = async (req, res, next) => {
