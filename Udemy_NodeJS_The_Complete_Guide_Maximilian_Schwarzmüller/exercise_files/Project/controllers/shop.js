@@ -3,7 +3,7 @@ const Cart = require('../models/cart');
 
 exports.getProducts = async (req, res, next) => {
 	try {
-		const [products, fieldData] = await Product.fetchAll();
+		const products = await Product.findAll();
 
 		res.render('shop/product-list', {
 			prods: products,
@@ -17,7 +17,13 @@ exports.getProducts = async (req, res, next) => {
 
 exports.getProduct = async (req, res, next) => {
 	const productId = req.params.productId;
-	const product = await Product.findById(productId);
+
+	// #Alternate #1
+	// const product = await Product.findAll({ where: { id: productId } });
+	// console.log(product[0].dataValues);
+	// #Alternate #2
+	const product = await Product.findByPk(productId);
+
 	res.render('shop/product-detail', {
 		product,
 		path: '/product-list',
@@ -30,7 +36,7 @@ exports.getCart = async (req, res, next) => {
 		// Gather cart data
 		const cart = await Cart.getCart();
 		// Gather all products
-		const products = await Product.fetchAll();
+		const products = await Product.findAll();
 		// Rebuild cart data for UI
 		const cartUIItems = cart.products.map((cartProduct) => {
 			// Find the corresponding product from the product list
