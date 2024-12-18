@@ -19,7 +19,7 @@ exports.getEditProduct = async (req, res, next) => {
 		const productId = req.params.productId;
 
 		// Fetch the product by ID
-		const product = await Product.findById(productId);
+		const product = await Product.findByPk(productId);
 
 		// Handle case where product is not found
 		if (!product) {
@@ -61,15 +61,25 @@ exports.postDeleteProduct = async (req, res, next) => {
 };
 
 exports.postEditProduct = async (req, res, next) => {
-	// Construct a new product
-	// POST req includes req.body
-	// console.log(req.body);
-	const { productId, description, price, imageUrl, title } = req.body;
-	const updatedProduct = new Product(productId, title, imageUrl, description, price);
-	// Replace the old one with the new one
-	// console.log(updatedProduct);
-	await updatedProduct.save();
-	res.redirect('/admin/list-products');
+	try {
+		// Construct a new product
+		// POST req includes req.body
+		// console.log(req.body);
+		const { productId, description, price, imageUrl, title } = req.body;
+		// Find the matching id product
+		const product = await Product.findByPk(productId);
+		// Assign the changes onto found product
+		product.title = title;
+		product.imageUrl = imageUrl;
+		product.description = description;
+		product.price = price;
+		// Save to DB
+		await product.save();
+
+		res.redirect('/admin/list-products');
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 exports.postAddProduct = async (req, res, next) => {
