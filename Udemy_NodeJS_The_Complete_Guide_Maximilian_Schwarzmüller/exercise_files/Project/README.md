@@ -29,6 +29,7 @@
 - DB handling in Nodejs
   - DB handling based on file read/write
   - DB handling based on core mysql
+  - DB handling based on mysql+sequelize
 
 Aside from curriculum:
 
