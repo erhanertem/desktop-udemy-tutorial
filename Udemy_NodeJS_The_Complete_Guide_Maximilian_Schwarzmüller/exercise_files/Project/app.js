@@ -12,6 +12,9 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 
+// Read the sequeilize DB instance
+const sequelize = require('./util/sqldatabase');
+
 // const db_pool = require('./util/sqldatabase');
 // #1. THEN CATCH VERSION
 // db_pool
@@ -60,10 +63,17 @@ app.use(errorController.get404);
 // > Error-handling middleware
 app.use(errorController.get500);
 
-app.listen(process.env.PORT, process.env.DB_HOST, () => {
-	console.log(
-		`Listening on port ${process.env.PORT}, running on DB_HOST:${process.env.DB_HOST} in ${
-			process.env.NODE_ENV || 'development'
-		} mode`
-	);
-});
+// Sync all sequelize related tables prior to starting server
+sequelize
+	.sync()
+	.then((result) => {
+		// console.log(result);
+		app.listen(process.env.PORT, process.env.DB_HOST, () => {
+			console.log(
+				`Listening on port ${process.env.PORT}, running on DB_HOST:${process.env.DB_HOST} in ${
+					process.env.NODE_ENV || 'development'
+				} mode`
+			);
+		});
+	})
+	.catch((err) => console.log(err));
