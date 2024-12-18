@@ -46,7 +46,7 @@ exports.getEditProduct = async (req, res, next) => {
 };
 
 exports.getAllProducts = async (req, res, next) => {
-	const products = await Product.fetchAll();
+	const products = await Product.findAll();
 	res.render('admin/list-products', {
 		prods: products,
 		path: '/admin/list-products',

@@ -86,7 +86,7 @@ exports.postCartDeleteProduct = async (req, res, next) => {
 
 exports.getIndex = async (req, res, next) => {
 	try {
-		const [products, fieldData] = await Product.fetchAll();
+		const products = await Product.findAll();
 		res.render('shop/index', {
 			prods: products,
 			path: '/',
