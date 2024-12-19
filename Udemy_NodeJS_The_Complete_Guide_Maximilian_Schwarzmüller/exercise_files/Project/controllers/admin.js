@@ -57,10 +57,12 @@ exports.getAllProducts = async (req, res, next) => {
 exports.postDeleteProduct = async (req, res, next) => {
 	const productId = req.body.productId;
 	try {
-		// Fetch the product by ID
-		const product = await Product.findByPk(productId);
+		// // -> Alt #1 w/Where filter delete
+		await Product.destroy({ where: { id: productId }, force: true });
 
-		await product.destroy();
+		// // -> Alt #2 w/findByPk delete
+		// const product = await Product.findByPk(productId);
+		// await product.destroy();
 
 		res.redirect('/admin/list-products');
 	} catch (err) {
