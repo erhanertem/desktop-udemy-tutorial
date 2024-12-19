@@ -47,11 +47,19 @@ User.hasMany(Product);
 
 // Sync/create all sequelize related tables prior to starting server
 sequelize
-	// .sync() // For production
-	.sync(
-		{ force: true } // For developement only
-	)
-	.then((result) => {
+	// .sync(
+	// 	{ force: true } // For developement only
+	// )
+	.sync() // For production
+	.then((result) => User.findByPk(1))
+	.then((user) => {
+		// GUARD CLAUSE
+		if (!user) {
+			return User.create({ name: 'Erhan', email: 'e@e.com' });
+		}
+		return user;
+	})
+	.then((user) => {
 		// console.log(result);
 		app.listen(process.env.PORT, process.env.DB_HOST, () => {
 			console.log(

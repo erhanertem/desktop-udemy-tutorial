@@ -28,8 +28,13 @@
   - Hidden input field within POST forms
 - DB handling in Nodejs
   - DB handling based on file read/write
+    - Explore CRUD operations
   - DB handling based on core mysql
+    - Explore CRUD operations
   - DB handling based on mysql+sequelize
+    - Setup table associations
+    - Setup ORM data models
+    - Explore CRUD operations
 
 Aside from curriculum:
 
