@@ -1,4 +1,3 @@
-// -> #2. Data model for Sequelize+mysql2
 const Sequelize = require('sequelize');
 
 const sequelize = require('../util/sqldatabase');
@@ -29,7 +28,7 @@ const Product = sequelize.define(
 			type: Sequelize.DOUBLE,
 			allowNull: false,
 		},
-	} // Define the nature of data
+	} // Define the structure of product
 );
 
 module.exports = Product;
