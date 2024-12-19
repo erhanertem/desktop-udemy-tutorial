@@ -14,30 +14,8 @@ const errorController = require('./controllers/error');
 
 // Read the sequeilize DB instance
 const sequelize = require('./util/sqldatabase');
-
-// const db_pool = require('./util/sqldatabase');
-// #1. THEN CATCH VERSION
-// db_pool
-// 	.execute('SELECT * FROM products')
-// 	.then((result) => {
-// 		console.log(result[0][0]);
-// 	})
-// 	.catch((err) => {
-// 		console.log(err);
-// 	});
-// #2. TRY-CATCH VERSION
-// (async () => {
-// 	try {
-// 		// Execute the SQL query
-// 		const [rows] = await db_pool.execute('SELECT * FROM products');
-
-// 		// Log the first row or all results as needed
-// 		console.log(rows[0]); // Logs the first product
-// 	} catch (err) {
-// 		// Handle any errors that occur during execution
-// 		console.error('Error fetching products:', err);
-// 	}
-// })();
+const Product = require('./models/product');
+const User = require('./models/user');
 
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
 app.use(express.urlencoded({ extended: true }));
@@ -63,9 +41,16 @@ app.use(errorController.get404);
 // > Error-handling middleware
 app.use(errorController.get500);
 
-// Sync all sequelize related tables prior to starting server
+// Setup table associations
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Product);
+
+// Sync/create all sequelize related tables prior to starting server
 sequelize
-	.sync()
+	// .sync() // For production
+	.sync(
+		{ force: true } // For developement only
+	)
 	.then((result) => {
 		// console.log(result);
 		app.listen(process.env.PORT, process.env.DB_HOST, () => {
