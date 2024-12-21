@@ -19,10 +19,12 @@ exports.getEditProduct = async (req, res, next) => {
 		const productId = req.params.productId;
 
 		// Fetch the product by ID
-		const product = await Product.findByPk(productId);
-
+		// #1. Based on no association
+		// const product = await Product.findByPk(productId);
+		// #2. Based on table associations
+		const product = await req.user.getProducts({ where: { id: productId } });
 		// Handle case where product is not found
-		if (!product) {
+		if (!product.length) {
 			return res.status(404).render('404', {
 				pageTitle: 'Product Not Found',
 				path: '',
@@ -35,7 +37,7 @@ exports.getEditProduct = async (req, res, next) => {
 			pageTitle: 'Edit Product',
 			path: '/admin/edit-product',
 			editing: editMode, // /admin/edit-product/12345?edit=true&title=new_product
-			product: product,
+			product: product[0],
 		});
 	} catch (error) {
 		console.error('Error fetching product:', error.message);
@@ -46,7 +48,11 @@ exports.getEditProduct = async (req, res, next) => {
 };
 
 exports.getAllProducts = async (req, res, next) => {
-	const products = await Product.findAll();
+	// >#1. Non-association based fetch
+	// const products = await Product.findAll();
+	// >#2. Association based fetch - get all products belongst to current user
+	const products = await req.user.getProducts();
+
 	res.render('admin/list-products', {
 		prods: products,
 		path: '/admin/list-products',
