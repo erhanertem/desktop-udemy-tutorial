@@ -16,6 +16,8 @@ const errorController = require('./controllers/error');
 const sequelize = require('./util/sqldatabase');
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
 app.use(express.urlencoded({ extended: true }));
@@ -53,6 +55,12 @@ app.use(errorController.get500);
 
 // Setup table associations
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+Cart.belongsTo(User);
+// CartItem is a junction table to provide a many-to-many connection between Cart and Product
+// NOTE: In Sequelize, when defining many-to-many relationships, both sides of the relationship need to be explicitly defined to ensure Sequelize understands the relationship fully and generates the appropriate methods, fields, and queries for each side.
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
+User.hasOne(Cart);
 User.hasMany(Product);
 
 // Sync/create all sequelize related tables prior to starting server
