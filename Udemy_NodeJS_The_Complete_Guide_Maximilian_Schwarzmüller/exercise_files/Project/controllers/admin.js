@@ -96,7 +96,16 @@ exports.postAddProduct = async (req, res, next) => {
 	const { title, imageUrl, description, price } = req.body;
 
 	try {
-		await Product.create({
+		// // > #1.Manual inclusion of association data into the table
+		// await Product.create({
+		// 	title,
+		// 	imageUrl,
+		// 	description,
+		// 	price,
+		// 	userId: req.user.id,
+		// });
+		// > #2.Automatic inclusion of association data into the table per association setup @ app.js
+		await req.user.createProduct({
 			title,
 			imageUrl,
 			description,
