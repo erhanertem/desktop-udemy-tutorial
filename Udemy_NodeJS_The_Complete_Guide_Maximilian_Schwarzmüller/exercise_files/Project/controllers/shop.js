@@ -33,36 +33,15 @@ exports.getProduct = async (req, res, next) => {
 
 exports.getCart = async (req, res, next) => {
 	try {
-		// Gather cart data
-		const cart = await Cart.getCart();
-		// Gather all products
-		const products = await Product.findAll();
-		// Rebuild cart data for UI
-		const cartUIItems = cart.products.map((cartProduct) => {
-			// Find the corresponding product from the product list
-			const productDetails = products.find((product) => product.id === cartProduct.id);
-
-			// Merge the cart product with additional details
-			if (productDetails) {
-				return {
-					...productDetails, // Include all properties from the product
-					quantity: cartProduct.qty,
-					subtotal: cartProduct.qty * productDetails.price,
-				};
-			}
-
-			// Handle the case where a product in the cart doesn't exist in the product list
-			return null;
-		});
-
-		// Filter out any null values in case there are missing products
-		const validCartUIItems = cartUIItems.filter((item) => item !== null);
-
+		// Gather cart data via seq. magic method
+		const cart = await req.user.getCart();
+		// Gather all products via seq. magic method
+		const products = await cart.getProducts();
 		// Render the cart page with the re-constructed cart details
 		res.render('shop/cart', {
 			path: '/cart',
 			pageTitle: 'Your Cart',
-			products: validCartUIItems,
+			products: products,
 		});
 	} catch (error) {
 		console.error('Error fetching cart details:', error);
