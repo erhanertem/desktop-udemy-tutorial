@@ -65,6 +65,7 @@ User.hasMany(Product);
 
 // Sync/create all sequelize related tables prior to starting server
 sequelize
+	// // NOTE: The sequelize.sync({ force: true }) option in Sequelize is primarily used during development to drop and recreate the database tables based on your models. Here’s a detailed explanation:
 	// .sync(
 	// 	{ force: true } // For developement only
 	// )
@@ -78,7 +79,10 @@ sequelize
 		return user;
 	})
 	.then((user) => {
-		// console.log(result);
+		// Create a Cart instance for the user via Sequelize magic functions created for each user instance based on user-cart association
+		user.createCart();
+	})
+	.then((cart) => {
 		app.listen(process.env.PORT, process.env.DB_HOST, () => {
 			console.log(
 				`Listening on port ${process.env.PORT}, running on DB_HOST:${process.env.DB_HOST} in ${
