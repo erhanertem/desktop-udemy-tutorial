@@ -9,7 +9,8 @@
     <ul>
       <% products.forEach(product => { %>
       <li>
-        <p> <%=product.title%> (<%=product.quantity%>) </p>
+        <!-- Sequelize allow us to access product's cart-item quanrtity value' -->
+        <p> <%=product.title%> (<%=product.cartItem.quantity%>) </p>
         <p><%=product.id%></p>
         <form action='/cart-delete-item' method='POST'>
           <input type='hidden' name='productId' value='<%=product.id%>'>

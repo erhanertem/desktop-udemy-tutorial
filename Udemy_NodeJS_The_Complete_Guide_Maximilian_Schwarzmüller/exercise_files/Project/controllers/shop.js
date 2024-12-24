@@ -63,14 +63,14 @@ exports.postCart = async (req, res, next) => {
 	// If it is in the cart, update the quantity of the product
 	if (productInstance.length) {
 		console.log('Hello');
-		// product = productInstance[0];
-		// updatedQuantity = product.cartItem.quantity + 1;
+		product = productInstance[0];
+		updatedQuantity = product.cartItem.quantity + 1;
 	} else {
 		// If there is no product instance, grap the product info
 		product = await Product.findByPk(productId);
 		// Set the quantity to 1
 		updatedQuantity = 1;
-		// Add the product to the user's current cart
+		// Add the product to the user's current cart + update the quantity @ corresponding junction table
 		await fetchedCart.addProduct(product, { through: { quantity: updatedQuantity } });
 	}
 	// Redirect to the cart page
