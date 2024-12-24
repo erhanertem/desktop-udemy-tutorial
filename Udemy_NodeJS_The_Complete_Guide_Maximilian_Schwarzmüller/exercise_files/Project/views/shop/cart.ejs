@@ -1,4 +1,5 @@
 <%- include('../layout/head')%>
+<link rel="stylesheet" href="/css/cart.css">
 </head>
 
 <body>
@@ -6,22 +7,27 @@
 
   <main>
     <% if (products.length >0) { %>
-    <ul>
+    <ul class='cart__item-list'>
       <% products.forEach(product => { %>
-      <li>
+      <li class='cart__item'>
         <!-- Sequelize allow us to access product's cart-item quanrtity value' -->
-        <p> <%=product.title%> (<%=product.cartItem.quantity%>) </p>
-        <p><%=product.id%></p>
+        <h1>
+          <%=product.title%>
+        </h1>
+        <h2>
+          Quantity: <%=product.cartItem.quantity%>
+        </h2>
         <form action='/cart-delete-item' method='POST'>
           <input type='hidden' name='productId' value='<%=product.id%>'>
           <button class='btn' type='submit'>
             DELETE
-          </button></form>
+          </button>
+        </form>
       </li>
       <% }) %>
     </ul>
     <% } else { %>
-    <p>Empty Cart. Please try some shopping</p>
+    <h1>No products in Cart!</h1>
     <% } %>
   </main>
 
