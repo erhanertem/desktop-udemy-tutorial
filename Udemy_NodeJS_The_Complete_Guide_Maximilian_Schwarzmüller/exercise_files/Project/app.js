@@ -53,15 +53,79 @@ app.use(errorController.get404);
 // > Error-handling middleware
 app.use(errorController.get500);
 
-// Setup table associations
-Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+// Define the relationships between the models
+// User has one cart
+User.hasOne(Cart);
+// User has many products
+User.hasMany(Product);
+// Cart belongs to a user
 Cart.belongsTo(User);
-// CartItem is a junction table to provide a many-to-many connection between Cart and Product
+// Product belongs to a user - if user gets deleted then all products associated with the user will be deleted
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+// CartItem is a junction table to provide a many-to-many connection between Cart and Product - because a cart can have many products and a product can be in many carts
 // NOTE: In Sequelize, when defining many-to-many relationships, both sides of the relationship need to be explicitly defined to ensure Sequelize understands the relationship fully and generates the appropriate methods, fields, and queries for each side.
 Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
-User.hasOne(Cart);
-User.hasMany(Product);
+
+// By defining these associations, Sequelize will automatically create the necessary foreign keys in the tables and provide the necessary methods to interact with the associated data.
+/**
+ *
+For User:
+
+@ Cart:
+1. Fetch User's Cart
+getCart() – Fetch the cart associated with the user.
+2. Replace User's Cart
+setCart(cart) – Assign a cart to the user.
+3. Create User's Cart
+createCart(cartData) – Create a cart and associate it with the user.
+@ Products:
+1. Fetch User's Products:
+getProducts() – Fetch all products created/owned by the user.
+2. Add Products to User
+addProduct(product) – Associate a product with the user.
+addProducts(products) – Associate multiple products with the user.
+3. Replace User's Products
+setProducts(products) – Replace the user's current products with the given ones.
+4. Delete Products from User
+removeProduct(product) – Remove the association of a product with the user.
+5. Create and Add Product to User
+createProduct(productData) – Create a new product and associate it with the user.
+6. Check if User has a Product
+hasProduct(product) – Check if a specific product is associated with the user.
+hasProducts(products) – Check if multiple products are associated with the user.
+
+**************************
+
+For Cart:
+
+@ User:
+getUser() – Fetch the user associated with the cart.
+setUser(user) – Assign a user to the cart.
+@ Products:
+getProducts() – Fetch all products in the cart.
+addProduct(product, { through: { quantity } }) – Add a product to the cart with a specific quantity.
+addProducts(products) – Add multiple products to the cart.
+setProducts(products) – Replace all products in the cart with the given ones.
+removeProduct(product) – Remove a specific product from the cart.
+hasProduct(product) – Check if a specific product is in the cart.
+countProducts() – Count the total products in the cart.
+
+**************************
+
+For Product:
+
+@ User:
+getUser() – Fetch the user associated with the product (the creator/owner).
+setUser(user) – Assign a user as the owner of the product.
+@Carts:
+getCarts() – Fetch all carts containing the product.
+addCart(cart) – Add the product to a specific cart.
+setCarts(carts) – Associate the product with multiple carts.
+removeCart(cart) – Remove the product from a specific cart.
+hasCart(cart) – Check if a specific cart contains the product.
+
+*/
 
 // Sync/create all sequelize related tables prior to starting server
 sequelize
@@ -80,7 +144,7 @@ sequelize
 	})
 	.then((user) => {
 		// Create a Cart instance for the user via Sequelize magic functions created for each user instance based on user-cart association
-		user.createCart();
+		return user.createCart();
 	})
 	.then((cart) => {
 		app.listen(process.env.PORT, process.env.DB_HOST, () => {
