@@ -8,7 +8,7 @@
   <main>
     <h1 style='text-align:center;'>Your Cart</h1>
     <% if (products.length >0) { %>
-      <ul class='cart__item-list'>
+    <ul class='cart__item-list'>
       <%
         let totalQuantity = 0;
         products.forEach(product => {
@@ -27,7 +27,7 @@
         </h2>
         <form action='/cart-delete-item' method='POST'>
           <input type='hidden' name='productId' value='<%=product.id%>'>
-          <button class='btn' type='submit'>
+          <button class='btn danger' type='submit'>
             DELETE
           </button>
         </form>
