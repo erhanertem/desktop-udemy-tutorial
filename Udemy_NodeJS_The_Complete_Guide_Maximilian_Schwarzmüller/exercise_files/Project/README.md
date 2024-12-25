@@ -31,7 +31,7 @@
     - Explore CRUD operations
   - DB handling based on core mysql
     - Explore CRUD operations
-  - DB handling based on mysql+sequelize
+  - DB handling based on core mysql+sequelize ORM
     - Setup table associations
     - Setup ORM data models
     - Explore CRUD operations

@@ -6,8 +6,16 @@
   <%- include('../layout/navigation') %>
 
   <main>
+    <h1 style='text-align:center;'>Your Cart</h1>
     <% if (products.length >0) { %>
-    <ul class='cart__item-list'>
+      <ul class='cart__item-list'>
+      <%
+        let totalQuantity = 0;
+        products.forEach(product => {
+          totalQuantity += product.cartItem.quantity;
+        });
+      %>
+      <p><%= totalQuantity %> items in your cart</p>
       <% products.forEach(product => { %>
       <li class='cart__item'>
         <!-- Sequelize allow us to access product's cart-item quanrtity value' -->

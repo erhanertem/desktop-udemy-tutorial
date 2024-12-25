@@ -79,10 +79,29 @@ exports.postCart = async (req, res, next) => {
 };
 
 exports.postCartDeleteProduct = async (req, res, next) => {
-	const productId = req.body.productId;
-	const { id, price } = await Product.findById(productId);
-	await Cart.deleteProduct(id, price);
-	res.redirect('/cart');
+	try {
+		// ProductId info is passed thru input field submission as POST req.
+		const productId = req.body.productId;
+		// Read the current user cart
+		const fetchedCart = await req.user.getCart();
+		// Find the product with id
+		const [product] = await fetchedCart.getProducts({ where: { id: productId } });
+
+		const newQuantity = product.cartItem.quantity - 1;
+
+		// Remove the product from the cart
+		// Remove the item completely from DB if it has depleted
+		if (!newQuantity) {
+			await product.cartItem.destroy();
+		} else {
+			// Update the quantity of the product in the cart with newQuantity
+			await fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
+		}
+		// Redirect to the cart page
+		res.redirect('/cart');
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 exports.getIndex = async (req, res, next) => {
