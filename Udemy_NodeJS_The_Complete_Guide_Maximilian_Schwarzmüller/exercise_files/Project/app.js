@@ -18,6 +18,8 @@ const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
 const CartItem = require('./models/cart-item');
+const Order = require('./models/order');
+const OrderItem = require('./models/order-Item');
 
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
 app.use(express.urlencoded({ extended: true }));
@@ -58,14 +60,19 @@ app.use(errorController.get500);
 User.hasOne(Cart);
 // User has many products
 User.hasMany(Product);
+// User has many orders
+User.hasMany(Order);
 // Cart belongs to a user
 Cart.belongsTo(User);
+// Order belongs to a user
+Order.belongsTo(User);
 // Product belongs to a user - if user gets deleted then all products associated with the user will be deleted
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 // CartItem is a junction table to provide a many-to-many connection between Cart and Product - because a cart can have many products and a product can be in many carts
 // NOTE: In Sequelize, when defining many-to-many relationships, both sides of the relationship need to be explicitly defined to ensure Sequelize understands the relationship fully and generates the appropriate methods, fields, and queries for each side.
 Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
+Order.belongsToMany(Product, { through: OrderItem });
 
 // By defining these associations, Sequelize will automatically create the necessary foreign keys in the tables and provide the necessary methods to interact with the associated data.
 /**
