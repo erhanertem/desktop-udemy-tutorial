@@ -1,5 +1,4 @@
 const Product = require('../models/product');
-const Cart = require('../models/cart');
 
 exports.getProducts = async (req, res, next) => {
 	try {
@@ -112,6 +111,29 @@ exports.getIndex = async (req, res, next) => {
 			path: '/',
 			pageTitle: 'Shop',
 		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+exports.postOrder = async (req, res, next) => {
+	try {
+		// Fetch the order details of the user
+		const fetchedCart = await req.user.getCart();
+		// Fetch the products in the cart
+		const products = await fetchedCart.getProducts();
+		// Create an order instance for the user
+		const order = await req.user.createOrder();
+		// Add products into order instance
+		await order.addProducts(
+			products.map((product) => {
+				// Set the quantity of the product in the order-item table
+				product.orderItem = { quantity: product.cartItem.quantity };
+				return product;
+			})
+		);
+		// Redirect to orders page
+		res.redirect('/orders');
 	} catch (err) {
 		console.log(err);
 	}
