@@ -56,28 +56,32 @@ app.use(errorController.get404);
 app.use(errorController.get500);
 
 // Define the relationships between the models
-// User has one cart
+// NOTE: In Sequelize, when defining many-to-many relationships, both sides of the relationship need to be explicitly defined to ensure Sequelize understands the relationship fully and generates the appropriate methods, fields, and queries for each side.
+// User has one cart - Two way explicit statements
 User.hasOne(Cart);
-// User has many products
-User.hasMany(Product);
+Cart.belongsTo(User);
+
 // User has many orders
 User.hasMany(Order);
-// Cart belongs to a user
-Cart.belongsTo(User);
-// Order belongs to a user
 Order.belongsTo(User);
-// Product belongs to a user - if user gets deleted then all products associated with the user will be deleted
-Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
-// CartItem is a junction table to provide a many-to-many connection between Cart and Product - because a cart can have many products and a product can be in many carts
-// NOTE: In Sequelize, when defining many-to-many relationships, both sides of the relationship need to be explicitly defined to ensure Sequelize understands the relationship fully and generates the appropriate methods, fields, and queries for each side.
+
+// User has many products
+User.hasMany(Product);
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' }); // Product belongs to a user - if user gets deleted then all products associated with the user will be deleted
+
+// NOTE: By defining the junction associations below, Sequelize will automatically create the necessary foreign keys in the tables and provide the necessary methods to interact with the associated data. CartItem is a junction table to provide a many-to-many connection between Cart and Product - because a cart can have many products and a product can be in many carts
+
+// Cart belongs to many Products through CartItem - Two way explicit statements
 Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
-Order.belongsToMany(Product, { through: OrderItem });
 
-// By defining these associations, Sequelize will automatically create the necessary foreign keys in the tables and provide the necessary methods to interact with the associated data.
+// Order belongs to many Products through OrderItem - Two way explicit statements
+Order.belongsToMany(Product, { through: OrderItem });
+Product.belongsToMany(Order, { through: OrderItem });
+
 /**
  *
-For User:
+For User: Represents users.
 
 @ Cart:
 1. Fetch User's Cart
@@ -104,7 +108,8 @@ hasProducts(products) – Check if multiple products are associated with the use
 
 **************************
 
-For Cart:
+For Cart: Represents shopping carts, associated with users.
+Cart and Product: Many-to-Many relationship through the CartItem model.
 
 @ User:
 getUser() – Fetch the user associated with the cart.
@@ -120,7 +125,7 @@ countProducts() – Count the total products in the cart.
 
 **************************
 
-For Product:
+For Product: Represents products available for purchase.
 
 @ User:
 getUser() – Fetch the user associated with the product (the creator/owner).
@@ -132,14 +137,17 @@ setCarts(carts) – Associate the product with multiple carts.
 removeCart(cart) – Remove the product from a specific cart.
 hasCart(cart) – Check if a specific cart contains the product.
 
+**************************
+
+For Order: Represents orders placed by users.
+NOTE: Order and Product: Many-to-Many relationship through the OrderItem model.
+
 */
 
 // Sync/create all sequelize related tables prior to starting server
 sequelize
 	// // NOTE: The sequelize.sync({ force: true }) option in Sequelize is primarily used during development to drop and recreate the database tables based on your models. Here’s a detailed explanation:
-	// .sync(
-	// 	{ force: true } // For developement only
-	// )
+	// .sync( 	{ force: true } // For developement only )
 	.sync() // For production
 	.then((result) => User.findByPk(1))
 	.then((user) => {
