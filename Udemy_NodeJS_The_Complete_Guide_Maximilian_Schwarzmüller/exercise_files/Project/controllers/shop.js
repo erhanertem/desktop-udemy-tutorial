@@ -125,13 +125,17 @@ exports.postOrder = async (req, res, next) => {
 		// Create an order instance for the user
 		const order = await req.user.createOrder();
 		// Add products into order instance
-		await order.addProducts(
+		const result = await order.addProducts(
 			products.map((product) => {
 				// Set the quantity of the product in the order-item table
 				product.orderItem = { quantity: product.cartItem.quantity };
 				return product;
 			})
 		);
+
+		// Clear the cart after order is placed
+		await fetchedCart.setProducts(null);
+
 		// Redirect to orders page
 		res.redirect('/orders');
 	} catch (err) {
