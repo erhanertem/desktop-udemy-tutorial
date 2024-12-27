@@ -150,6 +150,7 @@ exports.getOrders = async (req, res, next) => {
 	try {
 		// Fetch all orders of the user
 		// VERY IMPORTANT! Sequelize include directive injects products in the order instance so we can utilize this data inside ejs
+		// User has access to orders table and orders table has access to products table via orderitems junction table. Therefore, products table data could be injected into orders table data while fetching.
 		const fetchedOrders = await req.user.getOrders({ include: ['products'] });
 		// Render the orders page
 		res.render('shop/orders', {

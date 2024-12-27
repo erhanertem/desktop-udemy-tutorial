@@ -142,6 +142,12 @@ hasCart(cart) – Check if a specific cart contains the product.
 For Order: Represents orders placed by users.
 NOTE: Order and Product: Many-to-Many relationship through the OrderItem model.
 
+@Product:
+getProducts() - Fetches all products associated with the order
+addProduct(product) - Associates a product with the order. Can include additional data like quantity in the junction
+removeProduct(product) - Removes the association between a product and the order
+setProducts(products) - Replaces all associated products for the order
+hasProduct(product) - Checks if a specific product is associated with the order
 */
 
 // Sync/create all sequelize related tables prior to starting server
