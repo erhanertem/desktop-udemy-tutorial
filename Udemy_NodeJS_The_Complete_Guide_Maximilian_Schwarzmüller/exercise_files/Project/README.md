@@ -29,12 +29,13 @@
 - DB handling in Nodejs
   - DB handling based on file read/write
     - Explore CRUD operations
-  - DB handling based on core mysql
+  - DB handling based on mysql driver
     - Explore CRUD operations
-  - DB handling based on core mysql+sequelize ORM
+  - DB handling based on mysql driver + sequelize ORM
     - Setup table associations
     - Setup ORM data models
     - Explore CRUD operations
+  - DB handling based on mongodb driver
 
 Aside from curriculum:
 
