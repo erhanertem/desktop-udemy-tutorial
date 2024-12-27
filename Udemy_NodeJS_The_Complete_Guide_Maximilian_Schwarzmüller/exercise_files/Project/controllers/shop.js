@@ -42,9 +42,9 @@ exports.getCart = async (req, res, next) => {
 			pageTitle: 'Your Cart',
 			products: products,
 		});
-	} catch (error) {
-		console.error('Error fetching cart details:', error);
-		next(error); // Pass error to the global error-handling middleware
+	} catch (err) {
+		console.error('Error fetching cart details:', err);
+		next(err); // Pass the error to the global error-handling middleware
 	}
 };
 
@@ -100,6 +100,7 @@ exports.postCartDeleteProduct = async (req, res, next) => {
 		res.redirect('/cart');
 	} catch (err) {
 		console.log(err);
+		next(err); // Pass the error to the global error-handling middleware
 	}
 };
 
@@ -113,6 +114,7 @@ exports.getIndex = async (req, res, next) => {
 		});
 	} catch (err) {
 		console.log(err);
+		next(err); // Pass the error to the global error-handling middleware
 	}
 };
 
@@ -125,7 +127,7 @@ exports.postOrder = async (req, res, next) => {
 		// Create an order instance for the user
 		const order = await req.user.createOrder();
 		// Add products into order instance
-		const result = await order.addProducts(
+		await order.addProducts(
 			products.map((product) => {
 				// Set the quantity of the product in the order-item table
 				product.orderItem = { quantity: product.cartItem.quantity };
@@ -140,14 +142,25 @@ exports.postOrder = async (req, res, next) => {
 		res.redirect('/orders');
 	} catch (err) {
 		console.log(err);
+		next(err); // Pass the error to the global error-handling middleware
 	}
 };
 
-exports.getOrders = (req, res, next) => {
-	res.render('shop/orders', {
-		path: '/orders',
-		pageTitle: 'Your Orders',
-	});
+exports.getOrders = async (req, res, next) => {
+	try {
+		// Fetch all orders of the user
+		// VERY IMPORTANT! Sequelize include directive injects products in the order instance so we can utilize this data inside ejs
+		const fetchedOrders = await req.user.getOrders({ include: ['products'] });
+		// Render the orders page
+		res.render('shop/orders', {
+			path: '/orders',
+			pageTitle: 'Your Orders',
+			orders: fetchedOrders,
+		});
+	} catch (err) {
+		console.log(err);
+		next(err); // Pass the error to the global error-handling middleware
+	}
 };
 
 exports.getCheckout = (req, res, next) => {

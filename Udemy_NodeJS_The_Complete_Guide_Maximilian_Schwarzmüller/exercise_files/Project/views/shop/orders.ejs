@@ -1,8 +1,24 @@
 <%- include('../layout/head')%>
-	</head>
-	<body>
-    <%- include('../layout/navigation')%>
-    <main>
-      <h1>Nothing there!</h1>
-    </main>
-<%- include('../layout/end')%>
+</head>
+
+<body>
+  <%- include('../layout/navigation')%>
+  <main>
+    <% if (orders.length <=0) { %>
+    <h1>Nothing there!</h1>
+    <% } else { %>
+    <ul>
+      <% orders.forEach(order => { %>
+      <li>
+        <h1>Order# <%= order.id %></h1>
+        <ul>
+          <% order.products.forEach(product => { %>
+          <li><%= product.title %> - <%= product.orderItem.quantity %> x <%= product.price %> $</li>
+          <% }) %>
+        </ul>
+      </li>
+      <% }) %>
+    </ul>
+    <% } %>
+  </main>
+  <%- include('../layout/end')%>

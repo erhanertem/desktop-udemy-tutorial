@@ -147,7 +147,7 @@ NOTE: Order and Product: Many-to-Many relationship through the OrderItem model.
 // Sync/create all sequelize related tables prior to starting server
 sequelize
 	// // NOTE: The sequelize.sync({ force: true }) option in Sequelize is primarily used during development to drop and recreate the database tables based on your models. Here’s a detailed explanation:
-	// .sync( 	{ force: true } // For developement only )
+	// .sync({ force: true }) // For developement only
 	.sync() // For production
 	.then((result) => User.findByPk(1))
 	.then((user) => {
