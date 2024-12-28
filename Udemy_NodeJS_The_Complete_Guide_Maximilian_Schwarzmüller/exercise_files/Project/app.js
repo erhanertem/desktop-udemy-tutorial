@@ -12,7 +12,7 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 
-const mongoConnect = require('./util/nosqldatabase');
+const { mongoConnect } = require('./util/nosqldatabase');
 
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
 app.use(express.urlencoded({ extended: true }));
@@ -38,8 +38,8 @@ app.use((req, res, next) => {
 	// 	.catch((err) => console.log(err));
 });
 
-// // Express Routers
-// app.use('/admin', adminRoutes);
+// Express Routers
+app.use('/admin', adminRoutes);
 // app.use(shopRoutes);
 
 // ERROR HANDLING
@@ -51,8 +51,9 @@ app.use(errorController.get500);
 
 // Server initializer with mongoDB in IEFF style
 (async () => {
-	const client = await mongoConnect();
-	if (client) {
+	try {
+		await mongoConnect();
+
 		app.listen(process.env.PORT, process.env.DB_HOST, () => {
 			console.log(
 				`Listening on port ${process.env.PORT}, running on DB_HOST:${process.env.DB_HOST} in ${
@@ -60,5 +61,8 @@ app.use(errorController.get500);
 				} mode`
 			);
 		});
+	} catch (err) {
+		console.error('Failed to start the server due to a database connection error:', err);
+		process.exit(1); // Exit the process with a failure code
 	}
 })();
