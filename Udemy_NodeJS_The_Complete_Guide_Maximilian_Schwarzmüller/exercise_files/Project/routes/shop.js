@@ -12,7 +12,7 @@ router.get('/products', shopController.getProducts);
 
 // DYNAMIC SEGMENT
 // VERY IMPORTANT - Within the same segments, params route should always come after static routes
-// router.get('/products/:productId', shopController.getProduct);
+router.get('/products/:productId', shopController.getProduct);
 
 // router.get('/cart', shopController.getCart);
 

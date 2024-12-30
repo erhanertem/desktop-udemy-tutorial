@@ -31,11 +31,7 @@ exports.getProducts = async (req, res, next) => {
 exports.getProduct = async (req, res, next) => {
 	const productId = req.params.productId;
 
-	// #Alternate #1
-	// const product = await Product.findAll({ where: { id: productId } });
-	// console.log(product[0].dataValues);
-	// #Alternate #2
-	const product = await Product.findByPk(productId);
+	const product = await Product.findProductById(productId);
 
 	res.render('shop/product-detail', {
 		product,
