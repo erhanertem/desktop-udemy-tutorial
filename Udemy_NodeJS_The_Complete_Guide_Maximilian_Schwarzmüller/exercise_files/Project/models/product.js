@@ -1,4 +1,5 @@
-const { mongoConnect, getDb } = require('../util/nosqldatabase');
+const { db } = require('../util/nosqldatabase');
+// const { getDb } = require('../util/nosqldatabase');
 
 class Product {
 	constructor(title, price, description, imageUrl) {
@@ -8,35 +9,15 @@ class Product {
 		this.price = price;
 	}
 
-	save() {}
+	// Save the product to the database
+	save() {
+		// const db = getDb();
+		const productCollection = db().collection('products');
+		return productCollection
+			.insertOne(this)
+			.then((result) => console.log(result))
+			.catch((err) => console.log(err));
+	}
 }
-// Define 'product' data model
-const Product = sequelize.define(
-	'product', // Name of the data model
-	{
-		id: {
-			type: Sequelize.INTEGER,
-			autoIncrement: true,
-			allowNull: false,
-			primaryKey: true,
-		},
-		title: {
-			type: Sequelize.STRING,
-			allowNull: false,
-		},
-		imageUrl: {
-			type: Sequelize.STRING,
-			allowNull: false,
-		},
-		description: {
-			type: Sequelize.STRING,
-			allowNull: false,
-		},
-		price: {
-			type: Sequelize.DOUBLE,
-			allowNull: false,
-		},
-	} // Define the structure of product
-);
 
 module.exports = Product;

@@ -98,27 +98,16 @@ exports.postEditProduct = async (req, res, next) => {
 	}
 };
 
-exports.postAddProduct = async (req, res, next) => {
+exports.postAddProduct = (req, res, next) => {
 	const { title, imageUrl, description, price } = req.body;
 
-	try {
-		// // > #1.Manual inclusion of association data into the table
-		// await Product.create({
-		// 	title,
-		// 	imageUrl,
-		// 	description,
-		// 	price,
-		// 	userId: req.user.id,
-		// });
-		// > #2.Automatic inclusion of association data into the table per association setup @ app.js
-		await req.user.createProduct({
-			title,
-			imageUrl,
-			description,
-			price,
-		});
-		res.redirect('/admin/list-products');
-	} catch (err) {
-		console.log(err);
-	}
+	// Create a new product
+	const product = new Product(title, price, description, imageUrl);
+	product
+		.save()
+		.then((result) => {
+			console.log('Created product');
+			res.redirect('/admin/list-products');
+		})
+		.catch((err) => console.log(err));
 };

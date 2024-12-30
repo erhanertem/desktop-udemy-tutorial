@@ -36,6 +36,9 @@ app.use((req, res, next) => {
 	// 		next();
 	// 	})
 	// 	.catch((err) => console.log(err));
+
+	// Temporary
+	next();
 });
 
 // Express Routers

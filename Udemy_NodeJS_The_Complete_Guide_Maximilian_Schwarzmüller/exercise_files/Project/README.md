@@ -36,6 +36,7 @@
     - Setup ORM data models
     - Explore CRUD operations
   - DB handling based on mongodb driver
+    - Explore CRUD operations
 
 Aside from curriculum:
 
