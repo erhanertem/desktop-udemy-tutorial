@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 
 // Express Routers
 app.use('/admin', adminRoutes);
-// app.use(shopRoutes);
+app.use(shopRoutes);
 
 // ERROR HANDLING
 // > 404 Middleware for non-existent routes

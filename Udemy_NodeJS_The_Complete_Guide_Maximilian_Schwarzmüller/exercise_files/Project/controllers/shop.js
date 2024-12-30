@@ -1,8 +1,22 @@
 const Product = require('../models/product');
 
+exports.getIndex = async (req, res, next) => {
+	try {
+		const products = await Product.fetchAll();
+		res.render('shop/index', {
+			prods: products,
+			path: '/',
+			pageTitle: 'Shop',
+		});
+	} catch (err) {
+		console.log(err);
+		next(err); // Pass the error to the global error-handling middleware
+	}
+};
+
 exports.getProducts = async (req, res, next) => {
 	try {
-		const products = await Product.findAll();
+		const products = await Product.fetchAll();
 
 		res.render('shop/product-list', {
 			prods: products,
@@ -98,20 +112,6 @@ exports.postCartDeleteProduct = async (req, res, next) => {
 		}
 		// Redirect to the cart page
 		res.redirect('/cart');
-	} catch (err) {
-		console.log(err);
-		next(err); // Pass the error to the global error-handling middleware
-	}
-};
-
-exports.getIndex = async (req, res, next) => {
-	try {
-		const products = await Product.findAll();
-		res.render('shop/index', {
-			prods: products,
-			path: '/',
-			pageTitle: 'Shop',
-		});
 	} catch (err) {
 		console.log(err);
 		next(err); // Pass the error to the global error-handling middleware
