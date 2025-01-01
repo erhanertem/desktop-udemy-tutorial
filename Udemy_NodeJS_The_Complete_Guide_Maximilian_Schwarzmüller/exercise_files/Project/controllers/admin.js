@@ -8,43 +8,40 @@ exports.getAddProduct = (req, res, next) => {
 	});
 };
 
-exports.getEditProduct = async (req, res, next) => {
-	try {
-		// Check for the `edit` query parameter
-		const editMode = req.query.edit;
-		// Redirect if not in edit mode
-		if (!editMode) res.redirect('/');
+exports.getEditProduct = (req, res, next) => {
+	// Check for the `edit` query parameter
+	const editMode = req.query.edit;
+	// Redirect if not in edit mode
+	if (!editMode) res.redirect('/');
 
-		// Get the `productId` from route parameters
-		const productId = req.params.productId;
+	// Get the `productId` from route parameters
+	const productId = req.params.productId;
 
-		// Fetch the product by ID
-		// #1. Based on no association
-		// const product = await Product.findByPk(productId);
-		// #2. Based on table associations
-		const product = await req.user.getProducts({ where: { id: productId } });
-		// Handle case where product is not found
-		if (!product.length) {
-			return res.status(404).render('404', {
-				pageTitle: 'Product Not Found',
-				path: '',
-				message: `Product with ID "${productId}" not found.`,
+	// Fetch the product by ID
+	Product.findProductById(productId)
+		.then((product) => {
+			// Handle case where product is not found
+			if (!product) {
+				return res.status(404).render('404', {
+					pageTitle: 'Product Not Found',
+					path: '',
+					message: `Product with ID "${productId}" not found.`,
+				});
+			}
+
+			// Render the edit page if product exists
+			res.render('admin/edit-product', {
+				pageTitle: 'Edit Product',
+				path: '/admin/edit-product',
+				editing: editMode, // /admin/edit-product/12345?edit=true&title=new_product
+				product: product,
 			});
-		}
-
-		// Render the edit page if product exists
-		res.render('admin/edit-product', {
-			pageTitle: 'Edit Product',
-			path: '/admin/edit-product',
-			editing: editMode, // /admin/edit-product/12345?edit=true&title=new_product
-			product: product[0],
+		})
+		.catch((error) => {
+			console.error('Error fetching product:', error.message);
+			// Pass the error to the 500 error-handling middleware
+			throw error;
 		});
-	} catch (error) {
-		console.error('Error fetching product:', error.message);
-
-		// Pass the error to the 500 error-handling middleware
-		throw error;
-	}
 };
 
 exports.getAllProducts = (req, res, next) => {

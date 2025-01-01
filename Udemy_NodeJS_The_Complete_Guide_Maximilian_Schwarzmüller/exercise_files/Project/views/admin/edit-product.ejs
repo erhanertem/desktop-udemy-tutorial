@@ -24,7 +24,7 @@
         <textarea id="description" name="description" rows="6" required><%= editing ? product.description : ''%></textarea>
       </div>
       <% if(editing) { %>
-        <input type="hidden" name="productId" value="<%= product.id %>">
+        <input type="hidden" name="productId" value="<%= product._id %>">
       <% } %>
       <button class='btn' type="submit"><%= editing ? 'Update' : 'Add' %> Product</button>
     </form>

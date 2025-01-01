@@ -3,20 +3,34 @@ const { db } = require('../util/nosqldatabase');
 // const { getDb } = require('../util/nosqldatabase');
 
 class Product {
-	constructor(title, price, description, imageUrl) {
+	constructor(title, price, description, imageUrl, id) {
 		this.title = title;
 		this.imageUrl = imageUrl;
 		this.description = description;
 		this.price = price;
+		this._id = id;
 	}
 
 	// Save the product to the database - Note: its not a static method because it needs to be called onto a product instance prodyct.save()... not Product.save()...
 	save() {
 		// const db = getDb();
-		const productCollection = db().collection('products');
-		return productCollection
-			.insertOne(this)
-			.then((result) => console.log(result))
+
+		let dbOperationType;
+		if (this._id) {
+			// Update the product with given Id
+			dbOperation = db()
+				.collection('products')
+				.updateOne({ _id: ObjectId.createFromHexString(this._id) }, { $set: this });
+		} else {
+			// Create a new product
+			dbOperation = db().collection('products').insertOne(this);
+		}
+
+		dbOperation
+			.then((result) => {
+				console.log('Product saved');
+				res.redirect('/admin/products');
+			})
 			.catch((err) => console.log(err));
 	}
 
