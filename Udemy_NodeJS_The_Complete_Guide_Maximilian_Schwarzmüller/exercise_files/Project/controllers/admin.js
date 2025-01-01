@@ -47,17 +47,16 @@ exports.getEditProduct = async (req, res, next) => {
 	}
 };
 
-exports.getAllProducts = async (req, res, next) => {
-	// >#1. Non-association based fetch
-	// const products = await Product.findAll();
-	// >#2. Association based fetch - get all products belongst to current user
-	const products = await req.user.getProducts();
-
-	res.render('admin/list-products', {
-		prods: products,
-		path: '/admin/list-products',
-		pageTitle: 'Admin Products',
-	});
+exports.getAllProducts = (req, res, next) => {
+	Product.fetchAll()
+		.then((products) => {
+			res.render('admin/list-products', {
+				prods: products,
+				path: '/admin/list-products',
+				pageTitle: 'Admin Products',
+			});
+		})
+		.catch((err) => console.log(err));
 };
 
 exports.postDeleteProduct = async (req, res, next) => {
