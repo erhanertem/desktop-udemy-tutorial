@@ -1,3 +1,5 @@
+const { ObjectId } = require('mongodb');
+
 const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
@@ -72,30 +74,29 @@ exports.postDeleteProduct = async (req, res, next) => {
 	}
 };
 
-exports.postEditProduct = async (req, res, next) => {
-	try {
-		// Construct a new product
-		// POST req includes req.body
-		// console.log(req.body);
-		const { productId, description, price, imageUrl, title } = req.body;
-		// Find the matching id product
-		const product = await Product.findByPk(productId);
-		// Assign the changes onto found product
-		product.title = title;
-		product.imageUrl = imageUrl;
-		product.description = description;
-		product.price = price;
-		// Save to DB
-		await product.save();
+exports.postEditProduct = (req, res, next) => {
+	// Construct a new product
+	// POST req includes req.body
+	// console.log(req.body);
+	const { title, imageUrl, price, description, productId } = req.body;
+	console.log('productId :', productId);
 
-		res.redirect('/admin/list-products');
-	} catch (err) {
-		console.log(err);
-	}
+	// Create a new product instance
+	const product = new Product(title, price, description, imageUrl, productId);
+	console.log('product :', product);
+
+	// Attempt to save the product
+	product
+		.save()
+		.then((result) => {
+			console.log('Updated product');
+			res.redirect('/admin/list-products');
+		})
+		.catch((err) => console.log(err));
 };
 
 exports.postAddProduct = (req, res, next) => {
-	const { title, imageUrl, description, price } = req.body;
+	const { title, imageUrl, price, description } = req.body;
 
 	// Create a new product
 	const product = new Product(title, price, description, imageUrl);

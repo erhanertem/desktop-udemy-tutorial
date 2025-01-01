@@ -8,28 +8,26 @@ class Product {
 		this.imageUrl = imageUrl;
 		this.description = description;
 		this.price = price;
-		this._id = id;
+		this._id = id ? ObjectId.createFromHexString(id) : null;
+		// ObjectId.createFromHexString() throws error if id by default is given null. So, we need to check if id is null or not
 	}
 
 	// Save the product to the database - Note: its not a static method because it needs to be called onto a product instance prodyct.save()... not Product.save()...
 	save() {
 		// const db = getDb();
-
-		let dbOperationType;
+		let dbOperation;
+		console.log('this._id :', this._id);
 		if (this._id) {
 			// Update the product with given Id
-			dbOperation = db()
-				.collection('products')
-				.updateOne({ _id: ObjectId.createFromHexString(this._id) }, { $set: this });
+			dbOperation = db().collection('products').updateOne({ _id: this._id }, { $set: this });
 		} else {
 			// Create a new product
 			dbOperation = db().collection('products').insertOne(this);
 		}
 
-		dbOperation
+		return dbOperation
 			.then((result) => {
 				console.log('Product saved');
-				res.redirect('/admin/products');
 			})
 			.catch((err) => console.log(err));
 	}
@@ -42,7 +40,7 @@ class Product {
 			.find()
 			.toArray() // Returns all products w/ no pagination - be cautious
 			.then((products) => {
-				console.log(products);
+				// console.log(products);
 				return products;
 			})
 			.catch((err) => console.log(err));
@@ -58,7 +56,7 @@ class Product {
 			.findOne({ _id: objectId })
 			.then((product) => {
 				if (product) {
-					console.log('Found product:', product);
+					console.log('Found product');
 					return product;
 				} else {
 					throw new Error('Product not found');
