@@ -64,6 +64,15 @@ class Product {
 			})
 			.catch((err) => console.log(err));
 	}
+
+	static deleteById(productId) {
+		// const db = getDb();
+		const productCollection = db().collection('products');
+		const objectId = ObjectId.createFromHexString(productId);
+		console.log('objectId :', objectId);
+
+		return productCollection.deleteOne({ _id: objectId }).catch((err) => console.log(err));
+	}
 }
 
 module.exports = Product;

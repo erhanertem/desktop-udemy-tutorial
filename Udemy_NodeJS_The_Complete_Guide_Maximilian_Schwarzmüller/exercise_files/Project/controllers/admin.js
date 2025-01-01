@@ -1,5 +1,3 @@
-const { ObjectId } = require('mongodb');
-
 const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
@@ -58,20 +56,15 @@ exports.getAllProducts = (req, res, next) => {
 		.catch((err) => console.log(err));
 };
 
-exports.postDeleteProduct = async (req, res, next) => {
+exports.postDeleteProduct = (req, res, next) => {
 	const productId = req.body.productId;
-	try {
-		// // -> Alt #1 w/Where filter delete
-		await Product.destroy({ where: { id: productId }, force: true });
 
-		// // -> Alt #2 w/findByPk delete
-		// const product = await Product.findByPk(productId);
-		// await product.destroy();
-
-		res.redirect('/admin/list-products');
-	} catch (err) {
-		console.log(err);
-	}
+	Product.deleteById(productId)
+		.then(() => {
+			console.log('Product deleted');
+			res.redirect('/admin/list-products');
+		})
+		.catch((err) => console.log(err));
 };
 
 exports.postEditProduct = (req, res, next) => {
