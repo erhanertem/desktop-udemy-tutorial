@@ -13,6 +13,7 @@ const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 
 const { mongoConnect } = require('./util/nosqldatabase');
+const User = require('./models/user');
 
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
 app.use(express.urlencoded({ extended: true }));
@@ -28,17 +29,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // EXPRESSJS MIDDLEWARE
+
 // Manage a dummy user till authentication is established
 app.use((req, res, next) => {
-	// User.findByPk(1)
-	// 	.then((user) => {
-	// 		req.user = user;
-	// 		next();
-	// 	})
-	// 	.catch((err) => console.log(err));
-
-	// Temporary
-	next();
+	User.findById('6776556d8efe3687a09553a6')
+		.then((user) => {
+			req.user = user;
+			next();
+		})
+		.catch((err) => console.log(err));
 });
 
 // Express Routers

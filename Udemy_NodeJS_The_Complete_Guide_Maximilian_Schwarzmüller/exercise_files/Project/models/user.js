@@ -1,25 +1,42 @@
-const Sequelize = require('sequelize');
+const { ObjectId } = require('mongodb');
+const { db } = require('../util/nosqldatabase');
 
-const sequelize = require('../util/sqldatabase');
+class User {
+	constructor(username, email) {
+		this.name = username;
+		this.email = email;
+		this._id = id ? ObjectId.createFromHexString(id) : null;
+	}
 
-const User = sequelize.define(
-	'user', // Name of the data model
-	{
-		id: {
-			type: Sequelize.INTEGER,
-			autoIncrement: true,
-			allowNull: false,
-			primaryKey: true,
-		},
-		name: {
-			type: Sequelize.STRING,
-			allowNull: false,
-		},
-		email: {
-			type: Sequelize.STRING,
-			allowNull: false,
-		},
-	} // Define the structure of the user
-);
+	save() {
+		let dbOperation;
+		if (this._id) {
+			dbOperation = db().collection('users').updateOne({ _id: this._id }, { $set: this });
+		} else {
+			dbOperation = db().collection('users').insertOne(this);
+		}
+		return dbOperation
+			.then((result) => {
+				console.log('User saved');
+			})
+			.catch((err) => console.log(err));
+	}
+
+	static findById(userId) {
+		const userCollection = db().collection('users');
+		const objectId = ObjectId.createFromHexString(userId);
+		return userCollection
+			.findOne({ _id: objectId })
+			.then((user) => {
+				if (user) {
+					console.log('Found user');
+					return user;
+				} else {
+					throw new Error('User not found');
+				}
+			})
+			.catch((err) => console.log(err));
+	}
+}
 
 module.exports = User;

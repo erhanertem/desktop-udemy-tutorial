@@ -16,7 +16,6 @@ class Product {
 	save() {
 		// const db = getDb();
 		let dbOperation;
-		console.log('this._id :', this._id);
 		if (this._id) {
 			// Update the product with given Id
 			dbOperation = db().collection('products').updateOne({ _id: this._id }, { $set: this });
