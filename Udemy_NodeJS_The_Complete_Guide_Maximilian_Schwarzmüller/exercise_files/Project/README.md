@@ -17,9 +17,13 @@
   - Children routers
     - Significance of route order
 - Error handling
-  - General error handling
-  - Malformed body error handling
-  - Non existing route request error handling
+  - Setup erro handling express middlewares
+    - General error handling
+    - Malformed body error handling
+    - Non existing route request error handling
+  - Throwing errors
+    - throw err
+    - next(err)
 - Explore express routes
   - Static routes
   - Params routes
@@ -47,13 +51,10 @@ Aside from curriculum:
 
 ###### ⚠️Free-tier render services may experience throttling, leading to delayed app loading times. Since the API and client are hosted separately, getting the backend online may take additional time to respond due to enforced spin-downs on free-tier services.
 
-#### <img src="./push.gif" width="30px"/>[WorldWise App](https://app-worldwise-erhan-ertem.onrender.com/)
+#### <img src="./push.gif" width="30px"/>[Shop App](https://shop-app.onrender.com/)
 
 <img src="./screenshot.webp" width="600px"/>
 
 ---
 
-![JS](https://img.shields.io/badge/JavaScript-323330?style=square&logo=javascript&logoColor=F7DF1E)
-![React](https://img.shields.io/badge/React-20232A?style=square&logo=react&logoColor=61DAF)
-![React Router](https://img.shields.io/badge/React_Router-CA4245?style=square&logo=react-router&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-B73BFE?style=square&logo=vite&logoColor=FFD62E)
+![JS](https://img.shields.io/badge/JavaScript-323330?style=square&logo=javascript&logoColor=F7DF1E) ![NodeJS](https://img.shields.io/badge/Node.js-339933?style=square&logo=nodedotjs&logoColor=white) ![ExpressJs](https://img.shields.io/badge/Express.js-000000?style=square&logo=express&logoColor=white) ![Handlebars](https://img.shields.io/badge/Handlebars%20js-f0772b?style=square&logo=handlebarsdotjs&logoColor=black) ![Pug](https://img.shields.io/badge/Pug-E3C29B?styleflat&logo=pug&logoColor=black) ![EJS](https://img.shields.io/badge/EJS-%23B4CA65.svg?styleflat&logo=ejs&logoColor=black) ![mySQL](https://img.shields.io/badge/MySQL-005C84?style=square&logo=mysql&logoColor=white) ![Sequelize](https://img.shields.io/badge/Sequelize-52B0E7?style=square&logo=Sequelize&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=square&logo=mongodb&logoColor=white) ![Mongoose](https://img.shields.io/badge/Mongoose-880000.svg?style=square&logo=mongodb&logoColor=white)

@@ -34,8 +34,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
 	User.findUserById('6776556d8efe3687a09553a6')
 		.then((user) => {
-			req.user = user;
-			next();
+			if (user) {
+				console.log('Found user');
+				req.user = user;
+				next();
+			} else {
+				throw new Error('User not found');
+			}
 		})
 		.catch((err) => {
 			console.log(err);

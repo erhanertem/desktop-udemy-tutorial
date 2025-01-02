@@ -29,6 +29,7 @@ exports.getEditProduct = (req, res, next) => {
 				});
 			}
 
+			console.log('Found product');
 			// Render the edit page if product exists
 			res.render('admin/edit-product', {
 				pageTitle: 'Edit Product',
@@ -39,8 +40,7 @@ exports.getEditProduct = (req, res, next) => {
 		})
 		.catch((error) => {
 			console.error('Error fetching product:', error.message);
-			// Pass the error to the 500 error-handling middleware
-			throw error;
+			next(err); // Pass the error to the global error-handling middleware
 		});
 };
 
@@ -53,7 +53,10 @@ exports.getAllProducts = (req, res, next) => {
 				pageTitle: 'Admin Products',
 			});
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			next(err); // Pass the error to the global error-handling middleware
+		});
 };
 
 exports.postDeleteProduct = (req, res, next) => {
@@ -64,7 +67,10 @@ exports.postDeleteProduct = (req, res, next) => {
 			console.log('Product deleted');
 			res.redirect('/admin/list-products');
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			next(err); // Pass the error to the global error-handling middleware
+		});
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -84,7 +90,10 @@ exports.postEditProduct = (req, res, next) => {
 			console.log('Updated product');
 			res.redirect('/admin/list-products');
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			next(err); // Pass the error to the global error-handling middleware
+		});
 };
 
 exports.postAddProduct = (req, res, next) => {
@@ -101,5 +110,8 @@ exports.postAddProduct = (req, res, next) => {
 			console.log('Created product');
 			res.redirect('/admin/list-products');
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			next(err); // Pass the error to the global error-handling middleware
+		});
 };

@@ -23,26 +23,13 @@ class Product {
 			// Create a new product
 			dbOperation = db().collection('products').insertOne(this);
 		}
-
-		return dbOperation
-			.then((result) => {
-				console.log('Product saved');
-			})
-			.catch((err) => console.log(err));
 	}
 
 	// Fetch all products from the database
 	static fetchAllProducts() {
 		// const db = getDb();
 		const productCollection = db().collection('products');
-		return productCollection
-			.find()
-			.toArray() // Returns all products w/ no pagination - be cautious
-			.then((products) => {
-				// console.log(products);
-				return products;
-			})
-			.catch((err) => console.log(err));
+		return productCollection.find().toArray(); // Returns all products w/ no pagination - be cautious
 	}
 
 	static findProductById(productId) {
@@ -51,17 +38,7 @@ class Product {
 		// Convert productId to ObjectId - The _id field in MongoDB is not a plain string; it is a special type called ObjectId. So, we need to convert the string ID to an ObjectId before we can use it in a query.
 		const objectId = ObjectId.createFromHexString(productId);
 
-		return productCollection
-			.findOne({ _id: objectId })
-			.then((product) => {
-				if (product) {
-					console.log('Found product');
-					return product;
-				} else {
-					throw new Error('Product not found');
-				}
-			})
-			.catch((err) => console.log(err));
+		return productCollection.findOne({ _id: objectId });
 	}
 
 	static deleteById(productId) {
@@ -70,7 +47,7 @@ class Product {
 		const objectId = ObjectId.createFromHexString(productId);
 		console.log('objectId :', objectId);
 
-		return productCollection.deleteOne({ _id: objectId }).catch((err) => console.log(err));
+		return productCollection.deleteOne({ _id: objectId });
 	}
 }
 

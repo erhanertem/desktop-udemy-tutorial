@@ -26,17 +26,7 @@ class User {
 	static findUserById(userId) {
 		const userCollection = db().collection('users');
 		const objectId = ObjectId.createFromHexString(userId);
-		return userCollection
-			.findOne({ _id: objectId })
-			.then((user) => {
-				if (user) {
-					console.log('Found user');
-					return user;
-				} else {
-					throw new Error('User not found');
-				}
-			})
-			.catch((err) => console.log(err));
+		return userCollection.findOne({ _id: objectId });
 	}
 
 	addToUserCart(product) {
