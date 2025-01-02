@@ -3,13 +3,13 @@ const { db } = require('../util/nosqldatabase');
 // const { getDb } = require('../util/nosqldatabase');
 
 class Product {
-	constructor(title, price, description, imageUrl, id) {
+	constructor(title, price, description, imageUrl, id, userId) {
 		this.title = title;
 		this.imageUrl = imageUrl;
 		this.description = description;
 		this.price = price;
-		this._id = id ? ObjectId.createFromHexString(id) : null;
-		// ObjectId.createFromHexString() throws error if id by default is given null. So, we need to check if id is null or not
+		this._id = id ? ObjectId.createFromHexString(id) : null; // ObjectId.createFromHexString() throws error if id by default is given null. So, we need to check if id is null or not
+		this.userId = userId;
 	}
 
 	// Save the product to the database - Note: its not a static method because it needs to be called onto a product instance prodyct.save()... not Product.save()...

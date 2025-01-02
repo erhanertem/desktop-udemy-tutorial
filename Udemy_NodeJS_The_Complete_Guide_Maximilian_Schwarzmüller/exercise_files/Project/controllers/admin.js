@@ -76,7 +76,6 @@ exports.postEditProduct = (req, res, next) => {
 
 	// Create a new product instance
 	const product = new Product(title, price, description, imageUrl, productId);
-	console.log('product :', product);
 
 	// Attempt to save the product
 	product
@@ -91,8 +90,11 @@ exports.postEditProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
 	const { title, imageUrl, price, description } = req.body;
 
+	const userId = req.user._id;
+
 	// Create a new product
-	const product = new Product(title, price, description, imageUrl);
+	const product = new Product(title, price, description, imageUrl, null, userId);
+
 	product
 		.save()
 		.then((result) => {
