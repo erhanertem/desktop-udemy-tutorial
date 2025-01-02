@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Manage a dummy user till authentication is established
 app.use((req, res, next) => {
-	User.findById('6776556d8efe3687a09553a6')
+	User.findUserById('6776556d8efe3687a09553a6')
 		.then((user) => {
 			req.user = user;
 			next();

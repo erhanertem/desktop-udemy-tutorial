@@ -13,7 +13,7 @@ class Product {
 	}
 
 	// Save the product to the database - Note: its not a static method because it needs to be called onto a product instance prodyct.save()... not Product.save()...
-	save() {
+	saveProduct() {
 		// const db = getDb();
 		let dbOperation;
 		if (this._id) {
@@ -32,7 +32,7 @@ class Product {
 	}
 
 	// Fetch all products from the database
-	static fetchAll() {
+	static fetchAllProducts() {
 		// const db = getDb();
 		const productCollection = db().collection('products');
 		return productCollection

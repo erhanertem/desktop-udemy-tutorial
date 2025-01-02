@@ -45,7 +45,7 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.getAllProducts = (req, res, next) => {
-	Product.fetchAll()
+	Product.fetchAllProducts()
 		.then((products) => {
 			res.render('admin/list-products', {
 				prods: products,
@@ -79,7 +79,7 @@ exports.postEditProduct = (req, res, next) => {
 
 	// Attempt to save the product
 	product
-		.save()
+		.saveProduct()
 		.then((result) => {
 			console.log('Updated product');
 			res.redirect('/admin/list-products');
@@ -96,7 +96,7 @@ exports.postAddProduct = (req, res, next) => {
 	const product = new Product(title, price, description, imageUrl, null, userId);
 
 	product
-		.save()
+		.saveProduct()
 		.then((result) => {
 			console.log('Created product');
 			res.redirect('/admin/list-products');
