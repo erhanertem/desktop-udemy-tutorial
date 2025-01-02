@@ -37,7 +37,10 @@ app.use((req, res, next) => {
 			req.user = user;
 			next();
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			next(err); // Pass error to error-handling middleware
+		});
 });
 
 // Express Routers
