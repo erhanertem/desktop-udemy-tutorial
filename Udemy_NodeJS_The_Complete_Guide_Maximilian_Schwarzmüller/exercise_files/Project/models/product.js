@@ -23,6 +23,8 @@ class Product {
 			// Create a new product
 			dbOperation = db().collection('products').insertOne(this);
 		}
+
+		return dbOperation;
 	}
 
 	// Fetch all products from the database
