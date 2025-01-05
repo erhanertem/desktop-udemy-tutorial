@@ -26,18 +26,23 @@ class User {
 	addToCart(product) {
 		// TEMP - ADDING ONLY ONE CART ITEM AT A TIME - LATER WILL BE CHANGED TO MULTIPLE ITEM STORING
 		// Check if the product already exists in the cart
-		// const cartProduct = this.cart.items.findIndex((el) => el._id === product._id);
-		// // If the product exists in the cart, increment the quantity
-		// if (cartProduct >= 0) {
-		// }
-		// If the product does not exist in the cart, add the product to the cart
-		// if (cartProduct === -1) {
-		// Create the new cart item
-		const updatedCart = { items: [{ productId: product._id, quantity: 1 }] };
+		const cartProductIndex = this.cart.items.findIndex((el) => el.productId.toString() === product._id.toString());
+
+		let newQuantity = 1;
+		const updatedCartItems = [...this.cart.items];
+		// If the product exists in the cart, increment the quantity
+		if (cartProductIndex >= 0) {
+			newQuantity = this.cart.items[cartProductIndex].quantity + 1;
+			updatedCartItems[cartProductIndex].quantity = newQuantity;
+		} else {
+			// If the product does not exist in the cart, add it
+			updatedCartItems.push({ productId: product._id, quantity: newQuantity });
+		}
+
+		const updatedCart = { items: updatedCartItems };
 		return db()
 			.collection('users')
 			.updateOne({ _id: this._id }, { $set: { cart: updatedCart } });
-		// }
 	}
 
 	static findUserById(userId) {
