@@ -62,30 +62,37 @@ exports.getCart = async (req, res, next) => {
 exports.postCart = async (req, res, next) => {
 	// ProductId info is passed thru input field submission as POST req.
 	const productId = req.body.productId;
-	// Read the current user cart
-	const fetchedCart = await req.user.getCart();
-	// Find if the product with id exist in the cart
-	const productInstance = await fetchedCart.getProducts({ where: { id: productId } });
+	// Get the product that needs to be added to the cart
+	Product.findProductById(productId)
+		.then((product) => {
+			return req.user.addToCart(product);
+		})
+		.then((result) => console.log(result));
 
-	let product;
-	let updatedQuantity;
-	// If it is in the cart, update the quantity of the product
-	if (productInstance.length) {
-		product = productInstance[0];
-		// Update the quantity - sequelize provides access to quantity field of the cartItem as product and cartItem is linked
-		updatedQuantity = product.cartItem.quantity + 1;
-	} else {
-		// If there is no product instance, grap the product info
-		product = await Product.findByPk(productId);
-		// Set the quantity to 1
-		updatedQuantity = 1;
-	}
+	// // Read the current user cart
+	// const fetchedCart = await req.user.getCart();
+	// // Find if the product with id exist in the cart
+	// const productInstance = await fetchedCart.getProducts({ where: { id: productId } });
 
-	// Add the product to the user's current cart + update the quantity @ corresponding junction table
-	await fetchedCart.addProduct(product, { through: { quantity: updatedQuantity } });
+	// let product;
+	// let updatedQuantity;
+	// // If it is in the cart, update the quantity of the product
+	// if (productInstance.length) {
+	// 	product = productInstance[0];
+	// 	// Update the quantity - sequelize provides access to quantity field of the cartItem as product and cartItem is linked
+	// 	updatedQuantity = product.cartItem.quantity + 1;
+	// } else {
+	// 	// If there is no product instance, grap the product info
+	// 	product = await Product.findByPk(productId);
+	// 	// Set the quantity to 1
+	// 	updatedQuantity = 1;
+	// }
 
-	// Redirect to the cart page
-	res.redirect('/cart');
+	// // Add the product to the user's current cart + update the quantity @ corresponding junction table
+	// await fetchedCart.addProduct(product, { through: { quantity: updatedQuantity } });
+
+	// // Redirect to the cart page
+	// res.redirect('/cart');
 };
 
 exports.postCartDeleteProduct = async (req, res, next) => {

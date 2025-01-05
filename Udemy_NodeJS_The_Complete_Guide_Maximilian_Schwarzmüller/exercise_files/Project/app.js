@@ -1,5 +1,7 @@
 const path = require('path');
 
+const { ObjectId } = require('mongodb');
+
 const dotenv = require('dotenv');
 // Load appropriate .env file based on NODE_ENV
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
