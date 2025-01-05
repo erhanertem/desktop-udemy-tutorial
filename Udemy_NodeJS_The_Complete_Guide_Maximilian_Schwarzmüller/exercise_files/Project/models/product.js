@@ -9,7 +9,7 @@ class Product {
 		this.description = description;
 		this.price = price;
 		this._id = id ? ObjectId.createFromHexString(id) : null; // ObjectId.createFromHexString() throws error if id by default is given null. So, we need to check if id is null or not
-		this.userId = userId;
+		this.userId = userId; // Identify the product submitter
 	}
 
 	// Save the product to the database - Note: its not a static method because it needs to be called onto a product instance prodyct.save()... not Product.save()...

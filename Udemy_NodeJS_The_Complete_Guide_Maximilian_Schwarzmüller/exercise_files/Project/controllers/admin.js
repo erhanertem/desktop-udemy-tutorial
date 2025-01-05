@@ -98,8 +98,8 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
 	const { title, imageUrl, price, description } = req.body;
+	const userId = req.user._id; // Note: When _id is retrieved, its provided as string by the mongo driver
 
-	const userId = req.user._id;
 	// Create a new product
 	const product = new Product(title, price, description, imageUrl, null, userId);
 

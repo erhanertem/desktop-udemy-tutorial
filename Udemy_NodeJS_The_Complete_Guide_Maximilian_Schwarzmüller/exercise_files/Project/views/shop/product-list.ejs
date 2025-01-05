@@ -1,4 +1,5 @@
 <%- include('../layout/head')%>
+<link rel="stylesheet" href="/css/product.css">
 </head>
 
 <body>
@@ -12,7 +13,7 @@
           <h1 class="product__title"><%=product.title%></h1>
         </header>
         <div class="card__image">
-          <img src="<%=product.imageUrl%>" alt="<%=product.title%>" style="width: 20%" />
+          <img src="<%=product.imageUrl%>" alt="<%=product.title%>" />
         </div>
         <div class="card__content">
           <h2 class="product__price">$<%=product.price%></h2>
@@ -26,7 +27,7 @@
       <% } %>
     </div>
     <% } else { %>
-    <h1>No products</h1>
+    <h1>No Products Found!</h1>
     <% } %>
   </main>
   <%- include('../layout/end')%>
