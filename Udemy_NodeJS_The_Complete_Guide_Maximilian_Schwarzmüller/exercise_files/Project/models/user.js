@@ -64,20 +64,6 @@ class User {
 	}
 
 	deleteItemFromCart(productId) {
-		// 	// Find the product with id
-		// 	const [product] = await fetchedCart.getProducts({ where: { id: productId } });
-
-		// 	const newQuantity = product.cartItem.quantity - 1;
-
-		// 	// Remove the product from the cart
-		// 	// Remove the item completely from DB if it has depleted
-		// 	if (!newQuantity) {
-		// 		await product.cartItem.destroy();
-		// 	} else {
-		// 		// Update the quantity of the product in the cart with newQuantity
-		// 		await fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
-		// 	}
-
 		// Get the cart items
 		const updatedCartItems = [...this.cart.items];
 		// Find the product in the cart
@@ -109,6 +95,21 @@ class User {
 				console.error('Error while updating cart: ', err);
 				throw err; // Propagate the error
 			});
+	}
+
+	addOrder() {
+		return (
+			db()
+				.collection('orders')
+				// Register the cart to the order collection
+				.insertOne(this.cart)
+				// Reset the user cart value
+				.then((result) => {
+					return db()
+						.collection('users')
+						.updateOne({ _id: this._id }, { $set: { cart: { items: [] } } });
+				})
+		);
 	}
 
 	static findUserById(userId) {
