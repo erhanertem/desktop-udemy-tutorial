@@ -42,7 +42,7 @@ exports.getProduct = (req, res, next) => {
 			});
 		})
 		.catch((err) => {
-			console.error('Error fetching cart details:', err);
+			console.error('Error fetching product details:', err);
 			next(err); // Pass the error to the global error-handling middleware);
 		});
 };
@@ -78,34 +78,27 @@ exports.postCart = (req, res, next) => {
 			console.log(result);
 			// Redirect to the cart page
 			res.redirect('/cart');
+		})
+		.catch((err) => {
+			console.error('Error posting cart: ', err);
+			next(err); // Pass the error to the global error-handling middleware);
 		});
 };
 
-exports.postCartDeleteProduct = async (req, res, next) => {
-	try {
-		// ProductId info is passed thru input field submission as POST req.
-		const productId = req.body.productId;
-		// Read the current user cart
-		const fetchedCart = await req.user.getCart();
-		// Find the product with id
-		const [product] = await fetchedCart.getProducts({ where: { id: productId } });
-
-		const newQuantity = product.cartItem.quantity - 1;
-
-		// Remove the product from the cart
-		// Remove the item completely from DB if it has depleted
-		if (!newQuantity) {
-			await product.cartItem.destroy();
-		} else {
-			// Update the quantity of the product in the cart with newQuantity
-			await fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
-		}
-		// Redirect to the cart page
-		res.redirect('/cart');
-	} catch (err) {
-		console.log(err);
-		next(err); // Pass the error to the global error-handling middleware
-	}
+exports.postCartDeleteProduct = (req, res, next) => {
+	// ProductId info is passed thru input field submission as POST req.
+	const productId = req.body.productId;
+	// Read the current user cart
+	req.user
+		.deleteItemFromCart(productId)
+		.then((result) => {
+			// Redirect to the cart page
+			res.redirect('/cart');
+		})
+		.catch((err) => {
+			console.error('Error deleting product from cart: ', err);
+			next(err); // Pass the error to the global error-handling middleware
+		});
 };
 
 exports.postOrder = async (req, res, next) => {
