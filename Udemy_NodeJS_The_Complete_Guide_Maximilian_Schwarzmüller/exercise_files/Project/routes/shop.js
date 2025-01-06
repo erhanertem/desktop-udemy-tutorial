@@ -14,7 +14,7 @@ router.get('/products', shopController.getProducts);
 // VERY IMPORTANT - Within the same segments, params route should always come after static routes
 router.get('/products/:productId', shopController.getProduct);
 
-// router.get('/cart', shopController.getCart);
+router.get('/cart', shopController.getCart);
 
 router.post('/cart', shopController.postCart);
 

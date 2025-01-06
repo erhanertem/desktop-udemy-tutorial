@@ -12,7 +12,7 @@
       <%
         let totalQuantity = 0;
         products.forEach(product => {
-          totalQuantity += product.cartItem.quantity;
+          totalQuantity += product.quantity;
         });
       %>
       <p><%= totalQuantity %> items in your cart</p>
@@ -22,11 +22,12 @@
         <h1>
           <%=product.title%>
         </h1>
-        <h2>
-          Quantity: <%=product.cartItem.quantity%>
-        </h2>
+        <img src="<%=product.imageUrl%>" alt=<%=product.title%> width="100" height="100">
+        <div>
+          Quantity: <%=product.quantity%>
+        </div>
         <form action='/cart-delete-item' method='POST'>
-          <input type='hidden' name='productId' value='<%=product.id%>'>
+          <input type='hidden' name='productId' value='<%=product._id%>'>
           <button class='btn danger' type='submit'>
             DELETE
           </button>

@@ -23,9 +23,27 @@ class User {
 			.catch((err) => console.log(err));
 	}
 
+	getCart() {
+		const productIds = this.cart.items.map((item) => item.productId);
+		const cart = db()
+			.collection('products')
+			.find({ _id: { $in: productIds } })
+			.toArray()
+			.then((products) =>
+				products.map((product) => {
+					return {
+						...product,
+						quantity: this.cart.items.find((item) => item.productId.toString() === product._id.toString()).quantity,
+					};
+				})
+			);
+		return cart;
+	}
+
 	addToCart(product) {
 		// TEMP - ADDING ONLY ONE CART ITEM AT A TIME - LATER WILL BE CHANGED TO MULTIPLE ITEM STORING
 		// Check if the product already exists in the cart
+		// const cartProductIndex = this.cart.items.findIndex((el) => el.productId == product._id);
 		const cartProductIndex = this.cart.items.findIndex((el) => el.productId.toString() === product._id.toString());
 
 		let newQuantity = 1;

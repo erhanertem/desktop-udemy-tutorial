@@ -1,98 +1,84 @@
 const Product = require('../models/product');
 
-exports.getIndex = async (req, res, next) => {
-	try {
-		const products = await Product.fetchAllProducts();
-		res.render('shop/index', {
-			prods: products,
-			path: '/',
-			pageTitle: 'Shop',
+exports.getIndex = (req, res, next) => {
+	Product.fetchAllProducts()
+		.then((products) => {
+			return res.render('shop/index', {
+				prods: products,
+				path: '/',
+				pageTitle: 'Shop',
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			next(err); // Pass the error to the global error-handling middleware
 		});
-	} catch (err) {
-		console.log(err);
-		next(err); // Pass the error to the global error-handling middleware
-	}
 };
 
-exports.getProducts = async (req, res, next) => {
-	try {
-		const products = await Product.fetchAllProducts();
-
-		res.render('shop/product-list', {
-			prods: products,
-			path: '/product-list',
-			pageTitle: 'All products',
+exports.getProducts = (req, res, next) => {
+	Product.fetchAllProducts()
+		.then((products) => {
+			return res.render('shop/product-list', {
+				prods: products,
+				path: '/product-list',
+				pageTitle: 'All products',
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			next(err); // Pass the error to the global error-handling middleware
 		});
-	} catch (err) {
-		console.log(err);
-		next(err); // Pass the error to the global error-handling middleware
-	}
 };
 
-exports.getProduct = async (req, res, next) => {
+exports.getProduct = (req, res, next) => {
 	const productId = req.params.productId;
 
-	const product = await Product.findProductById(productId);
-
-	res.render('shop/product-detail', {
-		product,
-		path: '/product-list',
-		pageTitle: product.title,
-	});
-};
-
-exports.getCart = async (req, res, next) => {
-	try {
-		// Gather cart data via seq. magic method
-		const cart = await req.user.getCart();
-		// Gather all products via seq. magic method
-		const products = await cart.getProducts();
-		// Render the cart page with the re-constructed cart details
-		res.render('shop/cart', {
-			path: '/cart',
-			pageTitle: 'Your Cart',
-			products: products,
+	Product.findProductById(productId)
+		.then((product) => {
+			return res.render('shop/product-detail', {
+				product,
+				path: '/product-list',
+				pageTitle: product.title,
+			});
+		})
+		.catch((err) => {
+			console.error('Error fetching cart details:', err);
+			next(err); // Pass the error to the global error-handling middleware);
 		});
-	} catch (err) {
-		console.error('Error fetching cart details:', err);
-		next(err); // Pass the error to the global error-handling middleware
-	}
 };
 
-exports.postCart = async (req, res, next) => {
+exports.getCart = (req, res, next) => {
+	// Gather cart data via seq. magic method
+	req.user
+		.getCart()
+		.then((products) => {
+			// Render the cart page with the re-constructed cart details
+			res.render('shop/cart', {
+				path: '/cart',
+				pageTitle: 'Your Cart',
+				products: products,
+			});
+		})
+		.catch((err) => {
+			console.error('Error fetching cart details:', err);
+			next(err); // Pass the error to the global error-handling middleware);
+		});
+};
+
+exports.postCart = (req, res, next) => {
 	// ProductId info is passed thru input field submission as POST req.
 	const productId = req.body.productId;
 	// Get the product that needs to be added to the cart
 	Product.findProductById(productId)
 		.then((product) => {
+			// Add the product to the cart
 			return req.user.addToCart(product);
 		})
-		.then((result) => console.log(result));
-
-	// // Read the current user cart
-	// const fetchedCart = await req.user.getCart();
-	// // Find if the product with id exist in the cart
-	// const productInstance = await fetchedCart.getProducts({ where: { id: productId } });
-
-	// let product;
-	// let updatedQuantity;
-	// // If it is in the cart, update the quantity of the product
-	// if (productInstance.length) {
-	// 	product = productInstance[0];
-	// 	// Update the quantity - sequelize provides access to quantity field of the cartItem as product and cartItem is linked
-	// 	updatedQuantity = product.cartItem.quantity + 1;
-	// } else {
-	// 	// If there is no product instance, grap the product info
-	// 	product = await Product.findByPk(productId);
-	// 	// Set the quantity to 1
-	// 	updatedQuantity = 1;
-	// }
-
-	// // Add the product to the user's current cart + update the quantity @ corresponding junction table
-	// await fetchedCart.addProduct(product, { through: { quantity: updatedQuantity } });
-
-	// // Redirect to the cart page
-	// res.redirect('/cart');
+		.then((result) => {
+			console.log(result);
+			// Redirect to the cart page
+			res.redirect('/cart');
+		});
 };
 
 exports.postCartDeleteProduct = async (req, res, next) => {
