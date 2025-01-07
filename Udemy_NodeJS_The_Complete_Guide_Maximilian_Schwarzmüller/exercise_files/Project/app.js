@@ -1,20 +1,19 @@
 const path = require('path');
 
-const { ObjectId } = require('mongodb');
-
 const dotenv = require('dotenv');
 // Load appropriate .env file based on NODE_ENV
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
 dotenv.config({ path: path.resolve(__dirname, envFile) });
 
 const express = require('express');
+const mongoose = require('mongoose');
+
 const app = express();
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 
-const { mongoConnect } = require('./util/nosqldatabase');
 const User = require('./models/user');
 
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
@@ -64,7 +63,9 @@ app.use(errorController.get500);
 // Server initializer with mongoDB in IEFF style
 (async () => {
 	try {
-		await mongoConnect();
+		await mongoose.connect(
+			`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_USER_PASS}@shop.vs6wu.mongodb.net/shop?retryWrites=true&w=majority`
+		);
 
 		app.listen(process.env.PORT, process.env.DB_HOST, () => {
 			console.log(
