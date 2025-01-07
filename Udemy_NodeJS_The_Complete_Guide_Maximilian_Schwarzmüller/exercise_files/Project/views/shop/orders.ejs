@@ -1,24 +1,25 @@
-<%- include('../layout/head')%>
-</head>
+        <%- include('../layout/head')%>
+        <link rel="stylesheet" href="/css/orders.css">
+        </head>
 
-<body>
-  <%- include('../layout/navigation')%>
-  <main>
-    <% if (orders.length <=0) { %>
-    <h1>Nothing there!</h1>
-    <% } else { %>
-    <ul>
-      <% orders.forEach(order => { %>
-      <li>
-        <h1>Order# <%= order.id %></h1>
-        <ul>
-          <% order.products.forEach(product => { %>
-          <li><%= product.title %> - <%= product.orderItem.quantity %> x <%= product.price %> $</li>
-          <% }) %>
-        </ul>
-      </li>
-      <% }) %>
-    </ul>
-    <% } %>
-  </main>
-  <%- include('../layout/end')%>
+        <body>
+          <%- include('../layout/navigation')%>
+          <main>
+            <% if (orders.length <= 0) { %>
+            <h1>Nothing there!</h1>
+            <% } else { %>
+            <ul class="orders">
+              <% orders.forEach(order => { %>
+              <li class="orders__item">
+                <h1>Order - # <%= order._id %></h1>
+                <ul class="orders__products">
+                  <% order.items.forEach(product => { %>
+                  <li class="orders__products-item"><%= product.title %> (<%= product.quantity %>)</li>
+                  <% }); %>
+                </ul>
+              </li>
+              <% }); %>
+            </ul>
+            <% } %>
+          </main>
+          <%- include('../layout/end')%>

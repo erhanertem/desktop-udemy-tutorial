@@ -41,7 +41,6 @@ class User {
 	}
 
 	addToCart(product) {
-		// TEMP - ADDING ONLY ONE CART ITEM AT A TIME - LATER WILL BE CHANGED TO MULTIPLE ITEM STORING
 		// Check if the product already exists in the cart
 		// const cartProductIndex = this.cart.items.findIndex((el) => el.productId == product._id);
 		const cartProductIndex = this.cart.items.findIndex((el) => el.productId.toString() === product._id.toString());
@@ -98,18 +97,33 @@ class User {
 	}
 
 	addOrder() {
-		return (
-			db()
-				.collection('orders')
-				// Register the cart to the order collection
-				.insertOne(this.cart)
-				// Reset the user cart value
-				.then((result) => {
-					return db()
-						.collection('users')
-						.updateOne({ _id: this._id }, { $set: { cart: { items: [] } } });
-				})
-		);
+		return this.getCart().then((products) => {
+			// Create order data for submission
+			const order = {
+				items: products,
+				user: {
+					_id: this._id,
+					name: this.name,
+				},
+			};
+
+			return (
+				db()
+					.collection('orders')
+					// Register the cart to the order collection
+					.insertOne(order)
+					// Reset the user cart value
+					.then((result) => {
+						return db()
+							.collection('users')
+							.updateOne({ _id: this._id }, { $set: { cart: { items: [] } } });
+					})
+			);
+		});
+	}
+
+	getOrders() {
+		return db().collection('orders').find({ 'user._id': this._id }).toArray();
 	}
 
 	static findUserById(userId) {

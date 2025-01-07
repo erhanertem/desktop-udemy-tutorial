@@ -110,27 +110,26 @@ exports.postOrder = (req, res, next) => {
 			res.redirect('/orders');
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error('Error while creating order: ', err);
 			next(err); // Pass the error to the global error-handling middleware})
 		});
 };
 
-exports.getOrders = async (req, res, next) => {
-	try {
-		// Fetch all orders of the user
-		// VERY IMPORTANT! Sequelize include directive injects products in the order instance so we can utilize this data inside ejs
-		// User has access to orders table and orders table has access to products table via orderitems junction table. Therefore, products table data could be injected into orders table data while fetching.
-		const fetchedOrders = await req.user.getOrders({ include: ['products'] });
-		// Render the orders page
-		res.render('shop/orders', {
-			path: '/orders',
-			pageTitle: 'Your Orders',
-			orders: fetchedOrders,
+exports.getOrders = (req, res, next) => {
+	req.user
+		.getOrders()
+		.then((fetchedOrders) => {
+			// Render the orders page
+			return res.render('shop/orders', {
+				path: '/orders',
+				pageTitle: 'Your Orders',
+				orders: fetchedOrders,
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			next(err); // Pass the error to the global error-handling middleware
 		});
-	} catch (err) {
-		console.log(err);
-		next(err); // Pass the error to the global error-handling middleware
-	}
 };
 
 exports.getCheckout = (req, res, next) => {
