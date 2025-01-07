@@ -131,10 +131,3 @@ exports.getOrders = (req, res, next) => {
 			next(err); // Pass the error to the global error-handling middleware
 		});
 };
-
-exports.getCheckout = (req, res, next) => {
-	res.render('shop/checkout', {
-		path: '/checkout',
-		pageTitle: 'Checkout',
-	});
-};
