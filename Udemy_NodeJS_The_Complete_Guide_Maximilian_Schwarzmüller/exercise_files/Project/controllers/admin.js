@@ -1,4 +1,4 @@
-const Product = require('../models/product');
+const Product = require('../models/product'); // Product hereby is an arbitrary name does not need to match the name provided in the model() @ source file export
 
 exports.getAddProduct = (req, res, next) => {
 	res.render('admin/edit-product', {
@@ -98,16 +98,23 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
 	const { title, imageUrl, price, description } = req.body;
-	const userId = req.user._id; // Note: When _id is retrieved, its provided as string by the mongo driver
+	// TEMP - DISABLED
+	// const userId = req.user._id; // Note: When _id is retrieved, its provided as string by the mongo driver
 
 	// Create a new product
-	const product = new Product(title, price, description, imageUrl, null, userId);
+	const product = new Product({
+		title,
+		price,
+		description,
+		imageUrl,
+		// userId
+	});
 
 	product
-		.saveProduct()
+		.save() // mongoose document api fn
 		.then((result) => {
 			console.log('Created product');
-			res.redirect('/admin/list-products');
+			// res.redirect('/admin/list-products');
 		})
 		.catch((err) => {
 			console.log(err);

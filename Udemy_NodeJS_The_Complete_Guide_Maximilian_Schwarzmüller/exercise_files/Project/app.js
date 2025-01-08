@@ -14,7 +14,8 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorController = require('./controllers/error');
 
-const User = require('./models/user');
+// TEMP - DISABLED
+// const User = require('./models/user');
 
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
 app.use(express.urlencoded({ extended: true }));
@@ -32,22 +33,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 // EXPRESSJS MIDDLEWARE
 
 // Manage a dummy user till authentication is established
-app.use((req, res, next) => {
-	User.findUserById('6776556d8efe3687a09553a6')
-		.then((user) => {
-			if (user) {
-				console.log('Found user');
-				req.user = new User(user.name, user.email, user.cart, user._id); // Create a user object from the fetched user data help us solicit User object functions as well.
-				next();
-			} else {
-				throw new Error('User not found');
-			}
-		})
-		.catch((err) => {
-			console.log(err);
-			next(err); // Pass error to error-handling middleware
-		});
-});
+// TEMP - DISABLED
+// app.use((req, res, next) => {
+// 	User.findUserById('6776556d8efe3687a09553a6')
+// 		.then((user) => {
+// 			if (user) {
+// 				console.log('Found user');
+// 				req.user = new User(user.name, user.email, user.cart, user._id); // Create a user object from the fetched user data help us solicit User object functions as well.
+// 				next();
+// 			} else {
+// 				throw new Error('User not found');
+// 			}
+// 		})
+// 		.catch((err) => {
+// 			console.log(err);
+// 			next(err); // Pass error to error-handling middleware
+// 		});
+// });
 
 // Express Routers
 app.use('/admin', adminRoutes);

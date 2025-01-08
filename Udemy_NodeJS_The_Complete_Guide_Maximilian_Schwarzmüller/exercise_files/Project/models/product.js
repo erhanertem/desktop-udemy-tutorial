@@ -11,7 +11,8 @@ const productSchema = new Schema({
 	price: { type: Number, required: true },
 	description: { type: String, required: true },
 	imageUrl: { type: String, required: true },
-	userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // 'User' is the name of the model we created in user.js file. ref: 'User' refers to the User model
+	// TEMP - DISABLED
+	// userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // 'User' is the name of the model we created in user.js file. ref: 'User' refers to the User model
 });
 
-module.exports = model('Product', productSchema); // Export the model with a name called 'Product' w/ a schema design as established by productSchema
+module.exports = model('Product', productSchema); // 'Product' name for the product schema is internal to mongoose for handling DB and can be arbitrarily called via different name when being imported.
