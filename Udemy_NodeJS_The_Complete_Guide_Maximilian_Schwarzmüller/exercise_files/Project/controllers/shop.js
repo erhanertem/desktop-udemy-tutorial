@@ -33,7 +33,7 @@ exports.getProducts = (req, res, next) => {
 exports.getProduct = (req, res, next) => {
 	const productId = req.params.productId;
 
-	Product.findProductById(productId)
+	Product.findById(productId)
 		.then((product) => {
 			return res.render('shop/product-detail', {
 				product,
