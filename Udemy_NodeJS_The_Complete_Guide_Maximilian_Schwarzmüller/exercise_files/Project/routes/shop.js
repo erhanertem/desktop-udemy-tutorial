@@ -6,9 +6,9 @@ const shopController = require('../controllers/shop');
 // THIS IS A MINI EXPRESS APP TIOED TO MAIN APP ROUTER
 const router = express.Router();
 
-// router.get('/', shopController.getIndex);
+router.get('/', shopController.getIndex);
 
-// router.get('/products', shopController.getProducts);
+router.get('/products', shopController.getProducts);
 
 // // DYNAMIC SEGMENT
 // // VERY IMPORTANT - Within the same segments, params route should always come after static routes
