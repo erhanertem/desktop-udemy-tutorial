@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 		.then((user) => {
 			if (user) {
 				console.log('Found user');
-				req.user = new User(user.name, user.email, user.cart, user._id); // Create a user object from the fetched user data help us solicit User object functions as well.
+				req.user = user;
 				next();
 			} else {
 				throw new Error('User not found');
