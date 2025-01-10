@@ -18,7 +18,7 @@ exports.getEditProduct = (req, res, next) => {
 	const productId = req.params.productId;
 
 	// Fetch the product by ID
-	Product.findProductById(productId)
+	Product.findById(productId)
 		.then((product) => {
 			// Handle case where product is not found
 			if (!product) {
@@ -45,7 +45,7 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.getAllProducts = (req, res, next) => {
-	Product.fetchAllProducts()
+	Product.find()
 		.then((products) => {
 			res.render('admin/list-products', {
 				prods: products,
@@ -78,14 +78,19 @@ exports.postEditProduct = (req, res, next) => {
 	// POST req includes req.body
 	// console.log(req.body);
 	const { title, imageUrl, price, description, productId } = req.body;
-	console.log('productId :', productId);
-
-	// Create a new product instance
-	const product = new Product(title, price, description, imageUrl, productId);
 
 	// Attempt to save the product
-	product
-		.saveProduct()
+	Product.findById(productId)
+		.then((product) => {
+			// Modify the retrieved product
+			product.title = title;
+			product.imageUrl = imageUrl;
+			product.price = price;
+			product.description = description;
+			product.productId = productId;
+			// Save the updated product to the database
+			product.save();
+		})
 		.then((result) => {
 			console.log('Updated product');
 			res.redirect('/admin/list-products');
