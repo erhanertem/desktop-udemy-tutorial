@@ -103,8 +103,7 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
 	const { title, imageUrl, price, description } = req.body;
-	// TEMP - DISABLED
-	// const userId = req.user._id; // Note: When _id is retrieved, its provided as string by the mongo driver
+	const userId = req.user._id; // Note: When _id is retrieved, its provided as string by the mongo driver
 
 	// Create a new product
 	const product = new Product({
@@ -112,14 +111,14 @@ exports.postAddProduct = (req, res, next) => {
 		price,
 		description,
 		imageUrl,
-		// userId
+		userId,
 	});
 
 	product
 		.save() // mongoose document api fn
 		.then((result) => {
 			console.log('Created product');
-			// res.redirect('/admin/list-products');
+			res.redirect('/admin/list-products');
 		})
 		.catch((err) => {
 			console.log(err);
