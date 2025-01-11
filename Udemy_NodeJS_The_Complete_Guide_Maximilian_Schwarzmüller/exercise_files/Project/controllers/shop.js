@@ -50,13 +50,15 @@ exports.getProduct = (req, res, next) => {
 exports.getCart = (req, res, next) => {
 	// Gather cart data via seq. magic method
 	req.user
-		.getCart()
-		.then((products) => {
+		.populate('cart.items.productId') // Builds the cart items with corresponding information
+		.then((user) => {
+			// console.log('🅰️', products);
+			console.log(user.cart.items);
 			// Render the cart page with the re-constructed cart details
 			res.render('shop/cart', {
 				path: '/cart',
 				pageTitle: 'Your Cart',
-				products: products,
+				products: user.cart.items,
 			});
 		})
 		.catch((err) => {
@@ -69,7 +71,7 @@ exports.postCart = (req, res, next) => {
 	// ProductId info is passed thru input field submission as POST req.
 	const productId = req.body.productId;
 	// Get the product that needs to be added to the cart
-	Product.findProductById(productId)
+	Product.findById(productId)
 		.then((product) => {
 			// Add the product to the cart
 			return req.user.addToCart(product);
