@@ -50,10 +50,9 @@ exports.getProduct = (req, res, next) => {
 exports.getCart = (req, res, next) => {
 	// Gather cart data via seq. magic method
 	req.user
-		.populate('cart.items.productId') // Builds the cart items with corresponding information
+		.populate('cart.items.productId') // Builds the cart items with corresponding full product reference
 		.then((user) => {
-			// console.log('🅰️', products);
-			console.log(user.cart.items);
+			// console.log(user.cart.items);
 			// Render the cart page with the re-constructed cart details
 			res.render('shop/cart', {
 				path: '/cart',

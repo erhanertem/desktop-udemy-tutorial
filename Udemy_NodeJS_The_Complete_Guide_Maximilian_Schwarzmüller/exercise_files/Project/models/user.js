@@ -49,7 +49,35 @@ userSchema.methods.addToCart = function (product) {
 		// If the product does not exist in the cart, add it
 		updatedCartItems.push({ productId: product._id, quantity: newQuantity });
 	}
+	// Update the cart with the new cart items
 	this.cart = { items: updatedCartItems };
+	// Save the user instance
+	return this.save();
+};
+
+userSchema.methods.deleteItemFromCart = function (productId) {
+	// Get the cart items
+	const updatedCartItems = [...this.cart.items];
+	// Find the product in the cart
+	const productIndex = updatedCartItems.findIndex((item) => {
+		return item.productId.toString() === productId.toString();
+	});
+	//  Guard clause for non-existing cart item search
+	if (productIndex === -1) {
+		throw new Error('Product not found in cart');
+	}
+	// Access the product for updating its cart quantity
+	const product = updatedCartItems[productIndex];
+	// Decrement quantity of the item if there is more than 1
+	if (product.quantity > 1) {
+		updatedCartItems[productIndex].quantity -= 1;
+	} else {
+		// Remove the item from the cart if the quantity is 1
+		updatedCartItems.splice(productIndex, 1);
+	}
+	// Update the cart with the new cart items
+	this.cart = { items: updatedCartItems };
+	// Save the user instance
 	return this.save();
 };
 
@@ -79,38 +107,6 @@ module.exports = model('User', userSchema);
 // 			.catch((err) => console.log(err));
 // 	}
 
-// 	deleteItemFromCart(productId) {
-// 		// Get the cart items
-// 		const updatedCartItems = [...this.cart.items];
-// 		// Find the product in the cart
-// 		const productIndex = updatedCartItems.findIndex((item) => {
-// 			console.log('🅰️', item);
-// 			return item.productId.toString() === productId.toString();
-// 		});
-// 		//  Guard clause for non-existing cart item search
-// 		if (productIndex === -1) {
-// 			throw new Error('Product not found in cart');
-// 		}
-// 		// Access the product for updating its cart quantity
-// 		const product = updatedCartItems[productIndex];
-// 		// Decrement quantity of the item if there is more than 1
-// 		if (product.quantity > 1) {
-// 			updatedCartItems[productIndex].quantity -= 1;
-// 		} else {
-// 			// Remove the item from the cart if the quantity is 1
-// 			updatedCartItems.splice(productIndex, 1);
-// 		}
-// 		// Update the cart with the new cart items
-// 		const updatedCart = { items: updatedCartItems };
-// 		// Update the current user's cart with the new one
-// 		return db()
-// 			.collection('users')
-// 			.updateOne({ _id: this._id }, { $set: { cart: updatedCart } })
-// 			.catch((err) => {
-// 				console.error('Error while updating cart: ', err);
-// 				throw err; // Propagate the error
-// 			});
-// 	}
 // 	addOrder() {
 // 		return this.getCart().then((products) => {
 // 			// Create order data for submission
