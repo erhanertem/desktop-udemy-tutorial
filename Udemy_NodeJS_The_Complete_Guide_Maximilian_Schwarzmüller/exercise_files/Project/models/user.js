@@ -88,17 +88,3 @@ userSchema.methods.deleteItemFromCart = function (productId) {
 
 // Create a user model based on userSchema template
 module.exports = model('User', userSchema);
-
-// 	saveUser() {
-// 		let dbOperation;
-// 		if (this._id) {
-// 			dbOperation = db().collection('users').updateOne({ _id: this._id }, { $set: this });
-// 		} else {
-// 			dbOperation = db().collection('users').insertOne(this);
-// 		}
-// 		return dbOperation
-// 			.then((result) => {
-// 				console.log('User saved');
-// 			})
-// 			.catch((err) => console.log(err));
-// 	}

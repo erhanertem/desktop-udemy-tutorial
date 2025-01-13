@@ -149,16 +149,15 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-	req.user
-		.getOrders()
-		.then((fetchedOrders) => {
+	Order.find({ userId: req.user._id })
+		.then((orders) =>
 			// Render the orders page
-			return res.render('shop/orders', {
+			res.render('shop/orders', {
 				path: '/orders',
 				pageTitle: 'Your Orders',
-				orders: fetchedOrders,
-			});
-		})
+				orders,
+			})
+		)
 		.catch((err) => {
 			console.log(err);
 			next(err); // Pass the error to the global error-handling middleware
