@@ -55,6 +55,11 @@ userSchema.methods.addToCart = function (product) {
 	return this.save();
 };
 
+userSchema.methods.deleteCart = function () {
+	this.cart = { items: [] };
+	return this.save();
+};
+
 userSchema.methods.deleteItemFromCart = function (productId) {
 	// Get the cart items
 	const updatedCartItems = [...this.cart.items];
@@ -84,15 +89,6 @@ userSchema.methods.deleteItemFromCart = function (productId) {
 // Create a user model based on userSchema template
 module.exports = model('User', userSchema);
 
-// const { ObjectId } = require('mongodb');
-// const { db } = require('../util/nosqldatabase');
-// class User {
-// 	constructor(username, email, cart, id) {
-// 		this.name = username;
-// 		this.email = email;
-// 		this.cart = cart; // { items: [] } is the presumed structure of the cart - embedded data to User model
-// 		this._id = id;
-// 	}
 // 	saveUser() {
 // 		let dbOperation;
 // 		if (this._id) {
@@ -106,38 +102,3 @@ module.exports = model('User', userSchema);
 // 			})
 // 			.catch((err) => console.log(err));
 // 	}
-
-// 	addOrder() {
-// 		return this.getCart().then((products) => {
-// 			// Create order data for submission
-// 			const order = {
-// 				items: products,
-// 				user: {
-// 					_id: this._id,
-// 					name: this.name,
-// 				},
-// 			};
-// 			return (
-// 				db()
-// 					.collection('orders')
-// 					// Register the cart to the order collection
-// 					.insertOne(order)
-// 					// Reset the user cart value
-// 					.then((result) => {
-// 						return db()
-// 							.collection('users')
-// 							.updateOne({ _id: this._id }, { $set: { cart: { items: [] } } });
-// 					})
-// 			);
-// 		});
-// 	}
-// 	getOrders() {
-// 		return db().collection('orders').find({ 'user._id': this._id }).toArray();
-// 	}
-// 	static findUserById(userId) {
-// 		const userCollection = db().collection('users');
-// 		const objectId = ObjectId.createFromHexString(userId);
-// 		return userCollection.findOne({ _id: objectId });
-// 	}
-// }
-// module.exports = User;

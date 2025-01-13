@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const Order = require('../models/order');
 
 exports.getIndex = (req, res, next) => {
 	Product.find()
@@ -104,12 +105,43 @@ exports.postCartDeleteProduct = (req, res, next) => {
 
 exports.postOrder = (req, res, next) => {
 	req.user
-		// Add order
-		.addOrder()
-		.then((result) => {
-			// Redirect to orders page
-			res.redirect('/orders');
+		// > Option#1
+		// .populate('cart.items.productId')
+		// > Option#2
+		.populate({
+			path: 'cart.items.productId',
+			select: 'title price description imageUrl',
 		})
+		.then((user) => {
+			// Populate product information from the cart items
+			const products = user.cart.items;
+			// Create a new order instance
+			const order = new Order({
+				userId: req.user._id,
+				products: products.map((product) => {
+					return {
+						// > Option#1
+						// // VERY IMPORTANT: populate replaces productId on the fly with the corresponding product information. However, if we try to access the information we only receive the productId again.
+						// // product: product.productId,
+						// // VERY IMPORTANT: In order to access the populated information on productId, we need to use _doc property of mongoose for the populated object
+						// product: product.productId._doc,
+						// > Option#2
+						product: { ...product.productId },
+						quantity: product.quantity,
+					};
+				}),
+			});
+			// Save the order via mongoose
+			return order.save();
+		})
+		.then((result) =>
+			// Clear the cart after order creation
+			req.user.deleteCart()
+		)
+		.then((result) =>
+			// Redirect to orders page
+			res.redirect('/orders')
+		)
 		.catch((err) => {
 			console.error('Error while creating order: ', err);
 			next(err); // Pass the error to the global error-handling middleware})
