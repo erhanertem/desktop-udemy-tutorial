@@ -1,0 +1,21 @@
+<%- include('../layout/head')%>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body>
+  <%- include('../layout/navigation')%>
+  <main>
+    <form class="login-form" action="/login" method="POST">
+      <div class="form-control">
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" required />
+      </div>
+      <div class="form-control">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required />
+      </div>
+      <button class='btn' type="submit">Login</button>
+    </form>
+  </main>
+  <%- include('../layout/end')%>

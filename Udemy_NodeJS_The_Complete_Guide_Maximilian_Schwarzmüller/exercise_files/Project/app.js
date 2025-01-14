@@ -1,21 +1,23 @@
 const path = require('path');
 
+const express = require('express');
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 // Load appropriate .env file based on NODE_ENV
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
 dotenv.config({ path: path.resolve(__dirname, envFile) });
 
-const express = require('express');
-const mongoose = require('mongoose');
-
-const app = express();
-
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
 const errorController = require('./controllers/error');
 
 const User = require('./models/user');
 
+// Init Express App
+const app = express();
+
+// Parse JSON Data
 // Middleware to parse application/x-www-form-urlencoded data (expressjs)
 app.use(express.urlencoded({ extended: true }));
 // Middleware to parse application/json data (expressjs)
@@ -52,6 +54,7 @@ app.use((req, res, next) => {
 // Express Routers
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
+app.use(authRoutes);
 
 // ERROR HANDLING
 // > 404 Middleware for non-existent routes
