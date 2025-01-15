@@ -1,8 +1,9 @@
 const path = require('path');
 
 const express = require('express');
-const session = require('express-session');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session); // Takes express-session as its argument and the result is stored in MongoDBStore
 const dotenv = require('dotenv');
 // Load appropriate .env file based on NODE_ENV
 const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
@@ -17,6 +18,10 @@ const User = require('./models/user');
 
 // Init Express App
 const app = express();
+// Init Session Storage
+// MongoDB URI
+const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_USER_PASS}@shop.vs6wu.mongodb.net/shop?retryWrites=true&w=majority`;
+const store = new MongoDBStore({ uri: MONGODB_URI, collection: 'sessions' });
 
 // Desiginate a template engine to use
 app.set('view engine', 'ejs');
@@ -25,19 +30,20 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Serve static content folder
 app.use(express.static(path.join(__dirname, 'public')));
-// Parse JSON Data
-// Middleware to parse application/x-www-form-urlencoded data (expressjs)
+// Middleware to handle URL-encoded data which is typically used when submitting HTML forms with the application/x-www-form-urlencoded content type. Extended set to true, can allow handling complex data structures such as nested objects, arrays in req.body.
 app.use(express.urlencoded({ extended: true }));
-// Middleware to parse application/json data (expressjs)
-app.use(express.json());
 // Handle user sessions for stateful cookie-based authentication
 app.use(
 	session({
 		secret: process.env.SESSION_SECRET, // Session secret
 		resave: false, //  The session will not be saved back to the session store on every response, even if the session was never modified during the request. This can help improve performance by reducing unnecessary writes to the session store.
 		saveUninitialized: false, // A session will not be created and saved to the session store unless it is modified. This helps reduce storage usage by only saving sessions that have meaningful data.
+		store: store, // The session store
+		cookie: { secure: true },
 	})
 );
+// Middleware to parse incoming requests with JSON payloads. It parses the body of the request and makes it available under req.body. If located before the session middleware, it might interfere with the session handling, especially if the session data is stored in the request body or if there are any conflicts in how the request body is parsed.
+app.use(express.json());
 
 // EXPRESSJS MIDDLEWARE
 
@@ -75,9 +81,7 @@ app.use(errorController.get500);
 (async () => {
 	try {
 		// Connect to mongoDB
-		await mongoose.connect(
-			`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_USER_PASS}@shop.vs6wu.mongodb.net/shop?retryWrites=true&w=majority`
-		);
+		await mongoose.connect(MONGODB_URI);
 
 		// TEMP - Create a dummy user after connecting to MongoDB
 		const isThereAnyUser = await User.findOne();
