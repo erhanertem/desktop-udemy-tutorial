@@ -7,7 +7,7 @@ exports.getLogin = (req, res, next) => {
 		.trim()
 		.split('=')
 		.pop();
-	// console.log('isLoggedIn :', isLoggedIn);
+	console.log('isLoggedIn :', isLoggedIn);
 
 	res.render('auth/login', {
 		pageTitle: 'Login', // Name of the page
@@ -27,8 +27,8 @@ exports.postLogin = (req, res, next) => {
 	// */
 	// req.isLoggedIn = true;
 
-	// Create a cookie
-	res.setHeader('Set-Cookie', 'loggedIn=true');
+	// Create a cookie w/ configuration
+	res.setHeader('Set-Cookie', 'loggedIn=true; Path=/; Domain=localhost; HttpOnly');
 
 	// For now, we'll just redirect to the home page
 	res.redirect('/');
