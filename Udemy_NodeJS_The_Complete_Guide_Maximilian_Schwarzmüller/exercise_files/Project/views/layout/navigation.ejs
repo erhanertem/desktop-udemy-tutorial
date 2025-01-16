@@ -28,6 +28,7 @@
       <li class='main-header__item'>
         <a class='<%= path=== '/login' ? 'active' : '' %>' href='/login'>Login</a>
       </li>
+      <!-- Either a Post form or a <a> link element is fine -->
       <li class='main-header__item'>
         <form action='/logout' method='POST'>
           <button type='submit'>Logout</button>
@@ -68,6 +69,7 @@
       <a class='<%= path=== '/login' ? 'active' : '' %>' href='/login'>Login</a>
     </li>
     <li class='main-header__item'>
+      <!-- Either a Post form or a <a> link element is fine -->
       <form action='/logout' method='POST'>
         <button type='submit'>Logout</button>
       </form>

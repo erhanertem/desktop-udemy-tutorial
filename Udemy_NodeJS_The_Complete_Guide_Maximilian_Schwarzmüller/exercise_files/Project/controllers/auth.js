@@ -1,4 +1,5 @@
 exports.getLogin = (req, res, next) => {
+	console.log('🅰️', req.session);
 	res.render('auth/login', {
 		pageTitle: 'Login', // Name of the page
 		path: '/login', // The path of the current route
