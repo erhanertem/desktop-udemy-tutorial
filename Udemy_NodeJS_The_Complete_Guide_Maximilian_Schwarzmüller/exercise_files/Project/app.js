@@ -46,25 +46,28 @@ app.use(express.json());
 
 // EXPRESSJS MIDDLEWARE
 
-// // Manage a dummy user till authentication is established
-// // Warning: Once this is disabled, the use will have no access to the user model methods since the authentication process only fetches user information from the mongoDB server, but does not initialize user based on our User model Object.
-// Middleware to manage a dummy user till authentication is established
-// app.use((req, res, next) => {
-// 	User.findById('67818dc96d1f446bb00f1402')
-// 		.then((user) => {
-// 			if (user) {
-// 				console.log('Found user');
-// 				req.user = user;
-// 				next();
-// 			} else {
-// 				throw new Error('User not found');
-// 			}
-// 		})
-// 		.catch((err) => {
-// 			console.log(err);
-// 			next(err); // Pass error to error-handling middleware
-// 		});
-// });
+// Register the session user as mongoose user with User object methods
+app.use((req, res, next) => {
+	// GUARD CLAUSE - Pass thru if there is no session user
+	if (!req.session.user) {
+		return next(); // Need to explicityl return next() to make sure the execution does not continue after this
+	}
+	// Read the session user id and fetch the corresponding mongoDB User instance
+	User.findById(req.session.user._id)
+		.then((user) => {
+			if (user) {
+				console.log('Found user');
+				req.user = user; // Assign the matching mongo user for the app @ top level request object as a user attribute - now we have access to all User related methods as defined in the User model
+				return next();
+			} else {
+				throw new Error('User not found');
+			}
+		})
+		.catch((err) => {
+			console.log(err);
+			next(err); // Pass error to error-handling middleware
+		});
+});
 
 // Express Routers
 app.use('/admin', adminRoutes);

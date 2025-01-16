@@ -1,3 +1,5 @@
+const User = require('../models/user');
+
 exports.getLogin = (req, res, next) => {
 	console.log('🅰️', req.session);
 	res.render('auth/login', {
@@ -8,8 +10,12 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-	req.session.isLoggedIn = true;
-	res.redirect('/');
+	// TEMP - Retrieve the dummy user
+	User.findById('67818dc96d1f446bb00f1402').then((user) => {
+		req.session.isLoggedIn = true; // Add authorization info to the session object
+		req.session.user = user; // Add user data to the session object
+		res.redirect('/');
+	});
 };
 
 exports.postLogout = (req, res, next) => {

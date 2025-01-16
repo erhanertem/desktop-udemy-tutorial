@@ -52,7 +52,6 @@ exports.getAllProducts = (req, res, next) => {
 		// .select('title imageUrl price -_id') // Include title and price fields and get rid of _id field from the returned product fields
 		// .populate('userId', 'name') // Populate the user object from userId field at each fetched product, if specified explicitly only name along with id is returned. If userId solely provided then everything associated with the user that matches the userId is returned
 		.then((products) => {
-			console.log(products);
 			res.render('admin/list-products', {
 				prods: products,
 				path: '/admin/list-products',
