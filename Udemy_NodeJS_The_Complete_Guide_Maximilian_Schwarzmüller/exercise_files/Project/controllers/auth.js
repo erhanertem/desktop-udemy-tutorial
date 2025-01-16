@@ -14,7 +14,10 @@ exports.postLogin = (req, res, next) => {
 	User.findById('67818dc96d1f446bb00f1402').then((user) => {
 		req.session.isLoggedIn = true; // Add authorization info to the session object
 		req.session.user = user; // Add user data to the session object
-		res.redirect('/');
+		req.session.save((err) => {
+			console.log(err);
+			res.redirect('/');
+		}); // Save the session data before continuing with re-direct to avoid incomplete async session save while redirecting
 	});
 };
 
