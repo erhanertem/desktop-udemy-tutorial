@@ -46,23 +46,25 @@ app.use(express.json());
 
 // EXPRESSJS MIDDLEWARE
 
-// Manage a dummy user till authentication is established
-app.use((req, res, next) => {
-	User.findById('67818dc96d1f446bb00f1402')
-		.then((user) => {
-			if (user) {
-				console.log('Found user');
-				req.user = user;
-				next();
-			} else {
-				throw new Error('User not found');
-			}
-		})
-		.catch((err) => {
-			console.log(err);
-			next(err); // Pass error to error-handling middleware
-		});
-});
+// // Manage a dummy user till authentication is established
+// // Warning: Once this is disabled, the use will have no access to the user model methods since the authentication process only fetches user information from the mongoDB server, but does not initialize user based on our User model Object.
+// Middleware to manage a dummy user till authentication is established
+// app.use((req, res, next) => {
+// 	User.findById('67818dc96d1f446bb00f1402')
+// 		.then((user) => {
+// 			if (user) {
+// 				console.log('Found user');
+// 				req.user = user;
+// 				next();
+// 			} else {
+// 				throw new Error('User not found');
+// 			}
+// 		})
+// 		.catch((err) => {
+// 			console.log(err);
+// 			next(err); // Pass error to error-handling middleware
+// 		});
+// });
 
 // Express Routers
 app.use('/admin', adminRoutes);
@@ -82,18 +84,18 @@ app.use(errorController.get500);
 		// Connect to mongoDB
 		await mongoose.connect(MONGODB_URI);
 
-		// TEMP - Create a dummy user after connecting to MongoDB
-		const isThereAnyUser = await User.findOne();
-		if (!isThereAnyUser) {
-			// Create a new dummy user
-			const user = new User({
-				name: 'Ernie',
-				email: 'e@e.com',
-				cart: { items: [] },
-			});
-			// Save to DB
-			await user.save();
-		}
+		// // TEMP - Create a dummy user after connecting to MongoDB
+		// const isThereAnyUser = await User.findOne();
+		// if (!isThereAnyUser) {
+		// 	// Create a new dummy user
+		// 	const user = new User({
+		// 		name: 'Ernie',
+		// 		email: 'e@e.com',
+		// 		cart: { items: [] },
+		// 	});
+		// 	// Save to DB
+		// 	await user.save();
+		// }
 
 		// Initialize backend server
 		app.listen(process.env.PORT, process.env.DB_HOST, () => {
