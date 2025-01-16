@@ -8,7 +8,7 @@ exports.getIndex = (req, res, next) => {
 				prods: products,
 				path: '/',
 				pageTitle: 'Shop',
-				isAuthenticated: req.isLoggedIn, // Per postLogin value @ auth.js
+				isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((err) => {
@@ -24,7 +24,7 @@ exports.getProducts = (req, res, next) => {
 				prods: products,
 				path: '/product-list',
 				pageTitle: 'All products',
-				isAuthenticated: req.isLoggedIn, // Per postLogin value @ auth.js
+				isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((err) => {
@@ -42,7 +42,7 @@ exports.getProduct = (req, res, next) => {
 				product,
 				path: '/product-list',
 				pageTitle: product.title,
-				isAuthenticated: req.isLoggedIn, // Per postLogin value @ auth.js
+				isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((err) => {
@@ -62,7 +62,7 @@ exports.getCart = (req, res, next) => {
 				path: '/cart',
 				pageTitle: 'Your Cart',
 				products: user.cart.items,
-				isAuthenticated: req.isLoggedIn, // Per postLogin value @ auth.js
+				isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((err) => {
@@ -160,7 +160,7 @@ exports.getOrders = (req, res, next) => {
 				path: '/orders',
 				pageTitle: 'Your Orders',
 				orders,
-				isAuthenticated: req.isLoggedIn, // Per postLogin value @ auth.js
+				isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			})
 		)
 		.catch((err) => {
