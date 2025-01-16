@@ -11,6 +11,8 @@
     </div>
     <h2>Price: $<%=product.price%></h2>
     <p><%=product.description%></p>
+    <% if(isAuthenticated) { %>
     <%- include('../layout/add-to-cart')%>
+    <% } %>
   </main>
   <%- include('../layout/end')%>
