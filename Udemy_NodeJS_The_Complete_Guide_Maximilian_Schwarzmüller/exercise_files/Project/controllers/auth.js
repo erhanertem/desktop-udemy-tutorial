@@ -1,11 +1,18 @@
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
-	console.log('🅰️', req.session);
 	res.render('auth/login', {
 		pageTitle: 'Login', // Name of the page
 		path: '/login', // The path of the current route
 		isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+	});
+};
+
+exports.getSignup = (req, res, next) => {
+	res.render('auth/signup', {
+		path: '/signup',
+		pageTitle: 'Signup', // Name of the page
+		isAuthenticated: false, // Not authenticated yet prior to signup
 	});
 };
 
@@ -26,4 +33,33 @@ exports.postLogout = (req, res, next) => {
 		console.log(err);
 		res.redirect('/login');
 	}); // destroy function is provided by express-session module. It takes in a cb once the session is destroyed
+};
+
+// Triggered via POST req @ signup.ejs
+exports.postSignup = (req, res, next) => {
+	// Create a new user with the provided data per input name of the form fields
+	const { email, password, confirmPassword } = req.body;
+
+	// TEMP- Ignore validation logic
+
+	// Check if submitted email is already reserved
+	User.findOne({ email: email })
+		.then((userDoc) => {
+			// GUARD CLAUSE - If user exists w/ the submitted email bounce back to signup page
+			if (userDoc) {
+				return res.redirect('/signup');
+			}
+
+			// Create a new user with submitted form data
+			const newUser = new User({
+				email: email,
+				password: password,
+				cart: { items: [] },
+			});
+			// Save the user to DB
+			return newUser.save();
+		})
+		// Redirect to login page upon successful signup
+		.then((result) => res.redirect('/login'))
+		.catch((err) => console.log(err));
 };

@@ -43,6 +43,9 @@
     - Explore CRUD operations
   - DB handling based on mongoose ODM
     - Explore CRUD operations
+- Handle user signup, authentication and authorization
+  - Explore cookie-based client-side authentication via cookie-session
+  - Explore cookie-based server-side authentication via express-session
 
 Aside from curriculum:
 

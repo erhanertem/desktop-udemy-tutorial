@@ -5,9 +5,20 @@ const {
 } = require('mongoose');
 
 const userSchema = new Schema({
-	name: {
+	// name: {
+	// 	type: String,
+	// 	required: true,
+	// },
+	password: {
 		type: String,
 		required: true,
+		// minlength: 8,
+		// select: false, // This field is not returned when we fetch a user document
+		// validate: {
+		// 	validator: (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value),
+		// 	message:
+		// 		'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+		// },
 	},
 	email: {
 		type: String,
