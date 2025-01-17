@@ -19,14 +19,36 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-	// TEMP - Retrieve the dummy user
-	User.findById('67818dc96d1f446bb00f1402').then((user) => {
-		req.session.isLoggedIn = true; // Add authorization info to the session object
-		req.session.user = user; // Add user data to the session object
-		req.session.save((err) => {
-			console.log(err);
-			res.redirect('/');
-		}); // Save the session data before continuing with re-direct to avoid incomplete async session save while redirecting
+	// Check if posted login credentials matches credentials stored @ DB
+	const { email, password } = req.body;
+	// Search for a user with the provided email
+	User.findOne({ email: email }).then((user) => {
+		// GUARD CLAUSE - If no user found, bounce back to login page with error message
+		if (!user) {
+			return res.redirect('/login');
+		}
+
+		// Compare submitted password with the hashed password stored in the DB
+		bcrypt
+			.compare(password, user.password)
+			.then((doMatch) => {
+				// If pass are same proceed with session creation
+				if (doMatch) {
+					// Create user session
+					req.session.isLoggedIn = true; // Add authorization info
+					req.session.user = user; // Add user data
+					return req.session.save((err) => {
+						console.log(err);
+						res.redirect('/');
+					}); // Save the session data before continuing with re-direct to avoid incomplete async session save while redirecting - We need to return this to make sure this asyc operation completes the promise and returns as a response to the next middleware
+				}
+				// If pass are not same bounce back to login page
+				res.redirect('/login');
+			})
+			.catch((err) => {
+				console.log(err);
+				res.redirect('/login');
+			});
 	});
 };
 
