@@ -1,11 +1,16 @@
 const Product = require('../models/product'); // Product hereby is an arbitrary name does not need to match the name provided in the model() @ source file export
 
 exports.getAddProduct = (req, res, next) => {
+	// GUARD CLAUSE - Protect the route for unauthorized access
+	if (!req.session.isLoggedIn) {
+		return res.redirect('/login'); // Redirect to login page if not logged in
+	}
+
 	res.render('admin/edit-product', {
 		pageTitle: 'Add Product',
 		path: '/admin/add-product',
 		editing: false,
-		isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+		isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js - required for navigation.ejs selective UI
 	});
 };
 

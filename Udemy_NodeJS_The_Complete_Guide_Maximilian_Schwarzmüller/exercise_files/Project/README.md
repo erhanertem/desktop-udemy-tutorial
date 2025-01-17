@@ -46,6 +46,11 @@
 - Handle user signup, authentication and authorization
   - Explore cookie-based client-side authentication via cookie-session
   - Explore cookie-based server-side authentication via express-session
+  - Sensitive user data encryption
+    - bcrypt
+  - Route protection
+    - UI-level obstruction
+    - Controller level obstruction
 
 Aside from curriculum:
 
