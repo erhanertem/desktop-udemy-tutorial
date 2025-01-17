@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
@@ -49,17 +51,23 @@ exports.postSignup = (req, res, next) => {
 			if (userDoc) {
 				return res.redirect('/signup');
 			}
-
-			// Create a new user with submitted form data
-			const newUser = new User({
-				email: email,
-				password: password,
-				cart: { items: [] },
-			});
-			// Save the user to DB
-			return newUser.save();
+			// Crypt the user password - takes some time async nature so we need to return a promise and handle the result on the next then block
+			return (
+				bcrypt
+					.hash(password, 12)
+					.then((hashedPass) => {
+						// Create a new user with submitted form data and crypted pass
+						const newUser = new User({
+							email: email,
+							password: hashedPass,
+							cart: { items: [] },
+						});
+						// Save the user data to DB
+						return newUser.save();
+					})
+					// Redirect to login page upon successful signup
+					.then((result) => res.redirect('/login'))
+			);
 		})
-		// Redirect to login page upon successful signup
-		.then((result) => res.redirect('/login'))
 		.catch((err) => console.log(err));
 };
