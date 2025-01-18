@@ -25,6 +25,7 @@
           <!-- IMPORTANT Older browser support for method DELETE is not present so POST is used -->
           <form action='/admin/delete-product' method='POST'>
             <input type='hidden' name='productId' value='<%=product._id%>'>
+            <input type='hidden' name='_csrf' value='<%= csrfToken %>' />
             <button class="btn" type='submit'>Delete</button>
           </form>
         </div>

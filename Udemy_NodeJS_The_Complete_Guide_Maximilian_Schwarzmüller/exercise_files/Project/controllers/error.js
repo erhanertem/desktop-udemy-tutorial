@@ -4,7 +4,7 @@ exports.get404 = (req, res, next) => {
 		layout: false,
 		path: '',
 		styles: '<link rel="stylesheet" href="/css/main.css" >',
-		isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+		// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 	});
 };
 
@@ -17,7 +17,7 @@ exports.get500 = (err, req, res, next) => {
 			pageTitle: 'Error',
 			path: '',
 			message: 'Invalid Request Body',
-			isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+			// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 		});
 	}
 

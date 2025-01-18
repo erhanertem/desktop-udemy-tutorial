@@ -6,7 +6,7 @@ exports.getLogin = (req, res, next) => {
 	res.render('auth/login', {
 		pageTitle: 'Login', // Name of the page
 		path: '/login', // The path of the current route
-		isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+		// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 	});
 };
 
@@ -14,7 +14,7 @@ exports.getSignup = (req, res, next) => {
 	res.render('auth/signup', {
 		path: '/signup',
 		pageTitle: 'Signup', // Name of the page
-		isAuthenticated: false, // Not authenticated yet prior to signup
+		// isAuthenticated: false, // Not authenticated yet prior to signup
 	});
 };
 

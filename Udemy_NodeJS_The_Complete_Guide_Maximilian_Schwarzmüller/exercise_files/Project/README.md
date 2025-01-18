@@ -43,16 +43,19 @@
     - Explore CRUD operations
   - DB handling based on mongoose ODM
     - Explore CRUD operations
-- Handle user signup, authentication and authorization
-  - Explore cookie-based client-side authentication via cookie-session
-  - Explore cookie-based server-side authentication via express-session
-  - Sensitive user data encryption
-    - bcrypt
-  - Route protection
-    - UI-level/Client-side obstruction
-    - Controller/Backend-side obstruction
-      - In-controller guard clause construct
-      - Middleware construct
+- Website security
+  - Handle user signup, authentication and authorization
+    - Explore cookie-based client-side authentication via cookie-session
+    - Explore cookie-based server-side authentication via express-session
+    - Sensitive user data encryption
+      - bcrypt package
+    - Route protection
+      - UI-level/Client-side obstruction
+      - Controller/Backend-side obstruction
+        - In-controller guard clause construct
+        - Middleware construct
+  - CSRF Protection for Forms
+    - csurf package
 
 Aside from curriculum:
 

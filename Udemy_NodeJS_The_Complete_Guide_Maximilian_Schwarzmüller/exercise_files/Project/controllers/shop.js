@@ -8,7 +8,10 @@ exports.getIndex = (req, res, next) => {
 				prods: products,
 				path: '/',
 				pageTitle: 'Shop',
-				isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+
+				// NOTE: Instead of coding this part @ every contorller view, we setup @ app.js a middleware that injects these variables to res.locals so that views can pick it up
+				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+				// csrfToken: req.csrfToken(), //csrfToken() is provided by the csrf middleware @ app.js
 			});
 		})
 		.catch((err) => {
@@ -24,7 +27,7 @@ exports.getProducts = (req, res, next) => {
 				prods: products,
 				path: '/product-list',
 				pageTitle: 'All products',
-				isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((err) => {
@@ -42,7 +45,7 @@ exports.getProduct = (req, res, next) => {
 				product,
 				path: '/product-list',
 				pageTitle: product.title,
-				isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((err) => {
@@ -62,7 +65,7 @@ exports.getCart = (req, res, next) => {
 				path: '/cart',
 				pageTitle: 'Your Cart',
 				products: user.cart.items,
-				isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((err) => {
@@ -160,7 +163,7 @@ exports.getOrders = (req, res, next) => {
 				path: '/orders',
 				pageTitle: 'Your Orders',
 				orders,
-				isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			})
 		)
 		.catch((err) => {
