@@ -49,8 +49,10 @@
   - Sensitive user data encryption
     - bcrypt
   - Route protection
-    - UI-level obstruction
-    - Controller level obstruction
+    - UI-level/Client-side obstruction
+    - Controller/Backend-side obstruction
+      - In-controller guard clause construct
+      - Middleware construct
 
 Aside from curriculum:
 
