@@ -5,7 +5,10 @@ const {
 } = require('mongoose');
 
 const orderSchema = new Schema({
-	userId: { type: ObjectId, ref: 'User', required: true },
+	user: {
+		email: { type: String, required: true },
+		userId: { type: ObjectId, ref: 'User', required: true },
+	},
 	products: [
 		{
 			product: { type: Object, ref: 'Product', required: true },

@@ -124,7 +124,10 @@ exports.postOrder = (req, res, next) => {
 			const products = user.cart.items;
 			// Create a new order instance
 			const order = new Order({
-				userId: req.user._id,
+				user: {
+					email: req.user.email,
+					userId: req.user._id,
+				},
 				products: products.map((product) => {
 					return {
 						// > Option#1
@@ -156,7 +159,7 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-	Order.find({ userId: req.user._id })
+	Order.find({ 'user.userId': req.user._id })
 		.then((orders) =>
 			// Render the orders page
 			res.render('shop/orders', {
