@@ -111,8 +111,22 @@ app.use(errorController.get500);
 // Server initializer with mongoDB in IEFF style
 (async () => {
 	try {
+		// Global error handlers
+		// Handle uncaught exceptions
+		process.on('uncaughtException', (err) => {
+			console.error('Uncaught Exception:', err);
+			process.exit(1); // Exit the process with a failure code
+		});
+
+		// Handle unhandled promise rejections
+		process.on('unhandledRejection', (reason, promise) => {
+			console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+			process.exit(1); // Exit the process with a failure code
+		});
+
 		// Connect to mongoDB
 		await mongoose.connect(MONGODB_URI);
+		console.log('Connected to MongoDB');
 
 		// // TEMP - Create a dummy user after connecting to MongoDB
 		// const isThereAnyUser = await User.findOne();
@@ -127,15 +141,16 @@ app.use(errorController.get500);
 		// 	await user.save();
 		// }
 
-		// Initialize backend server
-		app.listen(process.env.PORT, process.env.DB_HOST, () => {
-			console.log(
-				`Listening on port ${process.env.PORT}, running on DB_HOST:${process.env.DB_HOST} in ${
-					process.env.NODE_ENV || 'development'
-				} mode`
-			);
+		// Start the server
+		const PORT = process.env.PORT || 3000;
+		const DB_HOST = process.env.DB_HOST || 'localhost';
+		const NODE_ENV = process.env.NODE_ENV || 'development';
+
+		app.listen(PORT, DB_HOST, () => {
+			console.log(`Listening on port ${PORT}, running on DB_HOST:${DB_HOST} in ${NODE_ENV} mode`);
 		});
 	} catch (err) {
+		// Log database connection errors and exit
 		console.error('Failed to start the server due to a database connection error:', err);
 		process.exit(1); // Exit the process with a failure code
 	}
