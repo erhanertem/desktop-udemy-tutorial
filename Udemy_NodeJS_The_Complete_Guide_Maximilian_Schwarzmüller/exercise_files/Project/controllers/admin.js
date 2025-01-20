@@ -5,7 +5,6 @@ exports.getAddProduct = (req, res, next) => {
 		pageTitle: 'Add Product',
 		path: '/admin/add-product',
 		editing: false,
-		// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js - required for navigation.ejs selective UI
 	});
 };
 
@@ -27,7 +26,6 @@ exports.getEditProduct = (req, res, next) => {
 					pageTitle: 'Product Not Found',
 					path: '',
 					message: `Product with ID "${productId}" not found.`,
-					// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 				});
 			}
 
@@ -38,7 +36,6 @@ exports.getEditProduct = (req, res, next) => {
 				path: '/admin/edit-product',
 				editing: editMode, // /admin/edit-product/12345?edit=true&title=new_product
 				product,
-				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((error) => {
@@ -56,7 +53,6 @@ exports.getAllProducts = (req, res, next) => {
 				prods: products,
 				path: '/admin/list-products',
 				pageTitle: 'Admin Products',
-				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((err) => {

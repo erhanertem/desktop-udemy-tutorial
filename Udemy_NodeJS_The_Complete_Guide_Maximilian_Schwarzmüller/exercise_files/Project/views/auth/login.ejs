@@ -6,6 +6,9 @@
 <body>
   <%- include('../layout/navigation')%>
   <main>
+    <% if(errorMessage) { %>
+    <div class='user-message user-message--error'><%= errorMessage %></div>
+    <% } %>
     <form class="login-form" action="/login" method="POST">
       <div class="form-control">
         <label for="email">E-mail</label>

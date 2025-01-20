@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const { csrfSync } = require('csrf-sync'); // Serverside sessions version
+const flash = require('connect-flash'); // Flash messages
 const MongoDBStore = require('connect-mongodb-session')(session); // Takes express-session as its argument and the result is stored in MongoDBStore
 const dotenv = require('dotenv');
 // Load appropriate .env file based on NODE_ENV
@@ -72,6 +73,9 @@ app.use((req, res, next) => {
 	// Call the next middleware function
 	next();
 });
+
+// Initialize the flash messages middleware - Needs to be located below session as it writes temporarily the flash message to the session
+app.use(flash());
 
 // Register the session user as mongoose user with User object methods
 app.use((req, res, next) => {

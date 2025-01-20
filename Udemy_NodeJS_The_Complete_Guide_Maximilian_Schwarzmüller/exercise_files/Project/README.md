@@ -17,13 +17,18 @@
   - Children routers
     - Significance of route order
 - Error handling
-  - Setup erro handling express middlewares
+  - Setup error handling express middlewares
     - General error handling
     - Malformed body error handling
     - Non existing route request error handling
   - Throwing errors
     - throw err
     - next(err)
+  - Global error handling
+    - uncaughtException
+    - unhandledRejection
+  - Error handling flash UI notifications
+    - connect-flash package
 - Explore express routes
   - Static routes
   - Params routes

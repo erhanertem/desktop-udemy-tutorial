@@ -27,7 +27,6 @@ exports.getProducts = (req, res, next) => {
 				prods: products,
 				path: '/product-list',
 				pageTitle: 'All products',
-				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((err) => {
@@ -45,7 +44,6 @@ exports.getProduct = (req, res, next) => {
 				product,
 				path: '/product-list',
 				pageTitle: product.title,
-				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((err) => {
@@ -59,13 +57,11 @@ exports.getCart = (req, res, next) => {
 	req.user
 		.populate('cart.items.productId') // Builds the cart items with corresponding full product reference
 		.then((user) => {
-			// console.log(user.cart.items);
 			// Render the cart page with the re-constructed cart details
 			res.render('shop/cart', {
 				path: '/cart',
 				pageTitle: 'Your Cart',
 				products: user.cart.items,
-				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			});
 		})
 		.catch((err) => {
@@ -84,7 +80,6 @@ exports.postCart = (req, res, next) => {
 			return req.user.addToCart(product);
 		})
 		.then((result) => {
-			// console.log(result);
 			// Redirect to the cart page
 			res.redirect('/cart');
 		})
@@ -166,7 +161,6 @@ exports.getOrders = (req, res, next) => {
 				path: '/orders',
 				pageTitle: 'Your Orders',
 				orders,
-				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 			})
 		)
 		.catch((err) => {

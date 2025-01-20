@@ -3,18 +3,22 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
+	const message = req.flash('error'); // Pass the message received in req.session.error initiated by postLogin controller
+
 	res.render('auth/login', {
 		pageTitle: 'Login', // Name of the page
 		path: '/login', // The path of the current route
-		// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
+		errorMessage: message.length > 0 && message, // if message is not an empty array pass in message else pass in null
 	});
 };
 
 exports.getSignup = (req, res, next) => {
+	const message = req.flash('error'); // Pass the message received in req.session.error initiated by postLogin controller
+
 	res.render('auth/signup', {
 		path: '/signup',
 		pageTitle: 'Signup', // Name of the page
-		// isAuthenticated: false, // Not authenticated yet prior to signup
+		errorMessage: message.length > 0 && message, // if message is not an empty array pass in message else pass in null
 	});
 };
 
@@ -25,6 +29,10 @@ exports.postLogin = (req, res, next) => {
 	User.findOne({ email: email }).then((user) => {
 		// GUARD CLAUSE - If no user found, bounce back to login page with error message
 		if (!user) {
+			req.flash(
+				'error', // Flash key written to session temporarily till it gets consumed
+				'Invalid credentials.' // The message content
+			);
 			return res.redirect('/login');
 		}
 
@@ -43,6 +51,10 @@ exports.postLogin = (req, res, next) => {
 					}); // Save the session data before continuing with re-direct to avoid incomplete async session save while redirecting - We need to return this to make sure this asyc operation completes the promise and returns as a response to the next middleware
 				}
 				// If pass are not same bounce back to login page
+				req.flash(
+					'error', // Flash key written to session temporarily till it gets consumed
+					'Invalid credentials.' // The message content
+				);
 				res.redirect('/login');
 			})
 			.catch((err) => {
@@ -71,6 +83,10 @@ exports.postSignup = (req, res, next) => {
 		.then((userDoc) => {
 			// GUARD CLAUSE - If user exists w/ the submitted email bounce back to signup page
 			if (userDoc) {
+				req.flash(
+					'error', // Flash key written to session temporarily till it gets consumed
+					'Email already exists.' // The message content
+				);
 				return res.redirect('/signup');
 			}
 			// Crypt the user password - takes some time async nature so we need to return a promise and handle the result on the next then block
