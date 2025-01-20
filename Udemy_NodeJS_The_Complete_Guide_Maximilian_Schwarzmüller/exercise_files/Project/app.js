@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
-const csrf = require('csurf');
+const { csrfSync } = require('csrf-sync'); // Serverside sessions version
 const MongoDBStore = require('connect-mongodb-session')(session); // Takes express-session as its argument and the result is stored in MongoDBStore
 const dotenv = require('dotenv');
 // Load appropriate .env file based on NODE_ENV
@@ -23,8 +23,6 @@ const app = express();
 // MongoDB URI
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_USER_PASS}@shop.vs6wu.mongodb.net/shop?retryWrites=true&w=majority`;
 const store = new MongoDBStore({ uri: MONGODB_URI, collection: 'sessions' });
-// Init csrf protection
-const csrfProtection = csrf();
 
 // Desiginate a template engine to use
 app.set('view engine', 'ejs');
@@ -44,12 +42,36 @@ app.use(
 		store: store, // The session store
 	})
 );
-// Apply CSRF protection
-app.use(csrfProtection);
+
 // Middleware to parse incoming requests with JSON payloads. It parses the body of the request and makes it available under req.body. If located before the session middleware, it might interfere with the session handling, especially if the session data is stored in the request body or if there are any conflicts in how the request body is parsed.
 app.use(express.json());
 
-// EXPRESSJS MIDDLEWARE
+// Init csrf protection middleware
+// const csrfProtection = csrf();
+// Initialize csrfSync
+const { csrfSynchronisedProtection, generateToken } = csrfSync({
+	getTokenFromRequest: (req) => {
+		return req.body['_csrf'];
+	}, // Used to retrieve the token submitted by the user in a form
+});
+
+// Apply the CSRF middleware
+app.use(csrfSynchronisedProtection);
+
+// Global middleware to inject CSRF token and authentication status
+app.use((req, res, next) => {
+	// NOTE:  The res.locals object in Express.js is a special object that contains local variables scoped to the request. These variables are available to the view templates rendered by the application. By setting a property on res.locals, you make it accessible in the views.
+
+	// Ensure req.session is available before calling generateToken
+	// Set Authentication status  for every response
+	res.locals.isAuthenticated = !!req.session.isLoggedIn;
+	if (req.session) {
+		// Generate CSRF token
+		res.locals.csrfToken = generateToken(req, true); // Generate CSRF token - 'true' will force a new token to be generated, even if one already exists
+	}
+	// Call the next middleware function
+	next();
+});
 
 // Register the session user as mongoose user with User object methods
 app.use((req, res, next) => {
@@ -72,19 +94,6 @@ app.use((req, res, next) => {
 			console.log(err);
 			next(err); // Pass error to error-handling middleware
 		});
-});
-
-// Middleware that injects every route renderer the authentication state and csrfToken
-app.use((req, res, next) => {
-	// NOTE:  The res.locals object in Express.js is a special object that contains local variables scoped to the request. These variables are available to the view templates rendered by the application. By setting a property on res.locals, you make it accessible in the views.
-
-	// Set Authentication status  for every response
-	res.locals.isAuthenticated = !!req.session.isLoggedIn;
-	// Set CSRF token for every response
-	res.locals.csrfToken = req.csrfToken();
-
-	// Call the next middleware function
-	next();
 });
 
 // Express Routers

@@ -55,7 +55,10 @@
         - In-controller guard clause construct
         - Middleware construct
   - CSRF Protection for Forms
-    - csurf package
+    - csurf package (deprecated)
+    - double csrf package
+      - Explore csrf-sync for server-side sessions
+      - Explore csrf-csrf for client-side sessions (adaptation to server-side sessions)
 
 Aside from curriculum:
 
