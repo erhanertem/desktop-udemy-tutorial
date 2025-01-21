@@ -1,6 +1,15 @@
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 
 const User = require('../models/user');
+
+const transporter = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+		user: process.env.GMAIL_USER,
+		pass: process.env.GMAIL_PASS,
+	},
+});
 
 exports.getLogin = (req, res, next) => {
 	const message = req.flash('error'); // Pass the message received in req.session.error initiated by postLogin controller
@@ -90,22 +99,34 @@ exports.postSignup = (req, res, next) => {
 				return res.redirect('/signup');
 			}
 			// Crypt the user password - takes some time async nature so we need to return a promise and handle the result on the next then block
-			return (
-				bcrypt
-					.hash(password, 12)
-					.then((hashedPass) => {
-						// Create a new user with submitted form data and crypted pass
-						const newUser = new User({
-							email: email,
-							password: hashedPass,
-							cart: { items: [] },
-						});
-						// Save the user data to DB
-						return newUser.save();
-					})
-					// Redirect to login page upon successful signup
-					.then((result) => res.redirect('/login'))
-			);
+			return bcrypt
+				.hash(password, 12)
+				.then((hashedPass) => {
+					// Create a new user with submitted form data and crypted pass
+					const newUser = new User({
+						email: email,
+						password: hashedPass,
+						cart: { items: [] },
+					});
+					// Save the user data to DB
+					return newUser.save();
+				})
+				.then((result) => {
+					// Redirect to login after successful signup
+					res.redirect('/login');
+					// Send confirmation email
+					return transporter.sendMail({
+						to: email,
+						from: process.env.GMAIL_USER,
+						subject: 'Signup succeeded!',
+						html: '<h1>You successfully signed up!</h1>',
+					});
+				})
+				.catch((err) => console.log(err));
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.error('Error during signup:', err);
+			// Optional: Handle the error gracefully by redirecting or showing an error page
+			res.redirect('/signup');
+		});
 };
