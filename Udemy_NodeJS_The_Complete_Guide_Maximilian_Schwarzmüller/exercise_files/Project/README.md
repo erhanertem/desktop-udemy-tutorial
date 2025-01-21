@@ -17,6 +17,7 @@
   - Children routers
     - Significance of route order
 - Error handling
+
   - Setup error handling express middlewares
     - General error handling
     - Malformed body error handling
@@ -29,6 +30,7 @@
     - unhandledRejection
   - Error handling flash UI notifications
     - connect-flash package
+
 - Explore express routes
   - Static routes
   - Params routes
