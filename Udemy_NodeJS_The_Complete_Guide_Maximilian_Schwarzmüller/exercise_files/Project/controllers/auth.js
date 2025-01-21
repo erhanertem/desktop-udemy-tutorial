@@ -7,7 +7,8 @@ const transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
 		user: process.env.GMAIL_USER,
-		pass: process.env.GMAIL_PASS,
+		// pass: process.env.GMAIL_PASS,
+		pass: 'mockerror',
 	},
 });
 
@@ -109,23 +110,43 @@ exports.postSignup = (req, res, next) => {
 						cart: { items: [] },
 					});
 					// Save the user data to DB
-					return newUser.save();
-				})
-				.then((result) => {
-					// Redirect to login after successful signup
-					res.redirect('/login');
-					// Send confirmation email
-					return transporter.sendMail({
-						to: email,
-						from: process.env.GMAIL_USER,
-						subject: 'Signup succeeded!',
-						html: '<h1>You successfully signed up!</h1>',
+					return newUser.save().catch((err) => {
+						throw new Error(`Error saving user to DB: ${err.message}`);
 					});
 				})
-				.catch((err) => console.log(err));
+				.then((user) => {
+					// Set session after successful signup
+					req.session.user = user;
+					req.session.isLoggedIn = true;
+					return req.session.save((err) => {
+						if (err) {
+							console.error('Session save failed:', err);
+							// Proceed with signin attempt
+							res.redirect('/signin');
+						}
+					});
+				})
+				.then((session) => {
+					// Redirect to login after successful signup
+					res.redirect('/');
+
+					// Send confirmation email
+					return transporter
+						.sendMail({
+							to: email,
+							from: process.env.GMAIL_USER,
+							subject: 'Signup succeeded!',
+							html: '<h1>You successfully signed up!</h1>',
+						})
+						.catch((err) => {
+							// Do not block the user signup flow due to email failure
+							console.error('Failed to send email:', err.message);
+						});
+				});
 		})
 		.catch((err) => {
 			console.error('Error during signup:', err);
+			req.flash('error', 'An error occurred during signup. Please try again.');
 			// Optional: Handle the error gracefully by redirecting or showing an error page
 			res.redirect('/signup');
 		});
