@@ -8,10 +8,12 @@
 
 - Explore nodejs app folder structure
 - Explore template engines
+
   - Designate and use a template engine
     - Pug
     - HBS
     - EJS
+
 - Explore express routers
   - App router
   - Children routers
@@ -66,11 +68,15 @@
     - double csrf package
       - Explore csrf-sync for server-side sessions
       - Explore csrf-csrf for client-side sessions (adaptation to server-side sessions)
+  - Advanced website security issues
+    - Handle password reset
 
 Aside from curriculum:
 
 - Implement nodejs controllers in async/await instead of cb style
 - Slightly different approach of implementing functions w/ detailed error checking
+- Setup self-destroying flash cards
+  - Extend EJS variable onto non-NodeJS enviroment JS for timeout cards that is created inside or out of session
 
 &emsp;
 
