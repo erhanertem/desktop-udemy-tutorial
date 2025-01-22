@@ -13,6 +13,18 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
+exports.getReset = (req, res, next) => {
+	const message = req.flash('error');
+	console.log('message :', message);
+
+	res.render('auth/reset', {
+		path: '/reset',
+		pageTitle: 'Reset Password',
+		flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
+		errorMessage: message.length && message,
+	});
+};
+
 exports.getLogin = (req, res, next) => {
 	const message = req.flash('error'); // Pass the message received in req.session.error initiated by postLogin controller
 
@@ -21,7 +33,7 @@ exports.getLogin = (req, res, next) => {
 	res.render('auth/login', {
 		pageTitle: 'Login', // Name of the page
 		path: '/login', // The path of the current route
-		errorMessage: message.length > 0 && message, // if message is not an empty array pass in message else pass in null
+		errorMessage: message.length && message, // if message is not an empty array pass in message else pass in null
 		sessionInitError: error,
 		flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
 	});
@@ -33,7 +45,7 @@ exports.getSignup = (req, res, next) => {
 	res.render('auth/signup', {
 		path: '/signup',
 		pageTitle: 'Signup', // Name of the page
-		errorMessage: message.length > 0 && message, // if message is not an empty array pass in message else pass in null
+		errorMessage: message.length && message, // if message is not an empty array pass in message else pass in null
 		flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
 	});
 };
