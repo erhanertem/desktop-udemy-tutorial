@@ -8,6 +8,6 @@
   <script>
     setTimeout(() => {
       window.location.href = '/admin/add-product';
-    }, 15000);
+    }, process.env.REDIRECT_DELAY);
   </script>
   <%- include('../layout/end')%>
