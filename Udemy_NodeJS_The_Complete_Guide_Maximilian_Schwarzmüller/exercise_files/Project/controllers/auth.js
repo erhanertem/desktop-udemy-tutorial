@@ -17,7 +17,6 @@ const transporter = nodemailer.createTransport({
 
 exports.getReset = (req, res, next) => {
 	const message = req.flash('error');
-	console.log('message :', message);
 
 	res.render('auth/reset', {
 		path: '/reset',
@@ -28,7 +27,8 @@ exports.getReset = (req, res, next) => {
 };
 
 exports.postReset = (req, res, next) => {
-	// // Mock an error for testing
+	// TODO - HOW TO ACCESS THIS ERROR AND HAVE IT REDIRECT
+	// // Mock `crypto.randomBytes` to simulate an error
 	// crypto.randomBytes = (size, callback) => {
 	// 	callback(new Error('Simulated error'), null);
 	// };
@@ -44,7 +44,7 @@ exports.postReset = (req, res, next) => {
 			return res.redirect('/reset');
 		}
 
-		// Generate a token from the buffer
+		// Generate a reset token from the buffer
 		const token = buffer.toString('hex'); // Convert the binary data stored in a Buffer object into a human-readable hexadecimal string.
 
 		// Find the user with the provided email
@@ -108,17 +108,6 @@ exports.getLogin = (req, res, next) => {
 	});
 };
 
-exports.getSignup = (req, res, next) => {
-	const message = req.flash('error'); // Pass the message received in req.session.error initiated by postLogin controller
-
-	res.render('auth/signup', {
-		path: '/signup',
-		pageTitle: 'Signup', // Name of the page
-		errorMessage: message.length && message, // if message is not an empty array pass in message else pass in null
-		flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
-	});
-};
-
 exports.postLogin = (req, res, next) => {
 	// Check if posted login credentials matches credentials stored @ DB
 	const { email, password } = req.body;
@@ -161,11 +150,15 @@ exports.postLogin = (req, res, next) => {
 	});
 };
 
-exports.postLogout = (req, res, next) => {
-	req.session.destroy((err) => {
-		console.log(err);
-		res.redirect('/login');
-	}); // destroy function is provided by express-session module. It takes in a cb once the session is destroyed
+exports.getSignup = (req, res, next) => {
+	const message = req.flash('error'); // Pass the message received in req.session.error initiated by postLogin controller
+
+	res.render('auth/signup', {
+		path: '/signup',
+		pageTitle: 'Signup', // Name of the page
+		errorMessage: message.length && message, // if message is not an empty array pass in message else pass in null
+		flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
+	});
 };
 
 // Triggered via POST req @ signup.ejs
@@ -233,8 +226,7 @@ exports.postSignup = (req, res, next) => {
 						.catch((err) => {
 							// Handle session save errors explicitly
 							console.error('Session save failed:', err.message);
-							req.flash('error', 'An error occurred during login. Please try again.');
-							// Since session creation fails, flash does not show as flash depends on a valid session. Therefore, you need to pass in the failure warning gracegully to URL of the redirect as a query string - encodeURIComponent ensures the query string is properly formatted for special characters.
+							// NOTE: req.flash('error', 'An error occurred during login. Please try again.'); --> Since session creation fails, flash does not show as flash depends on a valid session. Therefore, you need to pass in the failure warning gracegully to URL of the redirect as a query string - encodeURIComponent ensures the query string is properly formatted for special characters.
 							return res.redirect(
 								`/login?error=${encodeURIComponent('An error occurred during login. Please try again.')}`
 							);
@@ -248,3 +240,29 @@ exports.postSignup = (req, res, next) => {
 			res.redirect('/signup');
 		});
 };
+
+exports.postLogout = (req, res, next) => {
+	req.session.destroy((err) => {
+		console.log(err);
+		res.redirect('/login');
+	}); // destroy function is provided by express-session module. It takes in a cb once the session is destroyed
+};
+
+exports.getNewPassword = (req, res, next) => {
+	const message = req.flash('error');
+	const token = req.params.token; // Extract the token from the URL
+	User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } })
+		.then((user) => {
+			res.render('auth/new-password', {
+				path: '/new-password',
+				pageTitle: 'Reset Password', // Name of the page
+				errorMessage: message.length && message, // if message is not an empty array pass in message else pass in null
+				flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
+				userId: user._id.toString(),
+				sessionInitError: null,
+			});
+		})
+		.catch((err) => console.log(err));
+};
+
+exports.postNewPassword = (req, res, next) => {};
