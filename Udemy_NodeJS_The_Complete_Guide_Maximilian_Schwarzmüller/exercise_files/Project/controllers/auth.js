@@ -258,11 +258,29 @@ exports.getNewPassword = (req, res, next) => {
 				pageTitle: 'Reset Password', // Name of the page
 				errorMessage: message.length && message, // if message is not an empty array pass in message else pass in null
 				flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
-				userId: user._id.toString(),
 				sessionInitError: null,
+				userId: user._id.toString(),
+				passwordToken: token,
 			});
 		})
 		.catch((err) => console.log(err));
 };
 
-exports.postNewPassword = (req, res, next) => {};
+exports.postNewPassword = (req, res, next) => {
+	const { password: newPassword, userId, passwordToken } = req.body;
+	let modUser;
+	// Find the matching user with the provided token and user ID
+	User.findOne({ resetToken: passwordToken, resetTokenExpiration: { $gt: Date.now() }, _id: userId })
+		.then((user) => {
+			modUser = user; // Store the user for later then block
+			return bcrypt.hash(newPassword, 12);
+		})
+		.then((hashedPassword) => {
+			modUser.password = hashedPassword; // Change the pqssword
+			modUser.resetToken = undefined; // Reset token and expiration
+			modUser.resetTokenExpiration = undefined;
+			return modUser.save(); // Save the user to DB
+		})
+		.then((result) => res.redirect('/login'))
+		.catch((err) => console.log(err));
+};
