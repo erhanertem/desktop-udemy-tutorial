@@ -271,7 +271,20 @@ exports.postNewPassword = (req, res, next) => {
 	let modUser;
 	// Find the matching user with the provided token and user ID
 	User.findOne({ resetToken: passwordToken, resetTokenExpiration: { $gt: Date.now() }, _id: userId })
+		// VERY IMPORTANT: We included userID for several reasons:
+		// 1. Security Enhacement: you ensure that only the user who owns the password reset token can change the password. This prevents attackers from using a valid passwordToken belonging to someone else and Randomly guessing or brute-forcing valid tokens without knowing the associated user ID.
+		// 2. Limits Scope of the Query: Without the _id: userId condition, the query would only rely on resetToken and resetTokenExpiration. If there are multiple users with the same token (unlikely but possible due to randomness or a compromised token generator), this might inadvertently affect another user's account.
+		// 3. Prevent Abuse: Including _id: userId adds another layer of validation to mitigate abuse. An attacker would need: The exact userId (typically hard to guess since it's a MongoDB ObjectId) and the valid resetToken.
+		// 4. Rate-limiting: Since user.id provided automatically, the token brute force attack is possible and restricting number of queries within a certain time frame becomes a necessity.
 		.then((user) => {
+			if (!user) {
+				// Handle case when no user is found
+				return res.status(404).render('errors/400', {
+					pageTitle: 'Error',
+					message: 'Invalid or expired reset token.',
+				});
+			}
+
 			modUser = user; // Store the user for later then block
 			return bcrypt.hash(newPassword, 12);
 		})
@@ -282,5 +295,20 @@ exports.postNewPassword = (req, res, next) => {
 			return modUser.save(); // Save the user to DB
 		})
 		.then((result) => res.redirect('/login'))
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			// Handle rate-limiting error here
+			if (err.status === 429) {
+				return res.status(429).render('errors/400', {
+					pageTitle: 'Too Many Requests',
+					message: err.message, // "Too many password reset requests. Please try again later."
+				});
+			}
+
+			// Handle other errors
+			console.log(err);
+			res.status(500).render('errors/400', {
+				pageTitle: 'Error',
+				message: 'An internal server error occurred. Please try again later.',
+			});
+		});
 };
