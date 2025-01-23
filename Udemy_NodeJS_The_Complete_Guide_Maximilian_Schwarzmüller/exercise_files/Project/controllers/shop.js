@@ -2,13 +2,16 @@ const Product = require('../models/product');
 const Order = require('../models/order');
 
 exports.getIndex = (req, res, next) => {
+	const message = req.flash('notify');
+
 	Product.find()
 		.then((products) => {
 			return res.render('shop/index', {
 				prods: products,
 				path: '/',
 				pageTitle: 'Shop',
-
+				notifyMessage: message.length && message,
+				flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000,
 				// NOTE: Instead of coding this part @ every contorller view, we setup @ app.js a middleware that injects these variables to res.locals so that views can pick it up
 				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 				// csrfToken: req.csrfToken(), //csrfToken() is provided by the csrf middleware @ app.js

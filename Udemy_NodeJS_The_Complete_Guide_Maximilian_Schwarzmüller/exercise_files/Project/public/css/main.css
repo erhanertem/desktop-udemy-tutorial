@@ -252,6 +252,11 @@ form {
 	background-color: #ffe6e6;
 	color: red;
 }
+.user-message--notify {
+	border-color: blue;
+	background-color: #7373b0;
+	color: #ffe6e6;
+}
 
 @media (min-width: 768px) {
 	.main-header__nav {

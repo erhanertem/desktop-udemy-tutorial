@@ -6,6 +6,9 @@
   <%- include('../layout/navigation')%>
 
   <main>
+    <% if(notifyMessage) { %>
+    <div class='user-message user-message--notify' id='notify-message'><%= notifyMessage %></div>
+    <% } %>
     <% if (prods.length > 0) { %>
     <div class="grid">
       <% for (let product of prods) { %>
@@ -33,4 +36,7 @@
     <h1>No Products Found!</h1>
     <% } %>
   </main>
+
+  <%- include('../layout/hideFlash')%>
+
   <%- include('../layout/end')%>

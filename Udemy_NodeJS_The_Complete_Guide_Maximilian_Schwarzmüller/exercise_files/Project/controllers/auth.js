@@ -1,15 +1,17 @@
 const { promisify } = require('util');
+const crypto = require('crypto');
+
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 
+const html = require('../util/html');
 const User = require('../models/user');
 
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
 		user: process.env.GMAIL_USER,
-		// pass: process.env.GMAIL_PASS,
-		pass: 'mockerror',
+		pass: process.env.GMAIL_PASS,
 	},
 });
 
@@ -22,6 +24,73 @@ exports.getReset = (req, res, next) => {
 		pageTitle: 'Reset Password',
 		flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
 		errorMessage: message.length && message,
+	});
+};
+
+exports.postReset = (req, res, next) => {
+	// // Mock an error for testing
+	// crypto.randomBytes = (size, callback) => {
+	// 	callback(new Error('Simulated error'), null);
+	// };
+
+	crypto.randomBytes(32, (err, buffer) => {
+		// Handle error
+		if (err) {
+			console.log(err.message);
+			req.flash(
+				'error', // Flash key written to session temporarily till it gets consumed
+				'Reset token creation failed. Try again.' // The message content
+			);
+			return res.redirect('/reset');
+		}
+
+		// Generate a token from the buffer
+		const token = buffer.toString('hex'); // Convert the binary data stored in a Buffer object into a human-readable hexadecimal string.
+
+		// Find the user with the provided email
+		User.findOne({ email: req.body.email })
+			.then((user) => {
+				// If no user found, flash an error and redirect to reset page
+				if (!user) {
+					req.flash(
+						'error', // Flash key written to session temporarily till it gets consumed
+						'No account with that email found.' // The message content
+					);
+					return res.redirect('/reset');
+				}
+
+				// Set the token and expiration date for the user
+				user.resetToken = token;
+				user.resetTokenExpiration = Date.now() + Number(process.env.TOKEN_LIFESPAN); // 1 hour from now
+
+				// Save the user with the new token and expiration date
+				return user.save();
+			})
+			.then((result) => {
+				// Send a password reset email to the user with the token
+				const protocol = req.protocol; // Will return 'http' or 'https'
+				const host = req.get('host'); // Will return the host name from the request (e.g., localhost:3000)
+				const resetUrl = `${protocol}://${host}/reset/${token}`; // Token url
+
+				req.flash(
+					'notify', // Flash key written to session temporarily till it gets consumed
+					'A reset email has been sent. Please check your inbox for further instructions.' // The message content
+				);
+
+				res.redirect('/');
+
+				// Send password reset email
+				return transporter.sendMail({
+					to: req.body.email,
+					from: process.env.GMAIL_USER,
+					subject: 'Password Reset',
+					html: html`
+						<p>You requested a password reset</p>
+						<p>Click this <a href=${resetUrl}>link</a> to set a new password.</p>
+					`,
+				});
+			})
+			.catch((err) => console.log(err));
 	});
 };
 
@@ -153,7 +222,7 @@ exports.postSignup = (req, res, next) => {
 									to: email,
 									from: process.env.GMAIL_USER,
 									subject: 'Signup succeeded!',
-									html: '<h1>You successfully signed up!</h1>',
+									html: html`<h1>You successfully signed up!</h1>`,
 								})
 								.catch((err) => {
 									// Do not block the user signup flow due to email failure

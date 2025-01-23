@@ -5,10 +5,8 @@ const {
 } = require('mongoose');
 
 const userSchema = new Schema({
-	// name: {
-	// 	type: String,
-	// 	required: true,
-	// },
+	resetToken: String,
+	resetTokenExpiration: Date,
 	password: {
 		type: String,
 		required: true,

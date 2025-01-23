@@ -1,12 +1,18 @@
 // Wait for the page to load
 document.addEventListener('DOMContentLoaded', () => {
-	// Get the error message element by its ID
-	const errorMessage = document.getElementById('error-message');
-	// Check if the element exists
-	if (errorMessage) {
-		// Remove the element after 3 seconds (3000 milliseconds)
-		setTimeout(() => {
-			errorMessage.style.display = 'none';
-		}, window.FLASH_REMOVE_DELAY);
-	}
+	// List of the IDs to target
+	const messageIds = ['error-message', 'notify-message'];
+
+	// Loop through the IDs and apply the logic for each
+	messageIds.forEach((id) => {
+		const messageElement = document.getElementById(id);
+
+		// Check if the element exists
+		if (messageElement) {
+			// Remove the element after 3 seconds (3000 milliseconds)
+			setTimeout(() => {
+				messageElement.style.display = 'none';
+			}, window.FLASH_REMOVE_DELAY);
+		}
+	});
 });
