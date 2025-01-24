@@ -70,7 +70,7 @@
       - Explore csrf-csrf for client-side sessions (adaptation to server-side sessions)
   - Advanced website security issues
     - Handle password reset
-    - Adopt rate-limiter for token based brute-force attacks
+    - Adopt rate-limiter against token based brute-force attacks
 
 Aside from curriculum:
 

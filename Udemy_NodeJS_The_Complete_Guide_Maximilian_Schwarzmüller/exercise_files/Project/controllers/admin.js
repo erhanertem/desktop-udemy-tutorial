@@ -45,7 +45,7 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.getAllProducts = (req, res, next) => {
-	Product.find() // Find all products
+	Product.find({ userId: req.user._id }) // Find all products belonging to user - authorization client-side only - still requires server-side authorization for full authorization implementation
 		// .select('title imageUrl price -_id') // Include title and price fields and get rid of _id field from the returned product fields
 		// .populate('userId', 'name') // Populate the user object from userId field at each fetched product, if specified explicitly only name along with id is returned. If userId solely provided then everything associated with the user that matches the userId is returned
 		.then((products) => {
