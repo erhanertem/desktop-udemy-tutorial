@@ -64,7 +64,8 @@ exports.getAllProducts = (req, res, next) => {
 exports.postDeleteProduct = (req, res, next) => {
 	const productId = req.body.productId;
 
-	Product.findByIdAndDelete(productId)
+	// Delete the product where the user has this product and a matching product id - filtered authorization
+	Product.deleteOne({ _id: productId, userId: req.user._id })
 		.then(() => {
 			console.log('Product deleted');
 			res.redirect('/admin/list-products');
@@ -84,6 +85,11 @@ exports.postEditProduct = (req, res, next) => {
 	// Attempt to save the product
 	Product.findById(productId)
 		.then((product) => {
+			// Engage in authorization check
+			if (product.userId.toString() !== req.user._id.toString()) {
+				// Redirect to the home page if unauthorized
+				return res.redirect('/');
+			}
 			// Modify the retrieved product
 			product.title = title;
 			product.imageUrl = imageUrl;
@@ -91,11 +97,10 @@ exports.postEditProduct = (req, res, next) => {
 			product.description = description;
 			product.productId = productId;
 			// Save the updated product to the database
-			product.save();
-		})
-		.then((result) => {
-			console.log('Updated product');
-			res.redirect('/admin/list-products');
+			product.save().then((result) => {
+				console.log('Updated product');
+				res.redirect('/admin/list-products');
+			});
 		})
 		.catch((err) => {
 			console.log(err);
