@@ -3,6 +3,7 @@ const crypto = require('crypto');
 
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
+const { validationResult } = require('express-validator');
 
 const html = require('../util/html');
 const User = require('../models/user');
@@ -166,7 +167,20 @@ exports.postSignup = (req, res, next) => {
 	// Create a new user with the provided data per input name of the form fields
 	const { email, password, confirmPassword } = req.body;
 
-	// TEMP- Ignore validation logic
+	// Validation error retriever from express-validator middleware
+	const errors = validationResult(req); // Extract the validation results from the request object
+	const { msg } = errors.array()[0];
+
+	// Check if there are any validation errors
+	if (!errors.isEmpty()) {
+		// If there are validation errors, render the signup page again with the errors
+		return res.status(422).render('auth/signup', {
+			path: '/signup',
+			pageTitle: 'Signup', // Name of the page
+			errorMessage: msg, // Pass the validation error message
+			flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
+		});
+	}
 
 	// Check if submitted email is already reserved
 	User.findOne({ email: email })

@@ -1,4 +1,5 @@
 const express = require('express');
+const { check } = require('express-validator');
 
 const authController = require('../controllers/auth');
 
@@ -11,7 +12,12 @@ router.get('/login', authController.getLogin);
 router.post('/login', authController.postLogin);
 
 router.get('/signup', authController.getSignup);
-router.post('/signup', authController.postSignup);
+router.post(
+	'/signup',
+	// Validation error collector
+	check('email').isEmail().withMessage('Please enter a valid email'), // check('email') --> Validate name='email' field entry @ signup.ejs
+	authController.postSignup
+);
 
 router.get('/reset', authController.getReset);
 router.post('/reset', authController.postReset);
