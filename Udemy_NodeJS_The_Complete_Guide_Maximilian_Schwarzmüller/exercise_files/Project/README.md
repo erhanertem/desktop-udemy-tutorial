@@ -53,7 +53,7 @@
   - DB handling based on mongoose ODM
     - Explore CRUD operations
 - Website security
-  - Handle user signup, authentication and authorization
+  - Handle user signup and authentication
     - Explore cookie-based client-side authentication via cookie-session
     - Explore cookie-based server-side authentication via express-session
     - Sensitive user data encryption
@@ -71,6 +71,10 @@
   - Advanced website security issues
     - Handle password reset
     - Adopt rate-limiter against token based brute-force attacks
+  - User Authorization
+    - Adopt Filter Database Inquiries (Ownership-based Authorization)
+  - Validation
+    - Validate inputs via express-validator
 
 Aside from curriculum:
 
