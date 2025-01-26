@@ -15,7 +15,18 @@ router.get('/signup', authController.getSignup);
 router.post(
 	'/signup',
 	// Validation error collector
-	check('email').isEmail().withMessage('Please enter a valid email'), // check('email') --> Validate name='email' field entry @ signup.ejs
+	check('email')
+		.isEmail()
+		.withMessage('Please enter a valid email') // check('email') --> Validate name='email' field entry @ signup.ejs
+		// Custom validation error collector
+		.custom((value, { req }) => {
+			// Failed custom validation
+			if (value === 'test@test.com') {
+				throw new Error('This email address is forbidden');
+			}
+			// Success custom validation
+			return true;
+		}),
 	authController.postSignup
 );
 

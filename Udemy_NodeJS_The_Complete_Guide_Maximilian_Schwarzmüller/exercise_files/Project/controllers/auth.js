@@ -169,7 +169,7 @@ exports.postSignup = (req, res, next) => {
 
 	// Validation error retriever from express-validator middleware
 	const errors = validationResult(req); // Extract the validation results from the request object
-	const { msg } = errors.array()[0];
+	const { msg } = errors.array()[0]; // Array method is provided by the ValidationResult object which is returned by validationResult(req)
 
 	// Check if there are any validation errors
 	if (!errors.isEmpty()) {
