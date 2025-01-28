@@ -112,6 +112,19 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
 	// Check if posted login credentials matches credentials stored @ DB
 	const { email, password } = req.body;
+
+	// Extract the validation results from the request object
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).render('auth/login', {
+			pageTitle: 'Login', // Name of the page
+			path: '/login', // The path of the current route
+			errorMessage: errors.array()[0].msg, // if message is not an empty array pass in message else pass in null
+			sessionInitError: null, // No error during session initialization since this is a login request
+			flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
+		});
+	}
+
 	// Search for a user with the provided email
 	User.findOne({ email: email }).then((user) => {
 		// GUARD CLAUSE - If no user found, bounce back to login page with error message
