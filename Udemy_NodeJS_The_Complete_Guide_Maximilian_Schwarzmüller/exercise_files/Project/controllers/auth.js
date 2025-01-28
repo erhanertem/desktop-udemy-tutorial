@@ -165,7 +165,7 @@ exports.getSignup = (req, res, next) => {
 // Triggered via POST req @ signup.ejs
 exports.postSignup = (req, res, next) => {
 	// Create a new user with the provided data per input name of the form fields
-	const { email, password, confirmPassword } = req.body;
+	const { email, password } = req.body;
 
 	// Validation error retriever from express-validator middleware
 	const errors = validationResult(req); // Extract the validation results from the request object
@@ -182,69 +182,57 @@ exports.postSignup = (req, res, next) => {
 		});
 	}
 
-	// Check if submitted email is already reserved
-	User.findOne({ email: email })
-		.then((userDoc) => {
-			// GUARD CLAUSE - If user exists w/ the submitted email bounce back to signup page
-			if (userDoc) {
-				req.flash(
-					'error', // Flash key written to session temporarily till it gets consumed
-					'Email already exists.' // The message content
-				);
-				return res.redirect('/signup');
-			}
-			// Crypt the user password - takes some time async nature so we need to return a promise and handle the result on the next then block
-			return bcrypt
-				.hash(password, 12)
-				.then((hashedPass) => {
-					// Create a new user with submitted form data and crypted pass
-					const newUser = new User({
-						email: email,
-						password: hashedPass,
-						cart: { items: [] },
-					});
-					// Save the user data to DB
-					return newUser.save();
-				})
-				.then((user) => {
-					// Set session after successful signup
-					req.session.user = user;
-					req.session.isLoggedIn = true;
+	// Crypt the user password - takes some time async nature so we need to return a promise and handle the result on the next then block
+	bcrypt
+		.hash(password, 12)
+		.then((hashedPass) => {
+			// Create a new user with submitted form data and crypted pass
+			const newUser = new User({
+				email: email,
+				password: hashedPass,
+				cart: { items: [] },
+			});
+			// Save the user data to DB
+			return newUser.save();
+		})
+		.then((user) => {
+			// Set session after successful signup
+			req.session.user = user;
+			req.session.isLoggedIn = true;
 
-					// // Mock the session save to simulate an error
-					// req.session.save = (callback) => {
-					// 	callback(new Error('Simulated session save error'));
-					// };
+			// // Mock the session save to simulate an error
+			// req.session.save = (callback) => {
+			// 	callback(new Error('Simulated session save error'));
+			// };
 
-					// Convert session.save to a promise
-					const saveSession = promisify(req.session.save).bind(req.session);
-					return saveSession()
-						.then((session) => {
-							// Redirect to login after successful signup
-							res.redirect('/');
+			// Convert session.save to a promise
+			const saveSession = promisify(req.session.save).bind(req.session);
+			return saveSession()
+				.then((session) => {
+					// Redirect to login after successful signup
+					res.redirect('/');
 
-							// Send confirmation email
-							return transporter
-								.sendMail({
-									to: email,
-									from: process.env.GMAIL_USER,
-									subject: 'Signup succeeded!',
-									html: html`<h1>You successfully signed up!</h1>`,
-								})
-								.catch((err) => {
-									// Do not block the user signup flow due to email failure
-									console.error('Failed to send email:', err.message);
-									return;
-								});
+					// Send confirmation email
+					return transporter
+						.sendMail({
+							to: email,
+							from: process.env.GMAIL_USER,
+							subject: 'Signup succeeded!',
+							html: html`<h1>You successfully signed up!</h1>`,
 						})
 						.catch((err) => {
-							// Handle session save errors explicitly
-							console.error('Session save failed:', err.message);
-							// NOTE: req.flash('error', 'An error occurred during login. Please try again.'); --> Since session creation fails, flash does not show as flash depends on a valid session. Therefore, you need to pass in the failure warning gracegully to URL of the redirect as a query string - encodeURIComponent ensures the query string is properly formatted for special characters.
-							return res.redirect(
-								`/login?error=${encodeURIComponent('An error occurred during login. Please try again.')}`
-							);
+							// Do not block the user signup flow due to email failure
+							console.error('Failed to send email:', err.message);
+							return;
 						});
+				})
+				.catch((err) => {
+					// Handle session save errors explicitly
+					console.error('Session save failed:', err.message);
+					// NOTE: req.flash('error', 'An error occurred during login. Please try again.'); --> Since session creation fails, flash does not show as flash depends on a valid session. Therefore, you need to pass in the failure warning gracegully to URL of the redirect as a query string - encodeURIComponent ensures the query string is properly formatted for special characters.
+					return res.redirect(
+						`/login?error=${encodeURIComponent('An error occurred during login. Please try again.')}`
+					);
 				});
 		})
 		.catch((err) => {

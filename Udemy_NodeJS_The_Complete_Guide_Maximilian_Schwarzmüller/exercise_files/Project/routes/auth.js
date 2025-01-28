@@ -4,6 +4,7 @@ const { check, param, query, body, header } = require('express-validator');
 const authController = require('../controllers/auth');
 
 const resetPasswordLimiter = require('../middleware/rateLimit');
+const User = require('../models/user');
 
 // THIS IS A MINI EXPRESS APP TIED TO MAIN APP ROUTER
 const router = express.Router();
@@ -21,19 +22,40 @@ router.post(
 			.withMessage('Please enter a valid email') // check('email') --> Validate name='email' field entry @ signup.ejs
 			// Custom validation error collector
 			.custom((value, { req }) => {
-				// Failed custom validation
-				if (value === 'test@test.com') {
-					throw new Error('This email address is forbidden');
-				}
-				// Success custom validation
-				return true;
+				// -> Sync validation check
+				// // Failed custom validation
+				// if (value === 'test@test.com') {
+				// 	throw new Error('This email address is forbidden');
+				// }
+				// // Success custom validation
+				// return true;
+				// -> Async validation check
+				return User.findOne({ email: value }).then((userDoc) => {
+					// GUARD CLAUSE - If user exists w/ the submitted email bounce back to signup page
+					if (userDoc) {
+						// If a user olready exists with the posted email, return a rejection in the promise
+						return Promise.reject('A user with this email already exists');
+					}
+
+					// If no user is found, this point is reached, and validation passes.
+				});
 			}),
+		// Sync validation
 		body(
 			'password',
 			`Please enter a password with only numbers and text and at least ${process.env.PASSWORD_LENGTH} characters` // Default message for all sub validators
 		)
 			.isLength({ min: process.env.PASSWORD_LENGTH })
 			.isAlphanumeric(),
+		// Sync validation
+		body('confirmPassword').custom((value, { req }) => {
+			// Failed custom validation
+			if (value !== req.body.password) {
+				throw new Error('Passwords do not match');
+			}
+			// Success custom validation
+			return true;
+		}),
 	],
 	authController.postSignup
 );
