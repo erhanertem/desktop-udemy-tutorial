@@ -104,6 +104,8 @@ exports.getLogin = (req, res, next) => {
 		pageTitle: 'Login', // Name of the page
 		path: '/login', // The path of the current route
 		errorMessage: message.length && message, // if message is not an empty array pass in message else pass in null
+		oldInput: { email: '', password: '' }, // Pass the old input data to the form @ form initial load - it's always better to pass in empty strings to avoid undefined errors in forms instead of null values
+		validationErrors: [],
 		sessionInitError: error,
 		flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
 	});
@@ -122,6 +124,7 @@ exports.postLogin = (req, res, next) => {
 			path: '/login', // The path of the current route
 			errorMessage: errors.array()[0].msg, // if message is not an empty array pass in message else pass in null
 			validationErrors: errors.array(), // Pass the validation errors
+			oldInput: { email, password }, // Pass the old input data to the form
 			sessionInitError: null, // No error during session initialization since this is a login request
 			flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
 		});
@@ -130,12 +133,23 @@ exports.postLogin = (req, res, next) => {
 	// Search for a user with the provided email
 	User.findOne({ email: email }).then((user) => {
 		// GUARD CLAUSE - If no user found, bounce back to login page with error message
+		// if (!user) {
+		// 	req.flash(
+		// 		'error', // Flash key written to session temporarily till it gets consumed
+		// 		'Invalid credentials.' // The message content
+		// 	);
+		// 	return res.redirect('/login');
+		// }
 		if (!user) {
-			req.flash(
-				'error', // Flash key written to session temporarily till it gets consumed
-				'Invalid credentials.' // The message content
-			);
-			return res.redirect('/login');
+			return res.status(422).render('auth/login', {
+				path: '/login',
+				pageTitle: 'Login',
+				errorMessage: 'Invalid email or password',
+				validationErrors: [],
+				oldInput: { email, password },
+				sessionInitError: null,
+				flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000,
+			});
 		}
 
 		// Compare submitted password with the hashed password stored in the DB
@@ -153,11 +167,20 @@ exports.postLogin = (req, res, next) => {
 					}); // Save the session data before continuing with re-direct to avoid incomplete async session save while redirecting - We need to return this to make sure this asyc operation completes the promise and returns as a response to the next middleware
 				}
 				// If pass are not same bounce back to login page
-				req.flash(
-					'error', // Flash key written to session temporarily till it gets consumed
-					'Invalid credentials.' // The message content
-				);
-				res.redirect('/login');
+				// req.flash(
+				// 	'error', // Flash key written to session temporarily till it gets consumed
+				// 	'Invalid credentials.' // The message content
+				// );
+				// res.redirect('/login');
+				return res.status(422).render('auth/login', {
+					path: '/login',
+					pageTitle: 'Login',
+					errorMessage: 'Invalid email or password',
+					validationErrors: [],
+					oldInput: { email, password },
+					sessionInitError: null,
+					flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000,
+				});
 			})
 			.catch((err) => {
 				console.log(err);
