@@ -246,8 +246,14 @@ form {
 	text-align: center;
 }
 
+.side-message {
+	min-width: 14rem;
+	margin-left: 10px;
+}
+
 /* Modifier */
-.user-message--error {
+.user-message--error,
+.side-message--error {
 	border-color: red;
 	background-color: #ffe6e6;
 	color: red;

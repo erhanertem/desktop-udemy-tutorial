@@ -7,21 +7,36 @@
   <%- include('../layout/navigation.ejs') %>
 
   <main>
-    <% if(errorMessage) { %>
+    <!-- <% if(errorMessage) { %>
     <div class='user-message user-message--error' id='error-message'><%= errorMessage %></div>
-    <% } %>
+    <% } %> -->
     <form class="login-form" action="/signup" method="POST" novalidate>
       <div class="form-control">
         <label for="email">E-Mail</label>
-        <input type="email" name="email" id="email" value='<%= oldInput.email %>'>
+        <input class='<%= validationErrors.find(error=> error.path === 'email') ? 'invalid': '' %>' type="email" name="email" id="email" value='<%= oldInput.email %>'>
+        <%
+        const isFieldEmail = validationErrors.find(error=> error.path === 'email')
+        if(isFieldEmail) { %>
+        <span class='side-message side-message--error' id='signup-email-error'><%= isFieldEmail.msg %></span>
+        <% } %>
       </div>
       <div class="form-control">
         <label for="password">Password</label>
-        <input type="password" name="password" id="password" value='<%= oldInput.password %>'>
+        <input class='<%= validationErrors.find(error=> error.path === 'password') ? 'invalid': '' %>' type="password" name="password" id="password" value='<%= oldInput.password %>'>
+        <%
+        const isFieldPassword = validationErrors.find(error=> error.path === 'password')
+        if(isFieldPassword) { %>
+        <span class='side-message side-message--error' id='signup-password-error'><%= isFieldPassword.msg %></span>
+        <% } %>
       </div>
       <div class="form-control">
         <label for="confirmPassword">Confirm Password</label>
-        <input type="password" name="confirmPassword" id="confirmPassword" value='<%= oldInput.confirmPassword %>'>
+        <input class='<%= validationErrors.find(error=> error.path === 'confirmPassword') ? 'invalid': '' %>' type="password" name="confirmPassword" id="confirmPassword" value='<%= oldInput.confirmPassword %>'>
+        <%
+        const isFieldConfirmPassword = validationErrors.find(error=> error.path === 'confirmPassword')
+        if(isFieldConfirmPassword) { %>
+        <span class='side-message side-message--error' id='singup-confirmPassword-error'><%= isFieldConfirmPassword.msg %></span>
+        <% } %>
       </div>
       <input type='hidden' name='_csrf' value='<%= csrfToken %>' />
       <button class="btn" type="submit">Signup</button>

@@ -115,11 +115,13 @@ exports.postLogin = (req, res, next) => {
 
 	// Extract the validation results from the request object
 	const errors = validationResult(req);
+
 	if (!errors.isEmpty()) {
 		return res.status(422).render('auth/login', {
 			pageTitle: 'Login', // Name of the page
 			path: '/login', // The path of the current route
 			errorMessage: errors.array()[0].msg, // if message is not an empty array pass in message else pass in null
+			validationErrors: errors.array(), // Pass the validation errors
 			sessionInitError: null, // No error during session initialization since this is a login request
 			flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
 		});
@@ -172,6 +174,7 @@ exports.getSignup = (req, res, next) => {
 		pageTitle: 'Signup', // Name of the page
 		errorMessage: message.length && message, // if message is not an empty array pass in message else pass in null
 		oldInput: { email: '', password: '', confirmPassword: '' }, // Pass the old input data to the form @ form initial load - it's always better to pass in empty strings to avoid undefined errors in forms instead of null values
+		validationErrors: [], // Pass the validation errors
 		sessionInitError: null, // No error during session initialization since this is a signup request
 		flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
 	});
@@ -191,6 +194,7 @@ exports.postSignup = (req, res, next) => {
 			path: '/signup',
 			pageTitle: 'Signup', // Name of the page
 			errorMessage: errors.array()[0].msg, // if message is not an empty array pass in message else pass in null
+			validationErrors: errors.array(), // Pass the validation errors
 			oldInput: { email, password, confirmPassword }, // Pass the old input data to the form
 			sessionInitError: null, // No error during session initialization since this is a login request
 			flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,

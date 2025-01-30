@@ -1,7 +1,13 @@
 // Wait for the page to load
 document.addEventListener('DOMContentLoaded', () => {
 	// List of the IDs to target
-	const messageIds = ['error-message', 'notify-message'];
+	const messageIds = [
+		'error-message',
+		'notify-message',
+		'signup-email-error',
+		'signup-password-error',
+		'singup-confirmPassword-error',
+	];
 
 	// Loop through the IDs and apply the logic for each
 	messageIds.forEach((id) => {
