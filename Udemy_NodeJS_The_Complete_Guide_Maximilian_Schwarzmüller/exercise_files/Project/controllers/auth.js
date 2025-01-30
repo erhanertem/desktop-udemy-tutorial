@@ -171,6 +171,8 @@ exports.getSignup = (req, res, next) => {
 		path: '/signup',
 		pageTitle: 'Signup', // Name of the page
 		errorMessage: message.length && message, // if message is not an empty array pass in message else pass in null
+		oldInput: { email: '', password: '', confirmPassword: '' }, // Pass the old input data to the form @ form initial load - it's always better to pass in empty strings to avoid undefined errors in forms instead of null values
+		sessionInitError: null, // No error during session initialization since this is a signup request
 		flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
 	});
 };
@@ -178,19 +180,19 @@ exports.getSignup = (req, res, next) => {
 // Triggered via POST req @ signup.ejs
 exports.postSignup = (req, res, next) => {
 	// Create a new user with the provided data per input name of the form fields
-	const { email, password } = req.body;
+	const { email, password, confirmPassword } = req.body;
 
-	// Validation error retriever from express-validator middleware
-	const errors = validationResult(req); // Extract the validation results from the request object
-	const { msg } = errors.array()[0]; // Array method is provided by the ValidationResult object which is returned by validationResult(req)
-
+	// Extract the validation results from the request object
+	const errors = validationResult(req);
 	// Check if there are any validation errors
 	if (!errors.isEmpty()) {
 		// If there are validation errors, render the signup page again with the errors
 		return res.status(422).render('auth/signup', {
 			path: '/signup',
 			pageTitle: 'Signup', // Name of the page
-			errorMessage: msg, // Pass the validation error message
+			errorMessage: errors.array()[0].msg, // if message is not an empty array pass in message else pass in null
+			oldInput: { email, password, confirmPassword }, // Pass the old input data to the form
+			sessionInitError: null, // No error during session initialization since this is a login request
 			flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000, // Default to 3000ms if not defined,
 		});
 	}
