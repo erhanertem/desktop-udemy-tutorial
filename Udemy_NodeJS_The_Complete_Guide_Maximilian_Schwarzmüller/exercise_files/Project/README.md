@@ -82,7 +82,7 @@
 
     - UI sanitization
 
-    Aside from curriculum:
+**Aside from curriculum:**
 
 - Implement nodejs controllers in async/await instead of cb style
 - Slightly different approach of implementing functions w/ detailed error checking
@@ -90,6 +90,7 @@
   - Handle validation error ids with custom behavior: Timeout or upon-click/keypress
   - Setup self-destroying flash cards
     - Extend EJS variable onto non-NodeJS enviroment JS for timeout cards that is created inside or out of session
+- Implement gracefull handling of a user whom has an active session but terminated credentials on DB side.
 
 &emsp;
 

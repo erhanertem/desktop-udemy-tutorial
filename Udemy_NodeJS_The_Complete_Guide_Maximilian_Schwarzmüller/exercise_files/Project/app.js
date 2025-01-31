@@ -81,7 +81,7 @@ app.use(flash());
 app.use((req, res, next) => {
 	// GUARD CLAUSE - Pass thru if there is no session user
 	if (!req.session.user) {
-		return next(); // Need to explicityl return next() to make sure the execution does not continue after this
+		return next(); // Need to explicitly return next() to make sure the execution does not continue after this
 	}
 	// Read the session user id and fetch the corresponding mongoDB User instance
 	User.findById(req.session.user._id)
@@ -91,12 +91,21 @@ app.use((req, res, next) => {
 				req.user = user; // Assign the matching mongo user for the app @ top level request object as a user attribute - now we have access to all User related methods as defined in the User model
 				return next();
 			} else {
-				throw new Error('User not found');
+				// If the user does not exist, destroy the session and respond with an appropriate message
+				req.session.destroy((err) => {
+					if (err) {
+						// Redirect with an error message in the query parameter
+						return res.redirect('/?error=Could not log out. Please try again later.');
+					}
+					// Redirect with a message indicating the account has been deleted
+					return res.redirect('/login?error=User account has been deleted.');
+				});
 			}
 		})
 		.catch((err) => {
-			console.log(err);
-			next(err); // Pass error to error-handling middleware
+			console.error('Error fetching user:', err);
+			req.flash('error', 'An internal server error occurred. Please try again later.');
+			return res.redirect('/'); // Redirect to home page or an error page
 		});
 });
 
