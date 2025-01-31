@@ -53,6 +53,7 @@
   - DB handling based on mongoose ODM
     - Explore CRUD operations
 - Website security
+
   - Handle user signup and authentication
     - Explore cookie-based client-side authentication via cookie-session
     - Explore cookie-based server-side authentication via express-session
@@ -75,13 +76,20 @@
     - Adopt Filter Database Inquiries (Ownership-based Authorization)
   - Validation
     - Validate inputs via express-validator
+      - Implement input line specific validation flashes
+      - Implement generic validation flashes
+  - Sanitization
 
-Aside from curriculum:
+    - UI sanitization
+
+    Aside from curriculum:
 
 - Implement nodejs controllers in async/await instead of cb style
 - Slightly different approach of implementing functions w/ detailed error checking
-- Setup self-destroying flash cards
-  - Extend EJS variable onto non-NodeJS enviroment JS for timeout cards that is created inside or out of session
+- Flash card handling
+  - Handle validation error ids with custom behavior: Timeout or upon-click/keypress
+  - Setup self-destroying flash cards
+    - Extend EJS variable onto non-NodeJS enviroment JS for timeout cards that is created inside or out of session
 
 &emsp;
 

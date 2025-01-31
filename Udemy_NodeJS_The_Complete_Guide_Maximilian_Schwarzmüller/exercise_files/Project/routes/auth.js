@@ -13,12 +13,16 @@ router.get('/login', authController.getLogin);
 router.post(
 	'/login',
 	[
-		body('email').isEmail().withMessage('Please enter a valid email'),
-		body('password', 'Please enter a valid password')
+		body('email')
+			.isEmail() // Check if email is valid
+			.withMessage('Please enter a valid email')
+			.normalizeEmail(), // UI Sanitization
+		body('password')
 			.isLength({ min: process.env.PASSWORD_LENGTH })
 			.withMessage(`Please enter a password at least ${process.env.PASSWORD_LENGTH} characters`)
 			.isAlphanumeric()
-			.withMessage('Please enter a password with only numbers and text'),
+			.withMessage('Please enter a password with only numbers and text')
+			.trim(), // UI Sanitization
 	],
 	authController.postLogin
 );
@@ -50,23 +54,27 @@ router.post(
 
 					// If no user is found, this point is reached, and validation passes.
 				});
-			}),
+			})
+			.normalizeEmail(), // UI Sanitization
 		// Sync validation
 		body(
 			'password',
 			`Please enter a password with only numbers and text and at least ${process.env.PASSWORD_LENGTH} characters` // Default message for all sub validators
 		)
 			.isLength({ min: process.env.PASSWORD_LENGTH })
-			.isAlphanumeric(),
+			.isAlphanumeric()
+			.trim(), // UI Sanitization
 		// Sync validation
-		body('confirmPassword').custom((value, { req }) => {
-			// Failed custom validation
-			if (value !== req.body.password) {
-				throw new Error('Passwords do not match');
-			}
-			// Success custom validation
-			return true;
-		}),
+		body('confirmPassword')
+			.custom((value, { req }) => {
+				// Failed custom validation
+				if (value !== req.body.password) {
+					throw new Error('Passwords do not match');
+				}
+				// Success custom validation
+				return true;
+			})
+			.trim(), // UI Sanitization
 	],
 	authController.postSignup
 );
