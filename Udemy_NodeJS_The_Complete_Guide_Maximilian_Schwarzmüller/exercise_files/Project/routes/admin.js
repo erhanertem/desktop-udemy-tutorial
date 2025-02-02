@@ -15,10 +15,24 @@ router.get('/add-product', isAuth, adminController.getAddProduct);
 router.post(
 	'/add-product',
 	[
-		body('title').isAlphanumeric().isLength({ min: 3 }).trim(),
-		body('imageUrl').isURL(),
-		body('price').isFloat(),
-		body('description').isLength({ min: 5, max: 400 }).trim(),
+		body('title')
+			.trim() // Sanitize the input
+			.notEmpty()
+			.withMessage('Please provide product title.')
+			.isAlphanumeric('en-US', { ignore: ' ' }) // Allows letters, numbers, and spaces
+			.withMessage('Title must contain only letters and numbers.')
+			.isLength({ min: 3 })
+			.withMessage('Title must be at least 3 characters long.'),
+		body('imageUrl').isURL().withMessage('Please provide product image URL.'),
+		body('price')
+			.notEmpty()
+			.withMessage('Please provide a price.') // Ensures price is not empty
+			.isFloat({ min: 0.01 })
+			.withMessage('Price must be a valid number greater than 0.'),
+		body('description')
+			.isLength({ min: 5, max: 400 })
+			.withMessage('Description must be between 5 and 400 characters.')
+			.trim(),
 	],
 	isAuth,
 	adminController.postAddProduct
@@ -34,10 +48,24 @@ router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
 router.post(
 	'/edit-product',
 	[
-		body('title').isAlphanumeric().isLength({ min: 3 }).trim(),
-		body('imageUrl').isURL(),
-		body('price').isFloat(),
-		body('description').isLength({ min: 5, max: 400 }).trim(),
+		body('title')
+			.trim() // Sanitize the input
+			.notEmpty()
+			.withMessage('Please provide product title.')
+			.isAlphanumeric('en-US', { ignore: ' ' }) // Allows letters, numbers, and spaces
+			.withMessage('Title must contain only letters and numbers.')
+			.isLength({ min: 3 })
+			.withMessage('Title must be at least 3 characters long.'),
+		body('imageUrl').isURL().withMessage('Please provide product image URL.'),
+		body('price')
+			.notEmpty()
+			.withMessage('Please provide a price.') // Ensures price is not empty
+			.isFloat({ min: 0.01 })
+			.withMessage('Price must be a valid number greater than 0.'),
+		body('description')
+			.isLength({ min: 5, max: 400 })
+			.withMessage('Description must be between 5 and 400 characters.')
+			.trim(),
 	],
 	isAuth,
 	adminController.postEditProduct

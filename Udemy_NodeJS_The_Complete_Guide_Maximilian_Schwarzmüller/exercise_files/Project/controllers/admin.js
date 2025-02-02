@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator');
+
 const Product = require('../models/product'); // Product hereby is an arbitrary name does not need to match the name provided in the model() @ source file export
 
 exports.getAddProduct = (req, res, next) => {
@@ -5,6 +7,9 @@ exports.getAddProduct = (req, res, next) => {
 		pageTitle: 'Add Product',
 		path: '/admin/add-product',
 		editing: false,
+		hasError: false,
+		errorMessage: null,
+		validationErrors: [],
 	});
 };
 
@@ -35,6 +40,9 @@ exports.getEditProduct = (req, res, next) => {
 				pageTitle: 'Edit Product',
 				path: '/admin/edit-product',
 				editing: editMode, // /admin/edit-product/12345?edit=true&title=new_product
+				hasError: false,
+				errorMessage: null,
+				validationErrors: [],
 				product,
 			});
 		})
@@ -111,6 +119,28 @@ exports.postEditProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
 	const { title, imageUrl, price, description } = req.body;
 	const userId = req.user._id; // Note: When _id is retrieved, its provided as string by the mongo driver
+	// Read validatione errors from the prev validation middleware block
+	const errors = validationResult(req);
+	const x = errors.array();
+	console.log('x :', x);
+	// If any error reported
+	if (!errors.isEmpty()) {
+		// Render the edit page again
+		return res.status(422).render('admin/edit-product', {
+			pageTitle: 'Add Product',
+			path: '/admin/add-product',
+			editing: false, // /admin/edit-product/12345?edit=true&title=new_product
+			hasError: true,
+			errorMessage: errors.array()[0].msg, // Passes the generic message
+			validationErrors: errors.array(), // Ables to pick  up validation errors specific to form line-items and furnish CSS in case of error
+			product: {
+				title: title,
+				imageUrl: imageUrl,
+				price: price,
+				description: description,
+			},
+		});
+	}
 
 	// Create a new product
 	const product = new Product({

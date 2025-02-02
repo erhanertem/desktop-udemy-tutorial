@@ -6,22 +6,25 @@
 <body>
   <%- include('../layout/navigation')%>
   <main>
+     <% if(errorMessage) { %>
+    <div class='user-message user-message--error' id='error-message'><%= errorMessage %></div>
+    <% } %>
     <form class="product-form" action="/admin/<%= editing ? 'edit-product' : 'add-product' %>" method="POST" novalidate>
       <div class="form-control">
         <label for="title">Title</label>
-        <input id="title" name="title" type="text" value='<%= editing ? product.title : ''%>' required />
+        <input id="title" name="title" type="text" value='<%= (editing || hasError) ? product.title : ''%>' class='<%= validationErrors.find(error=> error.path === 'title') ? 'invalid': '' %>' required />
       </div>
       <div class="form-control">
         <label for="imageUrl">Image URL</label>
-        <input id="imageUrl" name="imageUrl" type="text" value="<%= `https://picsum.photos/seed/${Math.random()}/400/600`  %>" required />
+        <input id="imageUrl" name="imageUrl" type="text" value="<%= `https://picsum.photos/seed/${Math.random()}/400/600`  %>" class='<%= validationErrors.find(error=> error.path === 'imageUrl') ? 'invalid': '' %>' required />
       </div>
       <div class="form-control">
         <label for="price">Price</label>
-        <input id="price" name="price" type="number" step="0.01" value="<%= editing ? product.price : '' %>" required />
+        <input id="price" name="price" type="number" step="0.01" value="<%=(editing || hasError) ? product.price : '' %>" class='<%= validationErrors.find(error=> error.path === 'price') ? 'invalid': '' %>' required />
       </div>
       <div class="form-control">
         <label for="description">Description</label>
-        <textarea id="description" name="description" rows="6" required><%= editing ? product.description : ''%></textarea>
+        <textarea id="description" name="description" rows="6" class='<%= validationErrors.find(error=> error.path === 'description') ? 'invalid': '' %>' required><%= (editing || hasError) ? product.description : ''%></textarea>
       </div>
       <% if(editing) { %>
       <input type="hidden" name="productId" value="<%= product._id %>">
