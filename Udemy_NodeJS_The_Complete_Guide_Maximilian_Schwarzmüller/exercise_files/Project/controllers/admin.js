@@ -90,6 +90,28 @@ exports.postEditProduct = (req, res, next) => {
 	// console.log(req.body);
 	const { title, imageUrl, price, description, productId } = req.body;
 
+	// Read validatione errors from the prev validation middleware block
+	const errors = validationResult(req);
+	// If any error reported
+	if (!errors.isEmpty()) {
+		// Render the edit page again
+		return res.status(422).render('admin/edit-product', {
+			pageTitle: 'Edit Product',
+			path: '/admin/edit-product',
+			editing: true, // /admin/edit-product/12345?edit=true&title=new_product
+			hasError: true,
+			errorMessage: errors.array()[0].msg, // Passes the generic message
+			validationErrors: errors.array(), // Ables to pick  up validation errors specific to form line-items and furnish CSS in case of error
+			product: {
+				title: title,
+				imageUrl: imageUrl,
+				price: price,
+				description: description,
+				_id: productId, // Required to pass the productId to the edit-product page
+			},
+		});
+	}
+
 	// Attempt to save the product
 	Product.findById(productId)
 		.then((product) => {
@@ -121,8 +143,6 @@ exports.postAddProduct = (req, res, next) => {
 	const userId = req.user._id; // Note: When _id is retrieved, its provided as string by the mongo driver
 	// Read validatione errors from the prev validation middleware block
 	const errors = validationResult(req);
-	const x = errors.array();
-	console.log('x :', x);
 	// If any error reported
 	if (!errors.isEmpty()) {
 		// Render the edit page again

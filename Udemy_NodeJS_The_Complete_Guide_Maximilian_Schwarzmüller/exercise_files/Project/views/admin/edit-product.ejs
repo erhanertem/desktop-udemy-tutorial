@@ -6,7 +6,7 @@
 <body>
   <%- include('../layout/navigation')%>
   <main>
-     <% if(errorMessage) { %>
+    <% if(errorMessage) { %>
     <div class='user-message user-message--error' id='error-message'><%= errorMessage %></div>
     <% } %>
     <form class="product-form" action="/admin/<%= editing ? 'edit-product' : 'add-product' %>" method="POST" novalidate>
