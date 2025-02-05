@@ -60,7 +60,6 @@ const { csrfSynchronisedProtection, generateToken } = csrfSync({
 		return req.body['_csrf'];
 	}, // Used to retrieve the token submitted by the user in a form
 });
-
 // Apply the CSRF middleware
 app.use(csrfSynchronisedProtection);
 
@@ -108,9 +107,10 @@ app.use((req, res, next) => {
 			}
 		})
 		.catch((err) => {
-			console.error('Error fetching user:', err);
-			req.flash('error', 'An internal server error occurred. Please try again later.');
-			return res.redirect('/'); // Redirect to home page or an error page
+			throw new Error(err);
+			// console.error('Error fetching user:', err);
+			// req.flash('error', 'An internal server error occurred. Please try again later.');
+			// return res.redirect('/'); // Redirect to home page or an error page
 		});
 });
 
@@ -118,18 +118,19 @@ app.use((req, res, next) => {
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
+app.get('/500', errorController.get500Manual); // For manual redirect errro handling
 
 // ERROR HANDLING
 // > 404 Middleware for non-existent routes
 app.use(errorController.get404);
 
-// > Error-handling middleware
-app.use(errorController.get500);
+// > Express Global Error-handling middleware
+// app.use(errorController.get500);
 
 // Server initializer with mongoDB in IEFF style
 (async () => {
 	try {
-		// Global error handlers
+		// Non-express Global error handlers
 		// Handle uncaught exceptions
 		process.on('uncaughtException', (err) => {
 			console.error('Uncaught Exception:', err);

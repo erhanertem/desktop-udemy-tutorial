@@ -20,14 +20,14 @@
     - Significance of route order
 - Error handling
 
-  - Setup error handling express middlewares
-    - General error handling
-    - Malformed body error handling
-    - Non existing route request error handling
   - Throwing errors
     - throw err
     - next(err)
-  - Global error handling
+  - Setup error handling express middlewares
+    - Global express error handling
+    - Malformed body error handling
+    - Non existing route request error handling
+  - Global non-express error handling
     - uncaughtException
     - unhandledRejection
   - Error handling flash UI notifications

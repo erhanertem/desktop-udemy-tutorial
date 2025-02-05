@@ -1,0 +1,13 @@
+<%- include('../layout/head')%>
+</head>
+
+<body>
+  <%- include('../layout/navigation')%>
+  <h1><%= message %></h1>
+  <p>We're working on fixing this, sorry for the inconvenience!</p>
+  <script>
+    setTimeout(() => {
+      window.location.href = '/';
+    }, process.env.REDIRECT_DELAY);
+  </script>
+  <%- include('../layout/end')%>

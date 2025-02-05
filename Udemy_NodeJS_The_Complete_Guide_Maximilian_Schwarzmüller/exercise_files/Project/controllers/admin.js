@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const { validationResult } = require('express-validator');
 
 const Product = require('../models/product'); // Product hereby is an arbitrary name does not need to match the name provided in the model() @ source file export
@@ -164,6 +166,7 @@ exports.postAddProduct = (req, res, next) => {
 
 	// Create a new product
 	const product = new Product({
+		_id: new mongoose.Types.ObjectId('6781a162df1abe986cda2c29'), // Generate a new ObjectId from an existing product to deleberately plot an error for testing
 		title,
 		price,
 		description,
@@ -178,7 +181,25 @@ exports.postAddProduct = (req, res, next) => {
 			res.redirect('/admin/list-products');
 		})
 		.catch((err) => {
-			console.log(err);
-			next(err); // Pass the error to the global error-handling middleware
+			// > OPTION#1. THROW ERROR FOR GLOBAL ERROR HANDLING
+			// console.log(err);
+			// next(err); // Pass the error to the global error-handling middleware
+			// > OPTION#2. Intended Page/Response with Error Information upon Error
+			// return res.status(500).render('admin/edit-product', {
+			// 	pageTitle: 'Add Product',
+			// 	path: '/admin/add-product',
+			// 	editing: false,
+			// 	hasError: true,
+			// 	errorMessage: 'Failed to create product. Please try again.',
+			// 	validationErrors: [],
+			// 	product: {
+			// 		title,
+			// 		imageUrl,
+			// 		price,
+			// 		description,
+			// 	},
+			// });
+			// > OPTION#3. Manually Redirect to a specific error page
+			res.redirect('/500');
 		});
 };
