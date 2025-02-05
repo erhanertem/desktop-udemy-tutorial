@@ -24,9 +24,13 @@
     - throw err
     - next(err)
   - Setup error handling express middlewares
+    - 404 Non existing route request error handling
     - Global express error handling
-    - Malformed body error handling
-    - Non existing route request error handling
+      - Malformed body error handling
+      - Customizing error message and status
+      - Setup custom erro routes
+        - Pass dotEnv variables
+        - Pass custom error message onto EJS via user session (Promisified or Callback based error switching)
   - Global non-express error handling
     - uncaughtException
     - unhandledRejection

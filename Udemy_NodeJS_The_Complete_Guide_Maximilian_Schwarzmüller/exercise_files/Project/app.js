@@ -14,6 +14,7 @@ dotenv.config({ path: path.resolve(__dirname, envFile) });
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
+const errorRoutes = require('./routes/error');
 const errorController = require('./controllers/error');
 
 const User = require('./models/user');
@@ -118,14 +119,15 @@ app.use((req, res, next) => {
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
-app.get('/500', errorController.get500Manual); // For manual redirect errro handling
+app.use(errorRoutes);
 
 // ERROR HANDLING
 // > 404 Middleware for non-existent routes
+// If none of the above routes are hit, |his middleware will return for the reqwuested endpoint
 app.use(errorController.get404);
 
-// > Express Global Error-handling middleware
-// app.use(errorController.get500);
+// > Express Global Error-handling middleware - any error thrown via next(err) hits this special middleware
+app.use(errorController.getGlobalErrorHandler);
 
 // Server initializer with mongoDB in IEFF style
 (async () => {

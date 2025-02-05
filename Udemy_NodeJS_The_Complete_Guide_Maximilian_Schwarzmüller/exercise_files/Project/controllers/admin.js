@@ -27,12 +27,18 @@ exports.getEditProduct = (req, res, next) => {
 	// Fetch the product by ID
 	Product.findById(productId)
 		.then((product) => {
+			// // TEST MOCK ERROR
+			// throw new Error('Test Error');
+			// // TEST MOCK ERROR
+			// product = false;
+
 			// Handle case where product is not found
 			if (!product) {
-				return res.status(404).render('404', {
+				return res.status(404).render('errors/404', {
 					pageTitle: 'Product Not Found',
 					path: '',
 					message: `Product with ID "${productId}" not found.`,
+					redirectDelay: process.env.REDIRECT_DELAY,
 				});
 			}
 
@@ -48,9 +54,13 @@ exports.getEditProduct = (req, res, next) => {
 				product,
 			});
 		})
-		.catch((error) => {
-			console.error('Error fetching product:', error.message);
-			next(err); // Pass the error to the global error-handling middleware
+		.catch((err) => {
+			// console.error('Error fetching product:', err.message);
+			// next(err); // Pass the error to the global error-handling middleware
+			// Create custom error object
+			const error = new Error('Fetching product failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -59,6 +69,9 @@ exports.getAllProducts = (req, res, next) => {
 		// .select('title imageUrl price -_id') // Include title and price fields and get rid of _id field from the returned product fields
 		// .populate('userId', 'name') // Populate the user object from userId field at each fetched product, if specified explicitly only name along with id is returned. If userId solely provided then everything associated with the user that matches the userId is returned
 		.then((products) => {
+			// // TEST MOCK ERROR
+			// throw new Error('Test Error');
+
 			res.render('admin/list-products', {
 				prods: products,
 				path: '/admin/list-products',
@@ -66,8 +79,12 @@ exports.getAllProducts = (req, res, next) => {
 			});
 		})
 		.catch((err) => {
-			console.log(err);
-			next(err); // Pass the error to the global error-handling middleware
+			// console.log(err);
+			// next(err); // Pass the error to the global error-handling middleware
+			// Create custom error object
+			const error = new Error('Populating user products failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -77,12 +94,19 @@ exports.postDeleteProduct = (req, res, next) => {
 	// Delete the product where the user has this product and a matching product id - filtered authorization
 	Product.deleteOne({ _id: productId, userId: req.user._id })
 		.then(() => {
+			// // TEST MOCK ERROR
+			// throw new Error('Test Error');
+
 			console.log('Product deleted');
 			res.redirect('/admin/list-products');
 		})
 		.catch((err) => {
-			console.log(err);
-			next(err); // Pass the error to the global error-handling middleware
+			// console.log(err);
+			// next(err); // Pass the error to the global error-handling middleware
+			// Create custom error object
+			const error = new Error('Deleting product failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -117,6 +141,9 @@ exports.postEditProduct = (req, res, next) => {
 	// Attempt to save the product
 	Product.findById(productId)
 		.then((product) => {
+			// // TEST MOCK ERROR
+			// throw new Error('Test Error');
+
 			// Engage in authorization check
 			if (product.userId.toString() !== req.user._id.toString()) {
 				// Redirect to the home page if unauthorized
@@ -135,8 +162,12 @@ exports.postEditProduct = (req, res, next) => {
 			});
 		})
 		.catch((err) => {
-			console.log(err);
-			next(err); // Pass the error to the global error-handling middleware
+			// console.log(err);
+			// next(err); // Pass the error to the global error-handling middleware
+			// Create custom error object
+			const error = new Error('Finding a product failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -166,7 +197,8 @@ exports.postAddProduct = (req, res, next) => {
 
 	// Create a new product
 	const product = new Product({
-		_id: new mongoose.Types.ObjectId('6781a162df1abe986cda2c29'), // Generate a new ObjectId from an existing product to deleberately plot an error for testing
+		// // TEST MOCK ERROR
+		// _id: new mongoose.Types.ObjectId('6781a162df1abe986cda2c29'), // Generate a new ObjectId from an existing product to deleberately plot an error for testing
 		title,
 		price,
 		description,
@@ -184,6 +216,11 @@ exports.postAddProduct = (req, res, next) => {
 			// > OPTION#1. THROW ERROR FOR GLOBAL ERROR HANDLING
 			// console.log(err);
 			// next(err); // Pass the error to the global error-handling middleware
+			// Create custom error object
+			const error = new Error('Creating a product failed.');
+			error.httpStatusCode = 500;
+			return next(error);
+
 			// > OPTION#2. Intended Page/Response with Error Information upon Error
 			// return res.status(500).render('admin/edit-product', {
 			// 	pageTitle: 'Add Product',
@@ -199,7 +236,8 @@ exports.postAddProduct = (req, res, next) => {
 			// 		description,
 			// 	},
 			// });
+
 			// > OPTION#3. Manually Redirect to a specific error page
-			res.redirect('/500');
+			// res.redirect('/500');
 		});
 };

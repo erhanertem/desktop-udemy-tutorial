@@ -1,44 +1,81 @@
-// CUSTOM EXPRESS ERROR HANDLING
+// CUSTOM ERROR HANDLERS
+
+exports.get400 = (req, res, next) => {
+	res.status(400).render('errors/400', {
+		pageTitle: 'Error',
+		path: '', // Defines the active tab @ navbar
+		message: 'Invalid Request Body',
+		isAuthenticated: req.session.isLoggedIn, // Check if user is authenticated for nav bar display on/off
+	});
+};
+
 exports.get404 = (req, res, next) => {
 	res.status(404).render('errors/404', {
 		pageTitle: 'Page Not Found',
 		path: '', // Defines the active tab @ navbar
-		// styles: '<link rel="stylesheet" href="/css/main.css" >', // Provide additional styles to header layout
 		isAuthenticated: req.session.isLoggedIn, // Check if user is authenticated for nav bar display on/off
-		// layout: false, // Turns on/off layouts - replaced by isAuthenticated
+		redirectDelay: process.env.REDIRECT_DELAY,
 	});
 };
 
-// CUSTOM EXPRESS ERROR HANDLING FOR MANUAL REDIRECTS
-exports.get500Manual = (req, res, next) => {
+exports.get500 = (req, res, next) => {
+	// Use stored message or fallback
+	const message = req.session.errorMessage || 'Internal Server Error';
+
+	// Clear session message after use
+	req.session.errorMessage = null;
+
 	res.status(500).render('errors/500', {
 		pageTitle: 'Server Error',
 		path: '', // Defines the active tab @ navbar
-		message: 'Internal Server Error',
+		message: message,
 		isAuthenticated: req.session.isLoggedIn, // Check if user is authenticated for nav bar display on/off
-		// layout: false, // Turns on/off layouts - replaced by isAuthenticated
 	});
 };
 
-// GLOBAL EXPRESS ERROR HANDLING
-exports.get500 = (err, req, res, next) => {
-	console.error(err.stack); // Log the error
+// GLOBAL EXPRESS ERROR HANDLER
+exports.getGlobalErrorHandler = (err, req, res, next) => {
+	// Log the error
+	console.error('👉', err.httpStatusCode || err.status, err.message);
 
-	// Check for specific errors, like JSON parsing issues
+	// Handle JSON parsing errors
 	if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-		return res.status(400).render('errors/400', {
-			pageTitle: 'Error',
-			path: '', // Defines the active tab @ navbar
-			message: 'Invalid Request Body',
-			isAuthenticated: req.session.isLoggedIn, // Check if user is authenticated for nav bar display on/off
-		});
+		return res.redirect('/400');
 	}
 
-	res.status(500).render('errors/500', {
-		pageTitle: 'Server Error',
-		path: '', // Defines the active tab @ navbar
-		message: 'Internal Server Error',
-		isAuthenticated: req.session.isLoggedIn, // Check if user is authenticated for nav bar display on/off
-		// layout: false, // Turns on/off layouts - replaced by isAuthenticated
+	// > OPTION#1. LOG CRITICAL ERROR BUT RESPOND WITH A GENERIC PAGE BASED ON RECEIVED ERROR STATUS CODE
+	// switch (err.httpStatusCode) {
+	// 	case 500:
+	// 		res.redirect('/500');
+	// 		break;
+	// 	default:
+	// }
+	// > OPTION#2. CARRY THE ERRO MESSAGE ONTO GENERIC PAGE VIA SESSION UPON REDIRECT
+	// Pass error message via session
+	req.session.errorMessage = err.message; // Store in session
+	// > OPTION#2.1 CB VERSION FOR SAVING SESSION BEFORE PRIOCEEDING WITH A REDIRECT
+	req.session.save(() => {
+		// Wait until session is saved
+		switch (err.httpStatusCode) {
+			case 500:
+				res.redirect('/500'); // ✅ Ensures session is saved before redirecting
+				break;
+			default:
+		}
 	});
+	// > OPTION#2.2 USE AWAIT/PROMISE FOR SAVING SESSION SINCE IT DOES NOT NATIVELY SUPPORT A PROMISE.
+	// // Convert session.save() to a promise
+	// await new Promise((resolve, reject) => {
+	// 	req.session.save((err) => {
+	// 		if (err) reject(err);
+	// 		else resolve();
+	// 	});
+	// });
+	// // Now it's safe to redirect after session is saved
+	// switch (err.httpStatusCode) {
+	// 	case 500:
+	// 		return res.redirect('/500');
+	// 	default:
+	// 		return res.redirect('/');
+	// }
 };

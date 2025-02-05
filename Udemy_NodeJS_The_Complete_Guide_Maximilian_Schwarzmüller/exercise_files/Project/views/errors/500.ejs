@@ -3,8 +3,8 @@
 
 <body>
   <%- include('../layout/navigation')%>
-  <h1><%= message %></h1>
-  <p>We're working on fixing this, sorry for the inconvenience!</p>
+  <h1>Server Error</h1>
+  <p><%= message %><span> We're working on fixing this, sorry for the inconvenience!</span></p> <!-- Dynamically displays the error message -->
   <script>
     setTimeout(() => {
       window.location.href = '/';

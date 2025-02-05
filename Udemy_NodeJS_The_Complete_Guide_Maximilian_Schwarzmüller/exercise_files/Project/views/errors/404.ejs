@@ -3,11 +3,12 @@
 
 <body>
   <%- include('../layout/navigation')%>
-  <h1>Page Not Found!</h1>
+  <h1><%= pageTitle %></h1>
+  <p><%= typeof message !== 'undefined' ?message : '' %></p><!-- Dynamically displays the error message -->
   <p>You will be redirected shortly...</p>
   <script>
     setTimeout(() => {
       window.location.href = '/';
-    }, process.env.REDIRECT_DELAY);
+    }, <%= typeof redirectDelay !== 'undefined' ? redirectDelay : 3000 %>);
   </script>
   <%- include('../layout/end')%>
