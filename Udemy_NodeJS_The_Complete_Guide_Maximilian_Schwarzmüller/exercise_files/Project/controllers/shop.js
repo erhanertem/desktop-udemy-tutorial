@@ -18,8 +18,12 @@ exports.getIndex = (req, res, next) => {
 			});
 		})
 		.catch((err) => {
-			console.log(err);
-			next(err); // Pass the error to the global error-handling middleware
+			// console.log(err);
+			// next(err); // Pass the error to the global error-handling middleware
+			// Create custom error object
+			const error = new Error('Fetching products failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -33,8 +37,12 @@ exports.getProducts = (req, res, next) => {
 			});
 		})
 		.catch((err) => {
-			console.log(err);
-			next(err); // Pass the error to the global error-handling middleware
+			// console.log(err);
+			// next(err); // Pass the error to the global error-handling middleware
+			// Create custom error object
+			const error = new Error('Fetching products failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -50,8 +58,12 @@ exports.getProduct = (req, res, next) => {
 			});
 		})
 		.catch((err) => {
-			console.error('Error fetching product details:', err);
-			next(err); // Pass the error to the global error-handling middleware);
+			// console.error('Error fetching product details:', err);
+			// next(err); // Pass the error to the global error-handling middleware);
+			// Create custom error object
+			const error = new Error('Fetching product details failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -68,8 +80,12 @@ exports.getCart = (req, res, next) => {
 			});
 		})
 		.catch((err) => {
-			console.error('Error fetching cart details:', err);
-			next(err); // Pass the error to the global error-handling middleware);
+			// console.error('Error fetching cart details:', err);
+			// next(err); // Pass the error to the global error-handling middleware);
+			// Create custom error object
+			const error = new Error('Fetching cart details failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -87,8 +103,12 @@ exports.postCart = (req, res, next) => {
 			res.redirect('/cart');
 		})
 		.catch((err) => {
-			console.error('Error posting cart: ', err);
-			next(err); // Pass the error to the global error-handling middleware);
+			// console.error('Error posting cart: ', err);
+			// next(err); // Pass the error to the global error-handling middleware);
+			// Create custom error object
+			const error = new Error('Posting cart failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -103,8 +123,12 @@ exports.postCartDeleteProduct = (req, res, next) => {
 			res.redirect('/cart');
 		})
 		.catch((err) => {
-			console.error('Error deleting product from cart: ', err);
-			next(err); // Pass the error to the global error-handling middleware
+			// console.error('Error deleting product from cart: ', err);
+			// next(err); // Pass the error to the global error-handling middleware
+			// Create custom error object
+			const error = new Error('Deleting product from cart failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -151,8 +175,12 @@ exports.postOrder = (req, res, next) => {
 			res.redirect('/orders')
 		)
 		.catch((err) => {
-			console.error('Error while creating order: ', err);
-			next(err); // Pass the error to the global error-handling middleware})
+			// console.error('Error while creating order: ', err);
+			// next(err); // Pass the error to the global error-handling middleware})
+			// Create custom error object
+			const error = new Error('Creating order failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
 
@@ -167,7 +195,11 @@ exports.getOrders = (req, res, next) => {
 			})
 		)
 		.catch((err) => {
-			console.log(err);
-			next(err); // Pass the error to the global error-handling middleware
+			// console.log(err);
+			// next(err); // Pass the error to the global error-handling middleware
+			// Create custom error object
+			const error = new Error('Fetching orders failed.');
+			error.httpStatusCode = 500;
+			return next(error);
 		});
 };
