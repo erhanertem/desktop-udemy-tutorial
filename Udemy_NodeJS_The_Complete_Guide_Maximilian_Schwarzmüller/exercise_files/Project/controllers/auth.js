@@ -154,6 +154,8 @@ exports.postLogin = (req, res, next) => {
 
 		// Compare submitted password with the hashed password stored in the DB
 		bcrypt
+			// // TEST MOCK ERROR
+			// .compare(undefined, user.password)
 			.compare(password, user.password)
 			.then((doMatch) => {
 				// If pass are same proceed with session creation
@@ -183,7 +185,7 @@ exports.postLogin = (req, res, next) => {
 				});
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log(err.message);
 				res.redirect('/login');
 			});
 	});

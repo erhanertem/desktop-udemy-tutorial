@@ -84,6 +84,9 @@ app.use(flash());
 
 // Register the session user as mongoose user with User object methods
 app.use((req, res, next) => {
+	// // TEST MOCK ERROR
+	// throw new Error('Test Error.');
+
 	// GUARD CLAUSE - Pass thru if there is no session user
 	if (!req.session.user) {
 		return next(); // Need to explicitly return next() to make sure the execution does not continue after this
@@ -91,6 +94,9 @@ app.use((req, res, next) => {
 	// Read the session user id and fetch the corresponding mongoDB User instance
 	User.findById(req.session.user._id)
 		.then((user) => {
+			// // TEST MOCK ERROR
+			// throw new Error('Test Error.');
+
 			if (user) {
 				console.log('Found user');
 				req.user = user; // Assign the matching mongo user for the app @ top level request object as a user attribute - now we have access to all User related methods as defined in the User model
@@ -108,10 +114,28 @@ app.use((req, res, next) => {
 			}
 		})
 		.catch((err) => {
-			throw new Error(err);
+			// > ❌ DOES NOT WORK
+			// throw new Error(err); // IMPORTANT: throw new Error does not work inside async functions like try catch, etc.
+			// > OPTION#1. DEAL W/EXPRESS GLOBAL ERROR HANDLER - CREATES INFINITE LOOP IF EXACT ERROR CODE CENTRALLY HANDLED
+			// next(new Error(err));
+			// Create custom error object
+			// const error = new Error('Fetching user for the session failed.');
+			// error.httpStatusCode = 500;
+			// return next(error);
+
+			// > OPTION#2. DEAL W/IT LOCALLY
 			// console.error('Error fetching user:', err);
 			// req.flash('error', 'An internal server error occurred. Please try again later.');
 			// return res.redirect('/'); // Redirect to home page or an error page
+			// Destroy session before rendering error page
+			req.session.destroy(() => {
+				res.status(500).render('errors/500', {
+					pageTitle: 'Server Error',
+					path: '', // Defines the active tab @ navbar
+					message: 'Fetching user for the session failed.',
+					isAuthenticated: req.session?.isLoggedIn, // Check if user is authenticated for nav bar display on/off
+				});
+			});
 		});
 });
 

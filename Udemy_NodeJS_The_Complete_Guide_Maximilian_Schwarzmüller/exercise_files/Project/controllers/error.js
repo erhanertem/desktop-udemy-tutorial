@@ -50,17 +50,19 @@ exports.getGlobalErrorHandler = (err, req, res, next) => {
 	// 		break;
 	// 	default:
 	// }
-	// > OPTION#2. CARRY THE ERRO MESSAGE ONTO GENERIC PAGE VIA SESSION UPON REDIRECT
+	// > OPTION#2. CARRY THE ERROR MESSAGE ONTO GENERIC PAGE VIA SESSION UPON REDIRECT
 	// Pass error message via session
 	req.session.errorMessage = err.message; // Store in session
 	// > OPTION#2.1 CB VERSION FOR SAVING SESSION BEFORE PRIOCEEDING WITH A REDIRECT
+	// Ensures session is saved before redirecting
 	req.session.save(() => {
 		// Wait until session is saved
 		switch (err.httpStatusCode) {
 			case 500:
-				res.redirect('/500'); // ✅ Ensures session is saved before redirecting
+				res.redirect('/500');
 				break;
 			default:
+				console.alert('Unknown error code');
 		}
 	});
 	// > OPTION#2.2 USE AWAIT/PROMISE FOR SAVING SESSION SINCE IT DOES NOT NATIVELY SUPPORT A PROMISE.
