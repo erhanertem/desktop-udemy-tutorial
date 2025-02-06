@@ -62,7 +62,7 @@ exports.getGlobalErrorHandler = (err, req, res, next) => {
 				res.redirect('/500');
 				break;
 			default:
-				console.alert('Unknown error code');
+				console.warn('Unknown error code');
 		}
 	});
 	// > OPTION#2.2 USE AWAIT/PROMISE FOR SAVING SESSION SINCE IT DOES NOT NATIVELY SUPPORT A PROMISE.

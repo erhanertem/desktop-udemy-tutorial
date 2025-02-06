@@ -147,7 +147,7 @@ exports.postEditProduct = (req, res, next) => {
 			// Engage in authorization check
 			if (product.userId.toString() !== req.user._id.toString()) {
 				// Redirect to the home page if unauthorized
-				return res.redirect('/');
+				return res.status(403).redirect('/');
 			}
 			// Modify the retrieved product
 			product.title = title;

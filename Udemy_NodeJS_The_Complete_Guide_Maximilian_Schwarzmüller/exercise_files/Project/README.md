@@ -21,14 +21,13 @@
 - Error handling
 
   - Throwing errors
-    - throw err
-    - next(err)
+    - throw err vs next(err)
   - Setup error handling express middlewares
     - 404 Non existing route request error handling
     - Global express error handling
       - Malformed body error handling
       - Customizing error message and status
-      - Setup custom erro routes
+      - Setup custom error routes
         - Pass dotEnv variables
         - Pass custom error message onto EJS via user session (Promisified or Callback based error switching)
   - Global non-express error handling
@@ -95,6 +94,7 @@
   - Setup self-destroying flash cards
     - Extend EJS variable onto non-NodeJS enviroment JS for timeout cards that is created inside or out of session
 - Implement gracefull handling of a user whom has an active session but terminated credentials on DB side.
+- Promote error redirects by persisting error message across redirects via registering to session @ global express errr handler middleware
 
 &emsp;
 
