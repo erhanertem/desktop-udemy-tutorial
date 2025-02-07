@@ -326,6 +326,9 @@ exports.getNewPassword = (req, res, next) => {
 exports.postNewPassword = (req, res, next) => {
 	const { password: newPassword, userId, passwordToken } = req.body;
 	let modUser;
+
+	// console.log('🔹 Request from IP:', req.ip);
+
 	// Find the matching user with the provided token and user ID
 	User.findOne({ resetToken: passwordToken, resetTokenExpiration: { $gt: Date.now() }, _id: userId })
 		// VERY IMPORTANT: We included userID for several reasons:

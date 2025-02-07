@@ -95,6 +95,9 @@
     - Extend EJS variable onto non-NodeJS enviroment JS for timeout cards that is created inside or out of session
 - Implement gracefull handling of a user whom has an active session but terminated credentials on DB side.
 - Promote error redirects by persisting error message across redirects via registering to session @ global express errr handler middleware
+- Implement rate limiting @ user pass reset controllers
+  - Ip based via express-rate-limit
+  - userID based via redis
 
 &emsp;
 

@@ -31,6 +31,9 @@ app.set('view engine', 'ejs');
 // Tell where the template engine files are located
 app.set('views', path.join(__dirname, 'views'));
 
+// Required for rate-limiting behind proxies
+app.set('trust proxy', 1);
+
 // Serve static content folder
 app.use(express.static(path.join(__dirname, 'public')));
 // Middleware to handle URL-encoded data which is typically used when submitting HTML forms with the application/x-www-form-urlencoded content type. Extended set to true, can allow handling complex data structures such as nested objects, arrays in req.body.

@@ -3,16 +3,17 @@ const rateLimit = require('express-rate-limit');
 // Define the rate limit
 const resetPasswordLimiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 5, // Limit each IP to 5 requests per `windowMs`
+	max: 3, // Limit each IP to 3~5 requests per `windowMs`
 	// Pass the error to the next middleware
-	message: {
-		status: 429,
-		error: 'Too many password reset requests. Please try again later.',
-	},
-	handler: (req, res, next, options) => {
-		const error = new Error(options.message.error);
-		error.status = options.message.status;
-		next(error); // Forward the error to the next middleware
+	message: 'Too many password reset requests. Please try again later.',
+	handler: (req, res) => {
+		res.status(429).render('errors/400', {
+			pageTitle: 'Too Many Requests',
+			path: '', // Defines the active tab @ navbar
+			message: 'Too many password reset requests. Please try again later.',
+			isAuthenticated: req.session?.isLoggedIn, // Ensure session exists before accessing
+			redirectDelay: process.env.REDIRECT_DELAY,
+		});
 	},
 });
 

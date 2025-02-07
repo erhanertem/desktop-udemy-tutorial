@@ -80,10 +80,10 @@ router.post(
 );
 
 router.get('/reset', authController.getReset);
-router.post('/reset', authController.postReset);
+router.post('/reset', resetPasswordLimiter, authController.postReset);
 
-router.get('/reset/:token', resetPasswordLimiter, authController.getNewPassword);
-router.post('/new-password', authController.postNewPassword);
+router.get('/reset/:token', authController.getNewPassword);
+router.post('/new-password', resetPasswordLimiter, authController.postNewPassword);
 
 router.post('/logout', authController.postLogout);
 
