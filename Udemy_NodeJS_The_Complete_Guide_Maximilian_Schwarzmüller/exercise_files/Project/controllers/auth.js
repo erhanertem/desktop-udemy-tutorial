@@ -28,16 +28,11 @@ exports.getReset = (req, res, next) => {
 };
 
 exports.postReset = (req, res, next) => {
-	// TODO - HOW TO ACCESS THIS ERROR AND HAVE IT REDIRECT
-	// // Mock `crypto.randomBytes` to simulate an error
-	// crypto.randomBytes = (size, callback) => {
-	// 	callback(new Error('Simulated error'), null);
-	// };
-
 	crypto.randomBytes(32, (err, buffer) => {
+		// // TEST Mock `crypto.randomBytes` to simulate an error
+		// err = true;
 		// Handle error
 		if (err) {
-			console.log(err.message);
 			req.flash(
 				'error', // Flash key written to session temporarily till it gets consumed
 				'Reset token creation failed. Try again.' // The message content
@@ -50,6 +45,10 @@ exports.postReset = (req, res, next) => {
 
 		// Find the user with the provided email
 		User.findOne({ email: req.body.email })
+			// // TEST Mock a DB access error
+			// .then((user) => {
+			// 	throw new Error('DB access failed');
+			// })
 			.then((user) => {
 				// If no user found, flash an error and redirect to reset page
 				if (!user) {
@@ -91,7 +90,12 @@ exports.postReset = (req, res, next) => {
 					`,
 				});
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				// Create custom error object
+				const error = new Error('Access to Database is lost.');
+				error.httpStatusCode = 500;
+				return next(error);
+			});
 	});
 };
 
@@ -299,6 +303,8 @@ exports.getNewPassword = (req, res, next) => {
 	const token = req.params.token; // Extract the token from the URL
 	User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } })
 		.then((user) => {
+			// // TEST - Mock error
+			// throw new Error('Test Error');
 			res.render('auth/new-password', {
 				path: '/new-password',
 				pageTitle: 'Reset Password', // Name of the page
@@ -309,7 +315,12 @@ exports.getNewPassword = (req, res, next) => {
 				passwordToken: token,
 			});
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			// Create custom error object
+			const error = new Error('Fetching user failed.');
+			error.httpStatusCode = 500;
+			return next(error);
+		});
 };
 
 exports.postNewPassword = (req, res, next) => {
@@ -322,13 +333,20 @@ exports.postNewPassword = (req, res, next) => {
 		// 2. Limits Scope of the Query: Without the _id: userId condition, the query would only rely on resetToken and resetTokenExpiration. If there are multiple users with the same token (unlikely but possible due to randomness or a compromised token generator), this might inadvertently affect another user's account.
 		// 3. Prevent Abuse: Including _id: userId adds another layer of validation to mitigate abuse. An attacker would need: The exact userId (typically hard to guess since it's a MongoDB ObjectId) and the valid resetToken.
 		// 4. Rate-limiting: Since user.id provided automatically, the token brute force attack is possible and restricting number of queries within a certain time frame becomes a necessity.
+		// // TEST Mock error message
+		// .then((user) => {
+		// 	throw new Error('Mock database error'); // 💥 Simulating DB failure
+		// })
 		.then((user) => {
+			// // TEST Mock error message
+			// user = null;
+
 			if (!user) {
 				// Handle case when no user is found
-				return res.status(404).render('errors/400', {
-					pageTitle: 'Error',
-					message: 'Invalid or expired reset token.',
-				});
+				// Create custom error object
+				const error = new Error('Invalid or expired reset token.');
+				error.httpStatusCode = 400;
+				throw error;
 			}
 
 			modUser = user; // Store the user for later then block
@@ -341,20 +359,14 @@ exports.postNewPassword = (req, res, next) => {
 			return modUser.save(); // Save the user to DB
 		})
 		.then((result) => res.redirect('/login'))
-		.catch((err) => {
-			// Handle rate-limiting error here
-			if (err.status === 429) {
-				return res.status(429).render('errors/400', {
-					pageTitle: 'Too Many Requests',
-					message: err.message, // "Too many password reset requests. Please try again later."
-				});
+		.catch((error) => {
+			if (error.httpStatusCode === 400) {
+				return next(error);
+			} else {
+				// Create custom error object
+				const error = new Error('Fetching user failed.');
+				error.httpStatusCode = 500;
+				return next(error);
 			}
-
-			// Handle other errors
-			console.log(err);
-			res.status(500).render('errors/400', {
-				pageTitle: 'Error',
-				message: 'An internal server error occurred. Please try again later.',
-			});
 		});
 };

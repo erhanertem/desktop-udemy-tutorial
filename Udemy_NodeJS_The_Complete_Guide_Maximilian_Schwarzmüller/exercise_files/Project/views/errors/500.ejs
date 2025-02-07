@@ -8,6 +8,6 @@
   <script>
     setTimeout(() => {
       window.location.href = '/';
-    }, process.env.REDIRECT_DELAY);
+    },  <%= typeof redirectDelay !== 'undefined' ? redirectDelay : 3000 %>);
   </script>
   <%- include('../layout/end')%>

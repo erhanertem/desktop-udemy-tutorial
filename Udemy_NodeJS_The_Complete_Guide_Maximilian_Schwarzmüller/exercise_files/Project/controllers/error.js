@@ -1,11 +1,15 @@
 // CUSTOM ERROR HANDLERS
 
 exports.get400 = (req, res, next) => {
+	const message = req.session.errorMessage || 'Invalid Request Body'; // Default message if none exists
+	delete req.session.errorMessage; // Clear the error message after reading
+
 	res.status(400).render('errors/400', {
 		pageTitle: 'Error',
 		path: '', // Defines the active tab @ navbar
-		message: 'Invalid Request Body',
+		message,
 		isAuthenticated: req.session.isLoggedIn, // Check if user is authenticated for nav bar display on/off
+		redirectDelay: process.env.REDIRECT_DELAY,
 	});
 };
 
@@ -19,17 +23,15 @@ exports.get404 = (req, res, next) => {
 };
 
 exports.get500 = (req, res, next) => {
-	// Use stored message or fallback
-	const message = req.session.errorMessage || 'Internal Server Error';
-
-	// Clear session message after use
-	req.session.errorMessage = null;
+	const message = req.session.errorMessage || 'Internal Server Error'; // Use stored message or fallback
+	delete req.session.errorMessage; // Clear the error message after reading
 
 	res.status(500).render('errors/500', {
 		pageTitle: 'Server Error',
 		path: '', // Defines the active tab @ navbar
-		message: message,
+		message,
 		isAuthenticated: req.session.isLoggedIn, // Check if user is authenticated for nav bar display on/off
+		redirectDelay: process.env.REDIRECT_DELAY,
 	});
 };
 
@@ -40,7 +42,8 @@ exports.getGlobalErrorHandler = (err, req, res, next) => {
 
 	// Handle JSON parsing errors
 	if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-		return res.redirect('/400');
+		req.session.errorMessage = 'Invalid JSON in request body'; // Store error message in session
+		return req.session.save(() => res.redirect('/400'));
 	}
 
 	// > OPTION#1. LOG CRITICAL ERROR BUT RESPOND WITH A GENERIC PAGE BASED ON RECEIVED ERROR STATUS CODE
@@ -58,6 +61,9 @@ exports.getGlobalErrorHandler = (err, req, res, next) => {
 	req.session.save(() => {
 		// Wait until session is saved
 		switch (err.httpStatusCode) {
+			case 400:
+				res.redirect('/400');
+				break;
 			case 500:
 				res.redirect('/500');
 				break;
