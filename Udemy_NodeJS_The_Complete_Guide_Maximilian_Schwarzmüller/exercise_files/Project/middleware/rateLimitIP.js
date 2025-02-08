@@ -1,9 +1,9 @@
 const rateLimit = require('express-rate-limit');
 
 // Define the rate limit
-const resetPasswordLimiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 3, // Limit each IP to 3~5 requests per `windowMs`
+const resetPasswordLimiterByIP = rateLimit({
+	windowMs: process.env.RATE_LIMITER_BAN_EXTEND_SECS * 1000, // Reset count after 15 minutes
+	max: process.env.RATE_LIMITER_TRIAL_COUNT, // Limit each IP to 3~5 requests per `windowMs`
 	// Pass the error to the next middleware
 	message: 'Too many password reset requests. Please try again later.',
 	handler: (req, res) => {
@@ -18,4 +18,4 @@ const resetPasswordLimiter = rateLimit({
 });
 
 // Export the limiter
-module.exports = resetPasswordLimiter;
+module.exports = resetPasswordLimiterByIP;

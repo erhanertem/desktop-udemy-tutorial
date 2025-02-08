@@ -7,6 +7,7 @@ const { validationResult } = require('express-validator');
 
 const html = require('../util/html');
 const User = require('../models/user');
+const resetPasswordLimiterByUserID = require('../middleware/rateLimitUserID');
 
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
@@ -352,6 +353,16 @@ exports.postNewPassword = (req, res, next) => {
 				throw error;
 			}
 
+			// Rate limit after user is found
+			// **⚠️ Return the Promise so it gets handled**
+			return resetPasswordLimiterByUserID(userId)
+				.then(() => user)
+				.catch((err) => {
+					// console.log(err);
+					throw err;
+				});
+		})
+		.then((user) => {
 			modUser = user; // Store the user for later then block
 			return bcrypt.hash(newPassword, 12);
 		})
@@ -363,6 +374,12 @@ exports.postNewPassword = (req, res, next) => {
 		})
 		.then((result) => res.redirect('/login'))
 		.catch((error) => {
+			console.log(error.httpStatusCode);
+			if (error.httpStatusCode === 429) {
+				// Rate limit exceeded
+				req.flash('error', error.message);
+				return res.redirect('/reset');
+			}
 			if (error.httpStatusCode === 400) {
 				return next(error);
 			} else {

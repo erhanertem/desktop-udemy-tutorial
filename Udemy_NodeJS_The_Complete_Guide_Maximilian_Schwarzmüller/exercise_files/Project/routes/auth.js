@@ -3,7 +3,8 @@ const { check, param, query, body, header } = require('express-validator');
 
 const authController = require('../controllers/auth');
 
-const resetPasswordLimiter = require('../middleware/rateLimit');
+const resetPasswordLimiterByIP = require('../middleware/rateLimitIP');
+const resetPasswordLimiterByUserID = require('../middleware/rateLimitUserID');
 const User = require('../models/user');
 
 // THIS IS A MINI EXPRESS APP TIED TO MAIN APP ROUTER
@@ -80,10 +81,10 @@ router.post(
 );
 
 router.get('/reset', authController.getReset);
-router.post('/reset', resetPasswordLimiter, authController.postReset);
+router.post('/reset', resetPasswordLimiterByIP, authController.postReset);
 
 router.get('/reset/:token', authController.getNewPassword);
-router.post('/new-password', resetPasswordLimiter, authController.postNewPassword);
+router.post('/new-password', authController.postNewPassword);
 
 router.post('/logout', authController.postLogout);
 
