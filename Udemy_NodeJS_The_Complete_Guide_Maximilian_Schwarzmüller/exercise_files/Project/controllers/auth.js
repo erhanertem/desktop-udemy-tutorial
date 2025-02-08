@@ -374,7 +374,6 @@ exports.postNewPassword = (req, res, next) => {
 		})
 		.then((result) => res.redirect('/login'))
 		.catch((error) => {
-			console.log(error.httpStatusCode);
 			if (error.httpStatusCode === 429) {
 				// Rate limit exceeded
 				req.flash('error', error.message);
