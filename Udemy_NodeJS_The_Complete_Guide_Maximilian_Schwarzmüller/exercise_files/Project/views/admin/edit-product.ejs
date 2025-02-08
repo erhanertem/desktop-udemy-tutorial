@@ -14,9 +14,16 @@
         <label for="title">Title</label>
         <input id="title" name="title" type="text" value='<%= (editing || hasError) ? product.title : ''%>' class='<%= validationErrors.find(error=> error.path === 'title') ? 'invalid': '' %>' required />
       </div>
-      <div class="form-control">
+      <!-- imageURL by typing -->
+      <!-- <div class="form-control">
         <label for="imageUrl">Image URL</label>
         <input id="imageUrl" name="imageUrl" type="text" value="<%= `https://picsum.photos/seed/${Math.random()}/400/600`  %>" class='<%= validationErrors.find(error=> error.path === 'imageUrl') ? 'invalid': '' %>' required />
+      </div> -->
+      <!-- imageURL by attaching file -->
+      <div class="form-control">
+        <label for="image">Image</label>
+        <!-- NOTE: label for attr matches input id -->
+        <input id="image" name="image" type="file" required />
       </div>
       <div class="form-control">
         <label for="price">Price</label>
