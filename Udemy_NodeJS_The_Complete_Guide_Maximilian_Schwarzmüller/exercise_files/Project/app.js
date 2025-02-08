@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const { csrfSync } = require('csrf-sync'); // Serverside sessions version
 const flash = require('connect-flash'); // Flash messages
+const multer = require('multer'); // text/binary data parser for mixed type data forms
 const MongoDBStore = require('connect-mongodb-session')(session); // Takes express-session as its argument and the result is stored in MongoDBStore
 const dotenv = require('dotenv');
 // Load appropriate .env file based on NODE_ENV
@@ -36,8 +37,32 @@ app.set('trust proxy', 1);
 
 // Serve static content folder
 app.use(express.static(path.join(__dirname, 'public')));
-// Middleware to handle URL-encoded data which is typically used when submitting HTML forms with the application/x-www-form-urlencoded content type. Extended set to true, can allow handling complex data structures such as nested objects, arrays in req.body.
+
+// Form Submission Parsers
+// #1. Text type only form submission parser
+// Middleware to handle URL-encoded (text) data which is typically used when submitting HTML forms with the application/x-www-form-urlencoded content type. Extended set to true, can allow handling complex data structures such as nested objects, arrays in req.body.
 app.use(express.urlencoded({ extended: true }));
+// #2. Mixed type multipart form submission parser
+// Setup multer storage engine
+const fileStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, 'images'); // Destination folder for uploaded images
+	},
+	filename: (req, file, cb) => {
+		cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname); // Generate unique filename with current timestamp
+	},
+});
+const fileFilter = (req, file, cb) => {
+	// Filter out only image files
+	if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+		cb(null, true); // Accep that file
+	} else {
+		cb(null, false); // Don't accept that file
+		cb(new Error('Only image files are allowed!'));
+	}
+};
+app.use(multer({ storage: fileStorage, filter: fileFilter }).single('image')); // File picker name is image, single signifies only single binary data submission
+
 // Handle user sessions for stateful cookie-based authentication
 app.use(
 	session({

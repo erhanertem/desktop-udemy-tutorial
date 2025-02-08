@@ -172,7 +172,15 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-	const { title, imageUrl, price, description } = req.body;
+	// #1. urlEnconded form submission
+	// const { title, imageUrl, price, description } = req.body;
+	// #2. multipart form submission
+	// text type form submissions
+	const { title, price, description } = req.body;
+	// binary type form submission
+	const { file: imageUrl } = req;
+	console.log(imageUrl);
+
 	const userId = req.user._id; // Note: When _id is retrieved, its provided as string by the mongo driver
 	// Read validatione errors from the prev validation middleware block
 	const errors = validationResult(req);

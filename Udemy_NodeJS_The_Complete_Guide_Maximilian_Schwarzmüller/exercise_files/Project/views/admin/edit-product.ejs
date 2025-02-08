@@ -9,7 +9,7 @@
     <% if(errorMessage) { %>
     <div class='user-message user-message--error' id='error-message'><%= errorMessage %></div>
     <% } %>
-    <form class="product-form" action="/admin/<%= editing ? 'edit-product' : 'add-product' %>" method="POST" novalidate>
+    <form class="product-form" action="/admin/<%= editing ? 'edit-product' : 'add-product' %>" method="POST" enctype="multipart/form-data" novalidate>
       <div class="form-control">
         <label for="title">Title</label>
         <input id="title" name="title" type="text" value='<%= (editing || hasError) ? product.title : ''%>' class='<%= validationErrors.find(error=> error.path === 'title') ? 'invalid': '' %>' required />

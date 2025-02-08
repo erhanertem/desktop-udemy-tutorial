@@ -23,7 +23,7 @@ router.post(
 			.withMessage('Title must contain only letters and numbers.')
 			.isLength({ min: 3 })
 			.withMessage('Title must be at least 3 characters long.'),
-		body('imageUrl').isURL().withMessage('Please provide product image URL.'),
+		// body('imageUrl').isURL().withMessage('Please provide product image URL.'),
 		body('price')
 			.notEmpty()
 			.withMessage('Please provide a price.') // Ensures price is not empty
