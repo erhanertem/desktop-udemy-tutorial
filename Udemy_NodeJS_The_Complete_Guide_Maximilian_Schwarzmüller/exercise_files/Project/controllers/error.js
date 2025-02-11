@@ -38,8 +38,8 @@ exports.get500 = (req, res, next) => {
 // GLOBAL EXPRESS ERROR HANDLER
 exports.getGlobalErrorHandler = (err, req, res, next) => {
 	// Log the error
-	console.error('👉', err.httpStatusCode || err.status, err.message);
-
+	// console.error('��', req.session);
+	console.error('👉🆘', err || err.httpStatusCode || err.status, err.message);
 	// Handle JSON parsing errors
 	if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
 		req.session.errorMessage = 'Invalid JSON in request body'; // Store error message in session

@@ -3,14 +3,19 @@ const { check, param, query, body, header } = require('express-validator');
 
 const authController = require('../controllers/auth');
 
-const resetPasswordLimiterByIP = require('../middleware/rateLimitIP');
-const resetPasswordLimiterByUserID = require('../middleware/rateLimitUserID');
+const resetPasswordLimiterByIP = require('../middlewares/rateLimitIP');
+const resetPasswordLimiterByUserID = require('../middlewares/rateLimitUserID');
+
 const User = require('../models/user');
 
 // THIS IS A MINI EXPRESS APP TIED TO MAIN APP ROUTER
 const router = express.Router();
 
 router.get('/login', authController.getLogin);
+router.get('/signup', authController.getSignup);
+router.get('/reset', authController.getReset);
+router.get('/reset/:token', authController.getNewPassword);
+
 router.post(
 	'/login',
 	[
@@ -27,8 +32,6 @@ router.post(
 	],
 	authController.postLogin
 );
-
-router.get('/signup', authController.getSignup);
 router.post(
 	'/signup',
 	// Validation error collector
@@ -79,13 +82,8 @@ router.post(
 	],
 	authController.postSignup
 );
-
-router.get('/reset', authController.getReset);
 router.post('/reset', resetPasswordLimiterByIP, authController.postReset);
-
-router.get('/reset/:token', authController.getNewPassword);
 router.post('/new-password', authController.postNewPassword);
-
 router.post('/logout', authController.postLogout);
 
 module.exports = router;

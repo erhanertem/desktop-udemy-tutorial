@@ -3,9 +3,9 @@ const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
-const { csrfSync } = require('csrf-sync'); // Serverside sessions version
 const flash = require('connect-flash'); // Flash messages
-const multer = require('multer'); // text/binary data parser for mixed type data forms
+const { csrfSync } = require('csrf-sync'); // Serverside sessions version
+
 const MongoDBStore = require('connect-mongodb-session')(session); // Takes express-session as its argument and the result is stored in MongoDBStore
 const dotenv = require('dotenv');
 // Load appropriate .env file based on NODE_ENV
@@ -38,31 +38,6 @@ app.set('trust proxy', 1);
 // Serve static content folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Form Submission Parsers
-// #1. Text type only form submission parser
-// Middleware to handle URL-encoded (text) data which is typically used when submitting HTML forms with the application/x-www-form-urlencoded content type. Extended set to true, can allow handling complex data structures such as nested objects, arrays in req.body.
-app.use(express.urlencoded({ extended: true }));
-// #2. Mixed type multipart form submission parser
-// Setup multer storage engine
-const fileStorage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, 'images'); // Destination folder for uploaded images
-	},
-	filename: (req, file, cb) => {
-		cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname); // Generate unique filename with current timestamp
-	},
-});
-const fileFilter = (req, file, cb) => {
-	// Filter out only image files
-	if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
-		cb(null, true); // Accep that file
-	} else {
-		cb(null, false); // Don't accept that file
-		cb(new Error('Only image files are allowed!'));
-	}
-};
-app.use(multer({ storage: fileStorage, filter: fileFilter }).single('image')); // File picker name is image, single signifies only single binary data submission
-
 // Handle user sessions for stateful cookie-based authentication
 app.use(
 	session({
@@ -78,37 +53,86 @@ app.use(
 	})
 );
 
+// Initialize the flash messages middleware - (must be after session as it writes temporarily the flash message to the session
+app.use(flash());
+
+// Body parsers (AFTER CSRF)
 // Middleware to parse incoming requests with JSON payloads. It parses the body of the request and makes it available under req.body. If located before the session middleware, it might interfere with the session handling, especially if the session data is stored in the request body or if there are any conflicts in how the request body is parsed.
 app.use(express.json());
+// Form Submission Parsers
+// #1. Text type only form submission parser
+// Middleware to handle URL-encoded (text) data which is typically used when submitting HTML forms with the application/x-www-form-urlencoded content type. Extended set to true, can allow handling complex data structures such as nested objects, arrays in req.body.
+app.use(express.urlencoded({ extended: true }));
+// // #2. Mixed type multipart form submission parser
+const { upload } = require('./middlewares/uploadFile');
+app.use(
+	upload({
+		allowedMimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+		uploadType: 'single',
+		fieldName: 'image',
+		maxSize: 5, // Max 5MB
+	})
+);
+// // Configure storage for uploaded files
+// const fileStorage = multer.diskStorage({
+// 	destination: (req, file, cb) => {
+// 		cb(null, 'images'); // Save files to 'images' directory
+// 	},
+// 	filename: (req, file, cb) => {
+// 		const uniqueFileName = new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname;
+// 		cb(null, uniqueFileName); // Generate unique filename with current timestamp
+// 	},
+// });
+// // File filter to allow only image uploads
+// const fileFilter = (req, file, cb) => {
+// 	// Filter out only image files
+// 	if (['image/png', 'image/jpg', 'image/jpeg'].includes(file.mimetype)) {
+// 		cb(null, true); // Accept that file
+// 	} else {
+// 		cb(null, false); // Reject file without throwing an error
+// 	}
+// };
+// app.use(
+// 	multer(
+// 		// Configure Multer
+// 		{
+// 			storage: fileStorage,
+// 			fileFilter: fileFilter,
+// 			limits: { fileSize: 2 * 1024 * 1024 }, // Optional: limit file size to 2MB
+// 		}
+// 	).single('image')
+// );
 
-// Init csrf protection middleware
-// const csrfProtection = csrf();
-// Initialize csrfSync
+// Initialize csrf protection (must be after session and parsers)
 const { csrfSynchronisedProtection, generateToken } = csrfSync({
 	getTokenFromRequest: (req) => {
 		return req.body['_csrf'];
-	}, // Used to retrieve the token submitted by the user in a form
+	}, // Retrieve token from the request body when a form submits
 });
-// Apply the CSRF middleware
+
+// CSRF Protection for POST requests
 app.use(csrfSynchronisedProtection);
 
-// Global middleware to inject CSRF token and authentication status
+// Middleware to inject CSRF token into templates
 app.use((req, res, next) => {
-	// NOTE:  The res.locals object in Express.js is a special object that contains local variables scoped to the request. These variables are available to the view templates rendered by the application. By setting a property on res.locals, you make it accessible in the views.
+	// NOTE: conditionally injecting the CSRF token based on the existence of the session can make sense in certain situations. Here's why:
+	// 1. Conditionally injecting the CSRF token based on the session existence makes sense when the CSRF protection is targeted at authenticated users.
+	// 2. Guest users (unauthenticated) will not need the CSRF token, and you avoid generating unnecessary tokens for them.
 
-	// Ensure req.session is available before calling generateToken
-	// Set Authentication status  for every response
-	res.locals.isAuthenticated = !!req.session.isLoggedIn;
 	if (req.session) {
 		// Generate CSRF token
-		res.locals.csrfToken = generateToken(req, true); // Generate CSRF token - 'true' will force a new token to be generated, even if one already exists
+		res.locals.csrfToken = generateToken(req, true); // 'true' will force a new token to be generated, even if one already exists
 	}
-	// Call the next middleware function
 	next();
 });
+// Middleware to set authentication status to EJS views
+app.use((req, res, next) => {
+	// NOTE:  The res.locals object in Express.js is a special object that contains local variables scoped to the request-response cycle. These variables are available to the view templates rendered by the application. By setting a property on res.locals, you make it accessible in the views.
 
-// Initialize the flash messages middleware - Needs to be located below session as it writes temporarily the flash message to the session
-app.use(flash());
+	// Set Authentication status for every response
+	res.locals.isAuthenticated = !!req.session.isLoggedIn;
+	next();
+});
 
 // Register the session user as mongoose user with User object methods
 app.use((req, res, next) => {

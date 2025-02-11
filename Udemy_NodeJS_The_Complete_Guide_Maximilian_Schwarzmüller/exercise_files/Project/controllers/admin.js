@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 
 const { validationResult } = require('express-validator');
 
@@ -114,7 +115,8 @@ exports.postEditProduct = (req, res, next) => {
 	// Construct a new product
 	// POST req includes req.body
 	// console.log(req.body);
-	const { title, imageUrl, price, description, productId } = req.body;
+	const { title, price, description, productId } = req.body;
+	const image = req.file; // Retrieve multer image if uploaded
 
 	// Read validatione errors from the prev validation middleware block
 	const errors = validationResult(req);
@@ -130,7 +132,7 @@ exports.postEditProduct = (req, res, next) => {
 			validationErrors: errors.array(), // Ables to pick  up validation errors specific to form line-items and furnish CSS in case of error
 			product: {
 				title: title,
-				imageUrl: imageUrl,
+				// imageUrl: imageUrl, // We omit this line because: We dont want to enforce an upload of new immage, if its not uploaded, just keep the existing in the DB. So only when creating a product, its compulsary to upload image, in consecutive edits no uploads required.
 				price: price,
 				description: description,
 				_id: productId, // Required to pass the productId to the edit-product page
@@ -151,12 +153,32 @@ exports.postEditProduct = (req, res, next) => {
 			}
 			// Modify the retrieved product
 			product.title = title;
-			product.imageUrl = imageUrl;
 			product.price = price;
 			product.description = description;
-			product.productId = productId;
+			if (image) {
+				// Check if the file exists before attempting to delete it
+				const filePath = path.resolve(product.imageUrl);
+				fs.access(filePath, fs.constants.F_OK, (err) => {
+					if (err) {
+						console.error('File does not exist:', filePath);
+					} else {
+						// Delete the old file
+						fs.unlink(filePath, (err) => {
+							if (err) {
+								console.error('Unable to delete product image:', err);
+							} else {
+								console.log('Deleted file:', filePath);
+							}
+						});
+					}
+				});
+
+				// Update the product with new image path
+				product.imageUrl = image.path;
+			}
+
 			// Save the updated product to the database
-			product.save().then((result) => {
+			return product.save().then((result) => {
 				console.log('Updated product');
 				res.redirect('/admin/list-products');
 			});
@@ -175,18 +197,37 @@ exports.postAddProduct = (req, res, next) => {
 	// #1. urlEnconded form submission
 	// const { title, imageUrl, price, description } = req.body;
 	// #2. multipart form submission
-	// text type form submissions
-	const { title, price, description } = req.body;
-	// binary type form submission
-	const { file: imageUrl } = req;
-	console.log(imageUrl);
+	// Gather text type form inputs
+	const { title, price, description, uploadMessage } = req.body;
+	const image = req.file; // Retrieve multer image if uploaded
 
 	const userId = req.user._id; // Note: When _id is retrieved, its provided as string by the mongo driver
+	console.log(image);
+
+	// Check if image is set correctly
+	if (!image) {
+		// Re-render the edit page w/ already typed in values
+		return res.status(415).render('admin/edit-product', {
+			pageTitle: 'Add Product',
+			path: '/admin/add-product',
+			editing: false, // /admin/edit-product/12345?edit=true&title=new_product
+			hasError: true,
+			errorMessage: 'Unsupported file type. Only PNG, JPG, and JPEG are allowed.', // Passes the generic message
+			validationErrors: [], // Ables to pick  up validation errors specific to form line-items and furnish CSS in case of error
+			product: {
+				title: title,
+				image: null,
+				price: price,
+				description: description,
+			},
+		});
+	}
+
 	// Read validatione errors from the prev validation middleware block
 	const errors = validationResult(req);
 	// If any error reported
 	if (!errors.isEmpty()) {
-		// Render the edit page again
+		// Re-render the edit page w/ already typed in values
 		return res.status(422).render('admin/edit-product', {
 			pageTitle: 'Add Product',
 			path: '/admin/add-product',
@@ -196,12 +237,15 @@ exports.postAddProduct = (req, res, next) => {
 			validationErrors: errors.array(), // Ables to pick  up validation errors specific to form line-items and furnish CSS in case of error
 			product: {
 				title: title,
-				imageUrl: imageUrl,
+				image: image,
 				price: price,
 				description: description,
 			},
 		});
 	}
+
+	// At this point, I know I have a valid file and non-binary form data
+	const imageUrl = image.path; // Retrieve the image path to store in product DB
 
 	// Create a new product
 	const product = new Product({

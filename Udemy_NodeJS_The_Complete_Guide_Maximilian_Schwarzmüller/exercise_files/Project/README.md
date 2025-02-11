@@ -98,6 +98,8 @@
 - Implement rate limiting @ user pass reset controllers
   - Ip based via express-rate-limit
   - userID based via redis
+- Create a fully dynamic multer upload middleware for higher flexibility.
+- While uploading new file upon editing admin product, remove the older file from the server
 
 &emsp;
 

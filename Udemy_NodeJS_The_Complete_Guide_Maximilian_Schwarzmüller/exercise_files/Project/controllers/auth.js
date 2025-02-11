@@ -7,7 +7,7 @@ const { validationResult } = require('express-validator');
 
 const html = require('../util/html');
 const User = require('../models/user');
-const resetPasswordLimiterByUserID = require('../middleware/rateLimitUserID');
+const resetPasswordLimiterByUserID = require('../middlewares/rateLimitUserID');
 
 const transporter = nodemailer.createTransport({
 	service: 'gmail',

@@ -3,7 +3,8 @@ const { check, param, query, body, header } = require('express-validator');
 
 const adminController = require('../controllers/admin');
 
-const isAuth = require('../middleware/isAuth');
+const isAuth = require('../middlewares/isAuth');
+const { upload } = require('../middlewares/uploadFile');
 
 // THIS IS A MINI EXPRESS APP TIED TO MAIN APP ROUTER
 const router = express.Router();
@@ -23,7 +24,7 @@ router.post(
 			.withMessage('Title must contain only letters and numbers.')
 			.isLength({ min: 3 })
 			.withMessage('Title must be at least 3 characters long.'),
-		// body('imageUrl').isURL().withMessage('Please provide product image URL.'),
+		body('imageUrl').isURL().withMessage('Please provide product image URL.'),
 		body('price')
 			.notEmpty()
 			.withMessage('Please provide a price.') // Ensures price is not empty
@@ -35,6 +36,7 @@ router.post(
 			.trim(),
 	],
 	isAuth,
+	// upload(['image/png', 'image/jpg', 'image/jpeg'], 'single', 'image'),
 	adminController.postAddProduct
 );
 
@@ -56,7 +58,7 @@ router.post(
 			.withMessage('Title must contain only letters and numbers.')
 			.isLength({ min: 3 })
 			.withMessage('Title must be at least 3 characters long.'),
-		body('imageUrl').isURL().withMessage('Please provide product image URL.'),
+		// body('imageUrl').isURL().withMessage('Please provide product image URL.'), // User is not required to submit image unless opt to do so
 		body('price')
 			.notEmpty()
 			.withMessage('Please provide a price.') // Ensures price is not empty
