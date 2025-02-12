@@ -1,5 +1,6 @@
 const path = require('path');
 const multer = require('multer'); // text/binary data parser for mixed type data forms
+const __root = require('../util/path');
 
 // #2. Mixed type multipart form submission parser
 /**
@@ -15,7 +16,7 @@ const upload = ({ allowedMimeTypes, uploadType, fieldName, maxFiles = 1, maxSize
 	// Configure storage for uploaded files
 	const fileStorage = multer.diskStorage({
 		destination: (req, file, cb) => {
-			cb(null, path.join(__dirname, '../images')); // Save files to 'images' directory
+			cb(null, path.join(__root, '/images')); // Save files to 'images' directory
 		},
 		filename: (req, file, cb) => {
 			const uniqueFileName = new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname;
