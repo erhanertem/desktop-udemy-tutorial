@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
+const extractPartialPath = require('../util/relativePathExtractor');
 const { validationResult } = require('express-validator');
 
 const Product = require('../models/product'); // Product hereby is an arbitrary name does not need to match the name provided in the model() @ source file export
+const __root = require('../util/path');
 
 exports.getAddProduct = (req, res, next) => {
 	res.render('admin/edit-product', {
@@ -90,10 +92,16 @@ exports.getAllProducts = (req, res, next) => {
 };
 
 exports.postDeleteProduct = (req, res, next) => {
-	const productId = req.body.productId;
+	const { productId, productImageURL } = req.body;
 
 	// Delete the product where the user has this product and a matching product id - filtered authorization
 	Product.deleteOne({ _id: productId, userId: req.user._id })
+		.then(() => {
+			// ❌ Delete the associated file to prevent orphaned images
+			fs.unlink(path.join(__root, productImageURL), (err) => {
+				if (err) console.error('Error deleting associated image file:', err);
+			});
+		})
 		.then(() => {
 			// // TEST MOCK ERROR
 			// throw new Error('Test Error');
@@ -114,9 +122,20 @@ exports.postDeleteProduct = (req, res, next) => {
 exports.postEditProduct = (req, res, next) => {
 	// Construct a new product
 	// POST req includes req.body
-	// console.log(req.body);
 	const { title, price, description, productId } = req.body;
 	const image = req.file; // Retrieve multer image if uploaded
+
+	let existingImageUrl;
+	Product.findById(productId)
+		.then((product) => {
+			existingImageUrl = product.imageUrl;
+		})
+		.catch((err) => {
+			// Create custom error object
+			const error = new Error('Finding a product failed.');
+			error.httpStatusCode = 500;
+			return next(error);
+		});
 
 	// Read validatione errors from the prev validation middleware block
 	const errors = validationResult(req);
@@ -132,6 +151,7 @@ exports.postEditProduct = (req, res, next) => {
 			validationErrors: errors.array(), // Ables to pick  up validation errors specific to form line-items and furnish CSS in case of error
 			product: {
 				title: title,
+				imageUrl: existingImageUrl,
 				// imageUrl: imageUrl, // We omit this line because: We dont want to enforce an upload of new immage, if its not uploaded, just keep the existing in the DB. So only when creating a product, its compulsary to upload image, in consecutive edits no uploads required.
 				price: price,
 				description: description,
@@ -156,8 +176,9 @@ exports.postEditProduct = (req, res, next) => {
 			product.price = price;
 			product.description = description;
 			if (image) {
-				// Check if the file exists before attempting to delete it
-				const filePath = path.resolve(product.imageUrl);
+				// Check if the old file reference stored with the product exists before attempting to delete it
+				const filePath = path.join(__root, product.imageUrl);
+
 				fs.access(filePath, fs.constants.F_OK, (err) => {
 					if (err) {
 						console.error('File does not exist:', filePath);
@@ -174,7 +195,7 @@ exports.postEditProduct = (req, res, next) => {
 				});
 
 				// Update the product with new image path
-				product.imageUrl = image.path;
+				product.imageUrl = extractPartialPath(image.path); // Retrieve the image path to store in product DB
 			}
 
 			// Save the updated product to the database
@@ -202,7 +223,6 @@ exports.postAddProduct = (req, res, next) => {
 	const image = req.file; // Retrieve multer image if uploaded
 
 	const userId = req.user._id; // Note: When _id is retrieved, its provided as string by the mongo driver
-	console.log(image);
 
 	// Check if image is set correctly
 	if (!image) {
@@ -212,7 +232,7 @@ exports.postAddProduct = (req, res, next) => {
 			path: '/admin/add-product',
 			editing: false, // /admin/edit-product/12345?edit=true&title=new_product
 			hasError: true,
-			errorMessage: 'Unsupported file type. Only PNG, JPG, and JPEG are allowed.', // Passes the generic message
+			errorMessage: 'Missing image file. Only PNG, JPG, and JPEG are allowed.', // Passes the generic message
 			validationErrors: [], // Ables to pick  up validation errors specific to form line-items and furnish CSS in case of error
 			product: {
 				title: title,
@@ -225,8 +245,15 @@ exports.postAddProduct = (req, res, next) => {
 
 	// Read validatione errors from the prev validation middleware block
 	const errors = validationResult(req);
+	const imageUrl = extractPartialPath(image.path); // Retrieve the image path to store in product DB
+
 	// If any error reported
 	if (!errors.isEmpty()) {
+		// ❌ Delete the uploaded file to prevent orphaned images
+		fs.unlink(path.join(__root, imageUrl), (err) => {
+			if (err) console.error('Error deleting uploaded file:', err);
+		});
+
 		// Re-render the edit page w/ already typed in values
 		return res.status(422).render('admin/edit-product', {
 			pageTitle: 'Add Product',
@@ -243,9 +270,6 @@ exports.postAddProduct = (req, res, next) => {
 			},
 		});
 	}
-
-	// At this point, I know I have a valid file and non-binary form data
-	const imageUrl = image.path; // Retrieve the image path to store in product DB
 
 	// Create a new product
 	const product = new Product({
