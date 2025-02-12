@@ -36,7 +36,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('trust proxy', 1);
 
 // Serve static content folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'))); // Serve files inside public as if they are on the root folder
+app.use('/images', express.static(path.join(__dirname, 'images'))); // Serve files inside images as if they are on the /images folder
 
 // Handle user sessions for stateful cookie-based authentication
 app.use(
