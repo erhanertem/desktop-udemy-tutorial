@@ -15,8 +15,8 @@ exports.getInvoice = (req, res, next) => {
 			next(err);
 		}
 		res.type('pdf'); // same as res.setHeader('Content-Type', 'application/pdf');
-		res.setHeader('Content-Disposition', `inline; filename='${invoiceName}'`); // No express version
-		// res.attachment(invoiceName); // same as res.setHeader('Content-Disposition', `attachment; filename='${invoiceName}'`);
+		// res.setHeader('Content-Disposition', `inline; filename='${invoiceName}'`); // No express version
+		res.attachment(invoiceName); // same as res.setHeader('Content-Disposition', `attachment; filename='${invoiceName}'`);
 		res.send(data); // send() middleware by expressjs
 	});
 };
