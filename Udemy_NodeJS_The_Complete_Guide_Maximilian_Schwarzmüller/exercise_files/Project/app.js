@@ -129,9 +129,26 @@ app.use((req, res, next) => {
 // Middleware to set authentication status to EJS views
 app.use((req, res, next) => {
 	// NOTE:  The res.locals object in Express.js is a special object that contains local variables scoped to the request-response cycle. These variables are available to the view templates rendered by the application. By setting a property on res.locals, you make it accessible in the views.
+	// console.log('req.session.isLoggedIn :', req.session.isLoggedIn);
+
+	// Ensure the session object exists
+	if (!req.session) {
+		return next(new Error('Session not initialized'));
+	}
+
+	// Set isLoggedIn to false if it is not already set
+	if (typeof req.session.isLoggedIn === 'undefined') {
+		req.session.isLoggedIn = false;
+	}
+
+	req.session.save((err) => {
+		if (err) {
+			console.error('Session save error:', err);
+		}
+	});
 
 	// Set Authentication status for every response
-	res.locals.isAuthenticated = !!req.session.isLoggedIn;
+	res.locals.isAuthenticated = req.session.isLoggedIn;
 	next();
 });
 
