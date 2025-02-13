@@ -6,19 +6,39 @@ const Order = require('../models/order');
 
 exports.getInvoice = (req, res, next) => {
 	const orderId = req.params.orderId;
-	const invoiceName = 'invoice-' + orderId + '.pdf';
-	const invoicePath = path.join('data', 'invoices', invoiceName);
-	// path.join() resolves the current working directory behind the scene when concatenating the provided URL fragments
-	// data\invoices\invoice-67ad1defdf5db623dbb9a86d.pdf will be returned as /c:/CODING/REPO_ARCHIEVE/udemy/Udemy_NodeJS_The_Complete_Guide_Maximilian_Schwarzmüller/exercise_files/Project/data/invoices/invoice-123.pdf
-	fs.readFile(invoicePath, (err, data) => {
-		if (err) {
-			next(err);
-		}
-		res.type('pdf'); // same as res.setHeader('Content-Type', 'application/pdf');
-		// res.setHeader('Content-Disposition', `inline; filename='${invoiceName}'`); // No express version
-		res.attachment(invoiceName); // same as res.setHeader('Content-Disposition', `attachment; filename='${invoiceName}'`);
-		res.send(data); // send() middleware by expressjs
-	});
+
+	// GUARD CLAUSE - check if the requested invoice is belong to the user
+	Order.findById(orderId)
+		.then((order) => {
+			// If no such order return an error
+			if (!order) {
+				return next(new Error('Order not found.'));
+			}
+			// If there is such order but not authorized for the user access
+			if (order.user.userId.toString() !== req.user._id.toString()) {
+				return next(new Error('Unauthorized.'));
+			}
+
+			const invoiceName = 'invoice-' + orderId + '.pdf';
+			const invoicePath = path.join('data', 'invoices', invoiceName);
+			// path.join() resolves the current working directory behind the scene when concatenating the provided URL fragments
+			// data\invoices\invoice-67ad1defdf5db623dbb9a86d.pdf will be returned as /c:/CODING/REPO_ARCHIEVE/udemy/Udemy_NodeJS_The_Complete_Guide_Maximilian_Schwarzmüller/exercise_files/Project/data/invoices/invoice-123.pdf
+			fs.readFile(invoicePath, (err, data) => {
+				if (err) {
+					next(err);
+				}
+				res.type('pdf'); // same as res.setHeader('Content-Type', 'application/pdf');
+				res.setHeader('Content-Disposition', `inline; filename='${invoiceName}'`); // No express version
+				// res.attachment(invoiceName); // same as res.setHeader('Content-Disposition', `attachment; filename='${invoiceName}'`);
+				res.send(data); // send() middleware by expressjs
+			});
+		})
+		.catch((err) => {
+			// Create custom error object
+			const error = new Error('Fetching order information failed.' || err.message);
+			error.httpStatusCode = 500;
+			return next(error);
+		});
 };
 
 exports.getIndex = (req, res, next) => {
