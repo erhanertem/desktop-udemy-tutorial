@@ -82,8 +82,15 @@
       - Implement input line specific validation flashes
       - Implement generic validation flashes
   - Sanitization
-
     - UI sanitization
+
+- File Handling in NodeJS apps
+  - Serving multiple static content
+    - Relative versus absolute paths
+  - File uploading
+  - File downloading
+    - View on browser
+    - Save on file
 
 **Aside from curriculum:**
 
