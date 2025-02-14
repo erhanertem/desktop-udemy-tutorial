@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const PDFDocument = require('pdfkit');
 
 const Product = require('../models/product');
 const Order = require('../models/order');
@@ -24,6 +25,7 @@ exports.getInvoice = (req, res, next) => {
 			// path.join() resolves the current working directory behind the scene when concatenating the provided URL fragments
 			// data\invoices\invoice-67ad1defdf5db623dbb9a86d.pdf will be returned as /c:/CODING/REPO_ARCHIEVE/udemy/Udemy_NodeJS_The_Complete_Guide_Maximilian_Schwarzmüller/exercise_files/Project/data/invoices/invoice-123.pdf
 
+			// // > #1. Send File to Client Existing File
 			// IMPORTANT: Reading file into memory and stream only works for small projects and small files. But in large scale produxction and larger files, we need to stream data.
 			// fs.readFile(invoicePath, (err, data) => {
 			// 	if (err) {
@@ -34,11 +36,21 @@ exports.getInvoice = (req, res, next) => {
 			// 	// res.attachment(invoiceName); // same as res.setHeader('Content-Disposition', `attachment; filename='${invoiceName}'`);
 			// 	res.send(data); // send() middleware by expressjs
 			// });
-			// Stream File to Client
-			const file = fs.createReadStream(invoicePath); // Reads a chunk of data at a time from the requested file
+			// // > #2. Stream File to Client Existing File
+			// const file = fs.createReadStream(invoicePath); // Reads a chunk of data at a time from the requested file
+			// res.type('pdf'); // same as res.setHeader('Content-Type', 'application/pdf');
+			// res.setHeader('Content-Disposition', `inline; filename='${invoiceName}'`); // No express version
+			// file.pipe(res); // Send stream to response for client browser to download the file step by step (in chunks). Only a chunk of binary data is temporarily stored in the memory called buffer.
+			// > #3. Create PDF, save and send to client based on provided content
+			const pdfDoc = new PDFDocument(); // Creates a new instance of PDF document
 			res.type('pdf'); // same as res.setHeader('Content-Type', 'application/pdf');
 			res.setHeader('Content-Disposition', `inline; filename='${invoiceName}'`); // No express version
-			file.pipe(res); // Send stream to response for client browser to download the file step by step (in chunks). Only a chunk of binary data is temporarily stored in the memory called buffer.
+			pdfDoc.pipe(fs.createWriteStream(invoicePath)); // This tells Node.js: ('Hey, whenever new PDF data is generated, write it to this file!');
+			pdfDoc.pipe(res); // This tells Node.js: ('At the same time, send this data to the client’s browser too!');
+			// Provide the content of the pdf file
+			// NOTE: if this block comes before pipes, there would be err as data would have no idea where to go or be saved at.
+			pdfDoc.text('Hello World'); // Now, the actual content of the PDF is generated and sent to the pipes (file and response).
+			pdfDoc.end(); // This signals that no more data will be written, so the stream can finish properly.
 		})
 		.catch((err) => {
 			// Create custom error object
