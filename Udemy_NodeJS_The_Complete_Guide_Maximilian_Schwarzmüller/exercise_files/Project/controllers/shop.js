@@ -49,7 +49,15 @@ exports.getInvoice = (req, res, next) => {
 			pdfDoc.pipe(res); // This tells Node.js: ('At the same time, send this data to the client’s browser too!');
 			// Provide the content of the pdf file
 			// NOTE: if this block comes before pipes, there would be err as data would have no idea where to go or be saved at.
-			pdfDoc.text('Hello World'); // Now, the actual content of the PDF is generated and sent to the pipes (file and response).
+			pdfDoc.fontSize(26).text('Invoice', { underline: true }); // Now, the actual content of the PDF is generated and sent to the pipes (file and response).
+			pdfDoc.text('---------------');
+			let totalPrice = 0;
+			order.products.forEach((el) => {
+				totalPrice += el.quantity * el.product.price;
+				pdfDoc.fontSize(14).text(`${el.product.title} - ${el.quantity} x $${el.product.price}`);
+			});
+			pdfDoc.fontSize(26).text('---------------');
+			pdfDoc.fontSize(14).font('Helvetica-Bold').text(`Total Price: $${totalPrice}`);
 			pdfDoc.end(); // This signals that no more data will be written, so the stream can finish properly.
 		})
 		.catch((err) => {
