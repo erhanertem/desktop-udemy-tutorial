@@ -23,15 +23,22 @@ exports.getInvoice = (req, res, next) => {
 			const invoicePath = path.join('data', 'invoices', invoiceName);
 			// path.join() resolves the current working directory behind the scene when concatenating the provided URL fragments
 			// data\invoices\invoice-67ad1defdf5db623dbb9a86d.pdf will be returned as /c:/CODING/REPO_ARCHIEVE/udemy/Udemy_NodeJS_The_Complete_Guide_Maximilian_Schwarzmüller/exercise_files/Project/data/invoices/invoice-123.pdf
-			fs.readFile(invoicePath, (err, data) => {
-				if (err) {
-					next(err);
-				}
-				res.type('pdf'); // same as res.setHeader('Content-Type', 'application/pdf');
-				res.setHeader('Content-Disposition', `inline; filename='${invoiceName}'`); // No express version
-				// res.attachment(invoiceName); // same as res.setHeader('Content-Disposition', `attachment; filename='${invoiceName}'`);
-				res.send(data); // send() middleware by expressjs
-			});
+
+			// IMPORTANT: Reading file into memory and stream only works for small projects and small files. But in large scale produxction and larger files, we need to stream data.
+			// fs.readFile(invoicePath, (err, data) => {
+			// 	if (err) {
+			// 		next(err);
+			// 	}
+			// 	res.type('pdf'); // same as res.setHeader('Content-Type', 'application/pdf');
+			// 	res.setHeader('Content-Disposition', `inline; filename='${invoiceName}'`); // No express version
+			// 	// res.attachment(invoiceName); // same as res.setHeader('Content-Disposition', `attachment; filename='${invoiceName}'`);
+			// 	res.send(data); // send() middleware by expressjs
+			// });
+			// Stream File to Client
+			const file = fs.createReadStream(invoicePath); // Reads a chunk of data at a time from the requested file
+			res.type('pdf'); // same as res.setHeader('Content-Type', 'application/pdf');
+			res.setHeader('Content-Disposition', `inline; filename='${invoiceName}'`); // No express version
+			file.pipe(res); // Send stream to response for client browser to download the file step by step (in chunks). Only a chunk of binary data is temporarily stored in the memory called buffer.
 		})
 		.catch((err) => {
 			// Create custom error object
