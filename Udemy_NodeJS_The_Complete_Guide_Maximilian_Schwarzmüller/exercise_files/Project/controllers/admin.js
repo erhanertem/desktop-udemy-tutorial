@@ -1,11 +1,10 @@
 const fs = require('fs');
-const path = require('path');
 
 const extractPartialPath = require('../util/relativePathExtractor');
 const { validationResult } = require('express-validator');
 
 const Product = require('../models/product'); // Product hereby is an arbitrary name does not need to match the name provided in the model() @ source file export
-const __root = require('../util/path');
+const useURL = require('../util/path');
 
 exports.getAddProduct = (req, res, next) => {
 	res.render('admin/edit-product', {
@@ -98,7 +97,7 @@ exports.postDeleteProduct = (req, res, next) => {
 	Product.deleteOne({ _id: productId, userId: req.user._id })
 		.then(() => {
 			// ❌ Delete the associated file to prevent orphaned images
-			fs.unlink(path.join(__root, productImageURL), (err) => {
+			fs.unlink(useURL(productImageURL), (err) => {
 				if (err) console.error('Error deleting associated image file:', err);
 			});
 		})
@@ -177,7 +176,7 @@ exports.postEditProduct = (req, res, next) => {
 			product.description = description;
 			if (image) {
 				// Check if the old file reference stored with the product exists before attempting to delete it
-				const filePath = path.join(__root, product.imageUrl);
+				const filePath = useURL(product.imageUrl);
 
 				fs.access(filePath, fs.constants.F_OK, (err) => {
 					if (err) {
@@ -250,7 +249,7 @@ exports.postAddProduct = (req, res, next) => {
 	// If any error reported
 	if (!errors.isEmpty()) {
 		// ❌ Delete the uploaded file to prevent orphaned images
-		fs.unlink(path.join(__root, imageUrl), (err) => {
+		fs.unlink(useURL(imageUrl), (err) => {
 			if (err) console.error('Error deleting uploaded file:', err);
 		});
 

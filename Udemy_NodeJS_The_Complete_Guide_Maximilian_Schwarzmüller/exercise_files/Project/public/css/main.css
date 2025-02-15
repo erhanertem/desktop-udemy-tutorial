@@ -188,7 +188,8 @@ form {
 }
 
 .card__image {
-	width: 100%;
+	width: 50%;
+	margin: auto;
 }
 
 .card__image img {

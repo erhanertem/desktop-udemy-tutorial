@@ -4,6 +4,7 @@ const PDFDocument = require('pdfkit');
 
 const Product = require('../models/product');
 const Order = require('../models/order');
+const useURL = require('../util/path');
 
 exports.getInvoice = (req, res, next) => {
 	const orderId = req.params.orderId;
@@ -50,13 +51,18 @@ exports.getInvoice = (req, res, next) => {
 			// Provide the content of the pdf file
 			// NOTE: if this block comes before pipes, there would be err as data would have no idea where to go or be saved at.
 			pdfDoc.fontSize(26).text('Invoice', { underline: true }); // Now, the actual content of the PDF is generated and sent to the pipes (file and response).
-			pdfDoc.text('---------------');
+			pdfDoc.fontSize(26).text('--------------------------------');
 			let totalPrice = 0;
 			order.products.forEach((el) => {
 				totalPrice += el.quantity * el.product.price;
-				pdfDoc.fontSize(14).text(`${el.product.title} - ${el.quantity} x $${el.product.price}`);
+				pdfDoc
+					.image(useURL(el.product.imageUrl), { width: 26, height: 26, align: 'left', valign: 'center' })
+					.moveDown(0.5);
+				pdfDoc
+					.fontSize(14)
+					.text(`${el.product.title} - ${el.quantity} x $${el.product.price}`, { align: 'center', valign: 'center' });
 			});
-			pdfDoc.fontSize(26).text('---------------');
+			pdfDoc.fontSize(26).text('--------------------------------');
 			pdfDoc.fontSize(14).font('Helvetica-Bold').text(`Total Price: $${totalPrice}`);
 			pdfDoc.end(); // This signals that no more data will be written, so the stream can finish properly.
 		})
