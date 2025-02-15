@@ -75,9 +75,13 @@ exports.getInvoice = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-	const message = req.flash('notify');
+	// Read pagination query variable from the endpoint URL
+	const page = req.query.page;
 
+	const message = req.flash('notify');
 	Product.find()
+		.skip((page - 1) * process.env.PAGINATION_ITEMS_PER_PAGE) // Skip n pages of items
+		.limit(process.env.PAGINATION_ITEMS_PER_PAGE) // Take only
 		.then((products) => {
 			return res.render('shop/index', {
 				prods: products,
