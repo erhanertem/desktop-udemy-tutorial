@@ -76,20 +76,37 @@ exports.getInvoice = (req, res, next) => {
 
 exports.getIndex = (req, res, next) => {
 	// Read pagination query variable from the endpoint URL
-	const page = req.query.page;
+	const page = +req.query.page || 1; // If first time visiting the page set current page to 1 as fallback
+	const { PAGINATION_ITEMS_PER_PAGE } = process.env;
 
 	const message = req.flash('notify');
-	Product.find()
-		.skip((page - 1) * process.env.PAGINATION_ITEMS_PER_PAGE) // Skip n pages of items
-		.limit(process.env.PAGINATION_ITEMS_PER_PAGE) // Take only
+
+	let totalItems;
+	Product.countDocuments()
+		.then((numberOfProducts) => {
+			totalItems = numberOfProducts;
+			return Product.find()
+				.skip((page - 1) * PAGINATION_ITEMS_PER_PAGE) // Skip n pages of items
+				.limit(PAGINATION_ITEMS_PER_PAGE); // Limit to only first x number of items
+		})
 		.then((products) => {
 			return res.render('shop/index', {
+				// Page Related Data
 				prods: products,
 				path: '/',
 				pageTitle: 'Shop',
+				// Pagination Related Data
+				hasNextPage: PAGINATION_ITEMS_PER_PAGE * page < totalItems,
+				hasPrevPage: page > 1,
+				currentPage: page,
+				nextPage: page + 1,
+				prevPage: page - 1,
+				lastPage: Math.ceil(totalItems / PAGINATION_ITEMS_PER_PAGE),
+				// Error Related Data
 				notifyMessage: message.length && message,
 				flashRemoveDelay: process.env.FLASH_REMOVE_DELAY || 3000,
-				// NOTE: Instead of coding this part @ every contorller view, we setup @ app.js a middleware that injects these variables to res.locals so that views can pick it up
+				// Page Security Related Data
+				// NOTE: Instead of coding this part @ every contorller view, we setup @ app.js a global middleware that injects these variables to res.locals so that views can pick it up
 				// isAuthenticated: !!req.session.isLoggedIn, // Per postLogin value @ auth.js
 				// csrfToken: req.csrfToken(), //csrfToken() is provided by the csrf middleware @ app.js
 			});
@@ -105,12 +122,32 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-	Product.find()
+	// Read pagination query variable from the endpoint URL
+	const page = +req.query.page || 1; // If first time visiting the page set current page to 1 as fallback
+	const { PAGINATION_ITEMS_PER_PAGE } = process.env;
+
+	let totalItems;
+	Product.countDocuments()
+		.then((numberOfProducts) => {
+			totalItems = numberOfProducts;
+			return Product.find()
+				.skip((page - 1) * PAGINATION_ITEMS_PER_PAGE) // Skip n pages of items
+				.limit(PAGINATION_ITEMS_PER_PAGE); // Limit to only first x number of items
+		})
 		.then((products) => {
 			return res.render('shop/product-list', {
+				// Page Related Data
 				prods: products,
 				path: '/product-list',
 				pageTitle: 'All products',
+
+				// Pagination Related Data
+				hasNextPage: PAGINATION_ITEMS_PER_PAGE * page < totalItems,
+				hasPrevPage: page > 1,
+				currentPage: page,
+				nextPage: page + 1,
+				prevPage: page - 1,
+				lastPage: Math.ceil(totalItems / PAGINATION_ITEMS_PER_PAGE),
 			});
 		})
 		.catch((err) => {

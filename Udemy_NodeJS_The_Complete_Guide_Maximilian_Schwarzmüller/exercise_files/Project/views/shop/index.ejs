@@ -32,10 +32,7 @@
       </article>
       <% } %>
     </div>
-    <section class='pagination'>
-      <a href='/?page=1'>1</a>
-      <a href='/?page=2'>2</a>
-    </section>
+    <%- include('../layout/pagination', {hasNextPage, hasPrevPage, currentPage, nextPage, prevPage, lastPage})%>
     <% } else { %>
     <h1>No Products Found!</h1>
     <% } %>

@@ -276,6 +276,7 @@ form {
 		border: 1px solid #00695c;
 		margin: 0 1rem;
 
+		&.active,
 		&:hover,
 		&:active {
 			background: #00695c;
