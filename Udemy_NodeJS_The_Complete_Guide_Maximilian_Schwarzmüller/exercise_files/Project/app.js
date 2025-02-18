@@ -107,8 +107,13 @@ app.use(
 // Initialize csrf protection (must be after session and parsers)
 const { csrfSynchronisedProtection, generateToken } = csrfSync({
 	getTokenFromRequest: (req) => {
-		return req.body['_csrf'];
-	}, // Retrieve token from the request body when a form submits
+		// Respond to csrf req for multipart forms
+		if (req.is('multipart')) {
+			return req.body['_csrf'];
+		}
+		// Respond to regular form submissions other than multipart + json async reqs from client-side api to backend api
+		return req.body['_csrf'] || req.headers['_csrf'];
+	}, // Retrieve token from the request body or headers
 });
 
 // CSRF Protection for POST requests
