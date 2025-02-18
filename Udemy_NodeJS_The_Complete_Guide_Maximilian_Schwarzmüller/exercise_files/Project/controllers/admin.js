@@ -90,31 +90,32 @@ exports.getAllProducts = (req, res, next) => {
 		});
 };
 
-exports.postDeleteProduct = (req, res, next) => {
-	const { productId, productImageURL } = req.body;
+exports.deleteProduct = (req, res, next) => {
+	const productId = req.params.productId;
+	let productImageURL;
+	Product.findById(productId, 'imageUrl')
+		.then((product) => {
+			productImageURL = product.imageUrl;
+			if (!productImageURL) {
+				return res.status(404).json({ message: 'Product image not found' });
+			}
 
-	// Delete the product where the user has this product and a matching product id - filtered authorization
-	Product.deleteOne({ _id: productId, userId: req.user._id })
-		.then(() => {
-			// ❌ Delete the associated file to prevent orphaned images
-			fs.unlink(useURL(productImageURL), (err) => {
-				if (err) console.error('Error deleting associated image file:', err);
-			});
-		})
-		.then(() => {
-			// // TEST MOCK ERROR
-			// throw new Error('Test Error');
-
-			console.log('Product deleted');
-			res.redirect('/admin/list-products');
+			Product.deleteOne({ _id: productId, userId: req.user._id })
+				.then(() => {
+					// ❌ Delete the associated file to prevent orphaned images
+					fs.unlink(useURL(productImageURL), (err) => {
+						if (err) console.error('Error deleting associated image file:', err);
+					});
+				})
+				.then(() => {
+					// // TEST MOCK ERROR
+					// throw new Error('Test Error');
+					console.log('Product deleted');
+					res.status(200).json({ message: 'Success' });
+				});
 		})
 		.catch((err) => {
-			// console.log(err);
-			// next(err); // Pass the error to the global error-handling middleware
-			// Create custom error object
-			const error = new Error('Deleting product failed.');
-			error.httpStatusCode = 500;
-			return next(error);
+			res.status(500).json({ message: 'Deleting product failed' });
 		});
 };
 

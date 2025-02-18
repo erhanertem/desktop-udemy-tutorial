@@ -91,6 +91,9 @@
   - File downloading
     - View on browser
     - Save on file
+- Pagination
+- Explore async reqs to backend
+  - Separation of concern: Client handles UI changes (no SSR template).
 
 **Aside from curriculum:**
 

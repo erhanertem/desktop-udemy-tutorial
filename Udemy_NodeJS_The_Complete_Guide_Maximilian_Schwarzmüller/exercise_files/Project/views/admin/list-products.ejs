@@ -21,14 +21,17 @@
         <div class="card__actions">
           <!-- Used <a> link here instead of button because we want to redirect to a new route and no server-side request is involved so wrapping by form is not required -->
           <a href="/admin/edit-product/<%=product._id%>?edit=true" class="btn">Edit</a>
+          <input type='hidden' name='productId' value='<%=product._id%>'>
+          <input type='hidden' name='_csrf' value='<%= csrfToken %>' />
+          <button class="btn" type='submit' onclick='deleteProduct(this)'>Delete</button>
           <!-- Wrapped this with a form element - reason: Sends request to delete the product to the server @ /admin/delete-product endpoint. Method POST ensures that server-side data mutation is being requested. PLus <a> tags are not fitted for destructive actions like delete because uses GET reqwuest by default and is less secure -->
           <!-- IMPORTANT Older browser support for method DELETE is not present so POST is used -->
-          <form action='/admin/delete-product' method='POST'>
+          <!-- <form action='/admin/delete-product' method='POST'>
             <input type='hidden' name='productId' value='<%=product._id%>'>
             <input type="hidden" name="productImageURL" value="<%= product.imageUrl %>">
             <input type='hidden' name='_csrf' value='<%= csrfToken %>' />
             <button class="btn" type='submit'>Delete</button>
-          </form>
+          </form> -->
         </div>
       </article>
       <% } %>
@@ -38,3 +41,4 @@
     <% } %>
   </main>
   <%- include('../layout/end')%>
+  <script src='/js/admin.js'></script>

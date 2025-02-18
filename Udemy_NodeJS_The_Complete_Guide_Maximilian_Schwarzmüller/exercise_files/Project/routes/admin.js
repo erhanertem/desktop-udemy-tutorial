@@ -73,6 +73,9 @@ router.post(
 );
 
 // POST /admin/delete-product
-router.post('/delete-product', isAuth, adminController.postDeleteProduct);
+// // FOR SERVERSIDE RENDERING WE ARE LIMITED TO POST AND GET HTTP VERBS
+// router.post('/delete-product', isAuth, adminController.postDeleteProduct);
+// FOR CLIENT SIDE RENDERING THRU ASYNC REQS WE ARE ALLOWED TO USE GET, POST, DELETE, PATCH, PUT FULL FLEDGED HTTP VERBS.
+router.delete('/product/:productId', isAuth, adminController.deleteProduct);
 
 module.exports = router;
