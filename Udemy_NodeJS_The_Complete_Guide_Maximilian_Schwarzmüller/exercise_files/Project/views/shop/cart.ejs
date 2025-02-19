@@ -4,10 +4,10 @@
 
 <body>
   <%- include('../layout/navigation') %>
-
   <main>
     <h1 style='text-align:center;'>Your Cart</h1>
     <% if (products.length >0) { %>
+
     <ul class='cart__item-list'>
       <%
         let totalQuantity = 0;
@@ -35,12 +35,15 @@
       </li>
       <% }) %>
     </ul>
+    <hr>
     <div class='centered'>
-      <form action='/create-order' method='POST'>
+      <!-- <form action='/create-order' method='POST'>
         <input type='hidden' name='_csrf' value='<%= csrfToken %>' />
         <button type='submit' class='btn' style='margin-top: 2rem;'>Order Now!</button>
-      </form>
+      </form> -->
+      <a href='/checkout'  class='btn'>Order Now!</a>
     </div>
+
     <% } else { %>
     <h1>No products in Cart!</h1>
     <% } %>

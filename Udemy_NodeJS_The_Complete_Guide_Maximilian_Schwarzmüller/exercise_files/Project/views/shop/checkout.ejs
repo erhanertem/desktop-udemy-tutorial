@@ -1,5 +1,33 @@
 <%- include('../layout/head')%>
-	</head>
-	<body>
-    <%- include('../layout/navigation')%>
-<%- include('../layout/end')%>
+<link rel="stylesheet" href="/css/cart.css">
+
+</head>
+
+<body>
+  <%- include('../layout/navigation')%>
+  <main>
+    <ul class='cart__item-list'>
+      <%
+        let totalQuantity = 0;
+        products.forEach(product => {
+          totalQuantity += product.quantity;
+        });
+      %>
+      <p><%= totalQuantity %> items in your cart</p>
+      <% products.forEach(product => { %>
+      <li class='cart__item'>
+        <h1>
+          <%=product.productId.title%>
+        </h1>
+        <img src="<%= product.productId.imageUrl %>" alt=<%=product.productId.title%> width="100" height="100">
+        <div>
+          Quantity: <%=product.quantity%>
+        </div>
+      </li>
+      <% }) %>
+    </ul>
+    <div class='centered'>
+      <h2>Total: <%= totalSum %></h2>
+    </div>
+  </main>
+  <%- include('../layout/end')%>

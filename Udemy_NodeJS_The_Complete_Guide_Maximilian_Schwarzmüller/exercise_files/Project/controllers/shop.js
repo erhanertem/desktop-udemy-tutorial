@@ -6,6 +6,31 @@ const Product = require('../models/product');
 const Order = require('../models/order');
 const useURL = require('../util/path');
 
+exports.getCheckout = (req, res, next) => {
+	req.user
+		.populate('cart.items.productId') // Builds the cart items with corresponding full product reference
+		.then((user) => {
+			const products = user.cart.items;
+			// Render the cart page with the re-constructed cart details
+			const totalSum = products.reduce((sum, product) => {
+				return sum + product.quantity * product.productId.price;
+			}, 0);
+
+			res.render('shop/checkout', {
+				path: '/checkout',
+				pageTitle: 'Checkout',
+				products,
+				totalSum,
+			});
+		})
+		.catch((err) => {
+			// Create custom error object
+			const error = new Error('Populating cart details failed.');
+			error.httpStatusCode = 500;
+			return next(error);
+		});
+};
+
 exports.getInvoice = (req, res, next) => {
 	const orderId = req.params.orderId;
 
@@ -182,10 +207,11 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-	// Gather cart data via seq. magic method
 	req.user
 		.populate('cart.items.productId') // Builds the cart items with corresponding full product reference
 		.then((user) => {
+			// const products = user.cart.items;
+			// console.log('products :', products);
 			// Render the cart page with the re-constructed cart details
 			res.render('shop/cart', {
 				path: '/cart',
