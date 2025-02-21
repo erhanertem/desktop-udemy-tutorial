@@ -27,7 +27,25 @@
       <% }) %>
     </ul>
     <div class='centered'>
-      <h2>Total: <%= totalSum %></h2>
+      <h2>Total: $ <%= totalSum %></h2>
+    </div>
+    <div class='centered'>
+      <button id='order-btn' class='btn'>ORDER</button>
+      <script src="https://js.stripe.com/v3/"></script> <!-- Allows us to use stripe on client side instead of installing package -->
+      <script>
+        const stripe = Stripe('<%= STRIPE_PUB_KEY %>'); // Initialize Stripe object
+        const orderBtn = document.getElementById('order-btn'); // Select the button on the EJS
+
+        orderBtn.addEventListener('click', function(event) {
+          // Stop submission default behaviour. Unless specified, button element is type='submit'
+          event.preventDefault();
+
+          // Redirect the user to Stripe Checkout using sessionId
+          return stripe.redirectToCheckout({
+            sessionId: '<%= stripeSessionId %>'
+          });
+        });
+      </script>
     </div>
   </main>
   <%- include('../layout/end')%>

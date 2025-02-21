@@ -1,7 +1,7 @@
   <!-- Include the external script -->
   <!-- hideFlash.js is not within the scoipe of nodejs. In order to pass a dot.env attribute we need to inject into the site an exctension script to hideFlash.js -->
   <script>
-    window.FLASH_REMOVE_DELAY = <%- flashRemoveDelay %>
+    window.FLASH_REMOVE_DELAY = Number('<%- flashRemoveDelay %>'); // Safe for numbers
   </script>
 
   <script src="/js/hideFlash.js"></script>

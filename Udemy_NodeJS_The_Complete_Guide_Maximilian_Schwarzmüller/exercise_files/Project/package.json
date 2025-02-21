@@ -30,7 +30,8 @@
 		"nodemailer": "^6.9.16",
 		"pdfkit": "^0.16.0",
 		"pug": "^3.0.3",
-		"sequelize": "^6.37.5"
+		"sequelize": "^6.37.5",
+		"stripe": "^17.6.0"
 	},
 	"devDependencies": {
 		"@types/node": "^22.10.2",

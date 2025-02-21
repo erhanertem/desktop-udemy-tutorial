@@ -5,7 +5,7 @@
 <body>
   <%- include('../layout/navigation') %>
   <main>
-    <h1 style='text-align:center;'>Your Cart</h1>
+    <h1 class='centered'>Your Cart</h1>
     <% if (products.length >0) { %>
 
     <ul class='cart__item-list'>
@@ -19,14 +19,14 @@
       <% products.forEach(product => { %>
       <li class='cart__item'>
         <h1>
-          <%=product.productId.title%>
+          <%= product.productId.title %>
         </h1>
-        <img src="<%=product.productId.imageUrl%>" alt=<%=product.productId.title%> width="100" height="100">
+        <img src="<%= product.productId.imageUrl %>" alt=<%= product.productId.title %> width="100" height="100">
         <div>
-          Quantity: <%=product.quantity%>
+          Quantity: <%= product.quantity %>
         </div>
         <form action='/cart-delete-item' method='POST'>
-          <input type='hidden' name='productId' value='<%=product.productId._id%>'>
+          <input type='hidden' name='productId' value='<%= product.productId._id %>'>
           <input type='hidden' name='_csrf' value='<%= csrfToken %>' />
           <button class='btn danger' type='submit'>
             DELETE

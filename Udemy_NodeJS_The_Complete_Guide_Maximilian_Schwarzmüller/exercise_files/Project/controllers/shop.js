@@ -1,30 +1,71 @@
 const fs = require('fs');
 const path = require('path');
 const PDFDocument = require('pdfkit');
+// > Alt#1 for Stripe
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// https://dashboard.stripe.com/test/apikeys to retrieve api keys
+// > Alt#2 for Stripe
+// const Stripe = require('stripe');
+// const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // Use your secret key from .env
 
 const Product = require('../models/product');
 const Order = require('../models/order');
 const useURL = require('../util/path');
 
 exports.getCheckout = (req, res, next) => {
+	let products, totalSum;
+
 	req.user
 		.populate('cart.items.productId') // Builds the cart items with corresponding full product reference
 		.then((user) => {
-			const products = user.cart.items;
+			products = user.cart.items;
 			// Render the cart page with the re-constructed cart details
-			const totalSum = products.reduce((sum, product) => {
+			totalSum = products.reduce((sum, product) => {
 				return sum + product.quantity * product.productId.price;
 			}, 0);
 
+			// Create a Stripe Session
+			return stripe.checkout.sessions.create({
+				payment_method_types: ['card'],
+				line_items: products.map((product) => {
+					return {
+						price_data: {
+							currency: 'usd',
+							product_data: {
+								name: product.productId.title,
+								description: product.productId.description,
+							},
+							unit_amount: product.productId.price * 100, // Stripe expects price in cents
+						},
+						quantity: product.quantity,
+					};
+				}),
+				mode: 'payment', // Required for one-time payments
+				success_url: `${req.protocol}://${req.get('host')}/checkout/success`, // http://localhost:3000/checkout/success
+				cancel_url: `${req.protocol}://${req.get('host')}/checkout/cancel`,
+			});
+		})
+		.then((stripeSession) => {
 			res.render('shop/checkout', {
 				path: '/checkout',
 				pageTitle: 'Checkout',
 				products,
 				totalSum,
+				stripeSessionId: stripeSession.id,
+				STRIPE_PUB_KEY: process.env.STRIPE_PUB_KEY,
 			});
 		})
 		.catch((err) => {
-			// Create custom error object
+			console.error('Error:', err); // Log the actual error for debugging
+
+			if (err.type && err.type.includes('Stripe')) {
+				// Specific Stripe error handling
+				const error = new Error(`Stripe Error: ${err.message}`);
+				error.httpStatusCode = 502; // Bad Gateway (Stripe API issue)
+				return next(error);
+			}
+
+			// Generic error handling for other failures
 			const error = new Error('Populating cart details failed.');
 			error.httpStatusCode = 500;
 			return next(error);
