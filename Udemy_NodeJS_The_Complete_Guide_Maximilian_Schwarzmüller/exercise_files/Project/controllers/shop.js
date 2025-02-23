@@ -54,7 +54,9 @@ exports.getCheckout = (req, res, next) => {
 				mode: 'payment', // Required for one-time payments
 				// success_url: `${req.protocol}://${req.get('host')}/checkout/success`, // http://localhost:3000/checkout/success
 				// We do not need a success url as its being handled by stripe webhook endpoint @ /strpe_hook but still stripe requires at least a placeholder for success URL
-				success_url: `${req.protocol}://${req.get('host')}/orders`, // Placeholder success URL
+				success_url: `${req.protocol}://${req.get(
+					'host'
+				)}/orders?errorMessage=A problem has been encountered while placing your order. Please try again.`, // Placeholder success URL
 				cancel_url: `${req.protocol}://${req.get('host')}/checkout/cancel`,
 				client_reference_id: req.user._id.toString(), // Custom key that stores user ID for webhook verification which helps also with fraid protection for whom trying to access the /checkout/success without proper Stripe session
 			});
@@ -381,6 +383,8 @@ exports.postCartDeleteProduct = (req, res, next) => {
 // };
 
 exports.getOrders = (req, res, next) => {
+	const errorMessage = req.query.errorMessage;
+
 	Order.find({ 'user.userId': req.user._id })
 		.then((orders) =>
 			// Render the orders page
@@ -388,6 +392,8 @@ exports.getOrders = (req, res, next) => {
 				path: '/orders',
 				pageTitle: 'Your Orders',
 				orders,
+				errorMessage,
+				FLASH_REMOVE_DELAY: process.env.FLASH_REMOVE_DELAY,
 			})
 		)
 		.catch((err) => {

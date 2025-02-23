@@ -5,6 +5,14 @@
         <body>
           <%- include('../layout/navigation')%>
           <main>
+            <% if(errorMessage) { %>
+            <div class='user-message user-message--error' id='error-message'><%= errorMessage %></div>
+            <script>
+              setTimeout(function() {
+                document.getElementById('error-message').style.display = 'none';
+              }, <%=FLASH_REMOVE_DELAY%>); // 5000 milliseconds = 5 seconds
+            </script>
+            <% } %>
             <% if (orders.length <= 0) { %>
             <h1>Nothing there!</h1>
             <% } else { %>
@@ -23,5 +31,4 @@
               <% }); %>
             </ul>
             <% } %>
-          </main>
-          <%- include('../layout/end')%>
+          </main>        <%- include('../layout/end')%>
