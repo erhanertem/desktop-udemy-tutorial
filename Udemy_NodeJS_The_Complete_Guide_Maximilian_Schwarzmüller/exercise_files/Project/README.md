@@ -93,6 +93,7 @@
     - Save on file
 - Pagination
 - Explore async reqs to backend (SSR and CSR hybrid)
+- Handle payment process
 
 **Aside from curriculum:**
 
@@ -110,6 +111,10 @@
 - Create a fully dynamic multer upload middleware for higher flexibility.
 - While uploading new file @ edit admin product, remove the older file from the server
 - @ delete admin product, remove the associated admin product pic from the server
+- Handle payments w/ Stripe webhook CLI to prevent manual access to checkout/success by malicous authenticated users.
+  - Set up a local Stripe CLI service to handle webhook events.
+  - Configure Stripe Checkout sessions with manual capture to maintain full control over transactions.
+  - Enforce payment capture only after successfully registering the order in the database; otherwise, cancel the payment to prevent incomplete transactions.
 
 &emsp;
 

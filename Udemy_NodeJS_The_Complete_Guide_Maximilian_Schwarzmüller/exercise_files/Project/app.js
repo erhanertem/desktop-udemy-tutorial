@@ -59,7 +59,17 @@ app.use(flash());
 
 // Body parsers (AFTER CSRF)
 // Middleware to parse incoming requests with JSON payloads. It parses the body of the request and makes it available under req.body. If located before the session middleware, it might interfere with the session handling, especially if the session data is stored in the request body or if there are any conflicts in how the request body is parsed.
-app.use(express.json());
+// app.use(express.json());
+// IMPORTANT: Can't use this middleware as is as we are using a webhook route that is declared after this middleware which needs only raw parsing. So we need to selectively parse the request body based on a route filter.
+const webhookRoutes = ['/stripe_hook'];
+app.use((req, res, next) => {
+	if (!webhookRoutes.includes(req.path)) {
+		express.json()(req, res, next);
+	} else {
+		next();
+	}
+});
+
 // Form Submission Parsers
 // #1. Text type only form submission parser
 // Middleware to handle URL-encoded (text) data which is typically used when submitting HTML forms with the application/x-www-form-urlencoded content type. Extended set to true, can allow handling complex data structures such as nested objects, arrays in req.body.
@@ -117,7 +127,15 @@ const { csrfSynchronisedProtection, generateToken } = csrfSync({
 });
 
 // CSRF Protection for POST requests
-app.use(csrfSynchronisedProtection);
+// app.use(csrfSynchronisedProtection);
+// IMPORTANT: Exclude stripe_hook endpoint from being CSRF protected as that route is only being accessed by externap API - stripe.
+app.use((req, res, next) => {
+	if (!webhookRoutes.includes(req.path)) {
+		csrfSynchronisedProtection(req, res, next);
+	} else {
+		next();
+	}
+});
 
 // Middleware to inject CSRF token into templates
 app.use((req, res, next) => {

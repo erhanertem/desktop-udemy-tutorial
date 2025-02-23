@@ -19,6 +19,14 @@ exports.getCheckout = (req, res, next) => {
 		.populate('cart.items.productId') // Builds the cart items with corresponding full product reference
 		.then((user) => {
 			products = user.cart.items;
+
+			// Check if the cart is empty
+			if (products.length === 0) {
+				const error = new Error('Cart is empty. Cannot proceed to checkout.');
+				error.httpStatusCode = 400; // Bad Request
+				return next(error);
+			}
+
 			// Render the cart page with the re-constructed cart details
 			totalSum = products.reduce((sum, product) => {
 				return sum + product.quantity * product.productId.price;
@@ -27,6 +35,9 @@ exports.getCheckout = (req, res, next) => {
 			// Create a Stripe Session
 			return stripe.checkout.sessions.create({
 				payment_method_types: ['card'],
+				payment_intent_data: {
+					capture_method: 'manual', // Stripe won't auto-capture the payment
+				},
 				line_items: products.map((product) => {
 					return {
 						price_data: {
@@ -41,8 +52,11 @@ exports.getCheckout = (req, res, next) => {
 					};
 				}),
 				mode: 'payment', // Required for one-time payments
-				success_url: `${req.protocol}://${req.get('host')}/checkout/success`, // http://localhost:3000/checkout/success
+				// success_url: `${req.protocol}://${req.get('host')}/checkout/success`, // http://localhost:3000/checkout/success
+				// We do not need a success url as its being handled by stripe webhook endpoint @ /strpe_hook but still stripe requires at least a placeholder for success URL
+				success_url: `${req.protocol}://${req.get('host')}/orders`, // Placeholder success URL
 				cancel_url: `${req.protocol}://${req.get('host')}/checkout/cancel`,
+				client_reference_id: req.user._id.toString(), // Custom key that stores user ID for webhook verification which helps also with fraid protection for whom trying to access the /checkout/success without proper Stripe session
 			});
 		})
 		.then((stripeSession) => {
@@ -313,57 +327,58 @@ exports.postCartDeleteProduct = (req, res, next) => {
 		});
 };
 
-exports.postOrder = (req, res, next) => {
-	req.user
-		// > Option#1
-		// .populate('cart.items.productId')
-		// > Option#2
-		.populate({
-			path: 'cart.items.productId',
-			select: 'title price description imageUrl',
-		})
-		.then((user) => {
-			// Populate product information from the cart items
-			const products = user.cart.items;
-			// Create a new order instance
-			const order = new Order({
-				user: {
-					email: req.user.email,
-					userId: req.user._id,
-				},
-				products: products.map((product) => {
-					return {
-						// > Option#1
-						// // VERY IMPORTANT: populate replaces productId on the fly with the corresponding product information. However, if we try to access the information we only receive the productId again.
-						// // product: product.productId,
-						// // VERY IMPORTANT: In order to access the populated information on productId, we need to use _doc property of mongoose for the populated object
-						// product: product.productId._doc,
-						// > Option#2
-						product: { ...product.productId },
-						quantity: product.quantity,
-					};
-				}),
-			});
-			// Save the order via mongoose
-			return order.save();
-		})
-		.then((result) =>
-			// Clear the cart after order creation
-			req.user.deleteCart()
-		)
-		.then((result) =>
-			// Redirect to orders page
-			res.redirect('/orders')
-		)
-		.catch((err) => {
-			// console.error('Error while creating order: ', err);
-			// next(err); // Pass the error to the global error-handling middleware})
-			// Create custom error object
-			const error = new Error('Creating order failed.');
-			error.httpStatusCode = 500;
-			return next(error);
-		});
-};
+// NOTE: Replaced by internal handling thru Stripe Webhook
+// exports.postOrder = (req, res, next) => {
+// 	req.user
+// 		// > Option#1
+// 		// .populate('cart.items.productId')
+// 		// > Option#2
+// 		.populate({
+// 			path: 'cart.items.productId',
+// 			select: 'title price description imageUrl',
+// 		})
+// 		.then((user) => {
+// 			// Populate product information from the cart items
+// 			const products = user.cart.items;
+// 			// Create a new order instance
+// 			const order = new Order({
+// 				user: {
+// 					email: req.user.email,
+// 					userId: req.user._id,
+// 				},
+// 				products: products.map((product) => {
+// 					return {
+// 						// > Option#1
+// 						// // VERY IMPORTANT: populate replaces productId on the fly with the corresponding product information. However, if we try to access the information we only receive the productId again.
+// 						// // product: product.productId,
+// 						// // VERY IMPORTANT: In order to access the populated information on productId, we need to use _doc property of mongoose for the populated object
+// 						// product: product.productId._doc,
+// 						// > Option#2
+// 						product: { ...product.productId },
+// 						quantity: product.quantity,
+// 					};
+// 				}),
+// 			});
+// 			// Save the order via mongoose
+// 			return order.save();
+// 		})
+// 		.then((result) =>
+// 			// Clear the cart after order creation
+// 			req.user.deleteCart()
+// 		)
+// 		.then((result) =>
+// 			// Redirect to orders page
+// 			res.redirect('/orders')
+// 		)
+// 		.catch((err) => {
+// 			// console.error('Error while creating order: ', err);
+// 			// next(err); // Pass the error to the global error-handling middleware})
+// 			// Create custom error object
+// 			const error = new Error('Creating order failed.');
+// 			error.httpStatusCode = 500;
+// 			return next(error);
+// 		});
+// };
 
 exports.getOrders = (req, res, next) => {
 	Order.find({ 'user.userId': req.user._id })
