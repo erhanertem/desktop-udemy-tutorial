@@ -16,7 +16,7 @@ const app = express();
 // Req Body Parser - application/json
 app.use(express.json());
 
-// Setup CORS Headers to allow client-side communicate with backend server
+// 1️⃣ Handle CORS for normal requests - Allow communication between server and client domains
 app.use((req, res, next) => {
 	// Allow all origins
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -25,6 +25,15 @@ app.use((req, res, next) => {
 	// Allow these headers
 	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 	next();
+});
+
+// 2️⃣ Handle CORS preflight (OPTIONS) requests explicitly
+app.options('*', (req, res) => {
+	res.setHeader('Access-Control-Allow-Origin', 'https://example.com:3000');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+	res.setHeader('Access-Control-Max-Age', '600'); // Cache for 10 minutes
+	res.sendStatus(204); // No content for OPTIONS reqs
 });
 
 // App Routes
