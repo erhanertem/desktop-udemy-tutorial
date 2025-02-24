@@ -11,10 +11,21 @@ const feedRoutes = require('./routes/feed');
 // Init Express App
 const app = express();
 
-// Text type only form submission parser
-app.use(express.urlencoded({ extended: false }));
-// Req Body Parser
+// // Text type only form submission parser
+// app.use(express.urlencoded({ extended: false }));
+// Req Body Parser - application/json
 app.use(express.json());
+
+// Setup CORS Headers to allow client-side communicate with backend server
+app.use((req, res, next) => {
+	// Allow all origins
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	// Allow only these HTTP methods
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+	// Allow these headers
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+	next();
+});
 
 // App Routes
 app.use('/feed', feedRoutes); // Prefixes the endpoint URL with /feed

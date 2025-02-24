@@ -1,5 +1,5 @@
 {
-	"name": "project_rest",
+	"name": "project_rest_backend",
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
