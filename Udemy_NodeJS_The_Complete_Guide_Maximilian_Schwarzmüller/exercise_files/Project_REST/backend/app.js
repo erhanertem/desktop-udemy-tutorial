@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-// 2️⃣ Handle CORS preflight (OPTIONS) requests explicitly
+// 2️⃣ Handle CORS preflight (OPTIONS) requests explicitly - Ensure preflight requests dont block API calls.
 app.options('*', (req, res) => {
 	res.setHeader('Access-Control-Allow-Origin', 'https://example.com:3000');
 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
