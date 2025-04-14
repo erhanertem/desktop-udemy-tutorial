@@ -66,6 +66,11 @@ arr[2] = "two"
 [rand(0.0:1.0, 3, 3)]
 [rand(Float64, 3, 3)]
 
+arr = rand(5:25, 5)
+arr = rand(5:25, 5, 2)
+arr = rand(5:25, 5, 2, 3)
+rand(5:25, 1, 10)
+
 arr = [3, 5, 2];
 insert!(arr, 2, 4);
 println(arr)
