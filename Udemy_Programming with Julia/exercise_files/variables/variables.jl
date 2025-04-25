@@ -78,3 +78,7 @@ println(typeof(a))
 
 x = 10
 x += 5
+
+const nums = [1, 2, 3]
+push!(nums, 4)        # ✅ This is fine — you're mutating the value, not the binding
+nums = [10, 20, 30]   # ❌ This will throw a warning or error — you can't rebind `nums`
