@@ -5,7 +5,7 @@ Pkg.add("DataFrames");
 using DataFrames, RDatasets
 
 iris = dataset("datasets", "iris")
-
+maximum(iris.SepalLength)
 # READ DATAFRAME
 iris
 show(iris) # same as iris
